@@ -11,6 +11,17 @@
 
 <ion-content padding text-center>
   <ion-img src="assets/icon/task-list.png"></ion-img>
+
+  <div class="version">
+    <div>
+      <span class="label">Version: </span>{{ appVersion?.version }} -
+      {{ appVersion?.name }}
+    </div>
+    <div>
+      <span class="label">Released: </span>{{ appVersion?.date | date }}
+    </div>
+  </div>
+
   <div class="attribution">
     Icons made by
     <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { AngularFireModule } from '@angular/fire';
@@ -12,13 +13,13 @@ import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
-  entryComponents: [],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AppRoutingModule,
     BrowserModule,
-    IonicModule.forRoot(),
-    AppRoutingModule
+    HttpClientModule,
+    IonicModule.forRoot()
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent]
