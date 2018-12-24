@@ -8,8 +8,8 @@ import { auth } from 'firebase/app';
 export class AuthenticationService {
   constructor(private afAuth: AngularFireAuth) {}
 
-  login() {
-    return this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
+  login(email: string, password: string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
   logout() {

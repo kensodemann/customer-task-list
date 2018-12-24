@@ -15,18 +15,31 @@ describe('AuthenticationService', () => {
     });
   });
 
-  beforeEach(inject([AuthenticationService], (service: AuthenticationService) => {
-    authenticationService = service;
-  }));
+  beforeEach(inject(
+    [AuthenticationService],
+    (service: AuthenticationService) => {
+      authenticationService = service;
+    }
+  ));
 
   it('should be created', () => {
     expect(authenticationService).toBeTruthy();
   });
 
   describe('login', () => {
-    it('calls the signin with popup', () => {
-      authenticationService.login();
-      expect(angularFireAuth.auth.signInWithPopup).toHaveBeenCalledTimes(1);
+    it('calls the signin with email and password', () => {
+      authenticationService.login('test@test.com', 'testpassword');
+      expect(
+        angularFireAuth.auth.signInWithEmailAndPassword
+      ).toHaveBeenCalledTimes(1);
+    });
+
+    it('passes the email and password', () => {
+      authenticationService.login('test@test.com', 'testpassword');
+      expect(angularFireAuth.auth.signInWithEmailAndPassword).toHaveBeenCalledWith(
+        'test@test.com',
+        'testpassword'
+      );
     });
   });
 
@@ -35,5 +48,5 @@ describe('AuthenticationService', () => {
       authenticationService.logout();
       expect(angularFireAuth.auth.signOut).toHaveBeenCalledTimes(1);
     });
-   });
+  });
 });

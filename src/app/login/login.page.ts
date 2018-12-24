@@ -9,6 +9,10 @@ import { AuthenticationService } from '../services/authentication/authentication
   styleUrls: ['./login.page.scss']
 })
 export class LoginPage {
+  email: string;
+  password: string;
+  errorMessage: string;
+
   constructor(
     private auth: AuthenticationService,
     private navController: NavController
@@ -16,12 +20,13 @@ export class LoginPage {
 
   async login() {
     try {
-      const u = await this.auth.login();
+      const u = await this.auth.login(this.email, this.password);
       if (u) {
         this.navController.navigateRoot('');
       }
     } catch (err) {
-      console.error('login error', err);
+      this.password = '';
+      this.errorMessage = err.message;
     }
   }
 }

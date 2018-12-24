@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { IonicModule, NavController } from '@ionic/angular';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
 import { createAuthenticationServiceMock } from '../services/authentication/authentication.mock';
@@ -17,6 +18,7 @@ describe('LoginPage', () => {
     authentication = createAuthenticationServiceMock();
     navController = createNavControllerMock();
     TestBed.configureTestingModule({
+      imports: [FormsModule, IonicModule],
       declarations: [LoginPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -37,9 +39,22 @@ describe('LoginPage', () => {
   });
 
   describe('login', () => {
+    beforeEach(() => {
+      component.email = 'test@mctesty.com';
+      component.password = 'something secret';
+    });
+
     it('calls the authentication login', () => {
       component.login();
       expect(authentication.login).toHaveBeenCalledTimes(1);
+    });
+
+    it('passes the email address and password to the login', () => {
+      component.login();
+      expect(authentication.login).toHaveBeenCalledWith(
+        'test@mctesty.com',
+        'something secret'
+      );
     });
 
     it('does not navigate if no user is returned', async () => {
@@ -52,6 +67,32 @@ describe('LoginPage', () => {
       await component.login();
       expect(navController.navigateRoot).toHaveBeenCalledTimes(1);
       expect(navController.navigateRoot).toHaveBeenCalledWith('');
+    });
+
+    it('displays an error message if the login fails', async () => {
+      authentication.login.and.returnValue(
+        Promise.reject({
+          code: 'auth/wrong-password',
+          message:
+            'The password is invalid or the user does not have a password.'
+        })
+      );
+      await component.login();
+      expect(component.errorMessage).toEqual(
+        'The password is invalid or the user does not have a password.'
+      );
+    });
+
+    it('clears the password if the login fails', async () => {
+      authentication.login.and.returnValue(
+        Promise.reject({
+          code: 'auth/wrong-password',
+          message:
+            'The password is invalid or the user does not have a password.'
+        })
+      );
+      await component.login();
+      expect(component.password).toBeFalsy();
     });
   });
 });

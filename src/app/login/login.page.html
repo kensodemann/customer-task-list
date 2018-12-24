@@ -1,10 +1,45 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
+  <ion-toolbar> <ion-title>Login</ion-title> </ion-toolbar>
 </ion-header>
 
 <ion-content text-center padding>
-  <ion-img src="assets/icon/task-list.png"></ion-img>
-  <ion-button fill="outline" expand="full" (click)="login()"><ion-icon slot="end" name="logo-google"></ion-icon>Sign in using Google</ion-button>
+  <form #loginForm="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">E-Mail Address</ion-label>
+        <ion-input
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          #emailInput="ngModel"
+          required
+          email
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          #passwordInput="ngModel"
+          required
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+    <div class="error">{{ errorMessage }}</div>
+    <ion-img src="assets/icon/task-list.png"></ion-img>
+  </form>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button
+      expand="full"
+      [disabled]="!loginForm.form.valid"
+      (click)="login()"
+      color="tertiary"
+      >Sign in</ion-button
+    >
+  </ion-toolbar>
+</ion-footer>
