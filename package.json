@@ -11,6 +11,7 @@
     "e2e": "ng e2e",
     "lint": "ng lint",
     "ng": "ng",
+    "release": "node scripts/release.js",
     "start": "ng serve",
     "test": "ng test",
     "test:ci": "ng test --no-watch"
