@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { empty, Subject } from 'rxjs';
 
 export function createActivatedRouteMock() {
   return {
@@ -71,4 +71,37 @@ export function createAngularFireAuthMock() {
       signOut: Promise.resolve()
     })
   };
+}
+
+class TestDocument<T> {
+  private _data: T;
+
+  constructor(public id: string, data: T) {
+    this._data = data;
+  }
+
+  data(): T {
+    return this._data;
+  }
+}
+
+export function createAction<T>(id: string, data: T) {
+  return {
+    payload: {
+      doc: new TestDocument(id, data)
+    }
+  };
+}
+
+export function createAngularFirestoreCollectionMock() {
+  return jasmine.createSpyObj('AngularFirestoreCollection', {
+    valueChanges: empty(),
+    snapshotChanges: empty()
+  });
+}
+
+export function createAngularFirestoreMock() {
+  return jasmine.createSpyObj('AngularFirestore', {
+    collection: createAngularFirestoreCollectionMock()
+  });
 }
