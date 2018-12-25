@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button color="medium" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> New Customer </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #customerForm="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          #nameInput="ngModel"
+          required
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea
+          name="description"
+          [(ngModel)]="description"
+          #descriptionInput="ngModel"
+          required
+        ></ion-textarea>
+      </ion-item>
+    </ion-list>
+    <div class="error">{{ errorMessage }}</div>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button
+      expand="full"
+      [disabled]="!customerForm.form.valid"
+      (click)="save()"
+      >Save</ion-button
+    >
+  </ion-toolbar>
+</ion-footer>

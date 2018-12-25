@@ -1,32 +1,38 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
 import { CustomersPage } from './customers.page';
-import { AuthenticationService } from '../services/authentication/authentication.service';
-import { createAuthenticationServiceMock } from '../services/authentication/authentication.mock';
 import { CustomersService } from '../services/customers/customers.service';
-import { createCustomersServiceMock } from '../services/customers/customers.mock';
 import { CustomerWithId } from '../models/customer';
 
+import { createCustomersServiceMock } from '../services/customers/customers.mock';
+import {
+  createOverlayControllerMock,
+  createOverlayElementMock
+} from '../../../test/mocks';
+
 describe('CustomersPage', () => {
-  let authentication;
   let customers;
   let customerList: Subject<Array<CustomerWithId>>;
+  let modal;
+  let modalController;
   let page: CustomersPage;
   let fixture: ComponentFixture<CustomersPage>;
 
   beforeEach(async(() => {
-    authentication = createAuthenticationServiceMock();
     customers = createCustomersServiceMock();
     customerList = new Subject();
     customers.all.and.returnValue(customerList);
+    modal = createOverlayElementMock('Modal');
+    modalController = createOverlayControllerMock('ModalController', modal);
     TestBed.configureTestingModule({
       declarations: [CustomersPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        { provide: AuthenticationService, useValue: authentication },
-        { provide: CustomersService, useValue: customers }
+        { provide: CustomersService, useValue: customers },
+        { provide: ModalController, useValue: modalController }
       ]
     }).compileComponents();
   }));

@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { AuthenticationService } from '../services/authentication/authentication.service';
+import { CustomerEditorComponent } from './customer-editor/customer-editor.component';
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
 
@@ -16,8 +17,8 @@ export class CustomersPage implements OnDestroy, OnInit {
   allCustomers: Array<CustomerWithId>;
 
   constructor(
-    public authentication: AuthenticationService,
-    private customers: CustomersService
+    private customers: CustomersService,
+    private modal: ModalController
   ) {}
 
   ngOnInit() {
@@ -28,5 +29,11 @@ export class CustomersPage implements OnDestroy, OnInit {
 
   ngOnDestroy() {
     this.customersSubscription.unsubscribe();
+  }
+
+  async addCustomer() {
+    console.log('in the add customer');
+    const m = await this.modal.create({ component: CustomerEditorComponent });
+    m.present();
   }
 }

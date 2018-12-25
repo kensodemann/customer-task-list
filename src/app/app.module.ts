@@ -23,7 +23,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production
+    })
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent]
