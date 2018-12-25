@@ -71,4 +71,18 @@ describe('CustomersService', () => {
       );
     });
   });
+
+  describe('add', () => {
+    it('adds the item to the collection', () => {
+      customers.add({
+        name: 'Fred Flintstone',
+        description: 'Head of a modnern stone-age family'
+      });
+      expect(collection.add).toHaveBeenCalledTimes(1);
+      expect(collection.add).toHaveBeenCalledWith({
+        name: 'Fred Flintstone',
+        description: 'Head of a modnern stone-age family'
+      });
+    });
+  });
 });

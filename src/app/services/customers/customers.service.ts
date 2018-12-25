@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
-  AngularFirestoreCollection
+  AngularFirestoreCollection,
+  DocumentReference
 } from '@angular/fire/firestore';
 
 import { Customer, CustomerWithId } from '../../models/customer';
@@ -28,5 +29,9 @@ export class CustomersService {
         })
       )
     );
+  }
+
+  add(c: Customer): Promise<DocumentReference> {
+    return this.collection.add(c);
   }
 }

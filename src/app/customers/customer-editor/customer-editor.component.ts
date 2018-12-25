@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
+import { CustomersService } from '../../services/customers/customers.service';
+
 @Component({
   selector: 'app-customer-editor',
   templateUrl: './customer-editor.component.html',
@@ -11,7 +13,10 @@ export class CustomerEditorComponent implements OnInit {
   description: string;
   errorMessage: string;
 
-  constructor(private modal: ModalController) {}
+  constructor(
+    private customers: CustomersService,
+    private modal: ModalController
+  ) {}
 
   ngOnInit() {}
 
@@ -19,7 +24,11 @@ export class CustomerEditorComponent implements OnInit {
     this.modal.dismiss();
   }
 
-  save() {
+  async save() {
+    await this.customers.add({
+      name: this.name,
+      description: this.description
+    });
     this.modal.dismiss();
   }
 }

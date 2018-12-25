@@ -95,6 +95,7 @@ export function createAction<T>(id: string, data: T) {
 
 export function createAngularFirestoreCollectionMock() {
   return jasmine.createSpyObj('AngularFirestoreCollection', {
+    add: Promise.resolve(),
     valueChanges: empty(),
     snapshotChanges: empty()
   });
