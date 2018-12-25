@@ -1,7 +1,7 @@
 {
   "name": "customer-task-list",
   "description": "Customer Task List",
-  "version": "0.0.2-0",
+  "version": "0.0.2-1",
   "author": "Ken Sodemann",
   "homepage": "http://kensodemann.github.io/",
   "scripts": {

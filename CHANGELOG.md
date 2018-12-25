@@ -1,3 +1,27 @@
+<a name="0.0.2-1"></a>
+## 0.0.2-1 (2018-12-25)
+
+
+### Bug Fixes
+
+* **theme:** clean up the color theme a bit ([70f5f0c](https://bitbucket.org/kensodemann/customer-task-list/commits/70f5f0c))
+
+
+### Features
+
+* **app:** move tab1 to tasks ([1bc5d7b](https://bitbucket.org/kensodemann/customer-task-list/commits/1bc5d7b))
+* **app:** move tab2 to customers ([f260c0e](https://bitbucket.org/kensodemann/customer-task-list/commits/f260c0e))
+* **app:** move tab3 to about ([0449fb6](https://bitbucket.org/kensodemann/customer-task-list/commits/0449fb6))
+* **auth:** add authentication service and login ([d9a92fb](https://bitbucket.org/kensodemann/customer-task-list/commits/d9a92fb))
+* **auth:** switch to email password auth ([8476d67](https://bitbucket.org/kensodemann/customer-task-list/commits/8476d67))
+* **customers:** add a customers service and list ([80506bc](https://bitbucket.org/kensodemann/customer-task-list/commits/80506bc))
+* **pwa:** add PWA support ([fa30c66](https://bitbucket.org/kensodemann/customer-task-list/commits/fa30c66))
+* **PWA:** use PWACompat ([601ff20](https://bitbucket.org/kensodemann/customer-task-list/commits/601ff20))
+* **release:** create a release process ([b9d9232](https://bitbucket.org/kensodemann/customer-task-list/commits/b9d9232))
+* **tasks:** add a tasks service ([77f6147](https://bitbucket.org/kensodemann/customer-task-list/commits/77f6147))
+
+
+
 <a name="0.0.2-0"></a>
 ## 0.0.2-0 (2018-12-24)
 
