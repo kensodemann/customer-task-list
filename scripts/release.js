@@ -133,6 +133,10 @@ function runTasks(oldVersion, inc) {
       task: () => execa('git', ['push', '--follow-tags'], { cwd: rootDir })
     },
     {
+      title: 'Final Build',
+      task: () => execa('npm', ['run', 'build'], { cwd: rootDir })
+    },
+    {
       title: 'Deploying',
       task: () => execa('firebase', ['deploy'], { cwd: rootDir })
     }

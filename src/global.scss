@@ -15,3 +15,17 @@
   color: red;
   font-size: small;
 }
+
+.title {
+  font-weight: bold;
+}
+
+.timestamp {
+  font-size: x-small;
+  color: var(--ion-color-medium, black);
+}
+
+.description {
+  color: var(--ion-color-medium, black);
+  white-space: normal;
+}

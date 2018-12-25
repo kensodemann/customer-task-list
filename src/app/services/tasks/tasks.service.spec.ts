@@ -3,7 +3,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
 
 import { TasksService } from './tasks.service';
-import { Task } from '../../models/task';
 import {
   createAction,
   createAngularFirestoreMock,

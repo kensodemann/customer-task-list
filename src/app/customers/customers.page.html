@@ -9,4 +9,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content padding>
+  <ion-list>
+    <ion-item *ngFor="let customer of allCustomers">
+      <ion-label>
+        <div class="title">{{ customer.name }}</div>
+        <div class="description">{{ customer.description }}</div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
