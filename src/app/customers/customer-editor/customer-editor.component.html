@@ -31,6 +31,10 @@
           required
         ></ion-textarea>
       </ion-item>
+      <ion-item>
+        <ion-label>Is Active</ion-label>
+        <ion-checkbox name="isActive" [(ngModel)]="isActive"></ion-checkbox>
+      </ion-item>
     </ion-list>
     <div class="error">{{ errorMessage }}</div>
   </form>

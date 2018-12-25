@@ -11,6 +11,7 @@ import { CustomersService } from '../../services/customers/customers.service';
 export class CustomerEditorComponent implements OnInit {
   name: string;
   description: string;
+  isActive: boolean;
   errorMessage: string;
 
   constructor(
@@ -18,7 +19,9 @@ export class CustomerEditorComponent implements OnInit {
     private modal: ModalController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.isActive = true;
+  }
 
   close() {
     this.modal.dismiss();
@@ -27,7 +30,8 @@ export class CustomerEditorComponent implements OnInit {
   async save() {
     await this.customers.add({
       name: this.name,
-      description: this.description
+      description: this.description,
+      isActive: this.isActive
     });
     this.modal.dismiss();
   }

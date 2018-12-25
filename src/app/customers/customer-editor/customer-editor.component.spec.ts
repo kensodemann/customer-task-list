@@ -45,6 +45,10 @@ describe('CustomerEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('starts with a true active status', () => {
+    expect(component.isActive).toEqual(true);
+  });
+
   describe('close', () => {
     it('dismisses the modal', () => {
       component.close();
@@ -56,11 +60,32 @@ describe('CustomerEditorComponent', () => {
     it('adds the customer', () => {
       component.name = 'The Dude';
       component.description = 'He does abide';
+      component.isActive = true;
       component.save();
       expect(customers.add).toHaveBeenCalledTimes(1);
+    });
+
+    it('passes the name, description, and isActive status', () => {
+      component.name = 'The Dude';
+      component.description = 'He does abide';
+      component.isActive = true;
+      component.save();
       expect(customers.add).toHaveBeenCalledWith({
         name: 'The Dude',
-        description: 'He does abide'
+        description: 'He does abide',
+        isActive: true
+      });
+    });
+
+    it('allows inactive customers to be created', () => {
+      component.name = 'Lazy Leopard';
+      component.description = 'Cats like to sleep, even the bigger ones.',
+      component.isActive = false;
+      component.save();
+      expect(customers.add).toHaveBeenCalledWith({
+        name: 'Lazy Leopard',
+        description: 'Cats like to sleep, even the bigger ones.',
+        isActive: false
       });
     });
 

@@ -47,11 +47,15 @@ describe('CustomersService', () => {
         of([
           createAction('314PI', {
             name: `Baker's Square`,
-            description: 'Makers of overly sweet pies and otherwise crappy food'
+            description:
+              'Makers of overly sweet pies and otherwise crappy food',
+            isActive: true
           }),
           createAction('420HI', {
             name: 'Joe',
-            description: 'Some guy named Joe who sells week on my street corner'
+            description:
+              'Some guy named Joe who sells week on my street corner',
+            isActive: false
           })
         ])
       );
@@ -60,12 +64,16 @@ describe('CustomersService', () => {
           {
             id: '314PI',
             name: `Baker's Square`,
-            description: 'Makers of overly sweet pies and otherwise crappy food'
+            description:
+              'Makers of overly sweet pies and otherwise crappy food',
+            isActive: true
           },
           {
             id: '420HI',
             name: 'Joe',
-            description: 'Some guy named Joe who sells week on my street corner'
+            description:
+              'Some guy named Joe who sells week on my street corner',
+            isActive: false
           }
         ])
       );
@@ -76,12 +84,14 @@ describe('CustomersService', () => {
     it('adds the item to the collection', () => {
       customers.add({
         name: 'Fred Flintstone',
-        description: 'Head of a modnern stone-age family'
+        description: 'Head of a modnern stone-age family',
+        isActive: true
       });
       expect(collection.add).toHaveBeenCalledTimes(1);
       expect(collection.add).toHaveBeenCalledWith({
         name: 'Fred Flintstone',
-        description: 'Head of a modnern stone-age family'
+        description: 'Head of a modnern stone-age family',
+        isActive: true
       });
     });
   });
