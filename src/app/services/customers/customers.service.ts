@@ -15,8 +15,8 @@ import { map } from 'rxjs/operators';
 export class CustomersService {
   private collection: AngularFirestoreCollection<Customer>;
 
-  constructor(firestore: AngularFirestore) {
-    this.collection = firestore.collection('customers');
+  constructor(private firestore: AngularFirestore) {
+    this.collection = this.firestore.collection('customers');
   }
 
   all(): Observable<Array<CustomerWithId>> {
@@ -33,5 +33,11 @@ export class CustomersService {
 
   add(c: Customer): Promise<DocumentReference> {
     return this.collection.add(c);
+  }
+
+  update(c: CustomerWithId): Promise<void> {
+    const data = { ...c };
+    delete data.id;
+    return this.firestore.doc(`customers/${c.id}`).set(data);
   }
 }

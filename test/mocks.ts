@@ -101,8 +101,16 @@ export function createAngularFirestoreCollectionMock() {
   });
 }
 
+export function createAngularFirestoreDocumentMock() {
+  return jasmine.createSpyObj('AngularFirestoreDocument', {
+    set: Promise.resolve(),
+    update: Promise.resolve()
+  });
+}
+
 export function createAngularFirestoreMock() {
   return jasmine.createSpyObj('AngularFirestore', {
-    collection: createAngularFirestoreCollectionMock()
+    collection: createAngularFirestoreCollectionMock(),
+    doc: createAngularFirestoreDocumentMock()
   });
 }

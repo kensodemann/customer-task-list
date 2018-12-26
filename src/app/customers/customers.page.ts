@@ -38,4 +38,12 @@ export class CustomersPage implements OnDestroy, OnInit {
     });
     m.present();
   }
+
+  async editCustomer(c: CustomerWithId) {
+    const m = await this.modal.create({
+      component: CustomerEditorComponent,
+      componentProps: { customer: c, allCustomers: this.allCustomers }
+    });
+    m.present();
+  }
 }

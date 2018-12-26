@@ -6,8 +6,10 @@ import { CustomersService } from './customers.service';
 import {
   createAction,
   createAngularFirestoreMock,
-  createAngularFirestoreCollectionMock
+  createAngularFirestoreCollectionMock,
+  createAngularFirestoreDocumentMock
 } from '../../../../test/mocks';
+import { firestore } from 'firebase';
 
 describe('CustomersService', () => {
   let angularFirestore;
@@ -91,6 +93,40 @@ describe('CustomersService', () => {
       expect(collection.add).toHaveBeenCalledWith({
         name: 'Fred Flintstone',
         description: 'Head of a modnern stone-age family',
+        isActive: true
+      });
+    });
+  });
+
+  describe('update', () => {
+    let document;
+    beforeEach(() => {
+      document = createAngularFirestoreDocumentMock();
+      angularFirestore.doc.and.returnValue(document);
+    });
+
+    it('gets a reference to the document', () => {
+      customers.update({
+        id: '49950399KT',
+        name: 'Kyle',
+        description: 'some kid in South Park',
+        isActive: true
+      });
+      expect(angularFirestore.doc).toHaveBeenCalledTimes(1);
+      expect(angularFirestore.doc).toHaveBeenCalledWith('customers/49950399KT');
+    });
+
+    it('sets the document data', () => {
+      customers.update({
+        id: '49950399KT',
+        name: 'Kyle',
+        description: 'some kid in South Park',
+        isActive: true
+      });
+      expect(document.set).toHaveBeenCalledTimes(1);
+      expect(document.set).toHaveBeenCalledWith({
+        name: 'Kyle',
+        description: 'some kid in South Park',
         isActive: true
       });
     });
