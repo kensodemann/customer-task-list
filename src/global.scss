@@ -10,10 +10,21 @@
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
 
+@mixin message($variation) {
+  color: var(--ion-color-#{$variation});
+  background-color: rgba(var(--ion-color-#{$variation}-rgb), 0.05);
+  padding: 1em;
+  border-top: 1px solid var(--ion-color-#{$variation});
+  border-bottom: 1px solid var(--ion-color-#{$variation});
+  font-weight: bold;
+}
 
 .error {
-  color: red;
-  font-size: small;
+  @include message('danger');
+}
+
+.warning {
+  @include message('warning');
 }
 
 .title {

@@ -79,8 +79,8 @@ describe('CustomerEditorComponent', () => {
 
     it('allows inactive customers to be created', () => {
       component.name = 'Lazy Leopard';
-      component.description = 'Cats like to sleep, even the bigger ones.',
-      component.isActive = false;
+      (component.description = 'Cats like to sleep, even the bigger ones.'),
+        (component.isActive = false);
       component.save();
       expect(customers.add).toHaveBeenCalledWith({
         name: 'Lazy Leopard',
@@ -92,6 +92,73 @@ describe('CustomerEditorComponent', () => {
     it('dismisses the modal', async () => {
       await component.save();
       expect(modal.dismiss).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('check name', () => {
+    beforeEach(() => {
+      component.allCustomers = [
+        {
+          id: '314PI',
+          name: `Baker's Square`,
+          description: 'Makers of overly sweet pies and otherwise crappy food',
+          isActive: false
+        },
+        {
+          id: '420HI',
+          name: 'Joe',
+          description: 'Some guy named Joe who sells week on my street corner',
+          isActive: true
+        },
+        {
+          id: '320KWS',
+          name: ' Kenmore ',
+          description: 'They used to make stuff for some company called "Sears"',
+          isActive: false
+        }
+      ];
+    });
+
+    it('sets a warning message if a customer by the same name exists', () => {
+      component.name = 'Joe';
+      component.checkName();
+      expect(component.warningMessage).toEqual('a customer with this name already exists')
+    });
+
+    it('does the check case-insensitive', () => {
+      component.name = 'jOe';
+      component.checkName();
+      expect(component.warningMessage).toEqual('a customer with this name already exists')
+    });
+
+    it('ignores starting white-space', () => {
+      component.name = '  Joe';
+      component.checkName();
+      expect(component.warningMessage).toEqual('a customer with this name already exists')
+
+      component.name = 'Kenmore ';
+      component.checkName();
+      expect(component.warningMessage).toEqual('a customer with this name already exists')
+    });
+
+    it('ignores ending white-space', () => {
+      component.name = 'Joe  ';
+      component.checkName();
+      expect(component.warningMessage).toEqual('a customer with this name already exists')
+
+      component.name = ' Kenmore';
+      component.checkName();
+      expect(component.warningMessage).toEqual('a customer with this name already exists')
+    });
+
+    it('clears the error message if no matching customer', () => {
+      component.name = 'Joe';
+      component.checkName();
+      expect(component.warningMessage).toBeTruthy();
+
+      component.name = 'Jill';
+      component.checkName();
+      expect(component.warningMessage).toBeFalsy();
     });
   });
 });

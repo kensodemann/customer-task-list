@@ -27,7 +27,7 @@
         ></ion-input>
       </ion-item>
     </ion-list>
-    <div class="error">{{ errorMessage }}</div>
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
     <ion-img src="assets/icon/task-list.png"></ion-img>
   </form>
 </ion-content>

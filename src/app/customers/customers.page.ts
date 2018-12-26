@@ -32,8 +32,10 @@ export class CustomersPage implements OnDestroy, OnInit {
   }
 
   async addCustomer() {
-    console.log('in the add customer');
-    const m = await this.modal.create({ component: CustomerEditorComponent });
+    const m = await this.modal.create({
+      component: CustomerEditorComponent,
+      componentProps: { allCustomers: this.allCustomers }
+    });
     m.present();
   }
 }

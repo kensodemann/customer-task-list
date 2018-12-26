@@ -20,6 +20,7 @@
           [(ngModel)]="name"
           #nameInput="ngModel"
           required
+          (ionChange)="checkName()"
         ></ion-input>
       </ion-item>
       <ion-item>
@@ -36,7 +37,8 @@
         <ion-checkbox name="isActive" [(ngModel)]="isActive"></ion-checkbox>
       </ion-item>
     </ion-list>
-    <div class="error">{{ errorMessage }}</div>
+    <div class="error" *ngIf="errorMessage">Error: {{ errorMessage }}</div>
+    <div class="warning" *ngIf="warningMessage">Warning: {{ warningMessage }}</div>
   </form>
 </ion-content>
 
