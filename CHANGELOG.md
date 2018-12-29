@@ -1,3 +1,25 @@
+<a name="0.0.2-2"></a>
+## [0.0.2-2](https://bitbucket.org/kensodemann/customer-task-list/compare/v0.0.2-0...v0.0.2-2) (2018-12-29)
+
+
+### Bug Fixes
+
+* **theme:** clean up the color theme a bit ([70f5f0c](https://bitbucket.org/kensodemann/customer-task-list/commits/70f5f0c))
+
+
+### Features
+
+* **customer:** add warning if customer exists ([2196937](https://bitbucket.org/kensodemann/customer-task-list/commits/2196937))
+* **customers:** add a customers service and list ([80506bc](https://bitbucket.org/kensodemann/customer-task-list/commits/80506bc))
+* **customers:** add an isActive flag ([0ffb6e5](https://bitbucket.org/kensodemann/customer-task-list/commits/0ffb6e5))
+* **customers:** add the customer editor ([503ec45](https://bitbucket.org/kensodemann/customer-task-list/commits/503ec45))
+* **customers:** allow modification of existing customers ([8b444e5](https://bitbucket.org/kensodemann/customer-task-list/commits/8b444e5))
+* **customers:** implement adding new customers ([6d6cdd8](https://bitbucket.org/kensodemann/customer-task-list/commits/6d6cdd8))
+* **PWA:** use PWACompat ([601ff20](https://bitbucket.org/kensodemann/customer-task-list/commits/601ff20))
+* **tasks:** add a tasks service ([77f6147](https://bitbucket.org/kensodemann/customer-task-list/commits/77f6147))
+
+
+
 <a name="0.0.2-1"></a>
 ## 0.0.2-1 (2018-12-25)
 
