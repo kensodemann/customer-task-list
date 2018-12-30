@@ -14,8 +14,8 @@ import { map } from 'rxjs/operators';
 export class TasksService {
   private collection: AngularFirestoreCollection<Task>;
 
-  constructor(firestore: AngularFirestore) {
-    this.collection = firestore.collection('tasks');
+  constructor(private firestore: AngularFirestore) {
+    this.collection = this.firestore.collection('tasks');
   }
 
   all(): Observable<Array<TaskWithId>> {
@@ -28,5 +28,9 @@ export class TasksService {
         })
       )
     );
+  }
+
+  delete(task: TaskWithId): Promise<void> {
+    return this.firestore.doc(`tasks/${task.id}`).delete();
   }
 }

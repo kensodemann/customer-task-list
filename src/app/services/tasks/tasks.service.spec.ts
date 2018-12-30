@@ -6,7 +6,8 @@ import { TasksService } from './tasks.service';
 import {
   createAction,
   createAngularFirestoreMock,
-  createAngularFirestoreCollectionMock
+  createAngularFirestoreCollectionMock,
+  createAngularFirestoreDocumentMock
 } from '../../../../test/mocks';
 
 describe('TasksService', () => {
@@ -81,6 +82,45 @@ describe('TasksService', () => {
           }
         ])
       );
+    });
+  });
+
+  describe('delete', () => {
+    let document;
+    beforeEach(() => {
+      document = createAngularFirestoreDocumentMock();
+      angularFirestore.doc.and.returnValue(document);
+    });
+
+    it('gets a reference to the document', () => {
+      tasks.delete({
+        id: '49950399KT',
+        name: 'Scrub Pots',
+        description: 'Make them extra shiny',
+        type: 'Example',
+        status: 'Open',
+        enteredOn: {
+          nanoseconds: 0,
+          seconds: 0
+        }
+      });
+      expect(angularFirestore.doc).toHaveBeenCalledTimes(1);
+      expect(angularFirestore.doc).toHaveBeenCalledWith('tasks/49950399KT');
+    });
+
+    it('deletes the document', () => {
+      tasks.delete({
+        id: '49950399KT',
+        name: 'Scrub Pots',
+        description: 'Make them extra shiny',
+        type: 'Example',
+        status: 'Open',
+        enteredOn: {
+          nanoseconds: 0,
+          seconds: 0
+        }
+      });
+      expect(document.delete).toHaveBeenCalledTimes(1);
     });
   });
 });

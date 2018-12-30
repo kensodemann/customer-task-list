@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
@@ -16,6 +17,7 @@ export class TasksPage implements OnDestroy, OnInit {
   private taskSubscription: Subscription;
 
   constructor(
+    private alert: AlertController,
     public authentication: AuthenticationService,
     private tasks: TasksService
   ) {}
@@ -28,5 +30,17 @@ export class TasksPage implements OnDestroy, OnInit {
 
   ngOnDestroy() {
     this.taskSubscription.unsubscribe();
+  }
+
+  async delete(task: TaskWithId): Promise<void> {
+    const a = await this.alert.create({
+      header: 'Confirm Delete',
+      message: 'Are you sure you want to perminantly remove this task?',
+      buttons: [
+        { text: 'Yes', handler: () => this.tasks.delete(task) },
+        { text: 'No', role: 'cancel' }
+      ]
+    });
+    a.present();
   }
 }

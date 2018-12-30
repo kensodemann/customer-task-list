@@ -104,7 +104,8 @@ export function createAngularFirestoreCollectionMock() {
 export function createAngularFirestoreDocumentMock() {
   return jasmine.createSpyObj('AngularFirestoreDocument', {
     set: Promise.resolve(),
-    update: Promise.resolve()
+    update: Promise.resolve(),
+    delete: Promise.resolve()
   });
 }
 
