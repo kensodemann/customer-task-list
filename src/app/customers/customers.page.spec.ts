@@ -7,12 +7,12 @@ import { CustomersPage } from './customers.page';
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
 
-import { CustomerEditorComponent } from './customer-editor/customer-editor.component';
+import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
 import { createCustomersServiceMock } from '../services/customers/customers.mock';
 import {
   createOverlayControllerMock,
   createOverlayElementMock
-} from '../../../test/mocks';
+} from 'test/mocks';
 
 describe('CustomersPage', () => {
   let customers;

@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { CustomersPage } from './customers.page';
-import { CustomerEditorComponent } from './customer-editor/customer-editor.component';
+import { EditorsModule } from '../editors/editors.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    EditorsModule,
     FormsModule,
     IonicModule,
     RouterModule.forChild([{ path: '', component: CustomersPage }])
   ],
-  declarations: [CustomerEditorComponent, CustomersPage],
-  entryComponents: [CustomerEditorComponent]
+  declarations: [CustomersPage]
 })
 export class CustomersPageModule {}

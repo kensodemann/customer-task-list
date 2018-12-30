@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { CustomerEditorComponent } from './customer-editor/customer-editor.component';
+import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
 

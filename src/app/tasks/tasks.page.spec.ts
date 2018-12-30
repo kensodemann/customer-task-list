@@ -13,7 +13,7 @@ import { createTasksServiceMock } from '../services/tasks/tasks.mock';
 import {
   createOverlayControllerMock,
   createOverlayElementMock
-} from '../../../test/mocks';
+} from 'test/mocks';
 
 describe('TasksPage', () => {
   let alert;

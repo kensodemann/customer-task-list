@@ -8,7 +8,7 @@ import {
   createAngularFirestoreMock,
   createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock
-} from '../../../../test/mocks';
+} from 'test/mocks';
 
 describe('TasksService', () => {
   let angularFirestore;

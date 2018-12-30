@@ -10,7 +10,7 @@ import { createCustomersServiceMock } from '../../services/customers/customers.m
 import {
   createOverlayControllerMock,
   createOverlayElementMock
-} from '../../../../test/mocks';
+} from 'test/mocks';
 
 describe('CustomerEditorComponent', () => {
   let component: CustomerEditorComponent;
