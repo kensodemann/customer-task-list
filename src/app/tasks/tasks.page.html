@@ -14,11 +14,7 @@
     <ion-item-sliding *ngFor="let task of allTasks">
       <ion-item>
         <ion-label>
-          <div class="title">{{ task.name }} - {{ task.status }}</div>
-          <div class="timestamp">
-            {{ task.enteredOn.seconds * 1000 | date }}
-          </div>
-          <div class="description">{{ task.description }}</div>
+          <app-task-list-item [task]="task"></app-task-list-item>
         </ion-label>
       </ion-item>
 

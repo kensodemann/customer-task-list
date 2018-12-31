@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 
 import { TasksPage } from './tasks.page';
 import { AuthenticationService } from '../services/authentication/authentication.service';
+import { SharedModule } from '../shared/shared.module';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
@@ -39,6 +40,7 @@ describe('TasksPage', () => {
     tasks.all.and.returnValue(taskList);
     TestBed.configureTestingModule({
       declarations: [TasksPage],
+      imports: [SharedModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         { provide: AlertController, useValue: alertController },

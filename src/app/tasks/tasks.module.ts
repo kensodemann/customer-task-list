@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { EditorsModule } from '../editors/editors.module';
+import { SharedModule } from '../shared/shared.module';
 import { TasksPage } from './tasks.page';
 
 @NgModule({
@@ -13,7 +14,8 @@ import { TasksPage } from './tasks.page';
     CommonModule,
     EditorsModule,
     FormsModule,
-    RouterModule.forChild([{ path: '', component: TasksPage }])
+    RouterModule.forChild([{ path: '', component: TasksPage }]),
+    SharedModule
   ],
   declarations: [TasksPage]
 })
