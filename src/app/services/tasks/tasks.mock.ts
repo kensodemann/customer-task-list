@@ -1,8 +1,9 @@
-import { empty } from 'rxjs';
+import { EMPTY } from 'rxjs';
 
 export function createTasksServiceMock() {
   return jasmine.createSpyObj('TasksService', {
-    all: empty(),
+    all: EMPTY,
+    add: Promise.resolve(),
     delete: Promise.resolve()
   });
 }

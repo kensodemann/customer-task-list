@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
-  AngularFirestoreCollection
+  AngularFirestoreCollection,
+  DocumentReference
 } from '@angular/fire/firestore';
 
 import { Task, TaskWithId } from '../../models/task';
@@ -28,6 +29,10 @@ export class TasksService {
         })
       )
     );
+  }
+
+  add(task: Task): Promise<DocumentReference> {
+    return this.collection.add(task);
   }
 
   delete(task: TaskWithId): Promise<void> {

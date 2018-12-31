@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
+import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
 
@@ -19,6 +20,7 @@ export class TasksPage implements OnDestroy, OnInit {
   constructor(
     private alert: AlertController,
     public authentication: AuthenticationService,
+    private modal: ModalController,
     private tasks: TasksService
   ) {}
 
@@ -32,6 +34,11 @@ export class TasksPage implements OnDestroy, OnInit {
     this.taskSubscription.unsubscribe();
   }
 
+  async addTask(): Promise<void> {
+    const m = await this.modal.create({ component: TaskEditorComponent });
+    return m.present();
+  }
+
   async delete(task: TaskWithId): Promise<void> {
     const a = await this.alert.create({
       header: 'Confirm Delete',
@@ -41,6 +48,6 @@ export class TasksPage implements OnDestroy, OnInit {
         { text: 'No', role: 'cancel' }
       ]
     });
-    a.present();
+    return a.present();
   }
 }

@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { CustomerEditorComponent } from './customer-editor/customer-editor.component';
+import { TaskEditorComponent } from './task-editor/task-editor.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule],
-  declarations: [CustomerEditorComponent],
-  entryComponents: [CustomerEditorComponent]
+  declarations: [CustomerEditorComponent, TaskEditorComponent],
+  entryComponents: [CustomerEditorComponent, TaskEditorComponent]
 })
 export class EditorsModule {}

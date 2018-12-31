@@ -1,8 +1,8 @@
-import { empty } from 'rxjs';
+import { EMPTY} from 'rxjs';
 
 export function createCustomersServiceMock() {
   return jasmine.createSpyObj('CustomersService', {
-    all: empty(),
+    all: EMPTY,
     add: Promise.resolve(),
     update: Promise.resolve()
   });

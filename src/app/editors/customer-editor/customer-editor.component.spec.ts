@@ -38,34 +38,39 @@ describe('CustomerEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerEditorComponent);
     component = fixture.componentInstance;
-        component.allCustomers = [
-          {
-            id: '314PI',
-            name: `Baker's Square`,
-            description:
-              'Makers of overly sweet pies and otherwise crappy food',
-            isActive: false
-          },
-          {
-            id: '420HI',
-            name: 'Joe',
-            description:
-              'Some guy named Joe who sells week on my street corner',
-            isActive: true
-          },
-          {
-            id: '320KWS',
-            name: ' Kenmore ',
-            description:
-              'They used to make stuff for some company called "Sears"',
-            isActive: false
-          }
-        ];
+    component.allCustomers = [
+      {
+        id: '314PI',
+        name: `Baker's Square`,
+        description: 'Makers of overly sweet pies and otherwise crappy food',
+        isActive: false
+      },
+      {
+        id: '420HI',
+        name: 'Joe',
+        description: 'Some guy named Joe who sells week on my street corner',
+        isActive: true
+      },
+      {
+        id: '320KWS',
+        name: ' Kenmore ',
+        description: 'They used to make stuff for some company called "Sears"',
+        isActive: false
+      }
+    ];
   });
 
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  describe('close', () => {
+    it('dismisses the modal', () => {
+      fixture.detectChanges();
+      component.close();
+      expect(modal.dismiss).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('in add mode', () => {
@@ -79,13 +84,6 @@ describe('CustomerEditorComponent', () => {
 
     it('sets the title', () => {
       expect(component.title).toEqual('Add New Customer');
-    });
-
-    describe('close', () => {
-      it('dismisses the modal', () => {
-        component.close();
-        expect(modal.dismiss).toHaveBeenCalledTimes(1);
-      });
     });
 
     describe('save', () => {
@@ -204,18 +202,13 @@ describe('CustomerEditorComponent', () => {
     });
 
     it('initializes the description', () => {
-      expect(component.description).toEqual('I have no idea what that would be');
+      expect(component.description).toEqual(
+        'I have no idea what that would be'
+      );
     });
 
     it('initializes the active flag', () => {
       expect(component.isActive).toEqual(false);
-    });
-
-    describe('close', () => {
-      it('dismisses the modal', () => {
-        component.close();
-        expect(modal.dismiss).toHaveBeenCalledTimes(1);
-      });
     });
 
     describe('save', () => {

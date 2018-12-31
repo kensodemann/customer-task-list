@@ -1,5 +1,6 @@
 export const taskTypes: Array<string> = [
-  'Example',
+  'Follow-up',
+  'Proof of Concept',
   'Review',
   'Research',
   'Meeting'

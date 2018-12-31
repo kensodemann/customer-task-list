@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button color="medium" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #customerForm="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-label>Customer</ion-label>
+        <ion-select
+          name="customer"
+          [(ngModel)]="customerId"
+          #customerSelect="ngModel"
+          required
+        >
+          <ion-select-option
+            *ngFor="let c of activeCustomers"
+            value="{{c.id}}"
+            >{{ c.name }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          #nameInput="ngModel"
+          required
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea
+          name="description"
+          [(ngModel)]="description"
+          #descriptionInput="ngModel"
+          required
+        ></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label>Status</ion-label>
+        <ion-select
+          name="status"
+          [(ngModel)]="status"
+          #statusSelect="ngModel"
+          required
+        >
+          <ion-select-option *ngFor="let s of statuses">{{
+            s
+          }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select
+          name="taskType"
+          [(ngModel)]="taskType"
+          #taskTypeSelect="ngModel"
+          required
+        >
+          <ion-select-option *ngFor="let t of taskTypes">{{
+            t
+          }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Priority</ion-label>
+        <ion-select
+          name="priority"
+          [(ngModel)]="priority"
+          #prioritySelect="ngModel"
+          required
+        >
+          <ion-select-option *ngFor="let p of priorities">{{
+            p
+          }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Due Date</ion-label>
+        <ion-datetime
+          name="dueDate"
+          display-format="MM/DD/YYYY"
+          [(ngModel)]="dueDate"
+          #dueDatePicker="ngModel"
+        ></ion-datetime>
+      </ion-item>
+    </ion-list>
+    <div class="error" *ngIf="errorMessage">Error: {{ errorMessage }}</div>
+    <div class="warning" *ngIf="warningMessage">
+      Warning: {{ warningMessage }}
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button
+      expand="full"
+      [disabled]="!customerForm.form.valid"
+      (click)="save()"
+      >Save</ion-button
+    >
+  </ion-toolbar>
+</ion-footer>

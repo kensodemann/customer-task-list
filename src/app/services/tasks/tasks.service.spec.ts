@@ -51,14 +51,24 @@ describe('TasksService', () => {
             description: 'First find Deep Thought, then get the answer from it',
             enteredOn: { nanoseconds: 0, seconds: 14324053 },
             type: 'One Time',
-            status: 'Closed'
+            status: 'Closed',
+            priority: 'Normal',
+            customer: {
+              id: '451BK',
+              name: 'Book Burners R Us'
+            }
           }),
           createAction('73SC', {
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
             enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
             type: 'Repeating',
-            status: 'Open'
+            status: 'Open',
+            priority: 'Normal',
+            customer: {
+              id: '451BK',
+              name: 'Book Burners R Us'
+            }
           })
         ])
       );
@@ -70,7 +80,12 @@ describe('TasksService', () => {
             description: 'First find Deep Thought, then get the answer from it',
             enteredOn: { nanoseconds: 0, seconds: 14324053 },
             type: 'One Time',
-            status: 'Closed'
+            status: 'Closed',
+            priority: 'Normal',
+            customer: {
+              id: '451BK',
+              name: 'Book Burners R Us'
+            }
           },
           {
             id: '73SC',
@@ -78,10 +93,45 @@ describe('TasksService', () => {
             description: 'Just like it sounds there captain',
             enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
             type: 'Repeating',
-            status: 'Open'
+            status: 'Open',
+            priority: 'Normal',
+            customer: {
+              id: '451BK',
+              name: 'Book Burners R Us'
+            }
           }
         ])
       );
+    });
+  });
+
+  describe('add', () => {
+    it('adds the item to the collection', () => {
+      tasks.add({
+        name: 'Bang the Big',
+        description: 'Just like it sounds there captain',
+        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+        type: 'Repeating',
+        status: 'Open',
+        priority: 'Normal',
+        customer: {
+          id: '451BK',
+          name: 'Book Burners R Us'
+        }
+      });
+      expect(collection.add).toHaveBeenCalledTimes(1);
+      expect(collection.add).toHaveBeenCalledWith({
+        name: 'Bang the Big',
+        description: 'Just like it sounds there captain',
+        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+        type: 'Repeating',
+        status: 'Open',
+        priority: 'Normal',
+        customer: {
+          id: '451BK',
+          name: 'Book Burners R Us'
+        }
+      });
     });
   });
 
@@ -102,6 +152,11 @@ describe('TasksService', () => {
         enteredOn: {
           nanoseconds: 0,
           seconds: 0
+        },
+        priority: 'Normal',
+        customer: {
+          id: '451BK',
+          name: 'Book Burners R Us'
         }
       });
       expect(angularFirestore.doc).toHaveBeenCalledTimes(1);
@@ -118,6 +173,11 @@ describe('TasksService', () => {
         enteredOn: {
           nanoseconds: 0,
           seconds: 0
+        },
+        priority: 'Normal',
+        customer: {
+          id: '451BK',
+          name: 'Book Burners R Us'
         }
       });
       expect(document.delete).toHaveBeenCalledTimes(1);

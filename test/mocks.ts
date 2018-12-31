@@ -1,4 +1,4 @@
-import { empty, Subject } from 'rxjs';
+import { EMPTY, Subject } from 'rxjs';
 
 export function createActivatedRouteMock() {
   return {
@@ -96,8 +96,8 @@ export function createAction<T>(id: string, data: T) {
 export function createAngularFirestoreCollectionMock() {
   return jasmine.createSpyObj('AngularFirestoreCollection', {
     add: Promise.resolve(),
-    valueChanges: empty(),
-    snapshotChanges: empty()
+    valueChanges: EMPTY,
+    snapshotChanges: EMPTY
   });
 }
 
