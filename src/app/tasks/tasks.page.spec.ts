@@ -67,11 +67,6 @@ describe('TasksPage', () => {
     expect(tasks.all).toHaveBeenCalledTimes(1);
   });
 
-  it('handles changes the task list', () => {
-    taskList.next(testTasks);
-    expect(page.allTasks).toEqual(testTasks);
-  });
-
   describe('open tasks', () => {
     it('returns an empty array before tasks are obtained', () => {
       expect(page.openTasks).toEqual([]);

@@ -11,7 +11,70 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item-sliding *ngFor="let task of allTasks">
+    <ion-list-header>
+      <ion-label>Open Tasks ({{openTasks.length}})</ion-label>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let task of openTasks">
+      <ion-item>
+        <ion-label>
+          <app-task-list-item [task]="task"></app-task-list-item>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options>
+        <ion-item-option color="danger" (click)="delete(task)"
+          ><ion-icon slot="icon-only" name="trash"></ion-icon
+        ></ion-item-option>
+        <ion-item-option (click)="edit(task)"
+          ><ion-icon slot="icon-only" name="create"></ion-icon
+        ></ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-list-header>
+      <ion-label>Repeating Tasks ({{repeatingTasks.length}})</ion-label>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let task of repeatingTasks">
+      <ion-item>
+        <ion-label>
+          <app-task-list-item [task]="task"></app-task-list-item>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options>
+        <ion-item-option color="danger" (click)="delete(task)"
+          ><ion-icon slot="icon-only" name="trash"></ion-icon
+        ></ion-item-option>
+        <ion-item-option (click)="edit(task)"
+          ><ion-icon slot="icon-only" name="create"></ion-icon
+        ></ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-list-header>
+      <ion-label>On Hold ({{onHoldTasks.length}})</ion-label>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let task of onHoldTasks">
+      <ion-item>
+        <ion-label>
+          <app-task-list-item [task]="task"></app-task-list-item>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options>
+        <ion-item-option color="danger" (click)="delete(task)"
+          ><ion-icon slot="icon-only" name="trash"></ion-icon
+        ></ion-item-option>
+        <ion-item-option (click)="edit(task)"
+          ><ion-icon slot="icon-only" name="create"></ion-icon
+        ></ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-list-header>
+      <ion-label>Closed ({{closedTasks.length}})</ion-label>
+    </ion-list-header>
+    <ion-item-sliding *ngFor="let task of closedTasks">
       <ion-item>
         <ion-label>
           <app-task-list-item [task]="task"></app-task-list-item>

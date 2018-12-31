@@ -16,8 +16,7 @@ import { TaskWithId } from '../models/task';
 export class TasksPage implements OnDestroy, OnInit {
   @ViewChild(IonList) list: IonList;
 
-  allTasks: Array<TaskWithId>;
-
+  private allTasks: Array<TaskWithId>;
   private taskSubscription: Subscription;
 
   constructor(
@@ -56,12 +55,6 @@ export class TasksPage implements OnDestroy, OnInit {
     return this.tasksWithStatus(Statuses.OnHold);
   }
 
-  private tasksWithStatus(status: string): Array<TaskWithId> {
-    return (
-      (this.allTasks && this.allTasks.filter(t => t.status === status)) || []
-    );
-  }
-
   async add(): Promise<void> {
     const m = await this.modal.create({ component: TaskEditorComponent });
     return m.present();
@@ -85,5 +78,11 @@ export class TasksPage implements OnDestroy, OnInit {
       ]
     });
     return a.present();
+  }
+
+  private tasksWithStatus(status: string): Array<TaskWithId> {
+    return (
+      (this.allTasks && this.allTasks.filter(t => t.status === status)) || []
+    );
   }
 }
