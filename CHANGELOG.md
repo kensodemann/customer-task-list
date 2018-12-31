@@ -1,3 +1,25 @@
+<a name="0.0.2"></a>
+## [0.0.2](https://bitbucket.org/kensodemann/customer-task-list/compare/v0.0.2-2...v0.0.2) (2018-12-31)
+
+
+### Bug Fixes
+
+* **version:** add a cache buster ([28aae76](https://bitbucket.org/kensodemann/customer-task-list/commits/28aae76))
+
+
+### Features
+
+* **data:** add default data values ([be42a75](https://bitbucket.org/kensodemann/customer-task-list/commits/be42a75))
+* **tasks:** add task deletion ([77a0c85](https://bitbucket.org/kensodemann/customer-task-list/commits/77a0c85))
+* **tasks:** allow tasks to be added ([06dfbdf](https://bitbucket.org/kensodemann/customer-task-list/commits/06dfbdf))
+* **tasks:** allow tasks to be edited ([8310d91](https://bitbucket.org/kensodemann/customer-task-list/commits/8310d91))
+* **tasks:** create a task list item component ([87f90ac](https://bitbucket.org/kensodemann/customer-task-list/commits/87f90ac))
+* **tasks:** display the tasks by status ([c51fc85](https://bitbucket.org/kensodemann/customer-task-list/commits/c51fc85))
+* **tasks:** group by status ([804b5c2](https://bitbucket.org/kensodemann/customer-task-list/commits/804b5c2))
+* **tasks:** use enums for the default data values ([e730153](https://bitbucket.org/kensodemann/customer-task-list/commits/e730153))
+
+
+
 <a name="0.0.2-2"></a>
 ## [0.0.2-2](https://bitbucket.org/kensodemann/customer-task-list/compare/v0.0.2-0...v0.0.2-2) (2018-12-29)
 
