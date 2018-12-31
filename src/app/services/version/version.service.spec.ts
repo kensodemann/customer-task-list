@@ -26,6 +26,15 @@ describe('VersionService', () => {
   });
 
   describe('get', () => {
+    beforeEach(() => {
+      jasmine.clock().install();
+      jasmine.clock().mockDate(new Date('2018-12-30T11:45:56.000-05:00'));
+    });
+
+    afterEach(() => {
+      jasmine.clock().uninstall();
+    });
+
     it('gets the current version data', () => {
       versionService.get().subscribe(v =>
         expect(v).toEqual({
@@ -34,7 +43,7 @@ describe('VersionService', () => {
           date: '2018-12-23'
         })
       );
-      const req = httpTestingController.expectOne('assets/version.json');
+      const req = httpTestingController.expectOne('assets/version.json?_=1546188356000');
       expect(req.request.method).toEqual('GET');
       req.flush({
         version: '0.0.1',
