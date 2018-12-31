@@ -4,7 +4,14 @@ import { Subscription } from 'rxjs';
 import { firestore } from 'firebase/app';
 
 import { CustomersService } from '../../services/customers/customers.service';
-import { priorities, statuses, taskTypes } from '../../default-data';
+import {
+  Priorities,
+  priorities,
+  Statuses,
+  statuses,
+  TaskTypes,
+  taskTypes
+} from '../../default-data';
 import { Task, TaskWithId } from '../../models/task';
 import { TasksService } from '../../services/tasks/tasks.service';
 
@@ -58,9 +65,9 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       this.customerId = this.task.customer.id;
     } else {
       this.title = 'Add New Task';
-      this.priority = this.priorities[1];
-      this.status = this.statuses[0];
-      this.taskType = this.taskTypes[0];
+      this.priority = Priorities.Normal;
+      this.status = Statuses.Open;
+      this.taskType = TaskTypes.FollowUp;
     }
 
     this.customerSubscription = this.customers.all().subscribe(customers => {

@@ -3,10 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
-import { TasksPage } from './tasks.page';
 import { AuthenticationService } from '../services/authentication/authentication.service';
+import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { SharedModule } from '../shared/shared.module';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
+import { TasksPage } from './tasks.page';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
 
@@ -85,9 +86,9 @@ describe('TasksPage', () => {
           description:
             'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
           enteredOn: { nanoseconds: 0, seconds: 9940593 },
-          type: 'Follow-up',
-          status: 'Open',
-          priority: 'High',
+          type: TaskTypes.FollowUp,
+          status: Statuses.Open,
+          priority: Priorities.High,
           customer: {
             id: '314PI',
             name: 'Baker Baker'
@@ -99,9 +100,9 @@ describe('TasksPage', () => {
           description:
             'We all want to go to heaven, but no one wants to die to get there',
           enteredOn: { nanoseconds: 0, seconds: 22114324053 },
-          type: 'Proof of Concept',
-          status: 'Open',
-          priority: 'High',
+          type: TaskTypes.ProofOfConcept,
+          status: Statuses.Open,
+          priority: Priorities.High,
           customer: {
             id: '451BK',
             name: 'Book Burners R Us'
@@ -112,9 +113,9 @@ describe('TasksPage', () => {
           name: 'People === Shit',
           description: 'You know it to be true',
           enteredOn: { nanoseconds: 0, seconds: 39514324053 },
-          type: 'Follow-up',
-          status: 'Open',
-          priority: 'High',
+          type: TaskTypes.FollowUp,
+          status: Statuses.Open,
+          priority: Priorities.High,
           customer: {
             id: '451BK',
             name: 'Book Burners R Us'
@@ -126,9 +127,9 @@ describe('TasksPage', () => {
           description:
             'First find Deep Thought, then get the answer from it, then argue about that shit',
           enteredOn: { nanoseconds: 0, seconds: 1432405339495 },
-          type: 'Research',
-          status: 'Open',
-          priority: 'Low',
+          type: TaskTypes.Research,
+          status: Statuses.Open,
+          priority: Priorities.Low,
           customer: {
             id: '451BK',
             name: 'Book Burners R Us'
@@ -139,9 +140,9 @@ describe('TasksPage', () => {
           name: 'Pull from the dark',
           description: 'Eliminate your enemy',
           enteredOn: { nanoseconds: 0, seconds: 49948859023 },
-          type: 'Proof of Concept',
-          status: 'Open',
-          priority: 'High',
+          type: TaskTypes.ProofOfConcept,
+          status: Statuses.Open,
+          priority: Priorities.High,
           customer: {
             id: '49950',
             name: 'Dolphin Schools'
@@ -152,9 +153,9 @@ describe('TasksPage', () => {
           name: 'Bang the Big',
           description: 'Just like it sounds there captain',
           enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
-          type: 'Repeating',
-          status: 'Open',
-          priority: 'Normal',
+          type: TaskTypes.Meeting,
+          status: Statuses.Open,
+          priority: Priorities.Normal,
           customer: {
             id: '49950',
             name: 'Dolphin Schools'
@@ -177,9 +178,9 @@ describe('TasksPage', () => {
           name: 'Eat some fish',
           description: 'Smartest creatures on Earth like fish',
           enteredOn: { nanoseconds: 0, seconds: 993840059420 },
-          type: 'Meeting',
-          status: 'Repeating',
-          priority: 'High',
+          type: TaskTypes.Meeting,
+          status: Statuses.Repeating,
+          priority: Priorities.High,
           customer: {
             id: '49950',
             name: 'Dolphin Schools'
@@ -190,9 +191,9 @@ describe('TasksPage', () => {
           name: 'The rain is wet',
           description: 'Find out why rain is so damn wet',
           enteredOn: { nanoseconds: 0, seconds: 2995014324053 },
-          type: 'Research',
-          status: 'Repeating',
-          priority: 'High',
+          type: TaskTypes.Research,
+          status: Statuses.Repeating,
+          priority: Priorities.High,
           customer: {
             id: '49950',
             name: 'Dolphin Schools'
@@ -215,9 +216,9 @@ describe('TasksPage', () => {
           name: 'Model It',
           description: 'They need to see it to believe it',
           enteredOn: { nanoseconds: 0, seconds: 994039950234 },
-          type: 'Proof of Concept',
-          status: 'On Hold',
-          priority: 'Low',
+          type: TaskTypes.ProofOfConcept,
+          status: Statuses.OnHold,
+          priority: Priorities.Low,
           customer: {
             id: '451BK',
             name: 'Book Burners R Us'
@@ -228,9 +229,9 @@ describe('TasksPage', () => {
           name: 'Eat some chicken',
           description: 'It is good',
           enteredOn: { nanoseconds: 0, seconds: 2935914324053 },
-          type: 'Review',
-          status: 'On Hold',
-          priority: 'High',
+          type: TaskTypes.Review,
+          status: Statuses.OnHold,
+          priority: Priorities.High,
           customer: {
             id: '314PI',
             name: 'Baker Baker'
@@ -242,9 +243,9 @@ describe('TasksPage', () => {
           description:
             'First find Deep Thought, then get the answer from it, then puzzle over it',
           enteredOn: { nanoseconds: 0, seconds: 1432405339945 },
-          type: 'Review',
-          status: 'On Hold',
-          priority: 'Normal',
+          type: TaskTypes.Review,
+          status: Statuses.OnHold,
+          priority: Priorities.Normal,
           customer: {
             id: '451BK',
             name: 'Book Burners R Us'
@@ -267,9 +268,9 @@ describe('TasksPage', () => {
           name: 'Find the answer',
           description: 'First find Deep Thought, then get the answer from it',
           enteredOn: { nanoseconds: 0, seconds: 14324053 },
-          type: 'Follow-up',
-          status: 'Closed',
-          priority: 'Normal',
+          type: TaskTypes.FollowUp,
+          status: Statuses.Closed,
+          priority: Priorities.Normal,
           customer: {
             id: '451BK',
             name: 'Book Burners R Us'
@@ -280,9 +281,9 @@ describe('TasksPage', () => {
           name: 'Create Test Data',
           description: 'Creating test data sucks',
           enteredOn: { nanoseconds: 0, seconds: 15886594025 },
-          type: 'Research',
-          status: 'Closed',
-          priority: 'Low',
+          type: TaskTypes.Research,
+          status: Statuses.Closed,
+          priority: Priorities.Low,
           customer: {
             id: '451BK',
             name: 'Book Burners R Us'
@@ -293,9 +294,9 @@ describe('TasksPage', () => {
           name: 'One',
           description: 'One one one one one',
           enteredOn: { nanoseconds: 0, seconds: 1324053 },
-          type: 'Follow-up',
-          status: 'Closed',
-          priority: 'Low',
+          type: TaskTypes.FollowUp,
+          status: Statuses.Closed,
+          priority: Priorities.Low,
           customer: {
             id: '314PI',
             name: 'Baker Baker'
@@ -311,9 +312,9 @@ describe('TasksPage', () => {
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
       enteredOn: { nanoseconds: 0, seconds: 14324053 },
-      type: 'One Time',
-      status: 'Closed',
-      priority: 'Normal',
+      type: TaskTypes.FollowUp,
+      status: Statuses.Closed,
+      priority: Priorities.Normal,
       customer: {
         id: '451BK',
         name: 'Book Burners R Us'
@@ -370,9 +371,9 @@ describe('TasksPage', () => {
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
       enteredOn: { nanoseconds: 0, seconds: 14324053 },
-      type: 'One Time',
-      status: 'Closed',
-      priority: 'Normal',
+      type: TaskTypes.FollowUp,
+      status: Statuses.Closed,
+      priority: Priorities.Normal,
       customer: {
         id: '451BK',
         name: 'Book Burners R Us'
@@ -405,9 +406,9 @@ describe('TasksPage', () => {
         name: 'Find the answer',
         description: 'First find Deep Thought, then get the answer from it',
         enteredOn: { nanoseconds: 0, seconds: 14324053 },
-        type: 'Follow-up',
-        status: 'Closed',
-        priority: 'Normal',
+        type: TaskTypes.FollowUp,
+        status: Statuses.Closed,
+        priority: Priorities.Normal,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -418,9 +419,9 @@ describe('TasksPage', () => {
         name: 'Eat some fish',
         description: 'Smartest creatures on Earth like fish',
         enteredOn: { nanoseconds: 0, seconds: 993840059420 },
-        type: 'Meeting',
-        status: 'Repeating',
-        priority: 'High',
+        type: TaskTypes.Meeting,
+        status: Statuses.Repeating,
+        priority: Priorities.High,
         customer: {
           id: '49950',
           name: 'Dolphin Schools'
@@ -431,9 +432,9 @@ describe('TasksPage', () => {
         name: 'Model It',
         description: 'They need to see it to believe it',
         enteredOn: { nanoseconds: 0, seconds: 994039950234 },
-        type: 'Proof of Concept',
-        status: 'On Hold',
-        priority: 'Low',
+        type: TaskTypes.ProofOfConcept,
+        status: Statuses.OnHold,
+        priority: Priorities.Low,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -445,9 +446,9 @@ describe('TasksPage', () => {
         description:
           'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
         enteredOn: { nanoseconds: 0, seconds: 9940593 },
-        type: 'Follow-up',
-        status: 'Open',
-        priority: 'High',
+        type: TaskTypes.FollowUp,
+        status: Statuses.Open,
+        priority: Priorities.High,
         customer: {
           id: '314PI',
           name: 'Baker Baker'
@@ -458,9 +459,9 @@ describe('TasksPage', () => {
         name: 'Create Test Data',
         description: 'Creating test data sucks',
         enteredOn: { nanoseconds: 0, seconds: 15886594025 },
-        type: 'Research',
-        status: 'Closed',
-        priority: 'Low',
+        type: TaskTypes.Research,
+        status: Statuses.Closed,
+        priority: Priorities.Low,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -471,9 +472,9 @@ describe('TasksPage', () => {
         name: 'Eat some chicken',
         description: 'It is good',
         enteredOn: { nanoseconds: 0, seconds: 2935914324053 },
-        type: 'Review',
-        status: 'On Hold',
-        priority: 'High',
+        type: TaskTypes.Review,
+        status: Statuses.OnHold,
+        priority: Priorities.High,
         customer: {
           id: '314PI',
           name: 'Baker Baker'
@@ -485,9 +486,9 @@ describe('TasksPage', () => {
         description:
           'First find Deep Thought, then get the answer from it, then puzzle over it',
         enteredOn: { nanoseconds: 0, seconds: 1432405339945 },
-        type: 'Review',
-        status: 'On Hold',
-        priority: 'Normal',
+        type: TaskTypes.Review,
+        status: Statuses.OnHold,
+        priority: Priorities.Normal,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -499,9 +500,9 @@ describe('TasksPage', () => {
         description:
           'We all want to go to heaven, but no one wants to die to get there',
         enteredOn: { nanoseconds: 0, seconds: 22114324053 },
-        type: 'Proof of Concept',
-        status: 'Open',
-        priority: 'High',
+        type: TaskTypes.ProofOfConcept,
+        status: Statuses.Open,
+        priority: Priorities.High,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -512,9 +513,9 @@ describe('TasksPage', () => {
         name: 'One',
         description: 'One one one one one',
         enteredOn: { nanoseconds: 0, seconds: 1324053 },
-        type: 'Follow-up',
-        status: 'Closed',
-        priority: 'Low',
+        type: TaskTypes.FollowUp,
+        status: Statuses.Closed,
+        priority: Priorities.Low,
         customer: {
           id: '314PI',
           name: 'Baker Baker'
@@ -525,9 +526,9 @@ describe('TasksPage', () => {
         name: 'The rain is wet',
         description: 'Find out why rain is so damn wet',
         enteredOn: { nanoseconds: 0, seconds: 2995014324053 },
-        type: 'Research',
-        status: 'Repeating',
-        priority: 'High',
+        type: TaskTypes.Research,
+        status: Statuses.Repeating,
+        priority: Priorities.High,
         customer: {
           id: '49950',
           name: 'Dolphin Schools'
@@ -538,9 +539,9 @@ describe('TasksPage', () => {
         name: 'People === Shit',
         description: 'You know it to be true',
         enteredOn: { nanoseconds: 0, seconds: 39514324053 },
-        type: 'Follow-up',
-        status: 'Open',
-        priority: 'High',
+        type: TaskTypes.FollowUp,
+        status: Statuses.Open,
+        priority: Priorities.High,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -552,9 +553,9 @@ describe('TasksPage', () => {
         description:
           'First find Deep Thought, then get the answer from it, then argue about that shit',
         enteredOn: { nanoseconds: 0, seconds: 1432405339495 },
-        type: 'Research',
-        status: 'Open',
-        priority: 'Low',
+        type: TaskTypes.Research,
+        status: Statuses.Open,
+        priority: Priorities.Low,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -565,9 +566,9 @@ describe('TasksPage', () => {
         name: 'Pull from the dark',
         description: 'Eliminate your enemy',
         enteredOn: { nanoseconds: 0, seconds: 49948859023 },
-        type: 'Proof of Concept',
-        status: 'Open',
-        priority: 'High',
+        type: TaskTypes.ProofOfConcept,
+        status: Statuses.Open,
+        priority: Priorities.High,
         customer: {
           id: '49950',
           name: 'Dolphin Schools'
@@ -578,9 +579,9 @@ describe('TasksPage', () => {
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
         enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
-        type: 'Repeating',
-        status: 'Open',
-        priority: 'Normal',
+        type: TaskTypes.Meeting,
+        status: Statuses.Open,
+        priority: Priorities.Normal,
         customer: {
           id: '49950',
           name: 'Dolphin Schools'

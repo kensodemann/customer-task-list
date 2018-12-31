@@ -9,6 +9,7 @@ import { CustomerWithId } from '../../models/customer';
 import { CustomersService } from '../../services/customers/customers.service';
 import { TaskEditorComponent } from './task-editor.component';
 import { TasksService } from '../../services/tasks/tasks.service';
+import { Priorities, Statuses, TaskTypes } from '../../default-data';
 
 import {
   createOverlayControllerMock,
@@ -119,15 +120,15 @@ describe('TaskEditorComponent', () => {
     });
 
     it('defaults the status to Open', () => {
-      expect(component.status).toEqual('Open');
+      expect(component.status).toEqual(Statuses.Open);
     });
 
     it('defaults the type to Follow-up', () => {
-      expect(component.taskType).toEqual('Follow-up');
+      expect(component.taskType).toEqual(TaskTypes.FollowUp);
     });
 
     it('defaults the priority to Normal', () => {
-      expect(component.priority).toEqual('Normal');
+      expect(component.priority).toEqual(Priorities.Normal);
     });
 
     it('gets the customers', () => {
@@ -185,9 +186,9 @@ describe('TaskEditorComponent', () => {
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
-          status: 'Open',
-          type: 'Follow-up',
-          priority: 'Normal',
+          status: Statuses.Open,
+          type: TaskTypes.FollowUp,
+          priority: Priorities.Normal,
           customer: {
             id: '1138GL',
             name: 'THX Sound Enterprises'
@@ -205,9 +206,9 @@ describe('TaskEditorComponent', () => {
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
-          status: 'Open',
-          type: 'Follow-up',
-          priority: 'Normal',
+          status: Statuses.Open,
+          type: TaskTypes.FollowUp,
+          priority: Priorities.Normal,
           customer: {
             id: '1138GL',
             name: 'THX Sound Enterprises'
@@ -225,9 +226,9 @@ describe('TaskEditorComponent', () => {
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
-          status: 'Open',
-          type: 'Follow-up',
-          priority: 'Normal',
+          status: Statuses.Open,
+          type: TaskTypes.FollowUp,
+          priority: Priorities.Normal,
           customer: {
             id: '1139GL',
             name: undefined
@@ -251,9 +252,9 @@ describe('TaskEditorComponent', () => {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: 'Repeating',
-        priority: 'Low',
-        type: 'Meeting',
+        status: Statuses.Repeating,
+        priority: Priorities.Low,
+        type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
         customer: {
           id: '1138GL',
@@ -279,15 +280,15 @@ describe('TaskEditorComponent', () => {
     });
 
     it('initializes the status', () => {
-      expect(component.status).toEqual('Repeating');
+      expect(component.status).toEqual(Statuses.Repeating);
     });
 
     it('initializes the task type', () => {
-      expect(component.taskType).toEqual('Meeting');
+      expect(component.taskType).toEqual(TaskTypes.Meeting);
     });
 
     it('initializes the priority', () => {
-      expect(component.priority).toEqual('Low');
+      expect(component.priority).toEqual(Priorities.Low);
     });
 
     it('initializes the due date', () => {
@@ -343,9 +344,9 @@ describe('TaskEditorComponent', () => {
           id: '88395AA930FE',
           name: 'Bi-Weekly Status Meeting',
           description: 'Moving to twice a week',
-          status: 'Repeating',
-          priority: 'Low',
-          type: 'Meeting',
+          status: Statuses.Repeating,
+          priority: Priorities.Low,
+          type: TaskTypes.Meeting,
           dueDate: '2019-01-15',
           customer: {
             id: '1138GL',
@@ -368,9 +369,9 @@ describe('TaskEditorComponent', () => {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: 'Repeating',
-        priority: 'Low',
-        type: 'Meeting',
+        status: Statuses.Repeating,
+        priority: Priorities.Low,
+        type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
         customer: {
           id: '73SC',

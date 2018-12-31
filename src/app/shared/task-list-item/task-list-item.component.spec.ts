@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { Priorities, Statuses, TaskTypes } from '../../default-data';
 import { TaskListItemComponent } from './task-list-item.component';
 
 describe('TaskListItemComponent', () => {
@@ -8,9 +9,8 @@ describe('TaskListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskListItemComponent ]
-    })
-    .compileComponents();
+      declarations: [TaskListItemComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -21,9 +21,9 @@ describe('TaskListItemComponent', () => {
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
       enteredOn: { nanoseconds: 0, seconds: 14324053 },
-      type: 'One Time',
-      status: 'Closed',
-      priority: 'Normal',
+      type: TaskTypes.FollowUp,
+      status: Statuses.Closed,
+      priority: Priorities.Normal,
       customer: {
         id: '451BK',
         name: 'Book Burners R Us'

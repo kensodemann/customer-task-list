@@ -3,6 +3,7 @@ import { AlertController, IonList, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
+import { Statuses } from '../default-data';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
@@ -40,19 +41,19 @@ export class TasksPage implements OnDestroy, OnInit {
   }
 
   get openTasks(): Array<TaskWithId> {
-    return this.tasksWithStatus('Open');
+    return this.tasksWithStatus(Statuses.Open);
   }
 
   get repeatingTasks(): Array<TaskWithId> {
-    return this.tasksWithStatus('Repeating');
+    return this.tasksWithStatus(Statuses.Repeating);
   }
 
   get closedTasks(): Array<TaskWithId> {
-    return this.tasksWithStatus('Closed');
+    return this.tasksWithStatus(Statuses.Closed);
   }
 
   get onHoldTasks(): Array<TaskWithId> {
-    return this.tasksWithStatus('On Hold');
+    return this.tasksWithStatus(Statuses.OnHold);
   }
 
   private tasksWithStatus(status: string): Array<TaskWithId> {

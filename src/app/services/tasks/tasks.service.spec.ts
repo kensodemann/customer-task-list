@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
 import { firestore } from 'firebase/app';
 
+import { Priorities, Statuses, TaskTypes } from '../../default-data';
 import { TasksService } from './tasks.service';
 import {
   createAction,
@@ -51,9 +52,9 @@ describe('TasksService', () => {
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
             enteredOn: { nanoseconds: 0, seconds: 14324053 },
-            type: 'One Time',
-            status: 'Closed',
-            priority: 'Normal',
+            type: TaskTypes.Research,
+            status: Statuses.Closed,
+            priority: Priorities.Normal,
             customer: {
               id: '451BK',
               name: 'Book Burners R Us'
@@ -63,9 +64,9 @@ describe('TasksService', () => {
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
             enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
-            type: 'Repeating',
-            status: 'Open',
-            priority: 'Normal',
+            type: TaskTypes.Meeting,
+            status: Statuses.Open,
+            priority: Priorities.Normal,
             customer: {
               id: '451BK',
               name: 'Book Burners R Us'
@@ -80,9 +81,9 @@ describe('TasksService', () => {
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
             enteredOn: { nanoseconds: 0, seconds: 14324053 },
-            type: 'One Time',
-            status: 'Closed',
-            priority: 'Normal',
+            type: TaskTypes.Research,
+            status: Statuses.Closed,
+            priority: Priorities.Normal,
             customer: {
               id: '451BK',
               name: 'Book Burners R Us'
@@ -93,9 +94,9 @@ describe('TasksService', () => {
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
             enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
-            type: 'Repeating',
-            status: 'Open',
-            priority: 'Normal',
+            type: TaskTypes.Meeting,
+            status: Statuses.Open,
+            priority: Priorities.Normal,
             customer: {
               id: '451BK',
               name: 'Book Burners R Us'
@@ -112,9 +113,9 @@ describe('TasksService', () => {
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
         enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
-        type: 'Repeating',
-        status: 'Open',
-        priority: 'Normal',
+        type: TaskTypes.Meeting,
+        status: Statuses.Open,
+        priority: Priorities.Normal,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -125,9 +126,9 @@ describe('TasksService', () => {
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
         enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
-        type: 'Repeating',
-        status: 'Open',
-        priority: 'Normal',
+        type: TaskTypes.Meeting,
+        status: Statuses.Open,
+        priority: Priorities.Normal,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -148,9 +149,9 @@ describe('TasksService', () => {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: 'Repeating',
-        priority: 'Low',
-        type: 'Meeting',
+        status: Statuses.Repeating,
+        priority: Priorities.Low,
+        type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
         customer: {
           id: '73SC',
@@ -167,9 +168,9 @@ describe('TasksService', () => {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: 'Repeating',
-        priority: 'Low',
-        type: 'Meeting',
+        status: Statuses.Repeating,
+        priority: Priorities.Low,
+        type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
         customer: {
           id: '73SC',
@@ -181,9 +182,9 @@ describe('TasksService', () => {
       expect(document.set).toHaveBeenCalledWith({
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: 'Repeating',
-        priority: 'Low',
-        type: 'Meeting',
+        status: Statuses.Repeating,
+        priority: Priorities.Low,
+        type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
         customer: {
           id: '73SC',
@@ -206,13 +207,13 @@ describe('TasksService', () => {
         id: '49950399KT',
         name: 'Scrub Pots',
         description: 'Make them extra shiny',
-        type: 'Example',
-        status: 'Open',
+        type: TaskTypes.ProofOfConcept,
+        status: Statuses.Open,
         enteredOn: {
           nanoseconds: 0,
           seconds: 0
         },
-        priority: 'Normal',
+        priority: Priorities.Normal,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
@@ -227,13 +228,13 @@ describe('TasksService', () => {
         id: '49950399KT',
         name: 'Scrub Pots',
         description: 'Make them extra shiny',
-        type: 'Example',
-        status: 'Open',
+        type: TaskTypes.ProofOfConcept,
+        status: Statuses.Open,
         enteredOn: {
           nanoseconds: 0,
           seconds: 0
         },
-        priority: 'Normal',
+        priority: Priorities.Normal,
         customer: {
           id: '451BK',
           name: 'Book Burners R Us'
