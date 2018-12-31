@@ -39,6 +39,28 @@ export class TasksPage implements OnDestroy, OnInit {
     this.taskSubscription.unsubscribe();
   }
 
+  get openTasks(): Array<TaskWithId> {
+    return this.tasksWithStatus('Open');
+  }
+
+  get repeatingTasks(): Array<TaskWithId> {
+    return this.tasksWithStatus('Repeating');
+  }
+
+  get closedTasks(): Array<TaskWithId> {
+    return this.tasksWithStatus('Closed');
+  }
+
+  get onHoldTasks(): Array<TaskWithId> {
+    return this.tasksWithStatus('On Hold');
+  }
+
+  private tasksWithStatus(status: string): Array<TaskWithId> {
+    return (
+      (this.allTasks && this.allTasks.filter(t => t.status === status)) || []
+    );
+  }
+
   async add(): Promise<void> {
     const m = await this.modal.create({ component: TaskEditorComponent });
     return m.present();
