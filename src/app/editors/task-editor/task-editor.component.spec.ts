@@ -243,5 +243,171 @@ describe('TaskEditorComponent', () => {
     });
   });
 
-  // describe('in update mode', () => { });
+  describe('in update mode', () => {
+    beforeEach(() => {
+      jasmine.clock().install();
+      jasmine.clock().mockDate(new Date('2019-03-13T12:05:45.000-05:00'));
+      component.task = {
+        id: '88395AA930FE',
+        name: 'Weekly Status Meeting',
+        description: 'Weekly status meeting, usually on Thursdays',
+        status: 'Repeating',
+        priority: 'Low',
+        type: 'Meeting',
+        dueDate: '2019-01-15',
+        customer: {
+          id: '1138GL',
+          name: 'THX Sound Enterprises'
+        },
+        enteredOn: new firestore.Timestamp(1545765815, 0)
+      };
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      jasmine.clock().uninstall();
+    });
+
+    it('initializes the name', () => {
+      expect(component.name).toEqual('Weekly Status Meeting');
+    });
+
+    it('initializes the description', () => {
+      expect(component.description).toEqual(
+        'Weekly status meeting, usually on Thursdays'
+      );
+    });
+
+    it('initializes the status', () => {
+      expect(component.status).toEqual('Repeating');
+    });
+
+    it('initializes the task type', () => {
+      expect(component.taskType).toEqual('Meeting');
+    });
+
+    it('initializes the priority', () => {
+      expect(component.priority).toEqual('Low');
+    });
+
+    it('initializes the due date', () => {
+      expect(component.dueDate).toEqual('2019-01-15');
+    });
+
+    it('initializes the customer ID', () => {
+      expect(component.customerId).toEqual('1138GL');
+    });
+
+    it('gets the customers', () => {
+      expect(customers.all).toHaveBeenCalledTimes(1);
+    });
+
+    it('maps the active customers', () => {
+      expect(component.activeCustomers).toEqual([
+        {
+          id: '420HI',
+          name: 'Joe'
+        },
+        {
+          id: '42DA',
+          name: 'Deep Sea Divers'
+        },
+        {
+          id: '1138GL',
+          name: 'THX Sound Enterprises'
+        },
+        {
+          id: '705AMS',
+          name: 'Ashley Furniture'
+        },
+        {
+          id: '317SP',
+          name: 'Harp Brewery'
+        }
+      ]);
+    });
+
+    describe('save', () => {
+      it('updates the task', () => {
+        component.name = 'Bi-Weekly Status Meeting';
+        component.description = 'Moving to twice a week';
+        component.save();
+        expect(tasks.update).toHaveBeenCalledTimes(1);
+      });
+
+      it('passes the id, name, description, and isActive status', () => {
+        component.name = 'Bi-Weekly Status Meeting';
+        component.description = 'Moving to twice a week';
+        component.save();
+        expect(tasks.update).toHaveBeenCalledWith({
+          id: '88395AA930FE',
+          name: 'Bi-Weekly Status Meeting',
+          description: 'Moving to twice a week',
+          status: 'Repeating',
+          priority: 'Low',
+          type: 'Meeting',
+          dueDate: '2019-01-15',
+          customer: {
+            id: '1138GL',
+            name: 'THX Sound Enterprises'
+          },
+          enteredOn: new firestore.Timestamp(1545765815, 0)
+        });
+      });
+
+      it('dismisses the modal', async () => {
+        await component.save();
+        expect(modal.dismiss).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('in update mode with inactive customer', () => {
+    beforeEach(() => {
+      component.task = {
+        id: '88395AA930FE',
+        name: 'Weekly Status Meeting',
+        description: 'Weekly status meeting, usually on Thursdays',
+        status: 'Repeating',
+        priority: 'Low',
+        type: 'Meeting',
+        dueDate: '2019-01-15',
+        customer: {
+          id: '73SC',
+          name: 'Wheels'
+        },
+        enteredOn: new firestore.Timestamp(1545765815, 0)
+      };
+      fixture.detectChanges();
+    });
+
+    it('maps the active customers and the assigned customer', () => {
+      expect(component.activeCustomers).toEqual([
+        {
+          id: '420HI',
+          name: 'Joe'
+        },
+        {
+          id: '73SC',
+          name: 'Wheels'
+        },
+        {
+          id: '42DA',
+          name: 'Deep Sea Divers'
+        },
+        {
+          id: '1138GL',
+          name: 'THX Sound Enterprises'
+        },
+        {
+          id: '705AMS',
+          name: 'Ashley Furniture'
+        },
+        {
+          id: '317SP',
+          name: 'Harp Brewery'
+        }
+      ]);
+    });
+  });
 });

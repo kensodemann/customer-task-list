@@ -138,20 +138,55 @@ describe('TasksPage', () => {
 
   describe('add task', () => {
     it('creates a modal', () => {
-      page.addTask();
+      page.add();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the task editor component', () => {
       taskList.next(list);
-      page.addTask();
+      page.add();
       expect(modalController.create).toHaveBeenCalledWith({
         component: TaskEditorComponent
       });
     });
 
     it('presents the modal', async () => {
-      await page.addTask();
+      await page.add();
+      expect(modal.present).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('edit task', () => {
+    const task: TaskWithId = {
+      id: '42DA',
+      name: 'Find the answer',
+      description: 'First find Deep Thought, then get the answer from it',
+      enteredOn: { nanoseconds: 0, seconds: 14324053 },
+      type: 'One Time',
+      status: 'Closed',
+      priority: 'Normal',
+      customer: {
+        id: '451BK',
+        name: 'Book Burners R Us'
+      }
+    };
+
+    it('creates a modal', () => {
+      page.edit(task);
+      expect(modalController.create).toHaveBeenCalledTimes(1);
+    });
+
+    it('uses the task editor component and passes the current task', () => {
+      taskList.next(list);
+      page.edit(task);
+      expect(modalController.create).toHaveBeenCalledWith({
+        component: TaskEditorComponent,
+        componentProps: { task: task }
+      });
+    });
+
+    it('presents the modal', async () => {
+      await page.add();
       expect(modal.present).toHaveBeenCalledTimes(1);
     });
   });

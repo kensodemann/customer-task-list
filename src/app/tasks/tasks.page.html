@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="primary">
-      <ion-button color="medium" (click)="addTask()">
+      <ion-button color="medium" (click)="add()">
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -25,6 +25,9 @@
       <ion-item-options>
         <ion-item-option color="danger" (click)="delete(task)"
           ><ion-icon slot="icon-only" name="trash"></ion-icon
+        ></ion-item-option>
+        <ion-item-option (click)="edit(task)"
+          ><ion-icon slot="icon-only" name="create"></ion-icon
         ></ion-item-option>
       </ion-item-options>
     </ion-item-sliding>

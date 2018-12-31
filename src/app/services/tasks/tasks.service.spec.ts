@@ -1,6 +1,7 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
+import { firestore } from 'firebase/app';
 
 import { TasksService } from './tasks.service';
 import {
@@ -131,6 +132,64 @@ describe('TasksService', () => {
           id: '451BK',
           name: 'Book Burners R Us'
         }
+      });
+    });
+  });
+
+  describe('update', () => {
+    let document;
+    beforeEach(() => {
+      document = createAngularFirestoreDocumentMock();
+      angularFirestore.doc.and.returnValue(document);
+    });
+
+    it('gets a reference to the document', () => {
+      tasks.update({
+        id: '88395AA930FE',
+        name: 'Weekly Status Meeting',
+        description: 'Weekly status meeting, usually on Thursdays',
+        status: 'Repeating',
+        priority: 'Low',
+        type: 'Meeting',
+        dueDate: '2019-01-15',
+        customer: {
+          id: '73SC',
+          name: 'Wheels'
+        },
+        enteredOn: new firestore.Timestamp(1545765815, 0)
+      });
+      expect(angularFirestore.doc).toHaveBeenCalledTimes(1);
+      expect(angularFirestore.doc).toHaveBeenCalledWith('tasks/88395AA930FE');
+    });
+
+    it('sets the document data', () => {
+      tasks.update({
+        id: '88395AA930FE',
+        name: 'Weekly Status Meeting',
+        description: 'Weekly status meeting, usually on Thursdays',
+        status: 'Repeating',
+        priority: 'Low',
+        type: 'Meeting',
+        dueDate: '2019-01-15',
+        customer: {
+          id: '73SC',
+          name: 'Wheels'
+        },
+        enteredOn: new firestore.Timestamp(1545765815, 0)
+      });
+      expect(document.set).toHaveBeenCalledTimes(1);
+      expect(document.set).toHaveBeenCalledWith({
+        name: 'Weekly Status Meeting',
+        description: 'Weekly status meeting, usually on Thursdays',
+        status: 'Repeating',
+        priority: 'Low',
+        type: 'Meeting',
+        dueDate: '2019-01-15',
+        customer: {
+          id: '73SC',
+          name: 'Wheels'
+        },
+        enteredOn: new firestore.Timestamp(1545765815, 0)
       });
     });
   });

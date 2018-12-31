@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="primary">
-      <ion-button color="medium" (click)="addCustomer()">
+      <ion-button color="medium" (click)="add()">
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -11,7 +11,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let customer of allCustomers" (click)="editCustomer(customer)">
+    <ion-item *ngFor="let customer of allCustomers" (click)="edit(customer)">
       <ion-label>
         <div class="title">{{ customer.name }}</div>
         <div class="description">{{ customer.description }}</div>

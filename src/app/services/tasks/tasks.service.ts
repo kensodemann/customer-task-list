@@ -35,6 +35,13 @@ export class TasksService {
     return this.collection.add(task);
   }
 
+  update(task: TaskWithId): Promise<void> {
+    const t = { ...task };
+    delete t.id;
+    return this.firestore.doc(`tasks/${task.id}`).set(t);
+
+   }
+
   delete(task: TaskWithId): Promise<void> {
     return this.firestore.doc(`tasks/${task.id}`).delete();
   }

@@ -24,6 +24,8 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   status: string;
   taskType: string;
 
+  task: TaskWithId;
+
   activeCustomers: Array<{ id: string; name: string }>;
   priorities: Array<string>;
   statuses: Array<string>;
@@ -45,14 +47,27 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.statuses = [...statuses];
     this.taskTypes = [...taskTypes];
 
-    this.title = 'Add Task';
-    this.priority = this.priorities[1];
-    this.status = this.statuses[0];
-    this.taskType = this.taskTypes[0];
+    if (this.task) {
+      this.title = 'Modify Task';
+      this.name = this.task.name;
+      this.description = this.task.description;
+      this.status = this.task.status;
+      this.priority = this.task.priority;
+      this.taskType = this.task.type;
+      this.dueDate = this.task.dueDate;
+      this.customerId = this.task.customer.id;
+    } else {
+      this.title = 'Add New Task';
+      this.priority = this.priorities[1];
+      this.status = this.statuses[0];
+      this.taskType = this.taskTypes[0];
+    }
 
     this.customerSubscription = this.customers.all().subscribe(customers => {
       this.activeCustomers = customers
-        .filter(c => c.isActive)
+        .filter(
+          c => c.isActive || (this.task && this.task.customer.id === c.id)
+        )
         .map(c => ({ id: c.id, name: c.name }));
     });
   }
@@ -66,7 +81,11 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   }
 
   async save() {
-    await this.tasks.add(this.taskObject());
+    if (this.task) {
+      await this.tasks.update(this.taskObject() as TaskWithId);
+    } else {
+      await this.tasks.add(this.taskObject());
+    }
     this.modal.dismiss();
   }
 
@@ -78,7 +97,9 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       status: this.status,
       type: this.taskType,
       priority: this.priority,
-      enteredOn: new firestore.Timestamp(this.getSeconds(), 0),
+      enteredOn:
+        (this.task && this.task.enteredOn) ||
+        new firestore.Timestamp(this.getSeconds(), 0),
       customer: {
         id: this.customerId,
         name: customer && customer.name
@@ -87,6 +108,10 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
 
     if (this.dueDate) {
       task.dueDate = this.dueDate;
+    }
+
+    if (this.task) {
+      (task as TaskWithId).id = this.task.id;
     }
 
     return task;

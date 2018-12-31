@@ -4,6 +4,7 @@ export function createTasksServiceMock() {
   return jasmine.createSpyObj('TasksService', {
     all: EMPTY,
     add: Promise.resolve(),
+    update: Promise.resolve(),
     delete: Promise.resolve()
   });
 }

@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AlertController, IonList, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
@@ -13,6 +13,8 @@ import { TaskWithId } from '../models/task';
   styleUrls: ['tasks.page.scss']
 })
 export class TasksPage implements OnDestroy, OnInit {
+  @ViewChild(IonList) list: IonList;
+
   allTasks: Array<TaskWithId>;
 
   private taskSubscription: Subscription;
@@ -25,17 +27,28 @@ export class TasksPage implements OnDestroy, OnInit {
   ) {}
 
   ngOnInit() {
-    this.taskSubscription = this.tasks
-      .all()
-      .subscribe(t => (this.allTasks = t));
+    this.taskSubscription = this.tasks.all().subscribe(t => {
+      if (this.list) {
+        this.list.closeSlidingItems();
+      }
+      this.allTasks = t;
+    });
   }
 
   ngOnDestroy() {
     this.taskSubscription.unsubscribe();
   }
 
-  async addTask(): Promise<void> {
+  async add(): Promise<void> {
     const m = await this.modal.create({ component: TaskEditorComponent });
+    return m.present();
+  }
+
+  async edit(task: TaskWithId): Promise<void> {
+    const m = await this.modal.create({
+      component: TaskEditorComponent,
+      componentProps: { task: task }
+    });
     return m.present();
   }
 

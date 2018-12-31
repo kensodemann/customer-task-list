@@ -74,13 +74,13 @@ describe('CustomersPage', () => {
 
   describe('add customer', () => {
     it('creates a modal', () => {
-      page.addCustomer();
+      page.add();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('sets the list', () => {
       customerList.next(list);
-      page.addCustomer();
+      page.add();
       expect(modalController.create).toHaveBeenCalledWith({
         component: CustomerEditorComponent,
         componentProps: { allCustomers: list }
@@ -88,7 +88,7 @@ describe('CustomersPage', () => {
     });
 
     it('presents the modal', async () => {
-      await page.addCustomer();
+      await page.add();
       expect(modal.present).toHaveBeenCalledTimes(1);
     });
   });
@@ -102,13 +102,13 @@ describe('CustomersPage', () => {
     };
 
     it('creates a modal', () => {
-      page.editCustomer(customer);
+      page.edit(customer);
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('sets the list', () => {
       customerList.next(list);
-      page.editCustomer(customer);
+      page.edit(customer);
       expect(modalController.create).toHaveBeenCalledWith({
         component: CustomerEditorComponent,
         componentProps: { customer: customer, allCustomers: list }
@@ -116,7 +116,7 @@ describe('CustomersPage', () => {
     });
 
     it('presents the modal', async () => {
-      await page.editCustomer(customer);
+      await page.edit(customer);
       expect(modal.present).toHaveBeenCalledTimes(1);
     });
   });

@@ -31,7 +31,7 @@ export class CustomersPage implements OnDestroy, OnInit {
     this.customersSubscription.unsubscribe();
   }
 
-  async addCustomer() {
+  async add() {
     const m = await this.modal.create({
       component: CustomerEditorComponent,
       componentProps: { allCustomers: this.allCustomers }
@@ -39,7 +39,7 @@ export class CustomersPage implements OnDestroy, OnInit {
     m.present();
   }
 
-  async editCustomer(c: CustomerWithId) {
+  async edit(c: CustomerWithId) {
     const m = await this.modal.create({
       component: CustomerEditorComponent,
       componentProps: { customer: c, allCustomers: this.allCustomers }
