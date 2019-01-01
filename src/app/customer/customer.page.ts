@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
+import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
 import { statuses } from '../default-data';
@@ -19,6 +20,7 @@ export class CustomerPage implements OnDestroy, OnInit {
 
   constructor(
     private customers: CustomersService,
+    private modal: ModalController,
     public navController: NavController,
     private route: ActivatedRoute
   ) {}
@@ -26,10 +28,20 @@ export class CustomerPage implements OnDestroy, OnInit {
   ngOnInit() {
     this.statuses = [...statuses];
     const id = this.route.snapshot.paramMap.get('id');
-    this.subscription = this.customers.get(id).subscribe(c => this.customer = c);
+    this.subscription = this.customers
+      .get(id)
+      .subscribe(c => (this.customer = c));
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  async edit() {
+    const m = await this.modal.create({
+      component: CustomerEditorComponent,
+      componentProps: { customer: this.customer }
+    });
+    return await m.present();
   }
 }

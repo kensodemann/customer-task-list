@@ -67,11 +67,11 @@ describe('CustomersPage', () => {
     expect(page).toBeTruthy();
   });
 
-  it('sets up an observable on the tasks', () => {
+  it('sets up an observable on the customers', () => {
     expect(customers.all).toHaveBeenCalledTimes(1);
   });
 
-  it('changes the task list', () => {
+  it('changes the customer list', () => {
     customerList.next(list);
     expect(page.allCustomers).toEqual(list);
   });
@@ -82,12 +82,10 @@ describe('CustomersPage', () => {
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
-    it('sets the list', () => {
-      customerList.next(list);
+    it('uses the correct component', () => {
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
-        component: CustomerEditorComponent,
-        componentProps: { allCustomers: list }
+        component: CustomerEditorComponent
       });
     });
 
@@ -97,35 +95,7 @@ describe('CustomersPage', () => {
     });
   });
 
-  describe('edit customer', () => {
-    const customer: CustomerWithId = {
-      id: '4273',
-      name: 'Dominos',
-      description: 'Pizza apps that rock, the pizza not so much',
-      isActive: true
-    };
-
-    it('creates a modal', () => {
-      page.edit(customer);
-      expect(modalController.create).toHaveBeenCalledTimes(1);
-    });
-
-    it('sets the list', () => {
-      customerList.next(list);
-      page.edit(customer);
-      expect(modalController.create).toHaveBeenCalledWith({
-        component: CustomerEditorComponent,
-        componentProps: { customer: customer, allCustomers: list }
-      });
-    });
-
-    it('presents the modal', async () => {
-      await page.edit(customer);
-      expect(modal.present).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('edit customer', () => {
+  describe('view customer', () => {
     it('navigates to the customer', () => {
       page.view({
         id: '4273',

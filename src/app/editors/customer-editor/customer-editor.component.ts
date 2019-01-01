@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 import { CustomersService } from '../../services/customers/customers.service';
 import { Customer, CustomerWithId } from '../../models/customer';
@@ -9,7 +10,7 @@ import { Customer, CustomerWithId } from '../../models/customer';
   templateUrl: './customer-editor.component.html',
   styleUrls: ['./customer-editor.component.scss']
 })
-export class CustomerEditorComponent implements OnInit {
+export class CustomerEditorComponent implements OnDestroy, OnInit {
   name: string;
   description: string;
   isActive: boolean;
@@ -18,6 +19,7 @@ export class CustomerEditorComponent implements OnInit {
   title: string;
 
   allCustomers: Array<CustomerWithId>;
+  customersSubscription: Subscription;
   customer: CustomerWithId;
 
   constructor(
@@ -26,15 +28,13 @@ export class CustomerEditorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.customer) {
-      this.title = 'Modify Customer';
-      this.name = this.customer.name;
-      this.description = this.customer.description;
-      this.isActive = this.customer.isActive;
-    } else {
-      this.isActive = true;
-      this.title = 'Add New Customer';
-    }
+    this.getCustomers();
+    this.setTitle();
+    this.initializeProperties();
+  }
+
+  ngOnDestroy() {
+    this.customersSubscription.unsubscribe();
   }
 
   close() {
@@ -77,5 +77,25 @@ export class CustomerEditorComponent implements OnInit {
     }
 
     return cus;
+  }
+
+  private getCustomers() {
+    this.customersSubscription = this.customers
+      .all()
+      .subscribe(c => (this.allCustomers = c));
+  }
+
+  private initializeProperties() {
+    if (this.customer) {
+      this.name = this.customer.name;
+      this.description = this.customer.description;
+      this.isActive = this.customer.isActive;
+    } else {
+      this.isActive = true;
+    }
+  }
+
+  private setTitle() {
+    this.title = this.customer ? 'Modify Customer' : 'Add New Customer';
   }
 }

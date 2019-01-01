@@ -2,9 +2,11 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule, ModalController } from '@ionic/angular';
+import { Subject } from 'rxjs';
 
 import { CustomerEditorComponent } from './customer-editor.component';
 import { CustomersService } from '../../services/customers/customers.service';
+import { CustomerWithId } from '../../models/customer';
 
 import { createCustomersServiceMock } from '../../services/customers/customers.mock';
 import {
@@ -15,7 +17,9 @@ import {
 describe('CustomerEditorComponent', () => {
   let component: CustomerEditorComponent;
   let fixture: ComponentFixture<CustomerEditorComponent>;
+  let customerList: Subject<Array<CustomerWithId>>;
   let customers;
+  let list;
   let modal;
 
   beforeEach(async(() => {
@@ -24,6 +28,8 @@ describe('CustomerEditorComponent', () => {
       createOverlayElementMock('Modal')
     );
     customers = createCustomersServiceMock();
+    customerList = new Subject();
+    customers.all.and.returnValue(customerList);
     TestBed.configureTestingModule({
       declarations: [CustomerEditorComponent],
       imports: [FormsModule, IonicModule],
@@ -38,7 +44,7 @@ describe('CustomerEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerEditorComponent);
     component = fixture.componentInstance;
-    component.allCustomers = [
+    list = [
       {
         id: '314PI',
         name: `Baker's Square`,
@@ -65,6 +71,17 @@ describe('CustomerEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('sets up an observable on the customers', () => {
+    fixture.detectChanges();
+    expect(customers.all).toHaveBeenCalledTimes(1);
+  });
+
+  it('changes the customer list', () => {
+    fixture.detectChanges();
+    customerList.next(list);
+    expect(component.allCustomers).toEqual(list);
+  });
+
   describe('close', () => {
     it('dismisses the modal', () => {
       fixture.detectChanges();
@@ -76,6 +93,7 @@ describe('CustomerEditorComponent', () => {
   describe('in add mode', () => {
     beforeEach(() => {
       fixture.detectChanges();
+      customerList.next(list);
     });
 
     it('starts with a true active status', () => {
@@ -191,6 +209,7 @@ describe('CustomerEditorComponent', () => {
         isActive: false
       };
       fixture.detectChanges();
+      customerList.next(list);
     });
 
     it('sets the title', () => {
