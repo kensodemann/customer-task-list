@@ -93,19 +93,22 @@ export function createAction<T>(id: string, data: T) {
   };
 }
 
-export function createAngularFirestoreCollectionMock() {
-  return jasmine.createSpyObj('AngularFirestoreCollection', {
-    add: Promise.resolve(),
+export function createAngularFirestoreDocumentMock() {
+  return jasmine.createSpyObj('AngularFirestoreDocument', {
+    set: Promise.resolve(),
+    update: Promise.resolve(),
+    delete: Promise.resolve(),
     valueChanges: EMPTY,
     snapshotChanges: EMPTY
   });
 }
 
-export function createAngularFirestoreDocumentMock() {
-  return jasmine.createSpyObj('AngularFirestoreDocument', {
-    set: Promise.resolve(),
-    update: Promise.resolve(),
-    delete: Promise.resolve()
+export function createAngularFirestoreCollectionMock() {
+  return jasmine.createSpyObj('AngularFirestoreCollection', {
+    doc: createAngularFirestoreDocumentMock(),
+    add: Promise.resolve(),
+    valueChanges: EMPTY,
+    snapshotChanges: EMPTY
   });
 }
 

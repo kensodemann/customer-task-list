@@ -141,7 +141,7 @@ describe('TasksService', () => {
     let document;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
-      angularFirestore.doc.and.returnValue(document);
+      collection.doc.and.returnValue(document);
     });
 
     it('gets a reference to the document', () => {
@@ -159,8 +159,8 @@ describe('TasksService', () => {
         },
         enteredOn: new firestore.Timestamp(1545765815, 0)
       });
-      expect(angularFirestore.doc).toHaveBeenCalledTimes(1);
-      expect(angularFirestore.doc).toHaveBeenCalledWith('tasks/88395AA930FE');
+      expect(collection.doc).toHaveBeenCalledTimes(1);
+      expect(collection.doc).toHaveBeenCalledWith('88395AA930FE');
     });
 
     it('sets the document data', () => {
@@ -199,7 +199,7 @@ describe('TasksService', () => {
     let document;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
-      angularFirestore.doc.and.returnValue(document);
+      collection.doc.and.returnValue(document);
     });
 
     it('gets a reference to the document', () => {
@@ -219,8 +219,8 @@ describe('TasksService', () => {
           name: 'Book Burners R Us'
         }
       });
-      expect(angularFirestore.doc).toHaveBeenCalledTimes(1);
-      expect(angularFirestore.doc).toHaveBeenCalledWith('tasks/49950399KT');
+      expect(collection.doc).toHaveBeenCalledTimes(1);
+      expect(collection.doc).toHaveBeenCalledWith('49950399KT');
     });
 
     it('deletes the document', () => {

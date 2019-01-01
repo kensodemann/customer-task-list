@@ -15,8 +15,8 @@ import { map } from 'rxjs/operators';
 export class CustomersService {
   private collection: AngularFirestoreCollection<Customer>;
 
-  constructor(private firestore: AngularFirestore) {
-    this.collection = this.firestore.collection('customers');
+  constructor(firestore: AngularFirestore) {
+    this.collection = firestore.collection('customers');
   }
 
   all(): Observable<Array<CustomerWithId>> {
@@ -31,6 +31,17 @@ export class CustomersService {
     );
   }
 
+  get(id: string): Observable<CustomerWithId> {
+    return this.collection
+      .doc<Customer>(id)
+      .valueChanges()
+      .pipe(
+        map(item => {
+          return { id: id, ...item };
+        })
+      );
+  }
+
   add(c: Customer): Promise<DocumentReference> {
     return this.collection.add(c);
   }
@@ -38,6 +49,6 @@ export class CustomersService {
   update(c: CustomerWithId): Promise<void> {
     const data = { ...c };
     delete data.id;
-    return this.firestore.doc(`customers/${c.id}`).set(data);
+    return this.collection.doc(c.id).set(data);
   }
 }

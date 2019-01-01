@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
 import { CustomersPage } from './customers.page';
@@ -10,6 +10,7 @@ import { CustomerWithId } from '../models/customer';
 import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
 import { createCustomersServiceMock } from '../services/customers/customers.mock';
 import {
+  createNavControllerMock,
   createOverlayControllerMock,
   createOverlayElementMock
 } from 'test/mocks';
@@ -20,6 +21,7 @@ describe('CustomersPage', () => {
   let list: Array<CustomerWithId>;
   let modal;
   let modalController;
+  let navController;
   let page: CustomersPage;
   let fixture: ComponentFixture<CustomersPage>;
 
@@ -29,12 +31,14 @@ describe('CustomersPage', () => {
     customers.all.and.returnValue(customerList);
     modal = createOverlayElementMock('Modal');
     modalController = createOverlayControllerMock('ModalController', modal);
+    navController = createNavControllerMock();
     TestBed.configureTestingModule({
       declarations: [CustomersPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         { provide: CustomersService, useValue: customers },
-        { provide: ModalController, useValue: modalController }
+        { provide: ModalController, useValue: modalController },
+        { provide: NavController, useValue: navController }
       ]
     }).compileComponents();
   }));
@@ -118,6 +122,19 @@ describe('CustomersPage', () => {
     it('presents the modal', async () => {
       await page.edit(customer);
       expect(modal.present).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('edit customer', () => {
+    it('navigates to the customer', () => {
+      page.view({
+        id: '4273',
+        name: 'Dominos',
+        description: 'Pizza apps that rock, the pizza not so much',
+        isActive: true
+      });
+      expect(navController.navigateForward).toHaveBeenCalledTimes(1);
+      expect(navController.navigateForward).toHaveBeenCalledWith(['customer', '4273']);
     });
   });
 });

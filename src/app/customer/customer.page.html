@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Customer</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="medium"
+        ><ion-icon slot="icon-only" name="create"></ion-icon
+      ></ion-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <!-- <ion-back-button defaultHref="tabs/customers"></ion-back-button> -->
+      <!-- see https://github.com/ionic-team/ionic/issues/16923 -->
+      <ion-button
+        color="medium"
+        (click)="navController.navigateBack(['tabs', 'customers'])"
+        ><ion-icon slot="icon-only" name="arrow-back"></ion-icon
+      ></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="section">
+    <span class="label">Name:</span> {{ customer?.name }}
+  </div>
+
+  <div class="section">
+    <div class="label">Description:</div>
+    <div>{{ customer?.description }}</div>
+  </div>
+
+  <div class="section">
+    <span class="label">Is Active:</span> {{ customer?.isActive }}
+  </div>
+
+  <div class="section">
+    <div class="label">Tasks:</div>
+    <ul>
+      <li>All</li>
+      <li *ngFor="let status of statuses">{{ status }}</li>
+    </ul>
+  </div>
+</ion-content>

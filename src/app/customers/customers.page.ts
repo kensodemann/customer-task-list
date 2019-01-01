@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
@@ -18,7 +18,8 @@ export class CustomersPage implements OnDestroy, OnInit {
 
   constructor(
     private customers: CustomersService,
-    private modal: ModalController
+    private modal: ModalController,
+    private navController: NavController
   ) {}
 
   ngOnInit() {
@@ -45,5 +46,9 @@ export class CustomersPage implements OnDestroy, OnInit {
       componentProps: { customer: c, allCustomers: this.allCustomers }
     });
     m.present();
+  }
+
+  view(c: CustomerWithId) {
+    this.navController.navigateForward(['customer', c.id]);
   }
 }

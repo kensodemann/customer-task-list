@@ -82,6 +82,41 @@ describe('CustomersService', () => {
     });
   });
 
+  describe('get', () => {
+    let document;
+    beforeEach(() => {
+      document = createAngularFirestoreDocumentMock();
+      collection.doc.and.returnValue(document);
+    });
+
+    it('gets a references to the document', () => {
+      customers.get('199405fkkgi59');
+      expect(collection.doc).toHaveBeenCalledTimes(1);
+      expect(collection.doc).toHaveBeenCalledWith('199405fkkgi59');
+    });
+
+    it('gets the value of the document', () => {
+      customers.get('199405fkkgi59');
+      expect(document.valueChanges).toHaveBeenCalledTimes(1);
+    });
+
+    it('returns the document with the ID', () => {
+      document.valueChanges.and.returnValue(
+        of({
+          name: 'Joe',
+          description: 'Some guy named Joe who sells week on my street corner',
+          isActive: false
+        })
+      );
+      customers.get('199405fkkgi59').subscribe(c => expect(c).toEqual({
+        id: '199405fkkgi59',
+        name: 'Joe',
+        description: 'Some guy named Joe who sells week on my street corner',
+        isActive: false
+      }));
+    });
+  });
+
   describe('add', () => {
     it('adds the item to the collection', () => {
       customers.add({
@@ -102,7 +137,7 @@ describe('CustomersService', () => {
     let document;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
-      angularFirestore.doc.and.returnValue(document);
+      collection.doc.and.returnValue(document);
     });
 
     it('gets a reference to the document', () => {
@@ -112,8 +147,8 @@ describe('CustomersService', () => {
         description: 'some kid in South Park',
         isActive: true
       });
-      expect(angularFirestore.doc).toHaveBeenCalledTimes(1);
-      expect(angularFirestore.doc).toHaveBeenCalledWith('customers/49950399KT');
+      expect(collection.doc).toHaveBeenCalledTimes(1);
+      expect(collection.doc).toHaveBeenCalledWith('49950399KT');
     });
 
     it('sets the document data', () => {
