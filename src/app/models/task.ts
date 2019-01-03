@@ -7,10 +7,8 @@ export interface Task {
   status: string;
   priority: string;
   dueDate?: string;
-  customer: {
-    id: string,
-    name: string
-  };
+  customerId: string;
+  customerName: string;
   enteredOn: Timestamp;
 }
 

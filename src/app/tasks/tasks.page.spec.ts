@@ -84,10 +84,8 @@ describe('TasksPage', () => {
           type: TaskTypes.FollowUp,
           status: Statuses.Open,
           priority: Priorities.High,
-          customer: {
-            id: '314PI',
-            name: 'Baker Baker'
-          }
+          customerId: '314PI',
+          customerName: 'Baker Baker'
         },
         {
           id: '9999',
@@ -98,10 +96,8 @@ describe('TasksPage', () => {
           type: TaskTypes.ProofOfConcept,
           status: Statuses.Open,
           priority: Priorities.High,
-          customer: {
-            id: '451BK',
-            name: 'Book Burners R Us'
-          }
+          customerId: '451BK',
+          customerName: 'Book Burners R Us'
         },
         {
           id: '3948SLIP',
@@ -111,10 +107,8 @@ describe('TasksPage', () => {
           type: TaskTypes.FollowUp,
           status: Statuses.Open,
           priority: Priorities.High,
-          customer: {
-            id: '451BK',
-            name: 'Book Burners R Us'
-          }
+          customerId: '451BK',
+          customerName: 'Book Burners R Us'
         },
         {
           id: '42DA399458',
@@ -125,10 +119,8 @@ describe('TasksPage', () => {
           type: TaskTypes.Research,
           status: Statuses.Open,
           priority: Priorities.Low,
-          customer: {
-            id: '451BK',
-            name: 'Book Burners R Us'
-          }
+          customerId: '451BK',
+          customerName: 'Book Burners R Us'
         },
         {
           id: '19945005996',
@@ -138,10 +130,8 @@ describe('TasksPage', () => {
           type: TaskTypes.ProofOfConcept,
           status: Statuses.Open,
           priority: Priorities.High,
-          customer: {
-            id: '49950',
-            name: 'Dolphin Schools'
-          }
+          customerId: '49950',
+          customerName: 'Dolphin Schools'
         },
         {
           id: '73SC',
@@ -151,10 +141,8 @@ describe('TasksPage', () => {
           type: TaskTypes.Meeting,
           status: Statuses.Open,
           priority: Priorities.Normal,
-          customer: {
-            id: '49950',
-            name: 'Dolphin Schools'
-          }
+          customerId: '49950',
+          customerName: 'Dolphin Schools'
         }
       ]);
     });
@@ -176,10 +164,8 @@ describe('TasksPage', () => {
           type: TaskTypes.Meeting,
           status: Statuses.Repeating,
           priority: Priorities.High,
-          customer: {
-            id: '49950',
-            name: 'Dolphin Schools'
-          }
+          customerId: '49950',
+          customerName: 'Dolphin Schools'
         },
         {
           id: '985SUCK34IT',
@@ -189,10 +175,8 @@ describe('TasksPage', () => {
           type: TaskTypes.Research,
           status: Statuses.Repeating,
           priority: Priorities.High,
-          customer: {
-            id: '49950',
-            name: 'Dolphin Schools'
-          }
+          customerId: '49950',
+          customerName: 'Dolphin Schools'
         }
       ]);
     });
@@ -214,10 +198,8 @@ describe('TasksPage', () => {
           type: TaskTypes.ProofOfConcept,
           status: Statuses.OnHold,
           priority: Priorities.Low,
-          customer: {
-            id: '451BK',
-            name: 'Book Burners R Us'
-          }
+          customerId: '451BK',
+          customerName: 'Book Burners R Us'
         },
         {
           id: '399405',
@@ -227,10 +209,8 @@ describe('TasksPage', () => {
           type: TaskTypes.Review,
           status: Statuses.OnHold,
           priority: Priorities.High,
-          customer: {
-            id: '314PI',
-            name: 'Baker Baker'
-          }
+          customerId: '314PI',
+          customerName: 'Baker Baker'
         },
         {
           id: '42DA424242',
@@ -241,10 +221,8 @@ describe('TasksPage', () => {
           type: TaskTypes.Review,
           status: Statuses.OnHold,
           priority: Priorities.Normal,
-          customer: {
-            id: '451BK',
-            name: 'Book Burners R Us'
-          }
+          customerId: '451BK',
+          customerName: 'Book Burners R Us'
         }
       ]);
     });
@@ -266,10 +244,8 @@ describe('TasksPage', () => {
           type: TaskTypes.FollowUp,
           status: Statuses.Closed,
           priority: Priorities.Normal,
-          customer: {
-            id: '451BK',
-            name: 'Book Burners R Us'
-          }
+          customerId: '451BK',
+          customerName: 'Book Burners R Us'
         },
         {
           id: '119490SDF1945',
@@ -279,10 +255,8 @@ describe('TasksPage', () => {
           type: TaskTypes.Research,
           status: Statuses.Closed,
           priority: Priorities.Low,
-          customer: {
-            id: '451BK',
-            name: 'Book Burners R Us'
-          }
+          customerId: '451BK',
+          customerName: 'Book Burners R Us'
         },
         {
           id: '11111',
@@ -292,10 +266,8 @@ describe('TasksPage', () => {
           type: TaskTypes.FollowUp,
           status: Statuses.Closed,
           priority: Priorities.Low,
-          customer: {
-            id: '314PI',
-            name: 'Baker Baker'
-          }
+          customerId: '314PI',
+          customerName: 'Baker Baker'
         }
       ]);
     });
@@ -310,10 +282,8 @@ describe('TasksPage', () => {
       type: TaskTypes.FollowUp,
       status: Statuses.Closed,
       priority: Priorities.Normal,
-      customer: {
-        id: '451BK',
-        name: 'Book Burners R Us'
-      }
+      customerId: '451BK',
+      customerName: 'Book Burners R Us'
     };
 
     it('creates an alert', () => {
@@ -369,10 +339,8 @@ describe('TasksPage', () => {
       type: TaskTypes.FollowUp,
       status: Statuses.Closed,
       priority: Priorities.Normal,
-      customer: {
-        id: '451BK',
-        name: 'Book Burners R Us'
-      }
+      customerId: '451BK',
+      customerName: 'Book Burners R Us'
     };
 
     it('creates a modal', () => {
@@ -404,10 +372,8 @@ describe('TasksPage', () => {
         type: TaskTypes.FollowUp,
         status: Statuses.Closed,
         priority: Priorities.Normal,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       },
       {
         id: '399485',
@@ -417,10 +383,8 @@ describe('TasksPage', () => {
         type: TaskTypes.Meeting,
         status: Statuses.Repeating,
         priority: Priorities.High,
-        customer: {
-          id: '49950',
-          name: 'Dolphin Schools'
-        }
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
       },
       {
         id: 'S9590FGS',
@@ -430,10 +394,8 @@ describe('TasksPage', () => {
         type: TaskTypes.ProofOfConcept,
         status: Statuses.OnHold,
         priority: Priorities.Low,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       },
       {
         id: '39940500987',
@@ -444,10 +406,8 @@ describe('TasksPage', () => {
         type: TaskTypes.FollowUp,
         status: Statuses.Open,
         priority: Priorities.High,
-        customer: {
-          id: '314PI',
-          name: 'Baker Baker'
-        }
+        customerId: '314PI',
+        customerName: 'Baker Baker'
       },
       {
         id: '119490SDF1945',
@@ -457,10 +417,8 @@ describe('TasksPage', () => {
         type: TaskTypes.Research,
         status: Statuses.Closed,
         priority: Priorities.Low,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       },
       {
         id: '399405',
@@ -470,10 +428,8 @@ describe('TasksPage', () => {
         type: TaskTypes.Review,
         status: Statuses.OnHold,
         priority: Priorities.High,
-        customer: {
-          id: '314PI',
-          name: 'Baker Baker'
-        }
+        customerId: '314PI',
+        customerName: 'Baker Baker'
       },
       {
         id: '42DA424242',
@@ -484,10 +440,8 @@ describe('TasksPage', () => {
         type: TaskTypes.Review,
         status: Statuses.OnHold,
         priority: Priorities.Normal,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       },
       {
         id: '9999',
@@ -498,10 +452,8 @@ describe('TasksPage', () => {
         type: TaskTypes.ProofOfConcept,
         status: Statuses.Open,
         priority: Priorities.High,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       },
       {
         id: '11111',
@@ -511,10 +463,8 @@ describe('TasksPage', () => {
         type: TaskTypes.FollowUp,
         status: Statuses.Closed,
         priority: Priorities.Low,
-        customer: {
-          id: '314PI',
-          name: 'Baker Baker'
-        }
+        customerId: '314PI',
+        customerName: 'Baker Baker'
       },
       {
         id: '985SUCK34IT',
@@ -524,10 +474,8 @@ describe('TasksPage', () => {
         type: TaskTypes.Research,
         status: Statuses.Repeating,
         priority: Priorities.High,
-        customer: {
-          id: '49950',
-          name: 'Dolphin Schools'
-        }
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
       },
       {
         id: '3948SLIP',
@@ -537,10 +485,8 @@ describe('TasksPage', () => {
         type: TaskTypes.FollowUp,
         status: Statuses.Open,
         priority: Priorities.High,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       },
       {
         id: '42DA399458',
@@ -551,10 +497,8 @@ describe('TasksPage', () => {
         type: TaskTypes.Research,
         status: Statuses.Open,
         priority: Priorities.Low,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       },
       {
         id: '19945005996',
@@ -564,10 +508,8 @@ describe('TasksPage', () => {
         type: TaskTypes.ProofOfConcept,
         status: Statuses.Open,
         priority: Priorities.High,
-        customer: {
-          id: '49950',
-          name: 'Dolphin Schools'
-        }
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
       },
       {
         id: '73SC',
@@ -577,10 +519,8 @@ describe('TasksPage', () => {
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.Normal,
-        customer: {
-          id: '49950',
-          name: 'Dolphin Schools'
-        }
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
       }
     ];
   }

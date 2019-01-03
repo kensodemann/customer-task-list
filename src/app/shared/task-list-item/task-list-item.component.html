@@ -1,5 +1,5 @@
 <div>
-  <div class="title">{{ task.name }} - {{ task.customer.name }}</div>
+  <div class="title">{{ task.name }} - {{ task.customerName }}</div>
   <div class="timestamp">
     Opened: {{ task.enteredOn.seconds * 1000 | date
     }}<span *ngIf="task && task.dueDate"> / Due: {{ task.dueDate | date }}</span>

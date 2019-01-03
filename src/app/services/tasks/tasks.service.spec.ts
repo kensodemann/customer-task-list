@@ -55,10 +55,8 @@ describe('TasksService', () => {
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
-            customer: {
-              id: '451BK',
-              name: 'Book Burners R Us'
-            }
+            customerId: '451BK',
+            customerName: 'Book Burners R Us'
           }),
           createAction('73SC', {
             name: 'Bang the Big',
@@ -67,10 +65,8 @@ describe('TasksService', () => {
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
-            customer: {
-              id: '451BK',
-              name: 'Book Burners R Us'
-            }
+            customerId: '451BK',
+            customerName: 'Book Burners R Us'
           })
         ])
       );
@@ -84,10 +80,8 @@ describe('TasksService', () => {
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
-            customer: {
-              id: '451BK',
-              name: 'Book Burners R Us'
-            }
+            customerId: '451BK',
+            customerName: 'Book Burners R Us'
           },
           {
             id: '73SC',
@@ -97,10 +91,8 @@ describe('TasksService', () => {
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
-            customer: {
-              id: '451BK',
-              name: 'Book Burners R Us'
-            }
+            customerId: '451BK',
+            customerName: 'Book Burners R Us'
           }
         ])
       );
@@ -116,10 +108,8 @@ describe('TasksService', () => {
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.Normal,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       });
       expect(collection.add).toHaveBeenCalledTimes(1);
       expect(collection.add).toHaveBeenCalledWith({
@@ -129,10 +119,8 @@ describe('TasksService', () => {
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.Normal,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       });
     });
   });
@@ -153,10 +141,8 @@ describe('TasksService', () => {
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
-        customer: {
-          id: '73SC',
-          name: 'Wheels'
-        },
+        customerId: '73SC',
+        customerName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
@@ -172,10 +158,8 @@ describe('TasksService', () => {
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
-        customer: {
-          id: '73SC',
-          name: 'Wheels'
-        },
+        customerId: '73SC',
+        customerName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       });
       expect(document.set).toHaveBeenCalledTimes(1);
@@ -186,10 +170,8 @@ describe('TasksService', () => {
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
-        customer: {
-          id: '73SC',
-          name: 'Wheels'
-        },
+        customerId: '73SC',
+        customerName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       });
     });
@@ -214,10 +196,8 @@ describe('TasksService', () => {
           seconds: 0
         },
         priority: Priorities.Normal,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('49950399KT');
@@ -235,10 +215,8 @@ describe('TasksService', () => {
           seconds: 0
         },
         priority: Priorities.Normal,
-        customer: {
-          id: '451BK',
-          name: 'Book Burners R Us'
-        }
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       });
       expect(document.delete).toHaveBeenCalledTimes(1);
     });

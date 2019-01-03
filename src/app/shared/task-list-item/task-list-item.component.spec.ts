@@ -24,10 +24,8 @@ describe('TaskListItemComponent', () => {
       type: TaskTypes.FollowUp,
       status: Statuses.Closed,
       priority: Priorities.Normal,
-      customer: {
-        id: '451BK',
-        name: 'Book Burners R Us'
-      }
+      customerId: '451BK',
+      customerName: 'Book Burners R Us'
     };
     fixture.detectChanges();
   });

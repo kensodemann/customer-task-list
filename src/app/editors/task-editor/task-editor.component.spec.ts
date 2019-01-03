@@ -189,10 +189,8 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           type: TaskTypes.FollowUp,
           priority: Priorities.Normal,
-          customer: {
-            id: '1138GL',
-            name: 'THX Sound Enterprises'
-          },
+          customerId: '1138GL',
+          customerName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0)
         });
       });
@@ -209,10 +207,8 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           type: TaskTypes.FollowUp,
           priority: Priorities.Normal,
-          customer: {
-            id: '1138GL',
-            name: 'THX Sound Enterprises'
-          },
+          customerId: '1138GL',
+          customerName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0),
           dueDate: '2019-01-03'
         });
@@ -229,10 +225,8 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           type: TaskTypes.FollowUp,
           priority: Priorities.Normal,
-          customer: {
-            id: '1139GL',
-            name: undefined
-          },
+          customerId: '1139GL',
+          customerName: undefined,
           enteredOn: new firestore.Timestamp(1545765815, 0)
         });
       });
@@ -256,10 +250,8 @@ describe('TaskEditorComponent', () => {
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
-        customer: {
-          id: '1138GL',
-          name: 'THX Sound Enterprises'
-        },
+        customerId: '1138GL',
+        customerName: 'THX Sound Enterprises',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       };
       fixture.detectChanges();
@@ -348,10 +340,8 @@ describe('TaskEditorComponent', () => {
           priority: Priorities.Low,
           type: TaskTypes.Meeting,
           dueDate: '2019-01-15',
-          customer: {
-            id: '1138GL',
-            name: 'THX Sound Enterprises'
-          },
+          customerId: '1138GL',
+          customerName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0)
         });
       });
@@ -373,10 +363,8 @@ describe('TaskEditorComponent', () => {
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
         dueDate: '2019-01-15',
-        customer: {
-          id: '73SC',
-          name: 'Wheels'
-        },
+        customerId: '73SC',
+        customerName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       };
       fixture.detectChanges();

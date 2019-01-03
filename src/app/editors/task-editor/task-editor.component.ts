@@ -62,7 +62,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       this.priority = this.task.priority;
       this.taskType = this.task.type;
       this.dueDate = this.task.dueDate;
-      this.customerId = this.task.customer.id;
+      this.customerId = this.task.customerId;
     } else {
       this.title = 'Add New Task';
       this.priority = Priorities.Normal;
@@ -73,7 +73,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.customerSubscription = this.customers.all().subscribe(customers => {
       this.activeCustomers = customers
         .filter(
-          c => c.isActive || (this.task && this.task.customer.id === c.id)
+          c => c.isActive || (this.task && this.task.customerId === c.id)
         )
         .map(c => ({ id: c.id, name: c.name }));
     });
@@ -107,10 +107,8 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       enteredOn:
         (this.task && this.task.enteredOn) ||
         new firestore.Timestamp(this.getSeconds(), 0),
-      customer: {
-        id: this.customerId,
-        name: customer && customer.name
-      }
+      customerId: this.customerId,
+      customerName: customer && customer.name
     };
 
     if (this.dueDate) {
