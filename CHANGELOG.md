@@ -1,3 +1,15 @@
+<a name="0.0.3-0"></a>
+## [0.0.3-0](https://bitbucket.org/kensodemann/customer-task-list/compare/v0.0.2...v0.0.3-0) (2019-01-03)
+
+
+### Features
+
+* **customers:** add the customer details page ([74886b8](https://bitbucket.org/kensodemann/customer-task-list/commits/74886b8))
+* **customers:** move the edit ([0c865b8](https://bitbucket.org/kensodemann/customer-task-list/commits/0c865b8))
+* **tasks:** flatten the data strcture ([8c86ebc](https://bitbucket.org/kensodemann/customer-task-list/commits/8c86ebc))
+
+
+
 <a name="0.0.2"></a>
 ## [0.0.2](https://bitbucket.org/kensodemann/customer-task-list/compare/v0.0.2-2...v0.0.2) (2018-12-31)
 
