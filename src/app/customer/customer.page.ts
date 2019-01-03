@@ -7,6 +7,8 @@ import { CustomerEditorComponent } from '../editors/customer-editor/customer-edi
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
 import { statuses } from '../default-data';
+import { TasksService } from '../services/tasks/tasks.service';
+import { TaskWithId } from '../models/task';
 
 @Component({
   selector: 'app-customer',
@@ -14,7 +16,9 @@ import { statuses } from '../default-data';
   styleUrls: ['./customer.page.scss']
 })
 export class CustomerPage implements OnDestroy, OnInit {
-  private subscription: Subscription;
+  private subscriptions: Array<Subscription> = [];
+  private customerTasks: Array<TaskWithId>;
+
   customer: CustomerWithId;
   statuses: Array<string>;
 
@@ -22,19 +26,23 @@ export class CustomerPage implements OnDestroy, OnInit {
     private customers: CustomersService,
     private modal: ModalController,
     public navController: NavController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private tasks: TasksService
   ) {}
 
   ngOnInit() {
     this.statuses = [...statuses];
     const id = this.route.snapshot.paramMap.get('id');
-    this.subscription = this.customers
-      .get(id)
-      .subscribe(c => (this.customer = c));
+    this.subscriptions.push(
+      this.tasks.forCustomer(id).subscribe(t => (this.customerTasks = t))
+    );
+    this.subscriptions.push(
+      this.customers.get(id).subscribe(c => (this.customer = c))
+    );
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   async edit() {
@@ -43,5 +51,11 @@ export class CustomerPage implements OnDestroy, OnInit {
       componentProps: { customer: this.customer }
     });
     return await m.present();
+  }
+
+  taskCount(status?: string): number {
+    return this.customerTasks
+      ? this.customerTasks.filter(t => !status || t.status === status).length
+      : 0;
   }
 }

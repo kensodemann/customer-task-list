@@ -99,6 +99,75 @@ describe('TasksService', () => {
     });
   });
 
+  describe('for customer', () => {
+    beforeEach(() => {
+      angularFirestore.collection.calls.reset();
+    });
+
+    it('grabs a references to the tasks collection', () => {
+      tasks.forCustomer('451BK');
+      expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
+    });
+
+    it('looks for snapshot changes', () => {
+      tasks.forCustomer('451BK');
+      expect(collection.snapshotChanges).toHaveBeenCalledTimes(1);
+    });
+
+    it('maps the changes', () => {
+      collection.snapshotChanges.and.returnValue(
+        of([
+          createAction('42DA', {
+            name: 'Find the answer',
+            description: 'First find Deep Thought, then get the answer from it',
+            enteredOn: { nanoseconds: 0, seconds: 14324053 },
+            type: TaskTypes.Research,
+            status: Statuses.Closed,
+            priority: Priorities.Normal,
+            customerId: '451BK',
+            customerName: 'Book Burners R Us'
+          }),
+          createAction('73SC', {
+            name: 'Bang the Big',
+            description: 'Just like it sounds there captain',
+            enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+            type: TaskTypes.Meeting,
+            status: Statuses.Open,
+            priority: Priorities.Normal,
+            customerId: '451BK',
+            customerName: 'Book Burners R Us'
+          })
+        ])
+      );
+      tasks.forCustomer('451BK').subscribe(d =>
+        expect(d).toEqual([
+          {
+            id: '42DA',
+            name: 'Find the answer',
+            description: 'First find Deep Thought, then get the answer from it',
+            enteredOn: { nanoseconds: 0, seconds: 14324053 },
+            type: TaskTypes.Research,
+            status: Statuses.Closed,
+            priority: Priorities.Normal,
+            customerId: '451BK',
+            customerName: 'Book Burners R Us'
+          },
+          {
+            id: '73SC',
+            name: 'Bang the Big',
+            description: 'Just like it sounds there captain',
+            enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+            type: TaskTypes.Meeting,
+            status: Statuses.Open,
+            priority: Priorities.Normal,
+            customerId: '451BK',
+            customerName: 'Book Burners R Us'
+          }
+        ])
+      );
+    });
+  });
+
   describe('add', () => {
     it('adds the item to the collection', () => {
       tasks.add({

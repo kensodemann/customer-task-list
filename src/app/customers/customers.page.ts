@@ -39,14 +39,6 @@ export class CustomersPage implements OnDestroy, OnInit {
     m.present();
   }
 
-  async edit(c: CustomerWithId) {
-    const m = await this.modal.create({
-      component: CustomerEditorComponent,
-      componentProps: { customer: c }
-    });
-    m.present();
-  }
-
   view(c: CustomerWithId) {
     this.navController.navigateForward(['customer', c.id]);
   }
