@@ -9,11 +9,7 @@
     <ion-buttons slot="start">
       <!-- <ion-back-button defaultHref="tabs/customers"></ion-back-button> -->
       <!-- see https://github.com/ionic-team/ionic/issues/16923 -->
-      <ion-button
-        color="medium"
-        (click)="navController.navigateBack(['tabs', 'customers'])"
-        ><ion-icon slot="icon-only" name="arrow-back"></ion-icon
-      ></ion-button>
+      <ion-back-button defaultHref="tabs/customers" (click)="navController.goBack()"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
