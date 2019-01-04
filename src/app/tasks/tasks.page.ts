@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonList, ModalController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
@@ -16,44 +17,41 @@ import { TaskWithId } from '../models/task';
 export class TasksPage implements OnDestroy, OnInit {
   @ViewChild(IonList) list: IonList;
 
-  private allTasks: Array<TaskWithId>;
+  private customerId;
+  private status;
   private taskSubscription: Subscription;
+
+  openTasks: Array<TaskWithId>;
+  repeatingTasks: Array<TaskWithId>;
+  closedTasks: Array<TaskWithId>;
+  onHoldTasks: Array<TaskWithId>;
 
   constructor(
     private alert: AlertController,
     public authentication: AuthenticationService,
     private modal: ModalController,
+    private route: ActivatedRoute,
     private tasks: TasksService
   ) {}
 
   ngOnInit() {
-    this.taskSubscription = this.tasks.all().subscribe(t => {
-      if (this.list) {
-        this.list.closeSlidingItems();
-      }
-      this.allTasks = t;
-    });
+    this.customerId = this.route.snapshot.paramMap.get('customerId');
+    this.status = this.route.snapshot.paramMap.get('status');
+    if (this.customerId) {
+      this.taskSubscription = this.tasks
+        .forCustomer(this.customerId)
+        .subscribe(t => this.unpackTasks(t));
+    } else {
+      this.taskSubscription = this.tasks
+        .all()
+        .subscribe(t => this.unpackTasks(t));
+    }
   }
 
   ngOnDestroy() {
     this.taskSubscription.unsubscribe();
   }
 
-  get openTasks(): Array<TaskWithId> {
-    return this.tasksWithStatus(Statuses.Open);
-  }
-
-  get repeatingTasks(): Array<TaskWithId> {
-    return this.tasksWithStatus(Statuses.Repeating);
-  }
-
-  get closedTasks(): Array<TaskWithId> {
-    return this.tasksWithStatus(Statuses.Closed);
-  }
-
-  get onHoldTasks(): Array<TaskWithId> {
-    return this.tasksWithStatus(Statuses.OnHold);
-  }
 
   async add(): Promise<void> {
     const m = await this.modal.create({ component: TaskEditorComponent });
@@ -80,9 +78,23 @@ export class TasksPage implements OnDestroy, OnInit {
     return a.present();
   }
 
-  private tasksWithStatus(status: string): Array<TaskWithId> {
+  private unpackTasks(t: Array<TaskWithId>) {
+    if (this.list) {
+      this.list.closeSlidingItems();
+    }
+    this.openTasks = this.tasksWithStatus(t, Statuses.Open);
+    this.repeatingTasks = this.tasksWithStatus(t, Statuses.Repeating);
+    this.onHoldTasks = this.tasksWithStatus(t, Statuses.OnHold);
+    this.closedTasks = this.tasksWithStatus(t, Statuses.Closed);
+  }
+
+  private tasksWithStatus(allTasks: Array<TaskWithId>, status: string): Array<TaskWithId> {
+    if (this.status && status !== this.status) {
+      return [];
+    }
+
     return (
-      (this.allTasks && this.allTasks.filter(t => t.status === status)) || []
+      (allTasks && allTasks.filter(t => t.status === status)) || []
     );
   }
 }

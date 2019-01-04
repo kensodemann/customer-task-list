@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-buttons slot="primary">
       <ion-button color="medium" (click)="add()">
         <ion-icon slot="icon-only" name="add"></ion-icon>
@@ -11,8 +14,8 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-list-header>
-      <ion-label>Open Tasks ({{openTasks.length}})</ion-label>
+    <ion-list-header *ngIf="openTasks && openTasks.length">
+      <ion-label>Open Tasks ({{ openTasks.length }})</ion-label>
     </ion-list-header>
     <ion-item-sliding *ngFor="let task of openTasks">
       <ion-item>
@@ -31,8 +34,8 @@
       </ion-item-options>
     </ion-item-sliding>
 
-    <ion-list-header>
-      <ion-label>Repeating Tasks ({{repeatingTasks.length}})</ion-label>
+    <ion-list-header *ngIf="repeatingTasks && repeatingTasks.length">
+      <ion-label>Repeating Tasks ({{ repeatingTasks.length }})</ion-label>
     </ion-list-header>
     <ion-item-sliding *ngFor="let task of repeatingTasks">
       <ion-item>
@@ -51,8 +54,8 @@
       </ion-item-options>
     </ion-item-sliding>
 
-    <ion-list-header>
-      <ion-label>On Hold ({{onHoldTasks.length}})</ion-label>
+    <ion-list-header *ngIf="onHoldTasks && onHoldTasks.length">
+      <ion-label>On Hold ({{ onHoldTasks.length }})</ion-label>
     </ion-list-header>
     <ion-item-sliding *ngFor="let task of onHoldTasks">
       <ion-item>
@@ -71,8 +74,8 @@
       </ion-item-options>
     </ion-item-sliding>
 
-    <ion-list-header>
-      <ion-label>Closed ({{closedTasks.length}})</ion-label>
+    <ion-list-header *ngIf="closedTasks && closedTasks.length">
+      <ion-label>Closed ({{ closedTasks.length }})</ion-label>
     </ion-list-header>
     <ion-item-sliding *ngFor="let task of closedTasks">
       <ion-item>
