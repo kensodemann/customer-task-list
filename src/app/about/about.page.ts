@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
-import { VersionService } from '../services/version/version.service';
+import { version } from '../default-data';
 import { Version } from '../models/version';
 
 @Component({
@@ -9,15 +9,10 @@ import { Version } from '../models/version';
   templateUrl: 'about.page.html',
   styleUrls: ['about.page.scss']
 })
-export class AboutPage implements OnInit {
-  appVersion: Version;
+export class AboutPage {
+  appVersion: Version = version;
 
   constructor(
-    public authentication: AuthenticationService,
-    private version: VersionService
+    public authentication: AuthenticationService
   ) {}
-
-  ngOnInit() {
-    this.version.get().subscribe(v => (this.appVersion = v));
-  }
 }
