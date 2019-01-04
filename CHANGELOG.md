@@ -1,3 +1,18 @@
+<a name="0.0.3-2"></a>
+## [0.0.3-2](https://bitbucket.org/kensodemann/customer-task-list/compare/v0.0.3-1...v0.0.3-2) (2019-01-04)
+
+
+### Bug Fixes
+
+* **editors:** make the text areas bigger ([183b52b](https://bitbucket.org/kensodemann/customer-task-list/commits/183b52b))
+
+
+### Features
+
+* **customers:** drill down from customers to tasks ([3e8173c](https://bitbucket.org/kensodemann/customer-task-list/commits/3e8173c))
+
+
+
 <a name="0.0.3-1"></a>
 ## [0.0.3-1](https://bitbucket.org/kensodemann/customer-task-list/compare/v0.0.2-2...v0.0.3-1) (2019-01-04)
 
