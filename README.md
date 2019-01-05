@@ -1,6 +1,8 @@
 # Customer Task List
 
-Something for me (or other people who find it, if any) to use to store task list information.
+[![Build Status][travis-badge]][travis-badge-url]
+
+Something for me to use to store task list information. This is also being used as an experiment with Firebase hosting, the Firestore database, and PWA development using Angular and Ionic.
 
 ## Developing
 
@@ -10,7 +12,8 @@ Something for me (or other people who find it, if any) to use to store task list
 
 ## Deploying
 
-This will probably be replaced with a full release process at some point, but it is a little early for that right now.
+* make sure everything is committed and that the loca `master` is in sync with the origin `master`
+* `npm run release`
 
-* `npm run build`
-* `firestore deploy`
+[travis-badge]: https://travis-ci.org/kensodemann/customer-task-list.svg?branch=master
+[travis-badge-url]: https://travis-ci.org/kensodemann/customer-task-list
