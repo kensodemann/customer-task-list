@@ -119,6 +119,10 @@ describe('TaskEditorComponent', () => {
       fixture.detectChanges();
     });
 
+    it('sets the title to "Add New Task"', () => {
+      expect(component.title).toEqual('Add New Task');
+    });
+
     it('defaults the status to Open', () => {
       expect(component.status).toEqual(Statuses.Open);
     });
@@ -259,6 +263,10 @@ describe('TaskEditorComponent', () => {
 
     afterEach(() => {
       jasmine.clock().uninstall();
+    });
+
+    it('sets the title to "Modify Task"', () => {
+      expect(component.title).toEqual('Modify Task');
     });
 
     it('initializes the name', () => {

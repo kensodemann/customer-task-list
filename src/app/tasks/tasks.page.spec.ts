@@ -268,23 +268,35 @@ describe('TasksPage', () => {
   });
 
   describe('add task', () => {
-    beforeEach(() => {
-      fixture.detectChanges();
-    });
-
     it('creates a modal', () => {
+      fixture.detectChanges();
       page.add();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the task editor component', () => {
+      fixture.detectChanges();
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
         component: TaskEditorComponent
       });
     });
 
+    it('passes the customer ID if one is specified in the route', () => {
+      route.snapshot.paramMap.get
+        .withArgs('customerId')
+        .and.returnValue('33859940039kkd032');
+      route.snapshot.paramMap.get.withArgs('status').and.returnValue(undefined);
+      fixture.detectChanges();
+      page.add();
+      expect(modalController.create).toHaveBeenCalledWith({
+        component: TaskEditorComponent,
+        componentProps: { customerId: '33859940039kkd032' }
+      });
+    });
+
     it('presents the modal', async () => {
+      fixture.detectChanges();
       await page.add();
       expect(modal.present).toHaveBeenCalledTimes(1);
     });

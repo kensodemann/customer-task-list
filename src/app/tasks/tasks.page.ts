@@ -52,9 +52,13 @@ export class TasksPage implements OnDestroy, OnInit {
     this.taskSubscription.unsubscribe();
   }
 
-
   async add(): Promise<void> {
-    const m = await this.modal.create({ component: TaskEditorComponent });
+    const m = this.customerId
+      ? await this.modal.create({
+          component: TaskEditorComponent,
+          componentProps: { customerId: this.customerId }
+        })
+      : await this.modal.create({ component: TaskEditorComponent });
     return m.present();
   }
 
@@ -88,13 +92,14 @@ export class TasksPage implements OnDestroy, OnInit {
     this.closedTasks = this.tasksWithStatus(t, Statuses.Closed);
   }
 
-  private tasksWithStatus(allTasks: Array<TaskWithId>, status: string): Array<TaskWithId> {
+  private tasksWithStatus(
+    allTasks: Array<TaskWithId>,
+    status: string
+  ): Array<TaskWithId> {
     if (this.status && status !== this.status) {
       return [];
     }
 
-    return (
-      (allTasks && allTasks.filter(t => t.status === status)) || []
-    );
+    return (allTasks && allTasks.filter(t => t.status === status)) || [];
   }
 }
