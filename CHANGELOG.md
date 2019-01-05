@@ -1,3 +1,19 @@
+<a name="0.0.3-3"></a>
+## [0.0.3-3](https://github.com/kensodemann/customer-task-list/compare/v0.0.3-2...v0.0.3-3) (2019-01-05)
+
+
+### Bug Fixes
+
+* **about:** move the version information into a TypeScript file ([ff12ae3](https://github.com/kensodemann/customer-task-list/commit/ff12ae3))
+
+
+### Features
+
+* **tasks:** add task details page ([5195ff9](https://github.com/kensodemann/customer-task-list/commit/5195ff9))
+* **tasks:** default the customer ([8ad9e61](https://github.com/kensodemann/customer-task-list/commit/8ad9e61))
+
+
+
 <a name="0.0.3-2"></a>
 ## [0.0.3-2](https://github.com/kensodemann/customer-task-list/compare/v0.0.3-1...v0.0.3-2) (2019-01-04)
 
