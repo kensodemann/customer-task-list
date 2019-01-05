@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Task</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="edit()"
+        ><ion-icon slot="icon-only" name="create"></ion-icon
+      ></ion-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="section"><span class="label">Name:</span> {{ task?.name }}</div>
+
+  <div class="section">
+    <div class="label">Description:</div>
+    <div>{{ task?.description }}</div>
+  </div>
+
+  <div class="section">
+    <span class="label">Customer:</span> {{ task?.customerName }}
+  </div>
+
+  <div class="section">
+    <div><span class="label">Status:</span> {{ task?.status }}</div>
+    <div><span class="label">Task Type:</span> {{ task?.type }}</div>
+    <div><span class="label">Priority:</span> {{ task?.priority }}</div>
+    <div><span class="label">Entered On:</span> {{ (task?.enteredOn.seconds * 1000) | date }}</div>
+    <div *ngIf="task?.dueDate"><span class="label">Due:</span> {{ task?.dueDate | date }}</div>
+  </div>
+</ion-content>

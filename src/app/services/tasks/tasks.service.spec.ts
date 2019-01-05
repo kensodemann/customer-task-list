@@ -168,6 +168,51 @@ describe('TasksService', () => {
     });
   });
 
+  describe('get', () => {
+    let document;
+    beforeEach(() => {
+      document = createAngularFirestoreDocumentMock();
+      collection.doc.and.returnValue(document);
+    });
+
+    it('gets a references to the document', () => {
+      tasks.get('199405fkkgi59');
+      expect(collection.doc).toHaveBeenCalledTimes(1);
+      expect(collection.doc).toHaveBeenCalledWith('199405fkkgi59');
+    });
+
+    it('gets the value of the document', () => {
+      tasks.get('199405fkkgi59');
+      expect(document.valueChanges).toHaveBeenCalledTimes(1);
+    });
+
+    it('returns the document with the ID', () => {
+      document.valueChanges.and.returnValue(
+        of({
+        name: 'Bang the Big',
+        description: 'Just like it sounds there captain',
+        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+        type: TaskTypes.Meeting,
+        status: Statuses.Open,
+        priority: Priorities.Normal,
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
+        })
+      );
+      tasks.get('199405fkkgi59').subscribe(c => expect(c).toEqual({
+        id: '199405fkkgi59',
+        name: 'Bang the Big',
+        description: 'Just like it sounds there captain',
+        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+        type: TaskTypes.Meeting,
+        status: Statuses.Open,
+        priority: Priorities.Normal,
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
+      }));
+    });
+  });
+
   describe('add', () => {
     it('adds the item to the collection', () => {
       tasks.add({

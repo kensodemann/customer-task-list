@@ -31,6 +31,17 @@ export class TasksService {
       .pipe(map(this.actionsToTasks));
   }
 
+  get(id: string): Observable<TaskWithId> {
+    return this.collection
+      .doc<Task>(id)
+      .valueChanges()
+      .pipe(
+        map(item => {
+          return { id: id, ...item };
+        })
+      );
+  }
+
   private actionsToTasks(
     actions: Array<DocumentChangeAction<Task>>
   ): Array<TaskWithId> {

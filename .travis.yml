@@ -18,5 +18,6 @@ before_script:
   - npm install -g ionic
 
 script:
+  - npm run build
   - npm run test -- --watch=false
   - npm run lint
