@@ -1,9 +1,13 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonList, ModalController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import {
+  AlertController,
+  IonList,
+  ModalController,
+  NavController
+} from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { AuthenticationService } from '../services/authentication/authentication.service';
 import { Statuses } from '../default-data';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TasksService } from '../services/tasks/tasks.service';
@@ -28,8 +32,8 @@ export class TasksPage implements OnDestroy, OnInit {
 
   constructor(
     private alert: AlertController,
-    public authentication: AuthenticationService,
     private modal: ModalController,
+    private navController: NavController,
     private route: ActivatedRoute,
     private tasks: TasksService
   ) {}
@@ -62,14 +66,6 @@ export class TasksPage implements OnDestroy, OnInit {
     return m.present();
   }
 
-  async edit(task: TaskWithId): Promise<void> {
-    const m = await this.modal.create({
-      component: TaskEditorComponent,
-      componentProps: { task: task }
-    });
-    return m.present();
-  }
-
   async delete(task: TaskWithId): Promise<void> {
     const a = await this.alert.create({
       header: 'Confirm Delete',
@@ -80,6 +76,10 @@ export class TasksPage implements OnDestroy, OnInit {
       ]
     });
     return a.present();
+  }
+
+  view(task: TaskWithId) {
+    this.navController.navigateForward(['task', task.id]);
   }
 
   private unpackTasks(t: Array<TaskWithId>) {

@@ -1,10 +1,9 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
-import { AuthenticationService } from '../services/authentication/authentication.service';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { SharedModule } from '../shared/shared.module';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
@@ -12,10 +11,10 @@ import { TasksPage } from './tasks.page';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
 
-import { createAuthenticationServiceMock } from '../services/authentication/authentication.mock';
 import { createTasksServiceMock } from '../services/tasks/tasks.mock';
 import {
   createActivatedRouteMock,
+  createNavControllerMock,
   createOverlayControllerMock,
   createOverlayElementMock
 } from 'test/mocks';
@@ -23,10 +22,10 @@ import {
 describe('TasksPage', () => {
   let alert;
   let alertController;
-  let authentication;
   let fixture: ComponentFixture<TasksPage>;
   let modal;
   let modalController;
+  let navController;
   let page: TasksPage;
   let route;
   let tasks;
@@ -40,9 +39,9 @@ describe('TasksPage', () => {
   beforeEach(async(() => {
     alert = createOverlayElementMock('Alert');
     alertController = createOverlayControllerMock('AlertController', alert);
-    authentication = createAuthenticationServiceMock();
     modal = createOverlayElementMock('Modal');
     modalController = createOverlayControllerMock('ModalController', modal);
+    navController = createNavControllerMock();
     route = createActivatedRouteMock();
     tasks = createTasksServiceMock();
     taskList = new Subject();
@@ -55,8 +54,8 @@ describe('TasksPage', () => {
       providers: [
         { provide: ActivatedRoute, useValue: route },
         { provide: AlertController, useValue: alertController },
-        { provide: AuthenticationService, useValue: authentication },
         { provide: ModalController, useValue: modalController },
+        { provide: NavController, useValue: navController },
         { provide: TasksService, useValue: tasks }
       ]
     }).compileComponents();
@@ -302,39 +301,25 @@ describe('TasksPage', () => {
     });
   });
 
-  describe('edit task', () => {
-    beforeEach(() => {
+  describe('view customer', () => {
+    it('navigates to the customer', () => {
       fixture.detectChanges();
-    });
-
-    const task: TaskWithId = {
-      id: '42DA',
-      name: 'Find the answer',
-      description: 'First find Deep Thought, then get the answer from it',
-      enteredOn: { nanoseconds: 0, seconds: 14324053 },
-      type: TaskTypes.FollowUp,
-      status: Statuses.Closed,
-      priority: Priorities.Normal,
-      customerId: '451BK',
-      customerName: 'Book Burners R Us'
-    };
-
-    it('creates a modal', () => {
-      page.edit(task);
-      expect(modalController.create).toHaveBeenCalledTimes(1);
-    });
-
-    it('uses the task editor component and passes the current task', () => {
-      page.edit(task);
-      expect(modalController.create).toHaveBeenCalledWith({
-        component: TaskEditorComponent,
-        componentProps: { task: task }
+      page.view({
+        id: 'S9590FGS',
+        name: 'Model It',
+        description: 'They need to see it to believe it',
+        enteredOn: { nanoseconds: 0, seconds: 994039950234 },
+        type: TaskTypes.ProofOfConcept,
+        status: Statuses.OnHold,
+        priority: Priorities.Low,
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
       });
-    });
-
-    it('presents the modal', async () => {
-      await page.add();
-      expect(modal.present).toHaveBeenCalledTimes(1);
+      expect(navController.navigateForward).toHaveBeenCalledTimes(1);
+      expect(navController.navigateForward).toHaveBeenCalledWith([
+        'task',
+        'S9590FGS'
+      ]);
     });
   });
 
