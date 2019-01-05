@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
-import { AuthenticationService } from '../services/authentication/authentication.service';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { SharedModule } from '../shared/shared.module';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
@@ -12,7 +11,6 @@ import { TasksPage } from './tasks.page';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
 
-import { createAuthenticationServiceMock } from '../services/authentication/authentication.mock';
 import { createTasksServiceMock } from '../services/tasks/tasks.mock';
 import {
   createActivatedRouteMock,
@@ -24,7 +22,6 @@ import {
 describe('TasksPage', () => {
   let alert;
   let alertController;
-  let authentication;
   let fixture: ComponentFixture<TasksPage>;
   let modal;
   let modalController;
@@ -42,7 +39,6 @@ describe('TasksPage', () => {
   beforeEach(async(() => {
     alert = createOverlayElementMock('Alert');
     alertController = createOverlayControllerMock('AlertController', alert);
-    authentication = createAuthenticationServiceMock();
     modal = createOverlayElementMock('Modal');
     modalController = createOverlayControllerMock('ModalController', modal);
     navController = createNavControllerMock();
@@ -58,7 +54,6 @@ describe('TasksPage', () => {
       providers: [
         { provide: ActivatedRoute, useValue: route },
         { provide: AlertController, useValue: alertController },
-        { provide: AuthenticationService, useValue: authentication },
         { provide: ModalController, useValue: modalController },
         { provide: NavController, useValue: navController },
         { provide: TasksService, useValue: tasks }
