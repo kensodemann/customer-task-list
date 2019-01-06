@@ -42,16 +42,6 @@ export class TasksService {
       );
   }
 
-  private actionsToTasks(
-    actions: Array<DocumentChangeAction<Task>>
-  ): Array<TaskWithId> {
-    return actions.map(a => {
-      const data = a.payload.doc.data() as Task;
-      const id = a.payload.doc.id;
-      return { id, ...data };
-    });
-  }
-
   add(task: Task): Promise<DocumentReference> {
     return this.collection.add(task);
   }
@@ -64,5 +54,15 @@ export class TasksService {
 
   delete(task: TaskWithId): Promise<void> {
     return this.collection.doc(task.id).delete();
+  }
+
+  private actionsToTasks(
+    actions: Array<DocumentChangeAction<Task>>
+  ): Array<TaskWithId> {
+    return actions.map(a => {
+      const data = a.payload.doc.data() as Task;
+      const id = a.payload.doc.id;
+      return { id, ...data };
+    });
   }
 }
