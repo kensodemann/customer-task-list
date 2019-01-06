@@ -8,6 +8,7 @@ import { CustomerEditorComponent } from '../editors/customer-editor/customer-edi
 import { CustomerPage } from './customer.page';
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
+import { NotesEditorComponent } from '../editors/notes-editor/notes-editor.component';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
@@ -22,7 +23,7 @@ import {
 } from '../../../test/mocks';
 
 describe('CustomerPage', () => {
-  let component: CustomerPage;
+  let page: CustomerPage;
   let customers;
   let fixture: ComponentFixture<CustomerPage>;
   let modal;
@@ -56,12 +57,12 @@ describe('CustomerPage', () => {
     initializeTestTasks();
     tasks.forCustomer.and.returnValue(of(testTasks));
     fixture = TestBed.createComponent(CustomerPage);
-    component = fixture.componentInstance;
+    page = fixture.componentInstance;
   });
 
   it('should create', () => {
     fixture.detectChanges();
-    expect(component).toBeTruthy();
+    expect(page).toBeTruthy();
   });
 
   it('gets the ID from the route', () => {
@@ -88,7 +89,7 @@ describe('CustomerPage', () => {
       })
     );
     fixture.detectChanges();
-    expect(component.customer).toEqual({
+    expect(page.customer).toEqual({
       id: '314159PI',
       name: 'Cherry',
       description: 'Makers of really tasty pi',
@@ -118,12 +119,12 @@ describe('CustomerPage', () => {
     });
 
     it('creates a modal', () => {
-      component.edit();
+      page.edit();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the correct component and passes the customer', () => {
-      component.edit();
+      page.edit();
       expect(modalController.create).toHaveBeenCalledWith({
         component: CustomerEditorComponent,
         componentProps: { customer: customer }
@@ -131,14 +132,14 @@ describe('CustomerPage', () => {
     });
 
     it('presents the modal', async () => {
-      await component.edit();
+      await page.edit();
       expect(modal.present).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('taskCount', () => {
     it('returns zero before init completes', () => {
-      expect(component.taskCount()).toEqual(0);
+      expect(page.taskCount()).toEqual(0);
     });
 
     describe('after initialization is complete', () => {
@@ -147,28 +148,61 @@ describe('CustomerPage', () => {
       });
 
       it('counts all tasks', () => {
-        expect(component.taskCount()).toEqual(testTasks.length);
+        expect(page.taskCount()).toEqual(testTasks.length);
       });
 
       it('counts the open tasks', () => {
-        expect(component.taskCount(Statuses.Open)).toEqual(2);
+        expect(page.taskCount(Statuses.Open)).toEqual(2);
       });
 
       it('counts the repeating tasks', () => {
-        expect(component.taskCount(Statuses.Repeating)).toEqual(1);
+        expect(page.taskCount(Statuses.Repeating)).toEqual(1);
       });
 
       it('counts the on hold tasks', () => {
-        expect(component.taskCount(Statuses.OnHold)).toEqual(3);
+        expect(page.taskCount(Statuses.OnHold)).toEqual(3);
       });
 
       it('counts the closed tasks', () => {
-        expect(component.taskCount(Statuses.Closed)).toEqual(2);
+        expect(page.taskCount(Statuses.Closed)).toEqual(2);
       });
 
       it('returns zero if the status is not valid', () => {
-        expect(component.taskCount('SomeInvalidStatus')).toEqual(0);
+        expect(page.taskCount('SomeInvalidStatus')).toEqual(0);
       });
+    });
+  });
+
+  describe('add note', () => {
+    const customer: CustomerWithId = {
+      id: '4273',
+      name: 'Dominos',
+      description: 'Pizza apps that rock, the pizza not so much',
+      isActive: true
+    };
+
+    beforeEach(() => {
+      route.snapshot.paramMap.get.and.returnValue('4273');
+      customers.get.and.returnValue(of(customer));
+      fixture.detectChanges();
+    });
+
+    it('creates a modal', () => {
+      page.addNote();
+      expect(modalController.create).toHaveBeenCalledTimes(1);
+    });
+
+    it('uses the notes editor component and passes the current task ID', () => {
+      page.addNote();
+      expect(modalController.create).toHaveBeenCalledWith({
+        component: NotesEditorComponent,
+        componentProps: { itemId: customer.id }
+      });
+    });
+
+    it('presents the modal', async () => {
+      await page.addNote();
+      expect(modal.present).toHaveBeenCalledTimes(1);
     });
   });
 

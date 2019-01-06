@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 
+import { NotesEditorComponent } from '../editors/notes-editor/notes-editor.component';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TaskPage } from './task.page';
@@ -95,7 +96,7 @@ describe('TaskPage', () => {
 
   describe('edit task', () => {
     const task: TaskWithId = {
-      id: '42DA',
+      id: '314159PI',
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
       enteredOn: { nanoseconds: 0, seconds: 14324053 },
@@ -127,6 +128,44 @@ describe('TaskPage', () => {
 
     it('presents the modal', async () => {
       await page.edit();
+      expect(modal.present).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('add note', () => {
+    const task: TaskWithId = {
+      id: '314159PI',
+      name: 'Find the answer',
+      description: 'First find Deep Thought, then get the answer from it',
+      enteredOn: { nanoseconds: 0, seconds: 14324053 },
+      type: TaskTypes.FollowUp,
+      status: Statuses.Closed,
+      priority: Priorities.Normal,
+      customerId: '451BK',
+      customerName: 'Book Burners R Us'
+    };
+
+    beforeEach(() => {
+      route.snapshot.paramMap.get.and.returnValue('314159PI');
+      tasks.get.and.returnValue(of(task));
+      fixture.detectChanges();
+    });
+
+    it('creates a modal', () => {
+      page.addNote();
+      expect(modalController.create).toHaveBeenCalledTimes(1);
+    });
+
+    it('uses the notes editor component and passes the current task ID', () => {
+      page.addNote();
+      expect(modalController.create).toHaveBeenCalledWith({
+        component: NotesEditorComponent,
+        componentProps: { itemId: task.id }
+      });
+    });
+
+    it('presents the modal', async () => {
+      await page.addNote();
       expect(modal.present).toHaveBeenCalledTimes(1);
     });
   });
