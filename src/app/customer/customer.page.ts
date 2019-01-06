@@ -7,6 +7,8 @@ import { CustomerEditorComponent } from '../editors/customer-editor/customer-edi
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
 import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
+import { NotesService } from '../services/notes/notes.service';
+import { NoteWithId } from '../models/note';
 import { statuses } from '../default-data';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
@@ -21,12 +23,14 @@ export class CustomerPage implements OnDestroy, OnInit {
   private customerTasks: Array<TaskWithId>;
 
   customer: CustomerWithId;
+  customerNotes: Array<NoteWithId>;
   statuses: Array<string>;
 
   constructor(
     private customers: CustomersService,
     private modal: ModalController,
     public navController: NavController,
+    private notes: NotesService,
     private route: ActivatedRoute,
     private tasks: TasksService
   ) {}
@@ -36,6 +40,9 @@ export class CustomerPage implements OnDestroy, OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.subscriptions.push(
       this.tasks.forCustomer(id).subscribe(t => (this.customerTasks = t))
+    );
+    this.subscriptions.push(
+      this.notes.allFor(id).subscribe(n => (this.customerNotes = n))
     );
     this.subscriptions.push(
       this.customers.get(id).subscribe(c => (this.customer = c))
