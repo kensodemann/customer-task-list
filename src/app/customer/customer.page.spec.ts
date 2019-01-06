@@ -8,7 +8,7 @@ import { CustomerEditorComponent } from '../editors/customer-editor/customer-edi
 import { CustomerPage } from './customer.page';
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
-import { NotesEditorComponent } from '../editors/notes-editor/notes-editor.component';
+import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
@@ -195,7 +195,7 @@ describe('CustomerPage', () => {
     it('uses the notes editor component and passes the current task ID', () => {
       page.addNote();
       expect(modalController.create).toHaveBeenCalledWith({
-        component: NotesEditorComponent,
+        component: NoteEditorComponent,
         componentProps: { itemId: customer.id }
       });
     });

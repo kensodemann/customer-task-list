@@ -6,11 +6,11 @@ import { Note, NoteWithId } from '../../models/note';
 import { NotesService } from '../../services/notes/notes.service';
 
 @Component({
-  selector: 'app-notes-editor',
-  templateUrl: './notes-editor.component.html',
-  styleUrls: ['./notes-editor.component.scss']
+  selector: 'app-note-editor',
+  templateUrl: './note-editor.component.html',
+  styleUrls: ['./note-editor.component.scss']
 })
-export class NotesEditorComponent implements OnInit {
+export class NoteEditorComponent implements OnInit {
   title: string;
 
   note: NoteWithId;

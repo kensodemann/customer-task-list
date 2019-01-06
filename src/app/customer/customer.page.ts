@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
-import { NotesEditorComponent } from '../editors/notes-editor/notes-editor.component';
+import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
 import { statuses } from '../default-data';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
@@ -56,7 +56,7 @@ export class CustomerPage implements OnDestroy, OnInit {
 
   async addNote() {
     const m = await this.modal.create({
-      component: NotesEditorComponent,
+      component: NoteEditorComponent,
       componentProps: { itemId: this.customer.id }
     });
     return await m.present();

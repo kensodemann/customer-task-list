@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 
-import { NotesEditorComponent } from '../editors/notes-editor/notes-editor.component';
+import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TaskPage } from './task.page';
@@ -159,7 +159,7 @@ describe('TaskPage', () => {
     it('uses the notes editor component and passes the current task ID', () => {
       page.addNote();
       expect(modalController.create).toHaveBeenCalledWith({
-        component: NotesEditorComponent,
+        component: NoteEditorComponent,
         componentProps: { itemId: task.id }
       });
     });

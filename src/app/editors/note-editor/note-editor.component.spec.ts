@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { firestore } from 'firebase/app';
 
-import { NotesEditorComponent } from './notes-editor.component';
+import { NoteEditorComponent } from './note-editor.component';
 import { NotesService } from '../../services/notes/notes.service';
 
 import {
@@ -13,9 +13,9 @@ import {
 } from '../../../../test/mocks';
 import { createNotesServiceMock } from '../../services/notes/notes.mock';
 
-describe('NotesEditorComponent', () => {
-  let editor: NotesEditorComponent;
-  let fixture: ComponentFixture<NotesEditorComponent>;
+describe('NoteEditorComponent', () => {
+  let editor: NoteEditorComponent;
+  let fixture: ComponentFixture<NoteEditorComponent>;
   let modal;
   let notes;
 
@@ -26,7 +26,7 @@ describe('NotesEditorComponent', () => {
     );
     notes = createNotesServiceMock();
     TestBed.configureTestingModule({
-      declarations: [NotesEditorComponent],
+      declarations: [NoteEditorComponent],
       imports: [FormsModule, IonicModule],
       providers: [
         { provide: ModalController, useValue: modal },
@@ -37,7 +37,7 @@ describe('NotesEditorComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NotesEditorComponent);
+    fixture = TestBed.createComponent(NoteEditorComponent);
     editor = fixture.componentInstance;
   });
 

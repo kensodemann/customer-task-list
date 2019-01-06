@@ -20,7 +20,7 @@ import { createTasksServiceMock } from '../../services/tasks/tasks.mock';
 
 describe('TaskEditorComponent', () => {
   let allCustomers: Array<CustomerWithId>;
-  let component: TaskEditorComponent;
+  let editor: TaskEditorComponent;
   let customers;
   let fixture: ComponentFixture<TaskEditorComponent>;
   let modal;
@@ -98,18 +98,18 @@ describe('TaskEditorComponent', () => {
     ];
     customers.all.and.returnValue(of(allCustomers));
     fixture = TestBed.createComponent(TaskEditorComponent);
-    component = fixture.componentInstance;
+    editor = fixture.componentInstance;
   });
 
   it('should create', () => {
     fixture.detectChanges();
-    expect(component).toBeTruthy();
+    expect(editor).toBeTruthy();
   });
 
   describe('close', () => {
     it('dismisses the modal', () => {
       fixture.detectChanges();
-      component.close();
+      editor.close();
       expect(modal.dismiss).toHaveBeenCalledTimes(1);
     });
   });
@@ -120,19 +120,19 @@ describe('TaskEditorComponent', () => {
     });
 
     it('sets the title to "Add New Task"', () => {
-      expect(component.title).toEqual('Add New Task');
+      expect(editor.title).toEqual('Add New Task');
     });
 
     it('defaults the status to Open', () => {
-      expect(component.status).toEqual(Statuses.Open);
+      expect(editor.status).toEqual(Statuses.Open);
     });
 
     it('defaults the type to Follow-up', () => {
-      expect(component.taskType).toEqual(TaskTypes.FollowUp);
+      expect(editor.taskType).toEqual(TaskTypes.FollowUp);
     });
 
     it('defaults the priority to Normal', () => {
-      expect(component.priority).toEqual(Priorities.Normal);
+      expect(editor.priority).toEqual(Priorities.Normal);
     });
 
     it('gets the customers', () => {
@@ -140,7 +140,7 @@ describe('TaskEditorComponent', () => {
     });
 
     it('maps the active customers', () => {
-      expect(component.activeCustomers).toEqual([
+      expect(editor.activeCustomers).toEqual([
         {
           id: '420HI',
           name: 'Joe'
@@ -175,18 +175,18 @@ describe('TaskEditorComponent', () => {
       });
 
       it('adds the task', () => {
-        component.name = 'The Dude';
-        component.description = 'He does abide';
-        component.customerId = '1138GL';
-        component.save();
+        editor.name = 'The Dude';
+        editor.description = 'He does abide';
+        editor.customerId = '1138GL';
+        editor.save();
         expect(tasks.add).toHaveBeenCalledTimes(1);
       });
 
       it('passes the data', () => {
-        component.name = 'The Dude';
-        component.description = 'He does abide';
-        component.customerId = '1138GL';
-        component.save();
+        editor.name = 'The Dude';
+        editor.description = 'He does abide';
+        editor.customerId = '1138GL';
+        editor.save();
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
@@ -200,11 +200,11 @@ describe('TaskEditorComponent', () => {
       });
 
       it('passes the due date if there is one', () => {
-        component.name = 'The Dude';
-        component.description = 'He does abide';
-        component.customerId = '1138GL';
-        component.dueDate = '2019-01-03';
-        component.save();
+        editor.name = 'The Dude';
+        editor.description = 'He does abide';
+        editor.customerId = '1138GL';
+        editor.dueDate = '2019-01-03';
+        editor.save();
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
@@ -219,10 +219,10 @@ describe('TaskEditorComponent', () => {
       });
 
       it('has a blank customer name if the customer cannot be found', () => {
-        component.name = 'The Dude';
-        component.description = 'He does abide';
-        component.customerId = '1139GL';
-        component.save();
+        editor.name = 'The Dude';
+        editor.description = 'He does abide';
+        editor.customerId = '1139GL';
+        editor.save();
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
@@ -236,7 +236,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('dismisses the modal', async () => {
-        await component.save();
+        await editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
     });
@@ -246,7 +246,7 @@ describe('TaskEditorComponent', () => {
     beforeEach(() => {
       jasmine.clock().install();
       jasmine.clock().mockDate(new Date('2019-03-13T12:05:45.000-05:00'));
-      component.task = {
+      editor.task = {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
@@ -266,37 +266,37 @@ describe('TaskEditorComponent', () => {
     });
 
     it('sets the title to "Modify Task"', () => {
-      expect(component.title).toEqual('Modify Task');
+      expect(editor.title).toEqual('Modify Task');
     });
 
     it('initializes the name', () => {
-      expect(component.name).toEqual('Weekly Status Meeting');
+      expect(editor.name).toEqual('Weekly Status Meeting');
     });
 
     it('initializes the description', () => {
-      expect(component.description).toEqual(
+      expect(editor.description).toEqual(
         'Weekly status meeting, usually on Thursdays'
       );
     });
 
     it('initializes the status', () => {
-      expect(component.status).toEqual(Statuses.Repeating);
+      expect(editor.status).toEqual(Statuses.Repeating);
     });
 
     it('initializes the task type', () => {
-      expect(component.taskType).toEqual(TaskTypes.Meeting);
+      expect(editor.taskType).toEqual(TaskTypes.Meeting);
     });
 
     it('initializes the priority', () => {
-      expect(component.priority).toEqual(Priorities.Low);
+      expect(editor.priority).toEqual(Priorities.Low);
     });
 
     it('initializes the due date', () => {
-      expect(component.dueDate).toEqual('2019-01-15');
+      expect(editor.dueDate).toEqual('2019-01-15');
     });
 
     it('initializes the customer ID', () => {
-      expect(component.customerId).toEqual('1138GL');
+      expect(editor.customerId).toEqual('1138GL');
     });
 
     it('gets the customers', () => {
@@ -304,7 +304,7 @@ describe('TaskEditorComponent', () => {
     });
 
     it('maps the active customers', () => {
-      expect(component.activeCustomers).toEqual([
+      expect(editor.activeCustomers).toEqual([
         {
           id: '420HI',
           name: 'Joe'
@@ -330,16 +330,16 @@ describe('TaskEditorComponent', () => {
 
     describe('save', () => {
       it('updates the task', () => {
-        component.name = 'Bi-Weekly Status Meeting';
-        component.description = 'Moving to twice a week';
-        component.save();
+        editor.name = 'Bi-Weekly Status Meeting';
+        editor.description = 'Moving to twice a week';
+        editor.save();
         expect(tasks.update).toHaveBeenCalledTimes(1);
       });
 
       it('passes the id, name, description, and isActive status', () => {
-        component.name = 'Bi-Weekly Status Meeting';
-        component.description = 'Moving to twice a week';
-        component.save();
+        editor.name = 'Bi-Weekly Status Meeting';
+        editor.description = 'Moving to twice a week';
+        editor.save();
         expect(tasks.update).toHaveBeenCalledWith({
           id: '88395AA930FE',
           name: 'Bi-Weekly Status Meeting',
@@ -355,7 +355,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('dismisses the modal', async () => {
-        await component.save();
+        await editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
     });
@@ -363,7 +363,7 @@ describe('TaskEditorComponent', () => {
 
   describe('in update mode with inactive customer', () => {
     beforeEach(() => {
-      component.task = {
+      editor.task = {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
@@ -379,7 +379,7 @@ describe('TaskEditorComponent', () => {
     });
 
     it('maps the active customers and the assigned customer', () => {
-      expect(component.activeCustomers).toEqual([
+      expect(editor.activeCustomers).toEqual([
         {
           id: '420HI',
           name: 'Joe'
