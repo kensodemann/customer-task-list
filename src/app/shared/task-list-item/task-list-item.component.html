@@ -1,8 +1,20 @@
-<div>
-  <div class="title">{{ task.name }} - {{ task.customerName }}</div>
-  <div class="timestamp">
-    Opened: {{ task.enteredOn.seconds * 1000 | date
-    }}<span *ngIf="task && task.dueDate"> / Due: {{ task.dueDate | date }}</span>
-  </div>
-  <div class="description">{{ task.description }}</div>
-</div>
+<ion-item-sliding>
+  <ion-item (click)="viewTask()">
+    <ion-label>
+      <div class="title">{{ task.name }} - {{ task.customerName }}</div>
+      <div class="timestamp">
+        Opened: {{ task.enteredOn.seconds * 1000 | date
+        }}<span *ngIf="task && task.dueDate">
+          / Due: {{ task.dueDate | date }}</span
+        >
+      </div>
+      <div class="description">{{ task.description }}</div>
+    </ion-label>
+  </ion-item>
+
+  <ion-item-options>
+    <ion-item-option color="danger" (click)="deleteTask()"
+      ><ion-icon slot="icon-only" name="trash"></ion-icon
+    ></ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>

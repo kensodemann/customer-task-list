@@ -17,71 +17,41 @@
     <ion-list-header *ngIf="openTasks && openTasks.length">
       <ion-label>Open Tasks ({{ openTasks.length }})</ion-label>
     </ion-list-header>
-    <div>
-      <ion-item-sliding *ngFor="let task of openTasks" (click)="view(task)">
-        <ion-item>
-          <ion-label>
-            <app-task-list-item [task]="task"></app-task-list-item>
-          </ion-label>
-        </ion-item>
-
-        <ion-item-options>
-          <ion-item-option color="danger" (click)="delete(task)"
-            ><ion-icon slot="icon-only" name="trash"></ion-icon
-          ></ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>
-    </div>
+    <app-task-list-item
+      *ngFor="let task of openTasks"
+      [task]="task"
+      (view)="view(task)"
+      (delete)="delete(task)"
+    ></app-task-list-item>
 
     <ion-list-header *ngIf="repeatingTasks && repeatingTasks.length">
       <ion-label>Repeating Tasks ({{ repeatingTasks.length }})</ion-label>
     </ion-list-header>
-    <ion-item-sliding *ngFor="let task of repeatingTasks" (click)="view(task)">
-      <ion-item>
-        <ion-label>
-          <app-task-list-item [task]="task"></app-task-list-item>
-        </ion-label>
-      </ion-item>
-
-      <ion-item-options>
-        <ion-item-option color="danger" (click)="delete(task)"
-          ><ion-icon slot="icon-only" name="trash"></ion-icon
-        ></ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
+    <app-task-list-item
+      *ngFor="let task of repeatingTasks"
+      [task]="task"
+      (view)="view(task)"
+      (delete)="delete(task)"
+    ></app-task-list-item>
 
     <ion-list-header *ngIf="onHoldTasks && onHoldTasks.length">
       <ion-label>On Hold ({{ onHoldTasks.length }})</ion-label>
     </ion-list-header>
-    <ion-item-sliding *ngFor="let task of onHoldTasks" (click)="view(task)">
-      <ion-item>
-        <ion-label>
-          <app-task-list-item [task]="task"></app-task-list-item>
-        </ion-label>
-      </ion-item>
-
-      <ion-item-options>
-        <ion-item-option color="danger" (click)="delete(task)"
-          ><ion-icon slot="icon-only" name="trash"></ion-icon
-        ></ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
+    <app-task-list-item
+      *ngFor="let task of onHoldTasks"
+      [task]="task"
+      (view)="view(task)"
+      (delete)="delete(task)"
+    ></app-task-list-item>
 
     <ion-list-header *ngIf="closedTasks && closedTasks.length">
       <ion-label>Closed ({{ closedTasks.length }})</ion-label>
     </ion-list-header>
-    <ion-item-sliding *ngFor="let task of closedTasks" (click)="view(task)">
-      <ion-item>
-        <ion-label>
-          <app-task-list-item [task]="task"></app-task-list-item>
-        </ion-label>
-      </ion-item>
-
-      <ion-item-options>
-        <ion-item-option color="danger" (click)="delete(task)"
-          ><ion-icon slot="icon-only" name="trash"></ion-icon
-        ></ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
+    <app-task-list-item
+      *ngFor="let task of closedTasks"
+      [task]="task"
+      (view)="view(task)"
+      (delete)="delete(task)"
+    ></app-task-list-item>
   </ion-list>
 </ion-content>
