@@ -218,6 +218,52 @@ describe('CustomerPage', () => {
     });
   });
 
+  describe('view note', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('creates a modal', () => {
+      page.viewNote({
+        id: '4277785',
+        text: 'this is just a test note, nothing more',
+        itemId: '314159PI',
+        enteredOn: { nanoseconds: 0, seconds: 1432430034053 }
+      });
+      expect(modalController.create).toHaveBeenCalledTimes(1);
+    });
+
+    it('uses the notes editor component and passes the note to view', () => {
+      page.viewNote({
+        id: '4277785',
+        text: 'this is just a test note, nothing more',
+        itemId: '314159PI',
+        enteredOn: { nanoseconds: 0, seconds: 1432430034053 }
+      });
+      expect(modalController.create).toHaveBeenCalledWith({
+        component: NoteEditorComponent,
+        componentProps: {
+          note: {
+            id: '4277785',
+            text: 'this is just a test note, nothing more',
+            itemId: '314159PI',
+            enteredOn: { nanoseconds: 0, seconds: 1432430034053 }
+          }
+        }
+      });
+    });
+
+    it('presents the modal', async () => {
+      await page.viewNote({
+        id: '4277785',
+        text: 'this is just a test note, nothing more',
+        itemId: '314159PI',
+        enteredOn: { nanoseconds: 0, seconds: 1432430034053 }
+      });
+      expect(modal.present).toHaveBeenCalledTimes(1);
+    });
+  });
+
   function initializeTestTasks() {
     testTasks = [
       {

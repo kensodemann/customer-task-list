@@ -55,4 +55,12 @@ export class TaskPage implements OnDestroy, OnInit {
     });
     m.present();
   }
+
+  async viewNote(note: NoteWithId) {
+    const m = await this.modal.create({
+      component: NoteEditorComponent,
+      componentProps: { note: note }
+    });
+    m.present();
+  }
 }
