@@ -1,3 +1,13 @@
+<a name="0.0.3"></a>
+## [0.0.3](https://github.com/kensodemann/customer-task-list/compare/v0.0.3-3...v0.0.3) (2019-01-06)
+
+
+### Bug Fixes
+
+* **tasks:** handle delete without view ([f8f4143](https://github.com/kensodemann/customer-task-list/commit/f8f4143))
+
+
+
 <a name="0.0.3-3"></a>
 ## [0.0.3-3](https://github.com/kensodemann/customer-task-list/compare/v0.0.3-2...v0.0.3-3) (2019-01-05)
 
