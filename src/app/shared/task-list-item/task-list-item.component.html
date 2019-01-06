@@ -1,5 +1,5 @@
 <ion-item-sliding>
-  <ion-item (click)="viewTask()">
+  <ion-item (click)="view.emit()">
     <ion-label>
       <div class="title">{{ task.name }} - {{ task.customerName }}</div>
       <div class="timestamp">
@@ -13,7 +13,7 @@
   </ion-item>
 
   <ion-item-options>
-    <ion-item-option color="danger" (click)="deleteTask()"
+    <ion-item-option color="danger" (click)="delete.emit()"
       ><ion-icon slot="icon-only" name="trash"></ion-icon
     ></ion-item-option>
   </ion-item-options>
