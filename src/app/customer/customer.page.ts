@@ -69,6 +69,14 @@ export class CustomerPage implements OnDestroy, OnInit {
     return await m.present();
   }
 
+  async viewNote(note: NoteWithId) {
+    const m = await this.modal.create({
+      component: NoteEditorComponent,
+      componentProps: { note: note }
+    });
+    return await m.present();
+  }
+
   taskCount(status?: string): number {
     return this.customerTasks
       ? this.customerTasks.filter(t => !status || t.status === status).length
