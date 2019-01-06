@@ -16,12 +16,4 @@ export class TaskListItemComponent {
     this.delete = new EventEmitter();
     this.view = new EventEmitter();
   }
-
-  deleteTask() {
-    this.delete.emit();
-  }
-
-  viewTask() {
-    this.view.emit();
-  }
 }

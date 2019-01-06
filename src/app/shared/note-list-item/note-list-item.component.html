@@ -1,0 +1,14 @@
+<ion-item-sliding>
+  <ion-item (click)="view.emit()">
+    <ion-label>
+      <div class="title"> {{ note.enteredOn.seconds * 1000 | date}}</div>
+      <div class="description">{{ noteText }}</div>
+    </ion-label>
+  </ion-item>
+
+  <ion-item-options>
+    <ion-item-option color="danger" (click)="delete.emit()"
+      ><ion-icon slot="icon-only" name="trash"></ion-icon
+    ></ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>
