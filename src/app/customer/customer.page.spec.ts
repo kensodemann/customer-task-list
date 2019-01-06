@@ -9,11 +9,13 @@ import { CustomerPage } from './customer.page';
 import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
 import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
+import { NotesService } from '../services/notes/notes.service';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
 
 import { createCustomersServiceMock } from '../services/customers/customers.mock';
+import { createNotesServiceMock } from '../services/notes/notes.mock';
 import { createTasksServiceMock } from '../services/tasks/tasks.mock';
 import {
   createActivatedRouteMock,
@@ -29,6 +31,7 @@ describe('CustomerPage', () => {
   let modal;
   let modalController;
   let navController;
+  let notes;
   let route;
   let tasks;
   let testTasks: Array<TaskWithId>;
@@ -38,6 +41,7 @@ describe('CustomerPage', () => {
     modal = createOverlayElementMock('Modal');
     modalController = createOverlayControllerMock('ModalController', modal);
     navController = createNavControllerMock();
+    notes = createNotesServiceMock();
     route = createActivatedRouteMock();
     tasks = createTasksServiceMock();
     TestBed.configureTestingModule({
@@ -47,6 +51,7 @@ describe('CustomerPage', () => {
         { provide: CustomersService, useValue: customers },
         { provide: ModalController, useValue: modalController },
         { provide: NavController, useValue: navController },
+        { provide: NotesService, useValue: notes },
         { provide: TasksService, useValue: tasks }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -102,6 +107,13 @@ describe('CustomerPage', () => {
     fixture.detectChanges();
     expect(tasks.forCustomer).toHaveBeenCalledTimes(1);
     expect(tasks.forCustomer).toHaveBeenCalledWith('314159PI');
+  });
+
+  it('gets the notes for the customer', () => {
+    route.snapshot.paramMap.get.and.returnValue('314159PI');
+    fixture.detectChanges();
+    expect(notes.allFor).toHaveBeenCalledTimes(1);
+    expect(notes.allFor).toHaveBeenCalledWith('314159PI');
   });
 
   describe('edit customer', () => {

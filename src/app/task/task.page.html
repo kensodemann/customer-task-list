@@ -44,5 +44,9 @@
         ><ion-icon slot="icon-only" name="add" color="medium"></ion-icon
       ></ion-button>
     </ion-list-header>
+    <app-note-list-item
+      *ngFor="let note of taskNotes"
+      [note]="note"
+    ></app-note-list-item>
   </ion-list>
 </ion-content>

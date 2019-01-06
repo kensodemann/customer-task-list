@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 
 import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
+import { NotesService } from '../services/notes/notes.service';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TaskPage } from './task.page';
@@ -16,6 +17,7 @@ import {
   createOverlayControllerMock,
   createOverlayElementMock
 } from '../../../test/mocks';
+import { createNotesServiceMock } from '../services/notes/notes.mock';
 import { createTasksServiceMock } from '../services/tasks/tasks.mock';
 
 describe('TaskPage', () => {
@@ -23,12 +25,14 @@ describe('TaskPage', () => {
   let fixture: ComponentFixture<TaskPage>;
   let modal;
   let modalController;
+  let notes;
   let route;
   let tasks;
 
   beforeEach(async(() => {
     modal = createOverlayElementMock('Modal');
     modalController = createOverlayControllerMock('ModalController', modal);
+    notes = createNotesServiceMock();
     route = createActivatedRouteMock();
     tasks = createTasksServiceMock();
     TestBed.configureTestingModule({
@@ -36,6 +40,7 @@ describe('TaskPage', () => {
       providers: [
         { provide: ActivatedRoute, useValue: route },
         { provide: ModalController, useValue: modalController },
+        { provide: NotesService, useValue: notes },
         { provide: TasksService, useValue: tasks }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -63,6 +68,13 @@ describe('TaskPage', () => {
     fixture.detectChanges();
     expect(tasks.get).toHaveBeenCalledTimes(1);
     expect(tasks.get).toHaveBeenCalledWith('314159PI');
+  });
+
+  it('gets the notes for the task', () => {
+    route.snapshot.paramMap.get.and.returnValue('314159PI');
+    fixture.detectChanges();
+    expect(notes.allFor).toHaveBeenCalledTimes(1);
+    expect(notes.allFor).toHaveBeenCalledWith('314159PI');
   });
 
   it('assigns the customer', () => {
