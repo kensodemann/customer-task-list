@@ -7,7 +7,7 @@ import { createAuthenticationServiceMock } from '../services/authentication/auth
 
 describe('AboutPage', () => {
   let authentication;
-  let component: AboutPage;
+  let page: AboutPage;
   let fixture: ComponentFixture<AboutPage>;
 
   beforeEach(async(() => {
@@ -23,11 +23,11 @@ describe('AboutPage', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AboutPage);
-    component = fixture.componentInstance;
+    page = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(page).toBeTruthy();
   });
 });

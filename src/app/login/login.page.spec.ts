@@ -10,7 +10,7 @@ import { LoginPage } from './login.page';
 
 describe('LoginPage', () => {
   let authentication;
-  let component: LoginPage;
+  let page: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
   let navController;
 
@@ -30,27 +30,27 @@ describe('LoginPage', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPage);
-    component = fixture.componentInstance;
+    page = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(page).toBeTruthy();
   });
 
   describe('login', () => {
     beforeEach(() => {
-      component.email = 'test@mctesty.com';
-      component.password = 'something secret';
+      page.email = 'test@mctesty.com';
+      page.password = 'something secret';
     });
 
     it('calls the authentication login', () => {
-      component.login();
+      page.login();
       expect(authentication.login).toHaveBeenCalledTimes(1);
     });
 
     it('passes the email address and password to the login', () => {
-      component.login();
+      page.login();
       expect(authentication.login).toHaveBeenCalledWith(
         'test@mctesty.com',
         'something secret'
@@ -58,13 +58,13 @@ describe('LoginPage', () => {
     });
 
     it('does not navigate if no user is returned', async () => {
-      await component.login();
+      await page.login();
       expect(navController.navigateRoot).not.toHaveBeenCalled();
     });
 
     it('navigates to the main page if a user is returned', async () => {
       authentication.login.and.returnValue(Promise.resolve({ id: 42 }));
-      await component.login();
+      await page.login();
       expect(navController.navigateRoot).toHaveBeenCalledTimes(1);
       expect(navController.navigateRoot).toHaveBeenCalledWith('');
     });
@@ -77,8 +77,8 @@ describe('LoginPage', () => {
             'The password is invalid or the user does not have a password.'
         })
       );
-      await component.login();
-      expect(component.errorMessage).toEqual(
+      await page.login();
+      expect(page.errorMessage).toEqual(
         'The password is invalid or the user does not have a password.'
       );
     });
@@ -91,8 +91,8 @@ describe('LoginPage', () => {
             'The password is invalid or the user does not have a password.'
         })
       );
-      await component.login();
-      expect(component.password).toBeFalsy();
+      await page.login();
+      expect(page.password).toBeFalsy();
     });
   });
 });
