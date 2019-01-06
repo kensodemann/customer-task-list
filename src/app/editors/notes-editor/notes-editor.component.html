@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button color="medium" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <form #noteForm="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Note Text</ion-label>
+        <ion-textarea
+          name="description"
+          [(ngModel)]="text"
+          #descriptionInput="ngModel"
+          required
+          rows="5"
+        ></ion-textarea>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button
+      expand="full"
+      [disabled]="!noteForm.form.valid"
+      (click)="save()"
+      >Save</ion-button
+    >
+  </ion-toolbar>
+</ion-footer>

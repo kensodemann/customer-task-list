@@ -15,7 +15,7 @@ import {
 } from 'test/mocks';
 
 describe('CustomerEditorComponent', () => {
-  let component: CustomerEditorComponent;
+  let editor: CustomerEditorComponent;
   let fixture: ComponentFixture<CustomerEditorComponent>;
   let customerList: Subject<Array<CustomerWithId>>;
   let customers;
@@ -43,7 +43,7 @@ describe('CustomerEditorComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerEditorComponent);
-    component = fixture.componentInstance;
+    editor = fixture.componentInstance;
     list = [
       {
         id: '314PI',
@@ -68,7 +68,7 @@ describe('CustomerEditorComponent', () => {
 
   it('should create', () => {
     fixture.detectChanges();
-    expect(component).toBeTruthy();
+    expect(editor).toBeTruthy();
   });
 
   it('sets up an observable on the customers', () => {
@@ -79,13 +79,13 @@ describe('CustomerEditorComponent', () => {
   it('changes the customer list', () => {
     fixture.detectChanges();
     customerList.next(list);
-    expect(component.allCustomers).toEqual(list);
+    expect(editor.allCustomers).toEqual(list);
   });
 
   describe('close', () => {
     it('dismisses the modal', () => {
       fixture.detectChanges();
-      component.close();
+      editor.close();
       expect(modal.dismiss).toHaveBeenCalledTimes(1);
     });
   });
@@ -97,27 +97,27 @@ describe('CustomerEditorComponent', () => {
     });
 
     it('starts with a true active status', () => {
-      expect(component.isActive).toEqual(true);
+      expect(editor.isActive).toEqual(true);
     });
 
     it('sets the title', () => {
-      expect(component.title).toEqual('Add New Customer');
+      expect(editor.title).toEqual('Add New Customer');
     });
 
     describe('save', () => {
       it('adds the customer', () => {
-        component.name = 'The Dude';
-        component.description = 'He does abide';
-        component.isActive = true;
-        component.save();
+        editor.name = 'The Dude';
+        editor.description = 'He does abide';
+        editor.isActive = true;
+        editor.save();
         expect(customers.add).toHaveBeenCalledTimes(1);
       });
 
       it('passes the name, description, and isActive status', () => {
-        component.name = 'The Dude';
-        component.description = 'He does abide';
-        component.isActive = true;
-        component.save();
+        editor.name = 'The Dude';
+        editor.description = 'He does abide';
+        editor.isActive = true;
+        editor.save();
         expect(customers.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
@@ -126,10 +126,10 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('allows inactive customers to be created', () => {
-        component.name = 'Lazy Leopard';
-        (component.description = 'Cats like to sleep, even the bigger ones.'),
-          (component.isActive = false);
-        component.save();
+        editor.name = 'Lazy Leopard';
+        (editor.description = 'Cats like to sleep, even the bigger ones.'),
+          (editor.isActive = false);
+        editor.save();
         expect(customers.add).toHaveBeenCalledWith({
           name: 'Lazy Leopard',
           description: 'Cats like to sleep, even the bigger ones.',
@@ -138,71 +138,71 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('dismisses the modal', async () => {
-        await component.save();
+        await editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
     });
 
     describe('check name', () => {
       it('sets a warning message if a customer by the same name exists', () => {
-        component.name = 'Joe';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = 'Joe';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
       });
 
       it('does the check case-insensitive', () => {
-        component.name = 'jOe';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = 'jOe';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
       });
 
       it('ignores starting white-space', () => {
-        component.name = '  Joe';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = '  Joe';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
 
-        component.name = 'Kenmore ';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = 'Kenmore ';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
       });
 
       it('ignores ending white-space', () => {
-        component.name = 'Joe  ';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = 'Joe  ';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
 
-        component.name = ' Kenmore';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = ' Kenmore';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
       });
 
       it('clears the error message if no matching customer', () => {
-        component.name = 'Joe';
-        component.checkName();
-        expect(component.warningMessage).toBeTruthy();
+        editor.name = 'Joe';
+        editor.checkName();
+        expect(editor.warningMessage).toBeTruthy();
 
-        component.name = 'Jill';
-        component.checkName();
-        expect(component.warningMessage).toBeFalsy();
+        editor.name = 'Jill';
+        editor.checkName();
+        expect(editor.warningMessage).toBeFalsy();
       });
     });
   });
 
   describe('in edit mode', () => {
     beforeEach(() => {
-      component.customer = {
+      editor.customer = {
         id: '531LLS',
         name: 'Lillies and Cream',
         description: 'I have no idea what that would be',
@@ -213,37 +213,37 @@ describe('CustomerEditorComponent', () => {
     });
 
     it('sets the title', () => {
-      expect(component.title).toEqual('Modify Customer');
+      expect(editor.title).toEqual('Modify Customer');
     });
 
     it('initializes the name', () => {
-      expect(component.name).toEqual('Lillies and Cream');
+      expect(editor.name).toEqual('Lillies and Cream');
     });
 
     it('initializes the description', () => {
-      expect(component.description).toEqual(
+      expect(editor.description).toEqual(
         'I have no idea what that would be'
       );
     });
 
     it('initializes the active flag', () => {
-      expect(component.isActive).toEqual(false);
+      expect(editor.isActive).toEqual(false);
     });
 
     describe('save', () => {
       it('updates the customer', () => {
-        component.name = 'The Dude';
-        component.description = 'He does abide';
-        component.isActive = true;
-        component.save();
+        editor.name = 'The Dude';
+        editor.description = 'He does abide';
+        editor.isActive = true;
+        editor.save();
         expect(customers.update).toHaveBeenCalledTimes(1);
       });
 
       it('passes the id, name, description, and isActive status', () => {
-        component.name = 'The Dude';
-        component.description = 'He does abide';
-        component.isActive = true;
-        component.save();
+        editor.name = 'The Dude';
+        editor.description = 'He does abide';
+        editor.isActive = true;
+        editor.save();
         expect(customers.update).toHaveBeenCalledWith({
           id: '531LLS',
           name: 'The Dude',
@@ -253,10 +253,10 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('allows customers to be made inactive', () => {
-        component.name = 'Lazy Leopard';
-        (component.description = 'Cats like to sleep, even the bigger ones.'),
-          (component.isActive = false);
-        component.save();
+        editor.name = 'Lazy Leopard';
+        (editor.description = 'Cats like to sleep, even the bigger ones.'),
+          (editor.isActive = false);
+        editor.save();
         expect(customers.update).toHaveBeenCalledWith({
           id: '531LLS',
           name: 'Lazy Leopard',
@@ -266,71 +266,71 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('dismisses the modal', async () => {
-        await component.save();
+        await editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
     });
 
     describe('check name', () => {
       it('sets a warning message if a customer by the same name exists', () => {
-        component.name = 'Joe';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = 'Joe';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
       });
 
       it('ignore the customer with the same ID', () => {
-        component.customer.id = '420HI';
-        component.name = 'Joe';
-        component.checkName();
-        expect(component.warningMessage).toBeFalsy();
+        editor.customer.id = '420HI';
+        editor.name = 'Joe';
+        editor.checkName();
+        expect(editor.warningMessage).toBeFalsy();
       });
 
       it('does the check case-insensitive', () => {
-        component.name = 'jOe';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = 'jOe';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
       });
 
       it('ignores starting white-space', () => {
-        component.name = '  Joe';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = '  Joe';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
 
-        component.name = 'Kenmore ';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = 'Kenmore ';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
       });
 
       it('ignores ending white-space', () => {
-        component.name = 'Joe  ';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = 'Joe  ';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
 
-        component.name = ' Kenmore';
-        component.checkName();
-        expect(component.warningMessage).toEqual(
+        editor.name = ' Kenmore';
+        editor.checkName();
+        expect(editor.warningMessage).toEqual(
           'a customer with this name already exists'
         );
       });
 
       it('clears the error message if no matching customer', () => {
-        component.name = 'Joe';
-        component.checkName();
-        expect(component.warningMessage).toBeTruthy();
+        editor.name = 'Joe';
+        editor.checkName();
+        expect(editor.warningMessage).toBeTruthy();
 
-        component.name = 'Jill';
-        component.checkName();
-        expect(component.warningMessage).toBeFalsy();
+        editor.name = 'Jill';
+        editor.checkName();
+        expect(editor.warningMessage).toBeFalsy();
       });
     });
   });
