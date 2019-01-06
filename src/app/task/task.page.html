@@ -28,7 +28,21 @@
     <div><span class="label">Status:</span> {{ task?.status }}</div>
     <div><span class="label">Task Type:</span> {{ task?.type }}</div>
     <div><span class="label">Priority:</span> {{ task?.priority }}</div>
-    <div><span class="label">Entered On:</span> {{ (task?.enteredOn.seconds * 1000) | date }}</div>
-    <div *ngIf="task?.dueDate"><span class="label">Due:</span> {{ task?.dueDate | date }}</div>
+    <div>
+      <span class="label">Entered On:</span>
+      {{ task?.enteredOn.seconds * 1000 | date }}
+    </div>
+    <div *ngIf="task?.dueDate">
+      <span class="label">Due:</span> {{ task?.dueDate | date }}
+    </div>
   </div>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Notes</ion-label>
+      <ion-button fill="clear" (click)="addNote()"
+        ><ion-icon slot="icon-only" name="add" color="medium"></ion-icon
+      ></ion-button>
+    </ion-list-header>
+  </ion-list>
 </ion-content>
