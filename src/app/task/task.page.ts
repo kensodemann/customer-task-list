@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, IonList, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
@@ -17,6 +17,7 @@ import { TaskEditorComponent } from '../editors/task-editor/task-editor.componen
 })
 export class TaskPage implements OnDestroy, OnInit {
   private subscriptions: Array<Subscription> = [];
+  @ViewChild('notesList') myNotesList: IonList;
   task: TaskWithId;
 
   taskNotes: Array<NoteWithId>;
@@ -33,7 +34,12 @@ export class TaskPage implements OnDestroy, OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.subscriptions.push(this.tasks.get(id).subscribe(t => (this.task = t)));
     this.subscriptions.push(
-      this.notes.allFor(id).subscribe(n => (this.taskNotes = n))
+      this.notes.allFor(id).subscribe(n => {
+        if (this.myNotesList) {
+          this.myNotesList.closeSlidingItems();
+        }
+        this.taskNotes = n;
+      })
     );
   }
 
