@@ -1,3 +1,19 @@
+<a name="0.0.4-0"></a>
+## [0.0.4-0](https://github.com/kensodemann/customer-task-list/compare/v0.0.3...v0.0.4-0) (2019-01-07)
+
+
+### Features
+
+* **notes:** allow for the deletion of notes ([39b30b2](https://github.com/kensodemann/customer-task-list/commit/39b30b2))
+* **notes:** allow new notes to be added ([4df0126](https://github.com/kensodemann/customer-task-list/commit/4df0126))
+* **notes:** allow viewing and editing of existing notes ([4b00f9d](https://github.com/kensodemann/customer-task-list/commit/4b00f9d))
+* **notes:** create note item list component ([4924fcf](https://github.com/kensodemann/customer-task-list/commit/4924fcf))
+* **notes:** create the notes editor ([6124f21](https://github.com/kensodemann/customer-task-list/commit/6124f21))
+* **notes:** create the notes service ([0f53f7f](https://github.com/kensodemann/customer-task-list/commit/0f53f7f))
+* **notes:** list the notes in the customer and task pages ([b704ecb](https://github.com/kensodemann/customer-task-list/commit/b704ecb))
+
+
+
 <a name="0.0.3"></a>
 ## [0.0.3](https://github.com/kensodemann/customer-task-list/compare/v0.0.3-3...v0.0.3) (2019-01-06)
 
