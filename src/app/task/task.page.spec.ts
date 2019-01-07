@@ -1,11 +1,12 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 
 import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
 import { NotesService } from '../services/notes/notes.service';
+import { NoteWithId } from '../models/note';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TaskPage } from './task.page';
@@ -21,6 +22,8 @@ import { createNotesServiceMock } from '../services/notes/notes.mock';
 import { createTasksServiceMock } from '../services/tasks/tasks.mock';
 
 describe('TaskPage', () => {
+  let alert;
+  let alertController;
   let page: TaskPage;
   let fixture: ComponentFixture<TaskPage>;
   let modal;
@@ -30,6 +33,8 @@ describe('TaskPage', () => {
   let tasks;
 
   beforeEach(async(() => {
+    alert = createOverlayElementMock('Alert');
+    alertController = createOverlayControllerMock('AlertController', alert);
     modal = createOverlayElementMock('Modal');
     modalController = createOverlayControllerMock('ModalController', modal);
     notes = createNotesServiceMock();
@@ -39,6 +44,7 @@ describe('TaskPage', () => {
       declarations: [TaskPage],
       providers: [
         { provide: ActivatedRoute, useValue: route },
+        { provide: AlertController, useValue: alertController },
         { provide: ModalController, useValue: modalController },
         { provide: NotesService, useValue: notes },
         { provide: TasksService, useValue: tasks }
@@ -141,6 +147,43 @@ describe('TaskPage', () => {
     it('presents the modal', async () => {
       await page.edit();
       expect(modal.present).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('delete note', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    const note: NoteWithId = {
+      id: '42DA',
+      text: 'First find Deep Thought, then get the answer from it',
+      enteredOn: { nanoseconds: 0, seconds: 14324053 },
+      itemId: '451BK'
+    };
+
+    it('creates an alert', () => {
+      page.deleteNote(note);
+      expect(alertController.create).toHaveBeenCalledTimes(1);
+    });
+
+    it('presents the alert', async () => {
+      await page.deleteNote(note);
+      expect(alert.present).toHaveBeenCalledTimes(1);
+    });
+
+    it('does the delete on "Yes"', () => {
+      page.deleteNote(note);
+      const button = alertController.create.calls.argsFor(0)[0].buttons[0];
+      button.handler();
+      expect(notes.delete).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not delete on "No"', () => {
+      page.deleteNote(note);
+      const button = alertController.create.calls.argsFor(0)[0].buttons[1];
+      expect(button.role).toEqual('cancel');
+      expect(button.handler).toBeUndefined();
     });
   });
 

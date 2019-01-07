@@ -55,6 +55,7 @@
     <app-note-list-item
       *ngFor="let note of customerNotes"
       [note]="note"
+      (delete)="deleteNote(note)"
       (view)="viewNote(note)"
     ></app-note-list-item>
   </ion-list>

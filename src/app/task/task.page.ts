@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
@@ -22,9 +22,10 @@ export class TaskPage implements OnDestroy, OnInit {
   taskNotes: Array<NoteWithId>;
 
   constructor(
-    private route: ActivatedRoute,
+    private alert: AlertController,
     private modal: ModalController,
     private notes: NotesService,
+    private route: ActivatedRoute,
     private tasks: TasksService
   ) {}
 
@@ -54,6 +55,18 @@ export class TaskPage implements OnDestroy, OnInit {
       componentProps: { itemId: this.task.id }
     });
     m.present();
+  }
+
+  async deleteNote(note: NoteWithId): Promise<void> {
+    const a = await this.alert.create({
+      header: 'Confirm Delete',
+      message: 'Are you sure you want to perminantly remove this note?',
+      buttons: [
+        { text: 'Yes', handler: () => this.notes.delete(note) },
+        { text: 'No', role: 'cancel' }
+      ]
+    });
+    return a.present();
   }
 
   async viewNote(note: NoteWithId) {

@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { of } from 'rxjs';
 
 import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
@@ -10,6 +10,7 @@ import { CustomersService } from '../services/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
 import { NoteEditorComponent } from '../editors/note-editor/note-editor.component';
 import { NotesService } from '../services/notes/notes.service';
+import { NoteWithId } from '../models/note';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { TasksService } from '../services/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
@@ -25,6 +26,8 @@ import {
 } from '../../../test/mocks';
 
 describe('CustomerPage', () => {
+  let alert;
+  let alertController;
   let page: CustomerPage;
   let customers;
   let fixture: ComponentFixture<CustomerPage>;
@@ -37,6 +40,8 @@ describe('CustomerPage', () => {
   let testTasks: Array<TaskWithId>;
 
   beforeEach(async(() => {
+    alert = createOverlayElementMock('Alert');
+    alertController = createOverlayControllerMock('AlertController', alert);
     customers = createCustomersServiceMock();
     modal = createOverlayElementMock('Modal');
     modalController = createOverlayControllerMock('ModalController', modal);
@@ -48,6 +53,7 @@ describe('CustomerPage', () => {
       declarations: [CustomerPage],
       providers: [
         { provide: ActivatedRoute, useValue: route },
+        { provide: AlertController, useValue: alertController },
         { provide: CustomersService, useValue: customers },
         { provide: ModalController, useValue: modalController },
         { provide: NavController, useValue: navController },
@@ -215,6 +221,43 @@ describe('CustomerPage', () => {
     it('presents the modal', async () => {
       await page.addNote();
       expect(modal.present).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('delete note', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    const note: NoteWithId = {
+      id: '42DA',
+      text: 'First find Deep Thought, then get the answer from it',
+      enteredOn: { nanoseconds: 0, seconds: 14324053 },
+      itemId: '451BK'
+    };
+
+    it('creates an alert', () => {
+      page.deleteNote(note);
+      expect(alertController.create).toHaveBeenCalledTimes(1);
+    });
+
+    it('presents the alert', async () => {
+      await page.deleteNote(note);
+      expect(alert.present).toHaveBeenCalledTimes(1);
+    });
+
+    it('does the delete on "Yes"', () => {
+      page.deleteNote(note);
+      const button = alertController.create.calls.argsFor(0)[0].buttons[0];
+      button.handler();
+      expect(notes.delete).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not delete on "No"', () => {
+      page.deleteNote(note);
+      const button = alertController.create.calls.argsFor(0)[0].buttons[1];
+      expect(button.role).toEqual('cancel');
+      expect(button.handler).toBeUndefined();
     });
   });
 
