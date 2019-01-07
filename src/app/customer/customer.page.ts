@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController
+} from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
@@ -27,6 +31,7 @@ export class CustomerPage implements OnDestroy, OnInit {
   statuses: Array<string>;
 
   constructor(
+    private alert: AlertController,
     private customers: CustomersService,
     private modal: ModalController,
     public navController: NavController,
@@ -67,6 +72,18 @@ export class CustomerPage implements OnDestroy, OnInit {
       componentProps: { itemId: this.customer.id }
     });
     return await m.present();
+  }
+
+  async deleteNote(note: NoteWithId): Promise<void> {
+    const a = await this.alert.create({
+      header: 'Confirm Delete',
+      message: 'Are you sure you want to perminantly remove this note?',
+      buttons: [
+        { text: 'Yes', handler: () => this.notes.delete(note) },
+        { text: 'No', role: 'cancel' }
+      ]
+    });
+    return a.present();
   }
 
   async viewNote(note: NoteWithId) {
