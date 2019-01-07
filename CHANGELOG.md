@@ -1,3 +1,13 @@
+<a name="0.0.4-1"></a>
+## [0.0.4-1](https://github.com/kensodemann/customer-task-list/compare/v0.0.4-0...v0.0.4-1) (2019-01-07)
+
+
+### Bug Fixes
+
+* **notes:** close sliding item on note deletion ([add1e3e](https://github.com/kensodemann/customer-task-list/commit/add1e3e))
+
+
+
 <a name="0.0.4-0"></a>
 ## [0.0.4-0](https://github.com/kensodemann/customer-task-list/compare/v0.0.3...v0.0.4-0) (2019-01-07)
 
