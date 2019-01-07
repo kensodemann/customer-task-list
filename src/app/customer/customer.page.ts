@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   AlertController,
+  IonList,
   ModalController,
   NavController
 } from '@ionic/angular';
@@ -26,6 +27,8 @@ export class CustomerPage implements OnDestroy, OnInit {
   private subscriptions: Array<Subscription> = [];
   private customerTasks: Array<TaskWithId>;
 
+  @ViewChild('notesList') myNotesList: IonList;
+
   customer: CustomerWithId;
   customerNotes: Array<NoteWithId>;
   statuses: Array<string>;
@@ -47,7 +50,12 @@ export class CustomerPage implements OnDestroy, OnInit {
       this.tasks.forCustomer(id).subscribe(t => (this.customerTasks = t))
     );
     this.subscriptions.push(
-      this.notes.allFor(id).subscribe(n => (this.customerNotes = n))
+      this.notes.allFor(id).subscribe(n => {
+        if (this.myNotesList) {
+          this.myNotesList.closeSlidingItems();
+        }
+        this.customerNotes = n;
+      })
     );
     this.subscriptions.push(
       this.customers.get(id).subscribe(c => (this.customer = c))
