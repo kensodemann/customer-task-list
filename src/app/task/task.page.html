@@ -36,19 +36,6 @@
       <span class="label">Due:</span> {{ task?.dueDate | date }}
     </div>
   </div>
-
-  <ion-list #notesList>
-    <ion-list-header>
-      <ion-label>Notes</ion-label>
-      <ion-button fill="clear" (click)="addNote()"
-        ><ion-icon slot="icon-only" name="add" color="medium"></ion-icon
-      ></ion-button>
-    </ion-list-header>
-    <app-note-list-item
-      *ngFor="let note of taskNotes"
-      [note]="note"
-      (delete)="deleteNote(note)"
-      (view)="viewNote(note)"
-    ></app-note-list-item>
-  </ion-list>
+  
+  <app-notes-list *ngIf="task" [itemId]="task.id"></app-notes-list>
 </ion-content>
