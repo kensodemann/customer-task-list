@@ -10,7 +10,7 @@ import {
   createAngularFirestoreDocumentMock,
   createAngularFirestoreMock,
   createAngularFirestoreCollectionMock
-} from '../../../../test/mocks';
+} from '../../../../../test/mocks';
 
 describe('NotesService', () => {
   let angularFirestore;

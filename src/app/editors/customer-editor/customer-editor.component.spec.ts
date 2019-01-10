@@ -5,10 +5,10 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
 import { CustomerEditorComponent } from './customer-editor.component';
-import { CustomersService } from '../../services/customers/customers.service';
+import { CustomersService } from '../../services/firestore-data/customers/customers.service';
 import { CustomerWithId } from '../../models/customer';
 
-import { createCustomersServiceMock } from '../../services/customers/customers.mock';
+import { createCustomersServiceMock } from '../../services/firestore-data/customers/customers.mock';
 import {
   createOverlayControllerMock,
   createOverlayElementMock

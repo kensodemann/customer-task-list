@@ -5,13 +5,13 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { firestore } from 'firebase/app';
 
 import { NoteEditorComponent } from './note-editor.component';
-import { NotesService } from '../../services/notes/notes.service';
+import { NotesService } from '../../services/firestore-data/notes/notes.service';
 
 import {
   createOverlayControllerMock,
   createOverlayElementMock
 } from '../../../../test/mocks';
-import { createNotesServiceMock } from '../../services/notes/notes.mock';
+import { createNotesServiceMock } from '../../services/firestore-data/notes/notes.mock';
 
 describe('NoteEditorComponent', () => {
   let editor: NoteEditorComponent;

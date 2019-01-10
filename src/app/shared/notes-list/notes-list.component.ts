@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonList, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { NotesService } from '../../services/notes/notes.service';
+import { NotesService } from '../../services/firestore-data/notes/notes.service';
 import { NoteWithId } from '../..//models/note';
 import { NoteEditorComponent } from 'src/app/editors/note-editor/note-editor.component';
 

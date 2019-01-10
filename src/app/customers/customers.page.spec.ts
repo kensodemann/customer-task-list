@@ -4,11 +4,11 @@ import { ModalController, NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
 import { CustomersPage } from './customers.page';
-import { CustomersService } from '../services/customers/customers.service';
+import { CustomersService } from '../services/firestore-data/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
 
 import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
-import { createCustomersServiceMock } from '../services/customers/customers.mock';
+import { createCustomersServiceMock } from '../services/firestore-data/customers/customers.mock';
 import {
   createNavControllerMock,
   createOverlayControllerMock,
