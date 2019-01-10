@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { Priorities, Statuses, TaskTypes } from '../default-data';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TaskPage } from './task.page';
-import { TasksService } from '../services/tasks/tasks.service';
+import { TasksService } from '../services/firestore-data/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
 
 import {
@@ -15,7 +15,7 @@ import {
   createOverlayControllerMock,
   createOverlayElementMock
 } from '../../../test/mocks';
-import { createTasksServiceMock } from '../services/tasks/tasks.mock';
+import { createTasksServiceMock } from '../services/firestore-data/tasks/tasks.mock';
 
 describe('TaskPage', () => {
   let page: TaskPage;

@@ -5,9 +5,9 @@ import { of } from 'rxjs';
 
 import { NoteEditorComponent } from '../../editors/note-editor/note-editor.component';
 import { NotesListComponent } from './notes-list.component';
-import { NotesService } from '../../services/notes/notes.service';
+import { NotesService } from '../../services/firestore-data/notes/notes.service';
 
-import { createNotesServiceMock } from '../../services/notes/notes.mock';
+import { createNotesServiceMock } from '../../services/firestore-data/notes/notes.mock';
 import {
   createOverlayControllerMock,
   createOverlayElementMock

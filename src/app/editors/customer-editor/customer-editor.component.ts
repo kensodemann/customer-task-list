@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { CustomersService } from '../../services/customers/customers.service';
+import { CustomersService } from '../../services/firestore-data/customers/customers.service';
 import { Customer, CustomerWithId } from '../../models/customer';
 
 @Component({

@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { firestore } from 'firebase/app';
 
-import { CustomersService } from '../../services/customers/customers.service';
+import { CustomersService } from '../../services/firestore-data/customers/customers.service';
 import {
   Priorities,
   priorities,
@@ -13,7 +13,7 @@ import {
   taskTypes
 } from '../../default-data';
 import { Task, TaskWithId } from '../../models/task';
-import { TasksService } from '../../services/tasks/tasks.service';
+import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
 
 @Component({
   selector: 'app-task-editor',

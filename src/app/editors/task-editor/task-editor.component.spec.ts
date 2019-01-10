@@ -6,17 +6,17 @@ import { of } from 'rxjs';
 import { firestore } from 'firebase/app';
 
 import { CustomerWithId } from '../../models/customer';
-import { CustomersService } from '../../services/customers/customers.service';
+import { CustomersService } from '../../services/firestore-data/customers/customers.service';
 import { TaskEditorComponent } from './task-editor.component';
-import { TasksService } from '../../services/tasks/tasks.service';
+import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
 import { Priorities, Statuses, TaskTypes } from '../../default-data';
 
 import {
   createOverlayControllerMock,
   createOverlayElementMock
 } from 'test/mocks';
-import { createCustomersServiceMock } from '../../services/customers/customers.mock';
-import { createTasksServiceMock } from '../../services/tasks/tasks.mock';
+import { createCustomersServiceMock } from '../../services/firestore-data/customers/customers.mock';
+import { createTasksServiceMock } from '../../services/firestore-data/tasks/tasks.mock';
 
 describe('TaskEditorComponent', () => {
   let allCustomers: Array<CustomerWithId>;

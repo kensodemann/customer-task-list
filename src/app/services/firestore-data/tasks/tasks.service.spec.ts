@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
 import { firestore } from 'firebase/app';
 
-import { Priorities, Statuses, TaskTypes } from '../../default-data';
+import { Priorities, Statuses, TaskTypes } from '../../../default-data';
 import { TasksService } from './tasks.service';
 import {
   createAction,

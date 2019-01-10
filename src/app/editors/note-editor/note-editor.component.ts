@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { firestore } from 'firebase/app';
 
 import { Note, NoteWithId } from '../../models/note';
-import { NotesService } from '../../services/notes/notes.service';
+import { NotesService } from '../../services/firestore-data/notes/notes.service';
 
 @Component({
   selector: 'app-note-editor',
