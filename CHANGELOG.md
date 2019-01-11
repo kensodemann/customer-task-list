@@ -1,3 +1,14 @@
+<a name="0.0.4"></a>
+## [0.0.4](https://github.com/kensodemann/customer-task-list/compare/v0.0.4-1...v0.0.4) (2019-01-11)
+
+
+### Features
+
+* **notes:** add notes list component ([3b334c3](https://github.com/kensodemann/customer-task-list/commit/3b334c3))
+* **notes:** add server function to remove disassociated notes ([3eed631](https://github.com/kensodemann/customer-task-list/commit/3eed631))
+
+
+
 <a name="0.0.4-1"></a>
 ## [0.0.4-1](https://github.com/kensodemann/customer-task-list/compare/v0.0.4-0...v0.0.4-1) (2019-01-07)
 
