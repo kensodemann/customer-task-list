@@ -4,6 +4,7 @@ export function createAngularFireAuthMock() {
   return {
     authState: new Subject(),
     auth: jasmine.createSpyObj('Auth', {
+      sendPasswordResetEmail: Promise.resolve(),
       signInWithEmailAndPassword: Promise.resolve(),
       signInWithPopup: Promise.resolve(),
       signOut: Promise.resolve()

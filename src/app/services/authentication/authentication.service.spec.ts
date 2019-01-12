@@ -49,4 +49,16 @@ describe('AuthenticationService', () => {
       expect(angularFireAuth.auth.signOut).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('setPasswordResetEmail', () => {
+    it('calls the firebase setPaswordResetEmail', () => {
+      authenticationService.sendPasswordResetEmail('test@testme.org');
+      expect(angularFireAuth.auth.sendPasswordResetEmail).toHaveBeenCalledTimes(1);
+    });
+
+    it('passes the email', () => {
+      authenticationService.sendPasswordResetEmail('test@testme.org');
+      expect(angularFireAuth.auth.sendPasswordResetEmail).toHaveBeenCalledWith('test@testme.org');
+    });
+  });
 });

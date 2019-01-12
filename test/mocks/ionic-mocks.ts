@@ -7,7 +7,12 @@ export function createNavControllerMock() {
 }
 
 export function createOverlayElementMock(name: string) {
-  return jasmine.createSpyObj(name, ['dismiss', 'present']);
+  return jasmine.createSpyObj(name, {
+    dismiss: Promise.resolve(),
+    onDidDismiss: Promise.resolve(),
+    onWillDismiss: Promise.resolve(),
+    present: Promise.resolve()
+  });
 }
 
 export function createOverlayControllerMock(name: string, element?: any) {

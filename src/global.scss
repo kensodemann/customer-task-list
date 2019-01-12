@@ -23,6 +23,10 @@
   @include message('danger');
 }
 
+.info {
+  @include message('success');
+}
+
 .warning {
   @include message('warning');
 }
