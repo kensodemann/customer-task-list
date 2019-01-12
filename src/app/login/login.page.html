@@ -14,6 +14,7 @@
           #emailInput="ngModel"
           required
           email
+          (ionInput)="clearMessages()"
         ></ion-input>
       </ion-item>
       <ion-item>
@@ -24,11 +25,13 @@
           [(ngModel)]="password"
           #passwordInput="ngModel"
           required
+          (ionInput)="clearMessages()"
         ></ion-input>
       </ion-item>
     </ion-list>
+    <ion-button fill="clear" (click)="handlePasswordReset()">Reset Password </ion-button>
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-    <ion-img src="assets/icon/task-list.png"></ion-img>
+    <div class="info" *ngIf="infoMessage">{{ infoMessage }}</div>
   </form>
 </ion-content>
 
