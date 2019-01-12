@@ -1,3 +1,15 @@
+<a name="0.0.5-0"></a>
+## [0.0.5-0](https://github.com/kensodemann/customer-task-list/compare/v0.0.4...v0.0.5-0) (2019-01-12)
+
+
+### Features
+
+* **customers:** propagate customer name changes to tasks ([9869e90](https://github.com/kensodemann/customer-task-list/commit/9869e90))
+* **data:** eable offline persistence ([99177d3](https://github.com/kensodemann/customer-task-list/commit/99177d3))
+* **user:** add password reset functionality ([8039df4](https://github.com/kensodemann/customer-task-list/commit/8039df4))
+
+
+
 <a name="0.0.4"></a>
 ## [0.0.4](https://github.com/kensodemann/customer-task-list/compare/v0.0.4-1...v0.0.4) (2019-01-11)
 
