@@ -18,7 +18,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
