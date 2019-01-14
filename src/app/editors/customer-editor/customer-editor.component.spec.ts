@@ -137,8 +137,8 @@ describe('CustomerEditorComponent', () => {
         });
       });
 
-      it('dismisses the modal', async () => {
-        await editor.save();
+      it('dismisses the modal', () => {
+        editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
     });
@@ -265,8 +265,8 @@ describe('CustomerEditorComponent', () => {
         });
       });
 
-      it('dismisses the modal', async () => {
-        await editor.save();
+      it('dismisses the modal', () => {
+        editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
     });

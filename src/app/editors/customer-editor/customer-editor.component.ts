@@ -52,12 +52,12 @@ export class CustomerEditorComponent implements OnDestroy, OnInit {
     this.warningMessage = dup ? 'a customer with this name already exists' : '';
   }
 
-  async save() {
+  save() {
     try {
       if (this.customer) {
-        await this.customers.update(this.customerObject() as CustomerWithId);
+        this.customers.update(this.customerObject() as CustomerWithId);
       } else {
-        await this.customers.add(this.customerObject());
+        this.customers.add(this.customerObject());
       }
       this.modal.dismiss();
     } catch (err) {
