@@ -1,3 +1,13 @@
+<a name="0.0.5"></a>
+## [0.0.5](https://github.com/kensodemann/customer-task-list/compare/v0.0.5-0...v0.0.5) (2019-01-14)
+
+
+### Features
+
+* **app:** remove awaits for better offline ([d57530c](https://github.com/kensodemann/customer-task-list/commit/d57530c))
+
+
+
 <a name="0.0.5-0"></a>
 ## [0.0.5-0](https://github.com/kensodemann/customer-task-list/compare/v0.0.4...v0.0.5-0) (2019-01-12)
 
