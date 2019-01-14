@@ -32,12 +32,12 @@ export class NoteEditorComponent implements OnInit {
     this.modal.dismiss();
   }
 
-  async save() {
+  save() {
     const note = this.noteOjbect();
     if (this.note) {
-      await this.notes.update(note as NoteWithId);
+      this.notes.update(note as NoteWithId);
     } else {
-      await this.notes.add(note);
+      this.notes.add(note);
     }
     this.modal.dismiss();
   }

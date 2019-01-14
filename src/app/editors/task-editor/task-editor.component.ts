@@ -87,11 +87,11 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.modal.dismiss();
   }
 
-  async save() {
+  save() {
     if (this.task) {
-      await this.tasks.update(this.taskObject() as TaskWithId);
+      this.tasks.update(this.taskObject() as TaskWithId);
     } else {
-      await this.tasks.add(this.taskObject());
+      this.tasks.add(this.taskObject());
     }
     this.modal.dismiss();
   }
