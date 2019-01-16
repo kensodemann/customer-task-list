@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { addYears, format } from 'date-fns';
 import { firestore } from 'firebase/app';
 
 import { CustomersService } from '../../services/firestore-data/customers/customers.service';
@@ -26,6 +27,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   customerId: string;
   description: string;
   dueDate: string;
+  maxDueDate: string;
   name: string;
   priority: string;
   status: string;
@@ -53,6 +55,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.priorities = [...priorities];
     this.statuses = [...statuses];
     this.taskTypes = [...taskTypes];
+    this.maxDueDate = format(addYears(new Date(), 3), 'YYYY-MM-DD');
 
     if (this.task) {
       this.title = 'Modify Task';

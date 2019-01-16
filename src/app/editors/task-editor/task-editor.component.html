@@ -92,6 +92,7 @@
           name="dueDate"
           display-format="MM/DD/YYYY"
           [(ngModel)]="dueDate"
+          [max]="maxDueDate"
           #dueDatePicker="ngModel"
         ></ion-datetime>
       </ion-item>
