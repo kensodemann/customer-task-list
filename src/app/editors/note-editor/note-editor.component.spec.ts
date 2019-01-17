@@ -39,6 +39,11 @@ describe('NoteEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NoteEditorComponent);
     editor = fixture.componentInstance;
+    jasmine.clock().install();
+  });
+
+  afterEach(() => {
+    jasmine.clock().uninstall();
   });
 
   it('should create', () => {
@@ -56,14 +61,9 @@ describe('NoteEditorComponent', () => {
 
   describe('in add mode', () => {
     beforeEach(() => {
-      jasmine.clock().install();
       jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
       editor.itemId = '39945akf953';
       fixture.detectChanges();
-    });
-
-    afterEach(() => {
-      jasmine.clock().uninstall();
     });
 
     it('sets the title', () => {

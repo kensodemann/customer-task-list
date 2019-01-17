@@ -106,6 +106,12 @@ describe('TaskEditorComponent', () => {
     expect(editor).toBeTruthy();
   });
 
+  it('calculates a max due date', () => {
+    jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
+    fixture.detectChanges();
+    expect(editor.maxDueDate).toEqual('2021-12-25');
+  });
+
   describe('close', () => {
     it('dismisses the modal', () => {
       fixture.detectChanges();
@@ -166,12 +172,7 @@ describe('TaskEditorComponent', () => {
 
     describe('save', () => {
       beforeEach(() => {
-        jasmine.clock().install();
         jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
-      });
-
-      afterEach(() => {
-        jasmine.clock().uninstall();
       });
 
       it('adds the task', () => {
@@ -244,7 +245,6 @@ describe('TaskEditorComponent', () => {
 
   describe('in update mode', () => {
     beforeEach(() => {
-      jasmine.clock().install();
       jasmine.clock().mockDate(new Date('2019-03-13T12:05:45.000-05:00'));
       editor.task = {
         id: '88395AA930FE',
@@ -259,10 +259,6 @@ describe('TaskEditorComponent', () => {
         enteredOn: new firestore.Timestamp(1545765815, 0)
       };
       fixture.detectChanges();
-    });
-
-    afterEach(() => {
-      jasmine.clock().uninstall();
     });
 
     it('sets the title to "Modify Task"', () => {
