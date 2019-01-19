@@ -3,9 +3,12 @@
     <ion-label>
       <div class="title">{{ task.name }} - {{ task.customerName }}</div>
       <div class="timestamp">
-        Opened: {{ task.enteredOn.seconds * 1000 | date
-        }}<span *ngIf="task && task.dueDate">
-          / Due: {{ task.dueDate | date }}</span
+        Opened: {{ task.enteredOn.seconds * 1000 | date }}
+      </div>
+      <div class="timestamp" *ngIf="task && task.beginDate">
+        Scheduled: {{ task.beginDate | date }}
+        <span *ngIf="task.beginDate !== task.endDate">
+          - {{ task.endDate | date }}</span
         >
       </div>
       <div class="description">{{ task.description }}</div>

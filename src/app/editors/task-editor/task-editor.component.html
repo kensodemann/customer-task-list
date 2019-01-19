@@ -22,7 +22,7 @@
         >
           <ion-select-option
             *ngFor="let c of activeCustomers"
-            value="{{c.id}}"
+            value="{{ c.id }}"
             >{{ c.name }}</ion-select-option
           >
         </ion-select>
@@ -87,13 +87,31 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label>Due Date</ion-label>
+        <ion-label>Schedule Task</ion-label>
+        <ion-checkbox
+          name="scheduleTask"
+          [(ngModel)]="schedule"
+          (ionChange)="scheduleChanged()"
+        ></ion-checkbox>
+      </ion-item>
+      <ion-item *ngIf="schedule">
+        <ion-label>Begin Date</ion-label>
         <ion-datetime
-          name="dueDate"
+          name="beginDate"
           display-format="MM/DD/YYYY"
-          [(ngModel)]="dueDate"
-          [max]="maxDueDate"
-          #dueDatePicker="ngModel"
+          [(ngModel)]="beginDate"
+          [max]="maxDate"
+          #beginDatePicker="ngModel"
+        ></ion-datetime>
+      </ion-item>
+      <ion-item *ngIf="schedule">
+        <ion-label>End Date</ion-label>
+        <ion-datetime
+          name="endDate"
+          display-format="MM/DD/YYYY"
+          [(ngModel)]="endDate"
+          [max]="maxDate"
+          #endDatePicker="ngModel"
         ></ion-datetime>
       </ion-item>
     </ion-list>

@@ -32,10 +32,13 @@
       <span class="label">Entered On:</span>
       {{ task?.enteredOn.seconds * 1000 | date }}
     </div>
-    <div *ngIf="task?.dueDate">
-      <span class="label">Due:</span> {{ task?.dueDate | date }}
+    <div *ngIf="task?.beginDate">
+      <span class="label">Scheduled:</span> {{ task?.beginDate | date }}
+      <span *ngIf="task?.beginDate !== task?.endDate">
+        - {{ task.endDate | date }}</span
+      >
     </div>
   </div>
-  
+
   <app-notes-list *ngIf="task" [itemId]="task.id"></app-notes-list>
 </ion-content>
