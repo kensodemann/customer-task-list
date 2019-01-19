@@ -22,6 +22,7 @@
       [task]="task"
       (view)="view(task)"
       (delete)="delete(task)"
+      (done)="close(task)"
     ></app-task-list-item>
 
     <ion-list-header *ngIf="repeatingTasks && repeatingTasks.length">
@@ -32,6 +33,7 @@
       [task]="task"
       (view)="view(task)"
       (delete)="delete(task)"
+      (done)="close(task)"
     ></app-task-list-item>
 
     <ion-list-header *ngIf="onHoldTasks && onHoldTasks.length">
@@ -42,6 +44,7 @@
       [task]="task"
       (view)="view(task)"
       (delete)="delete(task)"
+      (done)="close(task)"
     ></app-task-list-item>
 
     <ion-list-header *ngIf="closedTasks && closedTasks.length">

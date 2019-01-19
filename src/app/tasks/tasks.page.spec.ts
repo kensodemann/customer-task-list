@@ -1,7 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController
+} from '@ionic/angular';
 import { Subject } from 'rxjs';
 
 import { Priorities, Statuses, TaskTypes } from '../default-data';
@@ -221,6 +225,35 @@ describe('TasksPage', () => {
       fixture.detectChanges();
       taskList.next(testTasks);
       expect(page.closedTasks).toEqual([]);
+    });
+  });
+
+  describe('close', () => {
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    const task: TaskWithId = {
+      id: '42DA',
+      name: 'Find the answer',
+      description: 'First find Deep Thought, then get the answer from it',
+      enteredOn: { nanoseconds: 0, seconds: 14324053 },
+      type: TaskTypes.FollowUp,
+      status: Statuses.Open,
+      priority: Priorities.Normal,
+      customerId: '451BK',
+      customerName: 'Book Burners R Us'
+    };
+
+    it('saves the task', () => {
+      page.close(task);
+      expect(tasks.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('sets the status to closed', () => {
+      const expected = { ...task, status: Statuses.Closed };
+      page.close(task);
+      expect(tasks.update).toHaveBeenCalledWith(expected);
     });
   });
 
