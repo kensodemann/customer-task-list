@@ -13,8 +13,11 @@
   </ion-item>
 
   <ion-item-options>
-    <ion-item-option color="danger" (click)="delete.emit()"
-      ><ion-icon slot="icon-only" name="trash"></ion-icon
-    ></ion-item-option>
+    <ion-item-option color="danger" (click)="delete.emit()">
+      Delete
+    </ion-item-option>
+    <ion-item-option *ngIf="showClosed" (click)="done.emit()">
+      Done
+    </ion-item-option>
   </ion-item-options>
 </ion-item-sliding>

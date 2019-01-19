@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Priorities, Statuses, TaskTypes } from '../../default-data';
+import { Priorities, Statuses, TaskTypes, statuses } from '../../default-data';
 import { TaskListItemComponent } from './task-list-item.component';
 
 describe('TaskListItemComponent', () => {
@@ -34,5 +34,15 @@ describe('TaskListItemComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('shows the close button if the status is not Closed', () => {
+    component.task.status = Statuses.Open;
+    expect(component.showClosed).toEqual(true);
+  });
+
+  it('hides the close button if the status is Closed', () => {
+    component.task.status = Statuses.Closed;
+    expect(component.showClosed).toEqual(false);
   });
 });

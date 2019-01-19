@@ -66,6 +66,11 @@ export class TasksPage implements OnDestroy, OnInit {
     return m.present();
   }
 
+  close(task: TaskWithId) {
+    const closedTask = { ...task, status: Statuses.Closed };
+    this.tasks.update(closedTask);
+  }
+
   async delete(task: TaskWithId): Promise<void> {
     const a = await this.alert.create({
       header: 'Confirm Delete',
