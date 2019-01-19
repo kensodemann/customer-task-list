@@ -254,7 +254,8 @@ describe('TasksService', () => {
         status: Statuses.Repeating,
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
-        dueDate: '2019-01-15',
+        beginDate: '2019-01-15',
+        endDate: '2019-01-17',
         customerId: '73SC',
         customerName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
@@ -271,7 +272,8 @@ describe('TasksService', () => {
         status: Statuses.Repeating,
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
-        dueDate: '2019-01-15',
+        beginDate: '2019-01-15',
+        endDate: '2019-01-17',
         customerId: '73SC',
         customerName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
@@ -283,7 +285,8 @@ describe('TasksService', () => {
         status: Statuses.Repeating,
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
-        dueDate: '2019-01-15',
+        beginDate: '2019-01-15',
+        endDate: '2019-01-17',
         customerId: '73SC',
         customerName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)

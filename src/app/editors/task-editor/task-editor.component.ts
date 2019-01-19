@@ -26,10 +26,12 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
 
   customerId: string;
   description: string;
-  dueDate: string;
-  maxDueDate: string;
+  beginDate: string;
+  endDate: string;
+  maxDate: string;
   name: string;
   priority: string;
+  schedule: boolean;
   status: string;
   taskType: string;
 
@@ -55,29 +57,19 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.priorities = [...priorities];
     this.statuses = [...statuses];
     this.taskTypes = [...taskTypes];
-    this.maxDueDate = format(addYears(new Date(), 3), 'YYYY-MM-DD');
+    this.maxDate = format(addYears(new Date(), 3), 'YYYY-MM-DD');
 
     if (this.task) {
       this.title = 'Modify Task';
-      this.name = this.task.name;
-      this.description = this.task.description;
-      this.status = this.task.status;
-      this.priority = this.task.priority;
-      this.taskType = this.task.type;
-      this.dueDate = this.task.dueDate;
-      this.customerId = this.task.customerId;
+      this.copyTaskProperties();
     } else {
       this.title = 'Add New Task';
-      this.priority = Priorities.Normal;
-      this.status = Statuses.Open;
-      this.taskType = TaskTypes.FollowUp;
+      this.defaultTaskProperties();
     }
 
     this.customerSubscription = this.customers.all().subscribe(customers => {
       this.activeCustomers = customers
-        .filter(
-          c => c.isActive || (this.task && this.task.customerId === c.id)
-        )
+        .filter(c => c.isActive || (this.task && this.task.customerId === c.id))
         .map(c => ({ id: c.id, name: c.name }));
     });
   }
@@ -99,6 +91,46 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.modal.dismiss();
   }
 
+  scheduleChanged() {
+    if (this.schedule) {
+      this.initializeDates();
+    } else {
+      this.clearDates();
+    }
+  }
+
+  private copyTaskProperties() {
+    this.name = this.task.name;
+    this.description = this.task.description;
+    this.status = this.task.status;
+    this.priority = this.task.priority;
+    this.taskType = this.task.type;
+    this.customerId = this.task.customerId;
+    this.schedule = !!this.task.beginDate;
+    this.beginDate = this.task.beginDate;
+    this.endDate = this.task.endDate;
+  }
+
+  private clearDates() {
+    this.beginDate = undefined;
+    this.endDate = undefined;
+  }
+
+  private initializeDates() {
+    this.beginDate = (this.task && this.task.beginDate) || this.today();
+    this.endDate = (this.task && this.task.endDate) || this.today();
+  }
+
+  private today(): string {
+    return format(new Date(), 'YYYY-MM-DD');
+  }
+
+  private defaultTaskProperties() {
+    this.priority = Priorities.Normal;
+    this.status = Statuses.Open;
+    this.taskType = TaskTypes.FollowUp;
+  }
+
   private taskObject(): Task | TaskWithId {
     const customer = this.activeCustomers.find(c => c.id === this.customerId);
     const task: Task = {
@@ -114,8 +146,12 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       customerName: customer && customer.name
     };
 
-    if (this.dueDate) {
-      task.dueDate = this.dueDate;
+    if (this.beginDate) {
+      task.beginDate = this.beginDate;
+    }
+
+    if (this.endDate) {
+      task.endDate = this.endDate;
     }
 
     if (this.task) {

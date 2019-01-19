@@ -109,7 +109,7 @@ describe('TaskEditorComponent', () => {
   it('calculates a max due date', () => {
     jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
     fixture.detectChanges();
-    expect(editor.maxDueDate).toEqual('2021-12-25');
+    expect(editor.maxDate).toEqual('2021-12-25');
   });
 
   describe('close', () => {
@@ -122,6 +122,7 @@ describe('TaskEditorComponent', () => {
 
   describe('in add mode', () => {
     beforeEach(() => {
+      jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
       fixture.detectChanges();
     });
 
@@ -143,6 +144,12 @@ describe('TaskEditorComponent', () => {
 
     it('gets the customers', () => {
       expect(customers.all).toHaveBeenCalledTimes(1);
+    });
+
+    it('defaults to not scheduling the task', () => {
+      expect(editor.schedule).toBeFalsy();
+      expect(editor.beginDate).toBeFalsy();
+      expect(editor.endDate).toBeFalsy();
     });
 
     it('maps the active customers', () => {
@@ -168,6 +175,24 @@ describe('TaskEditorComponent', () => {
           name: 'Harp Brewery'
         }
       ]);
+    });
+
+    describe('toggling the scheduled flag', () => {
+      it('sets the dates to today when true', () => {
+        editor.schedule = true;
+        editor.scheduleChanged();
+        expect(editor.beginDate).toEqual('2018-12-25');
+        expect(editor.endDate).toEqual('2018-12-25');
+      });
+
+      it('clears the dates when false', () => {
+        editor.beginDate = '2019-02-09';
+        editor.beginDate = '2019-02-12';
+        editor.schedule = false;
+        editor.scheduleChanged();
+        expect(editor.beginDate).toBeFalsy();
+        expect(editor.endDate).toBeFalsy();
+      });
     });
 
     describe('save', () => {
@@ -200,11 +225,12 @@ describe('TaskEditorComponent', () => {
         });
       });
 
-      it('passes the due date if there is one', () => {
+      it('passes the begin and end dates if they exist', () => {
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.customerId = '1138GL';
-        editor.dueDate = '2019-01-03';
+        editor.beginDate = '2019-01-03';
+        editor.endDate = '2019-01-04';
         editor.save();
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
@@ -215,7 +241,8 @@ describe('TaskEditorComponent', () => {
           customerId: '1138GL',
           customerName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0),
-          dueDate: '2019-01-03'
+          beginDate: '2019-01-03',
+          endDate: '2019-01-04'
         });
       });
 
@@ -246,113 +273,185 @@ describe('TaskEditorComponent', () => {
   describe('in update mode', () => {
     beforeEach(() => {
       jasmine.clock().mockDate(new Date('2019-03-13T12:05:45.000-05:00'));
-      editor.task = {
-        id: '88395AA930FE',
-        name: 'Weekly Status Meeting',
-        description: 'Weekly status meeting, usually on Thursdays',
-        status: Statuses.Repeating,
-        priority: Priorities.Low,
-        type: TaskTypes.Meeting,
-        dueDate: '2019-01-15',
-        customerId: '1138GL',
-        customerName: 'THX Sound Enterprises',
-        enteredOn: new firestore.Timestamp(1545765815, 0)
-      };
-      fixture.detectChanges();
     });
 
-    it('sets the title to "Modify Task"', () => {
-      expect(editor.title).toEqual('Modify Task');
-    });
-
-    it('initializes the name', () => {
-      expect(editor.name).toEqual('Weekly Status Meeting');
-    });
-
-    it('initializes the description', () => {
-      expect(editor.description).toEqual(
-        'Weekly status meeting, usually on Thursdays'
-      );
-    });
-
-    it('initializes the status', () => {
-      expect(editor.status).toEqual(Statuses.Repeating);
-    });
-
-    it('initializes the task type', () => {
-      expect(editor.taskType).toEqual(TaskTypes.Meeting);
-    });
-
-    it('initializes the priority', () => {
-      expect(editor.priority).toEqual(Priorities.Low);
-    });
-
-    it('initializes the due date', () => {
-      expect(editor.dueDate).toEqual('2019-01-15');
-    });
-
-    it('initializes the customer ID', () => {
-      expect(editor.customerId).toEqual('1138GL');
-    });
-
-    it('gets the customers', () => {
-      expect(customers.all).toHaveBeenCalledTimes(1);
-    });
-
-    it('maps the active customers', () => {
-      expect(editor.activeCustomers).toEqual([
-        {
-          id: '420HI',
-          name: 'Joe'
-        },
-        {
-          id: '42DA',
-          name: 'Deep Sea Divers'
-        },
-        {
-          id: '1138GL',
-          name: 'THX Sound Enterprises'
-        },
-        {
-          id: '705AMS',
-          name: 'Ashley Furniture'
-        },
-        {
-          id: '317SP',
-          name: 'Harp Brewery'
-        }
-      ]);
-    });
-
-    describe('save', () => {
-      it('updates the task', () => {
-        editor.name = 'Bi-Weekly Status Meeting';
-        editor.description = 'Moving to twice a week';
-        editor.save();
-        expect(tasks.update).toHaveBeenCalledTimes(1);
-      });
-
-      it('passes the id, name, description, and isActive status', () => {
-        editor.name = 'Bi-Weekly Status Meeting';
-        editor.description = 'Moving to twice a week';
-        editor.save();
-        expect(tasks.update).toHaveBeenCalledWith({
+    describe('without schedule dates', () => {
+      beforeEach(() => {
+        editor.task = {
           id: '88395AA930FE',
-          name: 'Bi-Weekly Status Meeting',
-          description: 'Moving to twice a week',
+          name: 'Weekly Status Meeting',
+          description: 'Weekly status meeting, usually on Thursdays',
           status: Statuses.Repeating,
           priority: Priorities.Low,
           type: TaskTypes.Meeting,
-          dueDate: '2019-01-15',
           customerId: '1138GL',
           customerName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0)
+        };
+        fixture.detectChanges();
+      });
+
+      it('initializes the schedule flag', () => {
+        expect(editor.schedule).toEqual(false);
+      });
+
+      describe('toggling the scheduled flag', () => {
+        it('sets the dates to today when true', () => {
+          editor.schedule = true;
+          editor.scheduleChanged();
+          expect(editor.beginDate).toEqual('2019-03-13');
+          expect(editor.endDate).toEqual('2019-03-13');
+        });
+
+        it('clears the dates when false', () => {
+          editor.beginDate = '2019-02-09';
+          editor.beginDate = '2019-02-12';
+          editor.schedule = false;
+          editor.scheduleChanged();
+          expect(editor.beginDate).toBeFalsy();
+          expect(editor.endDate).toBeFalsy();
+        });
+      });
+    });
+
+    describe('with schedule dates', () => {
+      beforeEach(() => {
+        editor.task = {
+          id: '88395AA930FE',
+          name: 'Weekly Status Meeting',
+          description: 'Weekly status meeting, usually on Thursdays',
+          status: Statuses.Repeating,
+          priority: Priorities.Low,
+          type: TaskTypes.Meeting,
+          beginDate: '2019-01-15',
+          endDate: '2019-01-18',
+          customerId: '1138GL',
+          customerName: 'THX Sound Enterprises',
+          enteredOn: new firestore.Timestamp(1545765815, 0)
+        };
+        fixture.detectChanges();
+      });
+
+      it('sets the title to "Modify Task"', () => {
+        expect(editor.title).toEqual('Modify Task');
+      });
+
+      it('initializes the name', () => {
+        expect(editor.name).toEqual('Weekly Status Meeting');
+      });
+
+      it('initializes the description', () => {
+        expect(editor.description).toEqual(
+          'Weekly status meeting, usually on Thursdays'
+        );
+      });
+
+      it('initializes the status', () => {
+        expect(editor.status).toEqual(Statuses.Repeating);
+      });
+
+      it('initializes the task type', () => {
+        expect(editor.taskType).toEqual(TaskTypes.Meeting);
+      });
+
+      it('initializes the priority', () => {
+        expect(editor.priority).toEqual(Priorities.Low);
+      });
+
+      it('initializes the begin date', () => {
+        expect(editor.beginDate).toEqual('2019-01-15');
+      });
+
+      it('initializes the end date', () => {
+        expect(editor.endDate).toEqual('2019-01-18');
+      });
+
+      it('initializes the schedule flag', () => {
+        expect(editor.schedule).toEqual(true);
+      });
+
+      it('initializes the customer ID', () => {
+        expect(editor.customerId).toEqual('1138GL');
+      });
+
+      it('gets the customers', () => {
+        expect(customers.all).toHaveBeenCalledTimes(1);
+      });
+
+      it('maps the active customers', () => {
+        expect(editor.activeCustomers).toEqual([
+          {
+            id: '420HI',
+            name: 'Joe'
+          },
+          {
+            id: '42DA',
+            name: 'Deep Sea Divers'
+          },
+          {
+            id: '1138GL',
+            name: 'THX Sound Enterprises'
+          },
+          {
+            id: '705AMS',
+            name: 'Ashley Furniture'
+          },
+          {
+            id: '317SP',
+            name: 'Harp Brewery'
+          }
+        ]);
+      });
+
+      describe('toggling the scheduled flag', () => {
+        it('sets the dates to the task dates when true', () => {
+          editor.schedule = true;
+          editor.scheduleChanged();
+          expect(editor.beginDate).toEqual('2019-01-15');
+          expect(editor.endDate).toEqual('2019-01-18');
+        });
+
+        it('clears the dates when false', () => {
+          editor.beginDate = '2019-02-09';
+          editor.beginDate = '2019-02-12';
+          editor.schedule = false;
+          editor.scheduleChanged();
+          expect(editor.beginDate).toBeFalsy();
+          expect(editor.endDate).toBeFalsy();
         });
       });
 
-      it('dismisses the modal', () => {
-        editor.save();
-        expect(modal.dismiss).toHaveBeenCalledTimes(1);
+      describe('save', () => {
+        it('updates the task', () => {
+          editor.name = 'Bi-Weekly Status Meeting';
+          editor.description = 'Moving to twice a week';
+          editor.save();
+          expect(tasks.update).toHaveBeenCalledTimes(1);
+        });
+
+        it('passes the id, name, description, and isActive status', () => {
+          editor.name = 'Bi-Weekly Status Meeting';
+          editor.description = 'Moving to twice a week';
+          editor.save();
+          expect(tasks.update).toHaveBeenCalledWith({
+            id: '88395AA930FE',
+            name: 'Bi-Weekly Status Meeting',
+            description: 'Moving to twice a week',
+            status: Statuses.Repeating,
+            priority: Priorities.Low,
+            type: TaskTypes.Meeting,
+            beginDate: '2019-01-15',
+            endDate: '2019-01-18',
+            customerId: '1138GL',
+            customerName: 'THX Sound Enterprises',
+            enteredOn: new firestore.Timestamp(1545765815, 0)
+          });
+        });
+
+        it('dismisses the modal', () => {
+          editor.save();
+          expect(modal.dismiss).toHaveBeenCalledTimes(1);
+        });
       });
     });
   });
@@ -366,7 +465,8 @@ describe('TaskEditorComponent', () => {
         status: Statuses.Repeating,
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
-        dueDate: '2019-01-15',
+        beginDate: '2019-01-15',
+        endDate: '2019-01-18',
         customerId: '73SC',
         customerName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
