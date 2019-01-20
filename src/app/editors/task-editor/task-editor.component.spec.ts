@@ -195,6 +195,27 @@ describe('TaskEditorComponent', () => {
       });
     });
 
+    describe('changing the begin date', () => {
+      beforeEach(() => {
+        editor.schedule = true;
+        editor.scheduleChanged();
+      });
+
+      it('moves the end date to match', () => {
+        editor.beginDate = '2019-01-14';
+        editor.beginDateChanged();
+        expect(editor.endDate).toEqual('2019-01-14');
+      });
+
+      it('keeps the gap when the end date changes', () => {
+        editor.endDate = '2018-12-27';
+        editor.endDateChanged();
+        editor.beginDate = '2019-01-14';
+        editor.beginDateChanged();
+        expect(editor.endDate).toEqual('2019-01-16');
+      });
+    });
+
     describe('save', () => {
       beforeEach(() => {
         jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
@@ -312,6 +333,27 @@ describe('TaskEditorComponent', () => {
           expect(editor.endDate).toBeFalsy();
         });
       });
+
+      describe('changing the begin date', () => {
+        beforeEach(() => {
+          editor.schedule = true;
+          editor.scheduleChanged();
+        });
+
+        it('moves the end date to match', () => {
+          editor.beginDate = '2019-01-14';
+          editor.beginDateChanged();
+          expect(editor.endDate).toEqual('2019-01-14');
+        });
+
+        it('keeps the gap when the end date changes', () => {
+          editor.endDate = '2019-03-15';
+          editor.endDateChanged();
+          editor.beginDate = '2019-01-14';
+          editor.beginDateChanged();
+          expect(editor.endDate).toEqual('2019-01-16');
+        });
+      });
     });
 
     describe('with schedule dates', () => {
@@ -405,6 +447,8 @@ describe('TaskEditorComponent', () => {
 
       describe('toggling the scheduled flag', () => {
         it('sets the dates to the task dates when true', () => {
+          editor.schedule = false;
+          editor.scheduleChanged();
           editor.schedule = true;
           editor.scheduleChanged();
           expect(editor.beginDate).toEqual('2019-01-15');
@@ -412,12 +456,26 @@ describe('TaskEditorComponent', () => {
         });
 
         it('clears the dates when false', () => {
-          editor.beginDate = '2019-02-09';
-          editor.beginDate = '2019-02-12';
           editor.schedule = false;
           editor.scheduleChanged();
           expect(editor.beginDate).toBeFalsy();
           expect(editor.endDate).toBeFalsy();
+        });
+      });
+
+      describe('changing the begin date', () => {
+        it('moves the end date to match', () => {
+          editor.beginDate = '2019-06-03';
+          editor.beginDateChanged();
+          expect(editor.endDate).toEqual('2019-06-06');
+        });
+
+        it('keeps the gap when the end date changes', () => {
+          editor.endDate = '2019-01-20';
+          editor.endDateChanged();
+          editor.beginDate = '2019-06-03';
+          editor.beginDateChanged();
+          expect(editor.endDate).toEqual('2019-06-08');
         });
       });
 

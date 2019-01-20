@@ -101,6 +101,7 @@
           display-format="MM/DD/YYYY"
           [(ngModel)]="beginDate"
           [max]="maxDate"
+          (ionChange)="beginDateChanged()"
           #beginDatePicker="ngModel"
         ></ion-datetime>
       </ion-item>
@@ -111,6 +112,7 @@
           display-format="MM/DD/YYYY"
           [(ngModel)]="endDate"
           [max]="maxDate"
+          (ionChange)="endDateChanged()"
           #endDatePicker="ngModel"
         ></ion-datetime>
       </ion-item>
