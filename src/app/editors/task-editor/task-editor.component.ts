@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { addYears, format } from 'date-fns';
+import { addDays, addYears, differenceInCalendarDays, format } from 'date-fns';
 import { firestore } from 'firebase/app';
 
 import { CustomersService } from '../../services/firestore-data/customers/customers.service';
@@ -22,6 +22,8 @@ import { TasksService } from '../../services/firestore-data/tasks/tasks.service'
   styleUrls: ['./task-editor.component.scss']
 })
 export class TaskEditorComponent implements OnInit, OnDestroy {
+  private daysBetween;
+
   title: string;
 
   customerId: string;
@@ -99,6 +101,17 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  beginDateChanged() {
+    this.endDate = format(
+      addDays(this.beginDate, this.daysBetween),
+      'YYYY-MM-DD'
+    );
+  }
+
+  endDateChanged() {
+    this.daysBetween = differenceInCalendarDays(this.endDate, this.beginDate);
+  }
+
   private copyTaskProperties() {
     this.name = this.task.name;
     this.description = this.task.description;
@@ -109,6 +122,10 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.schedule = !!this.task.beginDate;
     this.beginDate = this.task.beginDate;
     this.endDate = this.task.endDate;
+    this.daysBetween =
+      this.beginDate && this.endDate
+        ? differenceInCalendarDays(this.endDate, this.beginDate)
+        : 0;
   }
 
   private clearDates() {
@@ -119,6 +136,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   private initializeDates() {
     this.beginDate = (this.task && this.task.beginDate) || this.today();
     this.endDate = (this.task && this.task.endDate) || this.today();
+    this.daysBetween = differenceInCalendarDays(this.endDate, this.beginDate);
   }
 
   private today(): string {
