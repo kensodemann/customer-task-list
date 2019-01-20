@@ -1,3 +1,20 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/kensodemann/customer-task-list/compare/v0.0.5...v1.0.0) (2019-01-20)
+
+
+### Bug Fixes
+
+* **tasks:** add a max due date ([820d8cb](https://github.com/kensodemann/customer-task-list/commit/820d8cb))
+
+
+### Features
+
+* **tasks:** add a done button ([23a7ae4](https://github.com/kensodemann/customer-task-list/commit/23a7ae4))
+* **tasks:** change the end date based on begin date changes ([fd0e594](https://github.com/kensodemann/customer-task-list/commit/fd0e594))
+* **tasks:** convert from dueDate to begin and end dates ([bff885c](https://github.com/kensodemann/customer-task-list/commit/bff885c))
+
+
+
 <a name="0.0.5"></a>
 ## [0.0.5](https://github.com/kensodemann/customer-task-list/compare/v0.0.5-0...v0.0.5) (2019-01-14)
 
