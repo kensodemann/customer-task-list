@@ -1,5 +1,4 @@
-<ion-tabs>
-
+<ion-tabs *ngIf="application.showTabs">
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="tasks">
       <ion-icon name="checkmark-circle-outline"></ion-icon>
@@ -16,5 +15,6 @@
       <ion-label>About</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
-
 </ion-tabs>
+
+<ion-router-outlet *ngIf="!application.showTabs"></ion-router-outlet>
