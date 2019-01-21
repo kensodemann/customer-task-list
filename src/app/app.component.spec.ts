@@ -2,28 +2,28 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
-import { UpdateService } from './services/update/update.service';
+import { ApplicationService } from './services/application/application.service';
 
 import { AppComponent } from './app.component';
-import { createUpdateServiceMock } from './services/update/update.mock';
+import { createApplicationServiceMock } from './services/application/application.mock';
 import { createAngularFireAuthMock, createNavControllerMock } from 'test/mocks';
 
 describe('AppComponent', () => {
   let angularFireAuth;
+  let application;
   let navController;
-  let update;
 
   beforeEach(async(() => {
     angularFireAuth = createAngularFireAuthMock();
     navController = createNavControllerMock();
-    update = createUpdateServiceMock();
+    application = createApplicationServiceMock();
     TestBed.configureTestingModule({
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         { provide: AngularFireAuth, useValue: angularFireAuth },
         { provide: NavController, useValue: navController },
-        { provide: UpdateService, useValue: update }
+        { provide: ApplicationService, useValue: application }
       ]
     }).compileComponents();
   }));
@@ -37,7 +37,7 @@ describe('AppComponent', () => {
   it('registers for updates', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    expect(update.register).toHaveBeenCalledTimes(1);
+    expect(application.registerForUpdates).toHaveBeenCalledTimes(1);
   });
 
   describe('changing the user', () => {

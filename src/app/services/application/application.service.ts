@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
+import { AlertController, Platform } from '@ionic/angular';
 import { SwUpdate } from '@angular/service-worker';
-import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UpdateService {
-  constructor(private alert: AlertController, private update: SwUpdate) {}
+export class ApplicationService {
+  constructor(
+    private alert: AlertController,
+    private platform: Platform,
+    private update: SwUpdate
+  ) {}
 
-  register() {
+  get showTabs(): boolean {
+    return !(this.platform.is('tablet') || this.platform.is('desktop'));
+  }
+
+  registerForUpdates() {
     this.update.available.subscribe(() => this.promptUser());
   }
 
