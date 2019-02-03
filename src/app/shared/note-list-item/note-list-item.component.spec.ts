@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { firestore } from 'firebase/app';
 
 import { NoteListItemComponent } from './note-list-item.component';
 
@@ -20,7 +21,7 @@ describe('NoteListItemComponent', () => {
     component.note = {
       id: '42DA',
       text: 'First find Deep Thought, then get the answer from it',
-      enteredOn: { nanoseconds: 0, seconds: 14324053 },
+      enteredOn: new firestore.Timestamp(14324053, 0),
       itemId: '451BK'
     };
     fixture.detectChanges();
@@ -49,7 +50,8 @@ describe('NoteListItemComponent', () => {
       expect(component.noteText.length).toEqual(160);
       expect(component.noteText).toEqual(
         'Lorem ipsum dolor sit amet, ut utroque probatus dignissim mei, ' +
-        'et est oblique alienum antiopam, has ut partiendo dissentiunt.Eu has quando graeco aperiam, vi...');
+          'et est oblique alienum antiopam, has ut partiendo dissentiunt.Eu has quando graeco aperiam, vi...'
+      );
     });
   });
 });

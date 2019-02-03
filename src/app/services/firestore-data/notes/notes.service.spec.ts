@@ -59,12 +59,12 @@ describe('NotesService', () => {
         of([
           createAction('42DA', {
             text: 'First find Deep Thought, then get the answer from it',
-            enteredOn: { nanoseconds: 0, seconds: 14324053 },
+            enteredOn: new firestore.Timestamp(14324053, 0),
             itemId: '451BK'
           }),
           createAction('73SC', {
             text: 'Just like it sounds there captain',
-            enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+            enteredOn: new firestore.Timestamp(1432430034, 0),
             itemId: '451BK'
           })
         ])
@@ -74,13 +74,13 @@ describe('NotesService', () => {
           {
             id: '42DA',
             text: 'First find Deep Thought, then get the answer from it',
-            enteredOn: { nanoseconds: 0, seconds: 14324053 },
+            enteredOn: new firestore.Timestamp(14324053, 0),
             itemId: '451BK'
           },
           {
             id: '73SC',
             text: 'Just like it sounds there captain',
-            enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+            enteredOn: new firestore.Timestamp(1432430034, 0),
             itemId: '451BK'
           }
         ])
@@ -110,7 +110,7 @@ describe('NotesService', () => {
       document.valueChanges.and.returnValue(
         of({
           text: 'Just like it sounds there captain',
-          enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+          enteredOn: new firestore.Timestamp(1432430053, 0),
           itemId: '451BK'
         })
       );
@@ -118,7 +118,7 @@ describe('NotesService', () => {
         expect(c).toEqual({
           id: '199405fkkgi59',
           text: 'Just like it sounds there captain',
-          enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+          enteredOn: new firestore.Timestamp(1432430053, 0),
           itemId: '451BK'
         })
       );
@@ -129,13 +129,13 @@ describe('NotesService', () => {
     it('adds the item to the collection', () => {
       notes.add({
         text: 'Just like it sounds there captain',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+        enteredOn: new firestore.Timestamp(1432434053, 0),
         itemId: '451BK'
       });
       expect(collection.add).toHaveBeenCalledTimes(1);
       expect(collection.add).toHaveBeenCalledWith({
         text: 'Just like it sounds there captain',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+        enteredOn: new firestore.Timestamp(1432434053, 0),
         itemId: '451BK'
       });
     });
@@ -186,10 +186,7 @@ describe('NotesService', () => {
       notes.delete({
         id: '49950399KT',
         text: 'Make them extra shiny',
-        enteredOn: {
-          nanoseconds: 0,
-          seconds: 0
-        },
+        enteredOn: new firestore.Timestamp(0, 0),
         itemId: '451BK'
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
@@ -200,10 +197,7 @@ describe('NotesService', () => {
       notes.delete({
         id: '49950399KT',
         text: 'Make them extra shiny',
-        enteredOn: {
-          nanoseconds: 0,
-          seconds: 0
-        },
+        enteredOn: new firestore.Timestamp(0, 0),
         itemId: '451BK'
       });
       expect(document.delete).toHaveBeenCalledTimes(1);

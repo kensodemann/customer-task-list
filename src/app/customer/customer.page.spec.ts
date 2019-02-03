@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { firestore } from 'firebase/app';
 import { ModalController, NavController } from '@ionic/angular';
 import { of } from 'rxjs';
 
@@ -178,7 +179,7 @@ describe('CustomerPage', () => {
         id: '42DA',
         name: 'Find the answer',
         description: 'First find Deep Thought, then get the answer from it',
-        enteredOn: { nanoseconds: 0, seconds: 14324053 },
+        enteredOn: new firestore.Timestamp(14324053, 0),
         type: TaskTypes.FollowUp,
         status: Statuses.Closed,
         priority: Priorities.Normal,
@@ -189,7 +190,7 @@ describe('CustomerPage', () => {
         id: '399485',
         name: 'Eat some fish',
         description: 'Smartest creatures on Earth like fish',
-        enteredOn: { nanoseconds: 0, seconds: 993840059420 },
+        enteredOn: new firestore.Timestamp(1340059420, 0),
         type: TaskTypes.Meeting,
         status: Statuses.Repeating,
         priority: Priorities.High,
@@ -200,7 +201,7 @@ describe('CustomerPage', () => {
         id: 'S9590FGS',
         name: 'Model It',
         description: 'They need to see it to believe it',
-        enteredOn: { nanoseconds: 0, seconds: 994039950234 },
+        enteredOn: new firestore.Timestamp(1039950234, 0),
         type: TaskTypes.ProofOfConcept,
         status: Statuses.OnHold,
         priority: Priorities.Low,
@@ -212,7 +213,7 @@ describe('CustomerPage', () => {
         name: 'Respond to Review',
         description:
           'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
-        enteredOn: { nanoseconds: 0, seconds: 9940593 },
+        enteredOn: new firestore.Timestamp(9940593, 0),
         type: TaskTypes.FollowUp,
         status: Statuses.Open,
         priority: Priorities.High,
@@ -223,7 +224,7 @@ describe('CustomerPage', () => {
         id: '119490SDF1945',
         name: 'Create Test Data',
         description: 'Creating test data sucks',
-        enteredOn: { nanoseconds: 0, seconds: 15886594025 },
+        enteredOn: new firestore.Timestamp(1486594025, 0),
         type: TaskTypes.Research,
         status: Statuses.Closed,
         priority: Priorities.Low,
@@ -234,7 +235,7 @@ describe('CustomerPage', () => {
         id: '399405',
         name: 'Eat some chicken',
         description: 'It is good',
-        enteredOn: { nanoseconds: 0, seconds: 2935914324053 },
+        enteredOn: new firestore.Timestamp(293591432, 0),
         type: TaskTypes.Review,
         status: Statuses.OnHold,
         priority: Priorities.High,
@@ -246,7 +247,7 @@ describe('CustomerPage', () => {
         name: 'I am stuck on the answer',
         description:
           'First find Deep Thought, then get the answer from it, then puzzle over it',
-        enteredOn: { nanoseconds: 0, seconds: 1432405339945 },
+        enteredOn: new firestore.Timestamp(1432405339, 0),
         type: TaskTypes.Review,
         status: Statuses.OnHold,
         priority: Priorities.Normal,
@@ -258,7 +259,7 @@ describe('CustomerPage', () => {
         name: 'Die',
         description:
           'We all want to go to heaven, but no one wants to die to get there',
-        enteredOn: { nanoseconds: 0, seconds: 22114324053 },
+        enteredOn: new firestore.Timestamp(114324053, 0),
         type: TaskTypes.ProofOfConcept,
         status: Statuses.Open,
         priority: Priorities.High,

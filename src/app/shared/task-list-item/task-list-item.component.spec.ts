@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { firestore } from 'firebase/app';
 
 import { Priorities, Statuses, TaskTypes, statuses } from '../../default-data';
 import { TaskListItemComponent } from './task-list-item.component';
@@ -22,7 +23,7 @@ describe('TaskListItemComponent', () => {
       id: '42DA',
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
-      enteredOn: { nanoseconds: 0, seconds: 14324053 },
+      enteredOn: new firestore.Timestamp(14324053, 0),
       type: TaskTypes.FollowUp,
       status: Statuses.Closed,
       priority: Priorities.Normal,

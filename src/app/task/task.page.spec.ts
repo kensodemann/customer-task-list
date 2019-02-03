@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { firestore } from 'firebase/app';
 import { ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 
@@ -71,7 +72,7 @@ describe('TaskPage', () => {
         id: '314159PI',
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+        enteredOn: new firestore.Timestamp(1432430034, 0),
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.Normal,
@@ -84,7 +85,7 @@ describe('TaskPage', () => {
       id: '314159PI',
       name: 'Bang the Big',
       description: 'Just like it sounds there captain',
-      enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+      enteredOn: new firestore.Timestamp(1432430034, 0),
       type: TaskTypes.Meeting,
       status: Statuses.Open,
       priority: Priorities.Normal,
@@ -98,7 +99,7 @@ describe('TaskPage', () => {
       id: '314159PI',
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
-      enteredOn: { nanoseconds: 0, seconds: 14324053 },
+      enteredOn: new firestore.Timestamp(14324053, 0),
       type: TaskTypes.FollowUp,
       status: Statuses.Closed,
       priority: Priorities.Normal,

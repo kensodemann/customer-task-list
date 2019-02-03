@@ -1,4 +1,4 @@
-import { Timestamp } from 'firebase/firestore';
+import { firestore } from 'firebase/app';
 
 export interface Task {
   name: string;
@@ -10,7 +10,7 @@ export interface Task {
   endDate?: string;
   customerId: string;
   customerName: string;
-  enteredOn: Timestamp;
+  enteredOn: firestore.Timestamp;
 }
 
 export interface TaskWithId extends Task {

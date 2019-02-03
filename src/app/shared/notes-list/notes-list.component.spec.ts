@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlertController, ModalController } from '@ionic/angular';
+import { firestore } from 'firebase/app';
 import { of } from 'rxjs';
 
 import { NoteEditorComponent } from '../../editors/note-editor/note-editor.component';
@@ -62,19 +63,19 @@ describe('NotesListComponent', () => {
       {
         id: '42995849',
         text: 'this is note #1',
-        enteredOn: { seconds: 14123409350, nanoseconds: 0 },
+        enteredOn: new firestore.Timestamp(14123409350, 0),
         itemId: '314159PI'
       },
       {
         id: 'akfkig92034',
         text: 'this is note #2',
-        enteredOn: { seconds: 14129340059, nanoseconds: 0 },
+        enteredOn: new firestore.Timestamp(14129340059, 0),
         itemId: '314159PI'
       },
       {
         id: 'zzdf9249',
         text: 'this is note #3',
-        enteredOn: { seconds: 14994409350, nanoseconds: 0 },
+        enteredOn: new firestore.Timestamp(14994409350, 0),
         itemId: '314159PI'
       }
     ];
@@ -116,7 +117,7 @@ describe('NotesListComponent', () => {
     const note: NoteWithId = {
       id: '42DA',
       text: 'First find Deep Thought, then get the answer from it',
-      enteredOn: { nanoseconds: 0, seconds: 14324053 },
+      enteredOn: new firestore.Timestamp(14324053, 0),
       itemId: '451BK'
     };
 
@@ -168,7 +169,7 @@ describe('NotesListComponent', () => {
         id: '4277785',
         text: 'this is just a test note, nothing more',
         itemId: '314159PI',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 }
+        enteredOn: new firestore.Timestamp(1432430034, 0)
       });
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
@@ -178,7 +179,7 @@ describe('NotesListComponent', () => {
         id: '4277785',
         text: 'this is just a test note, nothing more',
         itemId: '314159PI',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 }
+        enteredOn: new firestore.Timestamp(1432430034, 0)
       });
       expect(modalController.create).toHaveBeenCalledWith({
         component: NoteEditorComponent,
@@ -187,7 +188,7 @@ describe('NotesListComponent', () => {
             id: '4277785',
             text: 'this is just a test note, nothing more',
             itemId: '314159PI',
-            enteredOn: { nanoseconds: 0, seconds: 1432430034053 }
+            enteredOn: new firestore.Timestamp(1432430034, 0)
           }
         }
       });
@@ -198,7 +199,7 @@ describe('NotesListComponent', () => {
         id: '4277785',
         text: 'this is just a test note, nothing more',
         itemId: '314159PI',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 }
+        enteredOn: new firestore.Timestamp(1432430034, 0)
       });
       expect(modal.present).toHaveBeenCalledTimes(1);
     });

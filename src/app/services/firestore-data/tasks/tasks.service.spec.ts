@@ -51,7 +51,7 @@ describe('TasksService', () => {
           createAction('42DA', {
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
-            enteredOn: { nanoseconds: 0, seconds: 14324053 },
+            enteredOn: new firestore.Timestamp(14324053, 0),
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
@@ -61,7 +61,7 @@ describe('TasksService', () => {
           createAction('73SC', {
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
-            enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+            enteredOn: new firestore.Timestamp(1432430034, 0),
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
@@ -76,7 +76,7 @@ describe('TasksService', () => {
             id: '42DA',
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
-            enteredOn: { nanoseconds: 0, seconds: 14324053 },
+            enteredOn: new firestore.Timestamp(14324053, 0),
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
@@ -87,7 +87,7 @@ describe('TasksService', () => {
             id: '73SC',
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
-            enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+            enteredOn: new firestore.Timestamp(1432430034, 0),
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
@@ -120,7 +120,7 @@ describe('TasksService', () => {
           createAction('42DA', {
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
-            enteredOn: { nanoseconds: 0, seconds: 14324053 },
+            enteredOn: new firestore.Timestamp(14324053, 0),
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
@@ -130,7 +130,7 @@ describe('TasksService', () => {
           createAction('73SC', {
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
-            enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+            enteredOn: new firestore.Timestamp(1432430303, 0),
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
@@ -145,7 +145,7 @@ describe('TasksService', () => {
             id: '42DA',
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
-            enteredOn: { nanoseconds: 0, seconds: 14324053 },
+            enteredOn: new firestore.Timestamp(14324053, 0),
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
@@ -156,7 +156,7 @@ describe('TasksService', () => {
             id: '73SC',
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
-            enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+            enteredOn: new firestore.Timestamp(1432430303, 0),
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
@@ -189,27 +189,29 @@ describe('TasksService', () => {
     it('returns the document with the ID', () => {
       document.valueChanges.and.returnValue(
         of({
-        name: 'Bang the Big',
-        description: 'Just like it sounds there captain',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
-        type: TaskTypes.Meeting,
-        status: Statuses.Open,
-        priority: Priorities.Normal,
-        customerId: '451BK',
-        customerName: 'Book Burners R Us'
+          name: 'Bang the Big',
+          description: 'Just like it sounds there captain',
+          enteredOn: new firestore.Timestamp(1424303405, 0),
+          type: TaskTypes.Meeting,
+          status: Statuses.Open,
+          priority: Priorities.Normal,
+          customerId: '451BK',
+          customerName: 'Book Burners R Us'
         })
       );
-      tasks.get('199405fkkgi59').subscribe(c => expect(c).toEqual({
-        id: '199405fkkgi59',
-        name: 'Bang the Big',
-        description: 'Just like it sounds there captain',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
-        type: TaskTypes.Meeting,
-        status: Statuses.Open,
-        priority: Priorities.Normal,
-        customerId: '451BK',
-        customerName: 'Book Burners R Us'
-      }));
+      tasks.get('199405fkkgi59').subscribe(c =>
+        expect(c).toEqual({
+          id: '199405fkkgi59',
+          name: 'Bang the Big',
+          description: 'Just like it sounds there captain',
+          enteredOn: new firestore.Timestamp(1424303405, 0),
+          type: TaskTypes.Meeting,
+          status: Statuses.Open,
+          priority: Priorities.Normal,
+          customerId: '451BK',
+          customerName: 'Book Burners R Us'
+        })
+      );
     });
   });
 
@@ -218,7 +220,7 @@ describe('TasksService', () => {
       tasks.add({
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+        enteredOn: new firestore.Timestamp(1432430034, 0),
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.Normal,
@@ -229,7 +231,7 @@ describe('TasksService', () => {
       expect(collection.add).toHaveBeenCalledWith({
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
-        enteredOn: { nanoseconds: 0, seconds: 1432430034053 },
+        enteredOn: new firestore.Timestamp(1432430034, 0),
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.Normal,
@@ -308,10 +310,7 @@ describe('TasksService', () => {
         description: 'Make them extra shiny',
         type: TaskTypes.ProofOfConcept,
         status: Statuses.Open,
-        enteredOn: {
-          nanoseconds: 0,
-          seconds: 0
-        },
+        enteredOn: new firestore.Timestamp(0, 0),
         priority: Priorities.Normal,
         customerId: '451BK',
         customerName: 'Book Burners R Us'
@@ -327,10 +326,7 @@ describe('TasksService', () => {
         description: 'Make them extra shiny',
         type: TaskTypes.ProofOfConcept,
         status: Statuses.Open,
-        enteredOn: {
-          nanoseconds: 0,
-          seconds: 0
-        },
+        enteredOn: new firestore.Timestamp(0, 0),
         priority: Priorities.Normal,
         customerId: '451BK',
         customerName: 'Book Burners R Us'

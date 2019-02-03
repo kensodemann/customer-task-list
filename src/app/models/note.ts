@@ -1,8 +1,8 @@
-import { Timestamp } from 'firebase/firestore';
+import { firestore } from 'firebase/app';
 
 export interface Note {
   text: string;
-  enteredOn: Timestamp;
+  enteredOn: firestore.Timestamp;
   itemId: string;
 }
 
