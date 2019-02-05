@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  LoadingController,
+  NavController
+} from '@ionic/angular';
 
 import { AuthenticationService } from '../services/authentication/authentication.service';
 
@@ -16,6 +20,7 @@ export class LoginPage {
 
   constructor(
     private alert: AlertController,
+    private loading: LoadingController,
     private auth: AuthenticationService,
     private navController: NavController
   ) {}
@@ -26,6 +31,8 @@ export class LoginPage {
   }
 
   async login() {
+    const l = await this.loading.create({ message: 'Verifying...' });
+    l.present();
     try {
       const u = await this.auth.login(this.email, this.password);
       if (u) {
@@ -34,6 +41,8 @@ export class LoginPage {
     } catch (err) {
       this.password = '';
       this.errorMessage = err.message;
+    } finally {
+      l.dismiss();
     }
   }
 
