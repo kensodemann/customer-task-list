@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthGuardService } from '../services/auth-guard/auth-guard.service';
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
+            canActivate: [AuthGuardService],
             loadChildren: '../tasks/tasks.module#TasksPageModule'
           }
         ]
@@ -22,6 +24,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
+            canActivate: [AuthGuardService],
             loadChildren: '../customers/customers.module#CustomersPageModule'
           }
         ]

@@ -1,8 +1,9 @@
-import { EMPTY, Subject } from 'rxjs';
+import { EMPTY, of, Subject } from 'rxjs';
 
 export function createAngularFireAuthMock() {
   return {
     authState: new Subject(),
+    user: of(null),
     auth: jasmine.createSpyObj('Auth', {
       sendPasswordResetEmail: Promise.resolve(),
       signInWithEmailAndPassword: Promise.resolve(),
