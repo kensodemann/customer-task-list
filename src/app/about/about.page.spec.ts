@@ -6,17 +6,15 @@ import { AuthenticationService } from '../services/authentication/authentication
 import { createAuthenticationServiceMock } from '../services/authentication/authentication.mock';
 
 describe('AboutPage', () => {
-  let authentication;
   let page: AboutPage;
   let fixture: ComponentFixture<AboutPage>;
 
   beforeEach(async(() => {
-    authentication = createAuthenticationServiceMock();
     TestBed.configureTestingModule({
       declarations: [AboutPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        { provide: AuthenticationService, useValue: authentication }
+        { provide: AuthenticationService, useFactory: createAuthenticationServiceMock }
       ]
     }).compileComponents();
   }));

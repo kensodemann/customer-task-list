@@ -26,14 +26,9 @@ import {
 
 describe('TasksPage', () => {
   let alert;
-  let alertController;
   let fixture: ComponentFixture<TasksPage>;
   let modal;
-  let modalController;
-  let navController;
   let page: TasksPage;
-  let route;
-  let tasks;
   let taskList: Subject<Array<TaskWithId>>;
   let testTasks: Array<TaskWithId>;
   let openTasks: Array<TaskWithId>;
@@ -43,30 +38,34 @@ describe('TasksPage', () => {
 
   beforeEach(async(() => {
     alert = createOverlayElementMock('Alert');
-    alertController = createOverlayControllerMock('AlertController', alert);
     modal = createOverlayElementMock('Modal');
-    modalController = createOverlayControllerMock('ModalController', modal);
-    navController = createNavControllerMock();
-    route = createActivatedRouteMock();
-    tasks = createTasksServiceMock();
-    taskList = new Subject();
-    tasks.all.and.returnValue(taskList);
-    tasks.forCustomer.and.returnValue(taskList);
     TestBed.configureTestingModule({
       declarations: [TasksPage],
       imports: [SharedModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        { provide: ActivatedRoute, useValue: route },
-        { provide: AlertController, useValue: alertController },
-        { provide: ModalController, useValue: modalController },
-        { provide: NavController, useValue: navController },
-        { provide: TasksService, useValue: tasks }
+        { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
+        {
+          provide: AlertController,
+          useFactory: () =>
+            createOverlayControllerMock('AlertController', alert)
+        },
+        {
+          provide: ModalController,
+          useFactory: () =>
+            createOverlayControllerMock('ModalController', modal)
+        },
+        { provide: NavController, useFactory: createNavControllerMock },
+        { provide: TasksService, useFactory: createTasksServiceMock }
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    const tasks = TestBed.get(TasksService);
+    taskList = new Subject();
+    tasks.all.and.returnValue(taskList);
+    tasks.forCustomer.and.returnValue(taskList);
     initializeTestTasks();
     fixture = TestBed.createComponent(TasksPage);
     page = fixture.componentInstance;
@@ -78,6 +77,7 @@ describe('TasksPage', () => {
   });
 
   it('gets the customer id and status from the route', () => {
+    const route = TestBed.get(ActivatedRoute);
     fixture.detectChanges();
     expect(route.snapshot.paramMap.get).toHaveBeenCalledTimes(2);
     expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('customerId');
@@ -85,12 +85,15 @@ describe('TasksPage', () => {
   });
 
   it('sets up an observable on all tasks if there is no customer', () => {
+    const tasks = TestBed.get(TasksService);
     fixture.detectChanges();
     expect(tasks.all).toHaveBeenCalledTimes(1);
     expect(tasks.forCustomer).not.toHaveBeenCalled();
   });
 
   it('sets up an observable on the customer tasks if there is a cutomer', () => {
+    const route = TestBed.get(ActivatedRoute);
+    const tasks = TestBed.get(TasksService);
     route.snapshot.paramMap.get
       .withArgs('customerId')
       .and.returnValue('33859940039kkd032');
@@ -109,6 +112,7 @@ describe('TasksPage', () => {
     });
 
     it('returns open tasks if status of open specified', () => {
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get
         .withArgs('customerId')
         .and.returnValue('33859940039kkd032');
@@ -121,6 +125,7 @@ describe('TasksPage', () => {
     });
 
     it('returns empty array if status other than open is specified', () => {
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get
         .withArgs('customerId')
         .and.returnValue('33859940039kkd032');
@@ -141,6 +146,7 @@ describe('TasksPage', () => {
     });
 
     it('returns repeating tasks if status of repeating specified', () => {
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get
         .withArgs('customerId')
         .and.returnValue('33859940039kkd032');
@@ -153,6 +159,7 @@ describe('TasksPage', () => {
     });
 
     it('returns empty array if status other than repeating is specified', () => {
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get
         .withArgs('customerId')
         .and.returnValue('33859940039kkd032');
@@ -173,6 +180,7 @@ describe('TasksPage', () => {
     });
 
     it('returns On Hold tasks if status of On Hold specified', () => {
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get
         .withArgs('customerId')
         .and.returnValue('33859940039kkd032');
@@ -185,6 +193,7 @@ describe('TasksPage', () => {
     });
 
     it('returns empty array if status other than on hold is specified', () => {
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get
         .withArgs('customerId')
         .and.returnValue('33859940039kkd032');
@@ -205,6 +214,7 @@ describe('TasksPage', () => {
     });
 
     it('returns closed tasks if status of closed specified', () => {
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get
         .withArgs('customerId')
         .and.returnValue('33859940039kkd032');
@@ -217,6 +227,7 @@ describe('TasksPage', () => {
     });
 
     it('returns empty array if status other than closed is specified', () => {
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get
         .withArgs('customerId')
         .and.returnValue('33859940039kkd032');
@@ -247,12 +258,14 @@ describe('TasksPage', () => {
     };
 
     it('saves the task', () => {
+      const tasks = TestBed.get(TasksService);
       page.close(task);
       expect(tasks.update).toHaveBeenCalledTimes(1);
     });
 
     it('sets the status to closed', () => {
       const expected = { ...task, status: Statuses.Closed };
+      const tasks = TestBed.get(TasksService);
       page.close(task);
       expect(tasks.update).toHaveBeenCalledWith(expected);
     });
@@ -276,6 +289,7 @@ describe('TasksPage', () => {
     };
 
     it('creates an alert', () => {
+      const alertController = TestBed.get(AlertController);
       page.delete(task);
       expect(alertController.create).toHaveBeenCalledTimes(1);
     });
@@ -286,6 +300,8 @@ describe('TasksPage', () => {
     });
 
     it('does the delete on "Yes"', () => {
+      const alertController = TestBed.get(AlertController);
+      const tasks = TestBed.get(TasksService);
       page.delete(task);
       const button = alertController.create.calls.argsFor(0)[0].buttons[0];
       button.handler();
@@ -293,6 +309,7 @@ describe('TasksPage', () => {
     });
 
     it('does not delete on "No"', () => {
+      const alertController = TestBed.get(AlertController);
       page.delete(task);
       const button = alertController.create.calls.argsFor(0)[0].buttons[1];
       expect(button.role).toEqual('cancel');
@@ -302,12 +319,14 @@ describe('TasksPage', () => {
 
   describe('add task', () => {
     it('creates a modal', () => {
+      const modalController = TestBed.get(ModalController);
       fixture.detectChanges();
       page.add();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the task editor component', () => {
+      const modalController = TestBed.get(ModalController);
       fixture.detectChanges();
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
@@ -316,6 +335,8 @@ describe('TasksPage', () => {
     });
 
     it('passes the customer ID if one is specified in the route', () => {
+      const modalController = TestBed.get(ModalController);
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get
         .withArgs('customerId')
         .and.returnValue('33859940039kkd032');
@@ -337,6 +358,7 @@ describe('TasksPage', () => {
 
   describe('view customer', () => {
     it('navigates to the customer', () => {
+      const navController = TestBed.get(NavController);
       fixture.detectChanges();
       page.view({
         id: 'S9590FGS',

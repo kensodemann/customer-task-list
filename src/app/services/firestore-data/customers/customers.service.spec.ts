@@ -9,15 +9,13 @@ import {
   createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock
 } from 'test/mocks';
-import { firestore } from 'firebase';
 
 describe('CustomersService', () => {
-  let angularFirestore;
   let collection;
   let customers: CustomersService;
 
   beforeEach(() => {
-    angularFirestore = createAngularFirestoreMock();
+    const angularFirestore = createAngularFirestoreMock();
     collection = createAngularFirestoreCollectionMock();
     angularFirestore.collection.and.returnValue(collection);
     TestBed.configureTestingModule({
@@ -34,6 +32,7 @@ describe('CustomersService', () => {
   });
 
   it('grabs a references to the tasks collection', () => {
+    const angularFirestore = TestBed.get(AngularFirestore);
     expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
     expect(angularFirestore.collection).toHaveBeenCalledWith('customers');
   });

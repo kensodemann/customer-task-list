@@ -24,36 +24,31 @@ import {
 
 describe('CustomerPage', () => {
   let page: CustomerPage;
-  let customers;
   let fixture: ComponentFixture<CustomerPage>;
   let modal;
-  let modalController;
-  let navController;
-  let route;
-  let tasks;
   let testTasks: Array<TaskWithId>;
 
   beforeEach(async(() => {
-    customers = createCustomersServiceMock();
     modal = createOverlayElementMock('Modal');
-    modalController = createOverlayControllerMock('ModalController', modal);
-    navController = createNavControllerMock();
-    route = createActivatedRouteMock();
-    tasks = createTasksServiceMock();
     TestBed.configureTestingModule({
       declarations: [CustomerPage],
       providers: [
-        { provide: ActivatedRoute, useValue: route },
-        { provide: CustomersService, useValue: customers },
-        { provide: ModalController, useValue: modalController },
-        { provide: NavController, useValue: navController },
-        { provide: TasksService, useValue: tasks }
+        { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
+        { provide: CustomersService, useFactory: createCustomersServiceMock },
+        {
+          provide: ModalController,
+          useFactory: () =>
+            createOverlayControllerMock('ModalController', modal)
+        },
+        { provide: NavController, useFactory: createNavControllerMock },
+        { provide: TasksService, useFactory: createTasksServiceMock }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    const tasks = TestBed.get(TasksService);
     initializeTestTasks();
     tasks.forCustomer.and.returnValue(of(testTasks));
     fixture = TestBed.createComponent(CustomerPage);
@@ -66,12 +61,15 @@ describe('CustomerPage', () => {
   });
 
   it('gets the ID from the route', () => {
+    const route = TestBed.get(ActivatedRoute);
     fixture.detectChanges();
     expect(route.snapshot.paramMap.get).toHaveBeenCalledTimes(1);
     expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('id');
   });
 
   it('get the customer for the id', () => {
+    const customers = TestBed.get(CustomersService);
+    const route = TestBed.get(ActivatedRoute);
     route.snapshot.paramMap.get.and.returnValue('314159PI');
     fixture.detectChanges();
     expect(customers.get).toHaveBeenCalledTimes(1);
@@ -79,6 +77,8 @@ describe('CustomerPage', () => {
   });
 
   it('assigns the customer', () => {
+    const customers = TestBed.get(CustomersService);
+    const route = TestBed.get(ActivatedRoute);
     route.snapshot.paramMap.get.and.returnValue('314159PI');
     customers.get.and.returnValue(
       of({
@@ -98,6 +98,8 @@ describe('CustomerPage', () => {
   });
 
   it('gets the tasks for the customer', () => {
+    const route = TestBed.get(ActivatedRoute);
+    const tasks = TestBed.get(TasksService);
     route.snapshot.paramMap.get.and.returnValue('314159PI');
     fixture.detectChanges();
     expect(tasks.forCustomer).toHaveBeenCalledTimes(1);
@@ -113,17 +115,21 @@ describe('CustomerPage', () => {
     };
 
     beforeEach(() => {
+      const customers = TestBed.get(CustomersService);
+      const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get.and.returnValue('4273');
       customers.get.and.returnValue(of(customer));
       fixture.detectChanges();
     });
 
     it('creates a modal', () => {
+      const modalController = TestBed.get(ModalController);
       page.edit();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the correct component and passes the customer', () => {
+      const modalController = TestBed.get(ModalController);
       page.edit();
       expect(modalController.create).toHaveBeenCalledWith({
         component: CustomerEditorComponent,

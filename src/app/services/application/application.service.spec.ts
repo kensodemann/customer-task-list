@@ -12,20 +12,18 @@ import { SwUpdate } from '@angular/service-worker';
 
 describe('ApplicationService', () => {
   let alert;
-  let alertController;
   let application: ApplicationService;
-  let platform;
-  let swUpdate;
   beforeEach(() => {
     alert = createOverlayElementMock('Alert');
-    alertController = createOverlayControllerMock('AlertController', alert);
-    platform = createPlatformMock();
-    swUpdate = createSwUpdateMock();
     TestBed.configureTestingModule({
       providers: [
-        { provide: AlertController, useVaule: alertController },
-        { provide: SwUpdate, useVaule: swUpdate },
-        { provide: Platform, useValue: platform }
+        {
+          provide: AlertController,
+          useFactory: () =>
+            createOverlayControllerMock('AlertComtroller', alert)
+        },
+        { provide: SwUpdate, useFactory: createSwUpdateMock },
+        { provide: Platform, useFactory: createPlatformMock }
       ]
     });
   });
@@ -46,6 +44,7 @@ describe('ApplicationService', () => {
       { plt: 'iphone', expected: true }
     ].forEach(test => {
       it(`is ${test.expected} for "${test.plt}"`, () => {
+        const platform = TestBed.get(Platform);
         platform.is.and.returnValue(false);
         platform.is.withArgs(test.plt).and.returnValue(true);
         expect(application.showTabs).toEqual(test.expected);
