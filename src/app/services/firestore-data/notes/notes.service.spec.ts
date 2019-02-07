@@ -13,12 +13,11 @@ import {
 } from '../../../../../test/mocks';
 
 describe('NotesService', () => {
-  let angularFirestore;
   let collection;
   let notes: NotesService;
 
   beforeEach(() => {
-    angularFirestore = createAngularFirestoreMock();
+    const angularFirestore = createAngularFirestoreMock();
     collection = createAngularFirestoreCollectionMock();
     angularFirestore.collection.and.returnValue(collection);
     TestBed.configureTestingModule({
@@ -35,16 +34,19 @@ describe('NotesService', () => {
   });
 
   it('grabs a references to the tasks collection', () => {
+    const angularFirestore = TestBed.get(AngularFirestore);
     expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
     expect(angularFirestore.collection).toHaveBeenCalledWith('notes');
   });
 
   describe('all for (customer or task)', () => {
     beforeEach(() => {
+      const angularFirestore = TestBed.get(AngularFirestore);
       angularFirestore.collection.calls.reset();
     });
 
     it('grabs a references to the tasks collection', () => {
+      const angularFirestore = TestBed.get(AngularFirestore);
       notes.allFor('451BK');
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
     });

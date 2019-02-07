@@ -22,21 +22,19 @@ describe('TaskPage', () => {
   let page: TaskPage;
   let fixture: ComponentFixture<TaskPage>;
   let modal;
-  let modalController;
-  let route;
-  let tasks;
 
   beforeEach(async(() => {
     modal = createOverlayElementMock('Modal');
-    modalController = createOverlayControllerMock('ModalController', modal);
-    route = createActivatedRouteMock();
-    tasks = createTasksServiceMock();
     TestBed.configureTestingModule({
       declarations: [TaskPage],
       providers: [
-        { provide: ActivatedRoute, useValue: route },
-        { provide: ModalController, useValue: modalController },
-        { provide: TasksService, useValue: tasks }
+        { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
+        {
+          provide: ModalController,
+          useFactory: () =>
+            createOverlayControllerMock('ModalController', modal)
+        },
+        { provide: TasksService, useFactory: createTasksServiceMock }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
@@ -53,12 +51,15 @@ describe('TaskPage', () => {
   });
 
   it('gets the ID from the route', () => {
+    const route = TestBed.get(ActivatedRoute);
     fixture.detectChanges();
     expect(route.snapshot.paramMap.get).toHaveBeenCalledTimes(1);
     expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('id');
   });
 
   it('get the task for the id', () => {
+    const route = TestBed.get(ActivatedRoute);
+    const tasks = TestBed.get(TasksService);
     route.snapshot.paramMap.get.and.returnValue('314159PI');
     fixture.detectChanges();
     expect(tasks.get).toHaveBeenCalledTimes(1);
@@ -66,6 +67,8 @@ describe('TaskPage', () => {
   });
 
   it('assigns the customer', () => {
+    const route = TestBed.get(ActivatedRoute);
+    const tasks = TestBed.get(TasksService);
     route.snapshot.paramMap.get.and.returnValue('314159PI');
     tasks.get.and.returnValue(
       of({
@@ -108,17 +111,21 @@ describe('TaskPage', () => {
     };
 
     beforeEach(() => {
+      const route = TestBed.get(ActivatedRoute);
+      const tasks = TestBed.get(TasksService);
       route.snapshot.paramMap.get.and.returnValue('314159PI');
       tasks.get.and.returnValue(of(task));
       fixture.detectChanges();
     });
 
     it('creates a modal', () => {
+      const modalController = TestBed.get(ModalController);
       page.edit();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the task editor component and passes the current task', () => {
+      const modalController = TestBed.get(ModalController);
       page.edit();
       expect(modalController.create).toHaveBeenCalledWith({
         component: TaskEditorComponent,

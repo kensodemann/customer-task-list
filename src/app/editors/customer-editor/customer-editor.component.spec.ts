@@ -18,30 +18,30 @@ describe('CustomerEditorComponent', () => {
   let editor: CustomerEditorComponent;
   let fixture: ComponentFixture<CustomerEditorComponent>;
   let customerList: Subject<Array<CustomerWithId>>;
-  let customers;
   let list;
-  let modal;
 
   beforeEach(async(() => {
-    modal = createOverlayControllerMock(
-      'ModalController',
-      createOverlayElementMock('Modal')
-    );
-    customers = createCustomersServiceMock();
     customerList = new Subject();
-    customers.all.and.returnValue(customerList);
     TestBed.configureTestingModule({
       declarations: [CustomerEditorComponent],
       imports: [FormsModule, IonicModule],
       providers: [
-        { provide: CustomersService, useValue: customers },
-        { provide: ModalController, useValue: modal }
+        { provide: CustomersService, useFactory: createCustomersServiceMock },
+        {
+          provide: ModalController,
+          useFactory: () =>
+            createOverlayControllerMock(
+              'ModalController',
+              createOverlayElementMock('Modal')
+            )
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    const customers = TestBed.get(CustomersService);
     fixture = TestBed.createComponent(CustomerEditorComponent);
     editor = fixture.componentInstance;
     list = [
@@ -64,6 +64,7 @@ describe('CustomerEditorComponent', () => {
         isActive: false
       }
     ];
+    customers.all.and.returnValue(customerList);
   });
 
   it('should create', () => {
@@ -72,6 +73,7 @@ describe('CustomerEditorComponent', () => {
   });
 
   it('sets up an observable on the customers', () => {
+    const customers = TestBed.get(CustomersService);
     fixture.detectChanges();
     expect(customers.all).toHaveBeenCalledTimes(1);
   });
@@ -84,6 +86,7 @@ describe('CustomerEditorComponent', () => {
 
   describe('close', () => {
     it('dismisses the modal', () => {
+      const modal = TestBed.get(ModalController);
       fixture.detectChanges();
       editor.close();
       expect(modal.dismiss).toHaveBeenCalledTimes(1);
@@ -106,6 +109,7 @@ describe('CustomerEditorComponent', () => {
 
     describe('save', () => {
       it('adds the customer', () => {
+        const customers = TestBed.get(CustomersService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.isActive = true;
@@ -114,6 +118,7 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('passes the name, description, and isActive status', () => {
+        const customers = TestBed.get(CustomersService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.isActive = true;
@@ -126,6 +131,7 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('allows inactive customers to be created', () => {
+        const customers = TestBed.get(CustomersService);
         editor.name = 'Lazy Leopard';
         (editor.description = 'Cats like to sleep, even the bigger ones.'),
           (editor.isActive = false);
@@ -138,6 +144,7 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('dismisses the modal', () => {
+        const modal = TestBed.get(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
@@ -221,9 +228,7 @@ describe('CustomerEditorComponent', () => {
     });
 
     it('initializes the description', () => {
-      expect(editor.description).toEqual(
-        'I have no idea what that would be'
-      );
+      expect(editor.description).toEqual('I have no idea what that would be');
     });
 
     it('initializes the active flag', () => {
@@ -232,6 +237,7 @@ describe('CustomerEditorComponent', () => {
 
     describe('save', () => {
       it('updates the customer', () => {
+        const customers = TestBed.get(CustomersService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.isActive = true;
@@ -240,6 +246,7 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('passes the id, name, description, and isActive status', () => {
+        const customers = TestBed.get(CustomersService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.isActive = true;
@@ -253,6 +260,7 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('allows customers to be made inactive', () => {
+        const customers = TestBed.get(CustomersService);
         editor.name = 'Lazy Leopard';
         (editor.description = 'Cats like to sleep, even the bigger ones.'),
           (editor.isActive = false);
@@ -266,6 +274,7 @@ describe('CustomerEditorComponent', () => {
       });
 
       it('dismisses the modal', () => {
+        const modal = TestBed.get(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });

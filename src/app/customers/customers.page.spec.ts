@@ -16,34 +16,33 @@ import {
 } from 'test/mocks';
 
 describe('CustomersPage', () => {
-  let customers;
   let customerList: Subject<Array<CustomerWithId>>;
   let list: Array<CustomerWithId>;
   let modal;
-  let modalController;
-  let navController;
   let page: CustomersPage;
   let fixture: ComponentFixture<CustomersPage>;
 
   beforeEach(async(() => {
-    customers = createCustomersServiceMock();
     customerList = new Subject();
-    customers.all.and.returnValue(customerList);
     modal = createOverlayElementMock('Modal');
-    modalController = createOverlayControllerMock('ModalController', modal);
-    navController = createNavControllerMock();
     TestBed.configureTestingModule({
       declarations: [CustomersPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        { provide: CustomersService, useValue: customers },
-        { provide: ModalController, useValue: modalController },
-        { provide: NavController, useValue: navController }
+        { provide: CustomersService, useFactory: createCustomersServiceMock },
+        {
+          provide: ModalController,
+          useFactory: () =>
+            createOverlayControllerMock('ModalController', modal)
+        },
+        { provide: NavController, useFactory: createNavControllerMock }
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    const customers = TestBed.get(CustomersService);
+    customers.all.and.returnValue(customerList);
     list = [
       {
         id: '314PI',
@@ -68,6 +67,7 @@ describe('CustomersPage', () => {
   });
 
   it('sets up an observable on the customers', () => {
+    const customers = TestBed.get(CustomersService);
     expect(customers.all).toHaveBeenCalledTimes(1);
   });
 
@@ -78,11 +78,13 @@ describe('CustomersPage', () => {
 
   describe('add customer', () => {
     it('creates a modal', () => {
+      const modalController = TestBed.get(ModalController);
       page.add();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the correct component', () => {
+      const modalController = TestBed.get(ModalController);
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
         component: CustomerEditorComponent
@@ -97,6 +99,7 @@ describe('CustomersPage', () => {
 
   describe('view customer', () => {
     it('navigates to the customer', () => {
+      const navController = TestBed.get(NavController);
       page.view({
         id: '4273',
         name: 'Dominos',
@@ -104,7 +107,10 @@ describe('CustomersPage', () => {
         isActive: true
       });
       expect(navController.navigateForward).toHaveBeenCalledTimes(1);
-      expect(navController.navigateForward).toHaveBeenCalledWith(['customer', '4273']);
+      expect(navController.navigateForward).toHaveBeenCalledWith([
+        'customer',
+        '4273'
+      ]);
     });
   });
 });

@@ -21,31 +21,30 @@ import { createTasksServiceMock } from '../../services/firestore-data/tasks/task
 describe('TaskEditorComponent', () => {
   let allCustomers: Array<CustomerWithId>;
   let editor: TaskEditorComponent;
-  let customers;
   let fixture: ComponentFixture<TaskEditorComponent>;
-  let modal;
-  let tasks;
 
   beforeEach(async(() => {
-    customers = createCustomersServiceMock();
-    modal = createOverlayControllerMock(
-      'ModalController',
-      createOverlayElementMock('Modal')
-    );
-    tasks = createTasksServiceMock();
     TestBed.configureTestingModule({
       declarations: [TaskEditorComponent],
       imports: [FormsModule, IonicModule],
       providers: [
-        { provide: CustomersService, useValue: customers },
-        { provide: ModalController, useValue: modal },
-        { provide: TasksService, useValue: tasks }
+        { provide: CustomersService, useFactory: createCustomersServiceMock },
+        {
+          provide: ModalController,
+          useFactory: () =>
+            createOverlayControllerMock(
+              'ModalController',
+              createOverlayElementMock('Modal')
+            )
+        },
+        { provide: TasksService, useFactory: createTasksServiceMock }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 
   beforeEach(() => {
+    const customers = TestBed.get(CustomersService);
     allCustomers = [
       {
         id: '314PI',
@@ -114,6 +113,7 @@ describe('TaskEditorComponent', () => {
 
   describe('close', () => {
     it('dismisses the modal', () => {
+      const modal = TestBed.get(ModalController);
       fixture.detectChanges();
       editor.close();
       expect(modal.dismiss).toHaveBeenCalledTimes(1);
@@ -143,6 +143,7 @@ describe('TaskEditorComponent', () => {
     });
 
     it('gets the customers', () => {
+      const customers = TestBed.get(CustomersService);
       expect(customers.all).toHaveBeenCalledTimes(1);
     });
 
@@ -222,6 +223,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('adds the task', () => {
+        const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.customerId = '1138GL';
@@ -230,6 +232,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('passes the data', () => {
+        const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.customerId = '1138GL';
@@ -247,6 +250,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('passes the begin and end dates if they exist', () => {
+        const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.customerId = '1138GL';
@@ -268,6 +272,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('has a blank customer name if the customer cannot be found', () => {
+        const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.customerId = '1139GL';
@@ -285,6 +290,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('dismisses the modal', () => {
+        const modal = TestBed.get(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
@@ -417,6 +423,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('gets the customers', () => {
+        const customers = TestBed.get(CustomersService);
         expect(customers.all).toHaveBeenCalledTimes(1);
       });
 
@@ -481,6 +488,7 @@ describe('TaskEditorComponent', () => {
 
       describe('save', () => {
         it('updates the task', () => {
+          const tasks = TestBed.get(TasksService);
           editor.name = 'Bi-Weekly Status Meeting';
           editor.description = 'Moving to twice a week';
           editor.save();
@@ -488,6 +496,7 @@ describe('TaskEditorComponent', () => {
         });
 
         it('passes the id, name, description, and isActive status', () => {
+          const tasks = TestBed.get(TasksService);
           editor.name = 'Bi-Weekly Status Meeting';
           editor.description = 'Moving to twice a week';
           editor.save();
@@ -507,6 +516,7 @@ describe('TaskEditorComponent', () => {
         });
 
         it('dismisses the modal', () => {
+          const modal = TestBed.get(ModalController);
           editor.save();
           expect(modal.dismiss).toHaveBeenCalledTimes(1);
         });

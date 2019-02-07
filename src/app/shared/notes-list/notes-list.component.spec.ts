@@ -17,25 +17,27 @@ import { NoteWithId } from 'src/app/models/note';
 
 describe('NotesListComponent', () => {
   let alert;
-  let alertController;
   let component: NotesListComponent;
   let fixture: ComponentFixture<NotesListComponent>;
   let modal;
-  let modalController;
-  let notes;
 
   beforeEach(async(() => {
     alert = createOverlayElementMock('Alert');
-    alertController = createOverlayControllerMock('AlertController', alert);
     modal = createOverlayElementMock('Modal');
-    modalController = createOverlayControllerMock('ModalController', modal);
-    notes = createNotesServiceMock();
     TestBed.configureTestingModule({
       declarations: [NotesListComponent],
       providers: [
-        { provide: AlertController, useValue: alertController },
-        { provide: ModalController, useValue: modalController },
-        { provide: NotesService, useValue: notes }
+        {
+          provide: AlertController,
+          useFactory: () =>
+            createOverlayControllerMock('AlertController', alert)
+        },
+        {
+          provide: ModalController,
+          useFactory: () =>
+            createOverlayControllerMock('ModalController', modal)
+        },
+        { provide: NotesService, useFactory: createNotesServiceMock }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
@@ -52,6 +54,7 @@ describe('NotesListComponent', () => {
   });
 
   it('gets the list of notes', () => {
+    const notes = TestBed.get(NotesService);
     component.itemId = '314159PI';
     fixture.detectChanges();
     expect(notes.allFor).toHaveBeenCalledTimes(1);
@@ -59,6 +62,7 @@ describe('NotesListComponent', () => {
   });
 
   it('assigns the returned notes', () => {
+    const notes = TestBed.get(NotesService);
     const n: Array<NoteWithId> = [
       {
         id: '42995849',
@@ -91,11 +95,13 @@ describe('NotesListComponent', () => {
     });
 
     it('creates a modal', () => {
+      const modalController = TestBed.get(ModalController);
       component.add();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the notes editor component and passes the current task ID', () => {
+      const modalController = TestBed.get(ModalController);
       component.add();
       expect(modalController.create).toHaveBeenCalledWith({
         component: NoteEditorComponent,
@@ -122,6 +128,7 @@ describe('NotesListComponent', () => {
     };
 
     it('creates an alert', () => {
+      const alertController = TestBed.get(AlertController);
       component.delete(note);
       expect(alertController.create).toHaveBeenCalledTimes(1);
     });
@@ -132,6 +139,8 @@ describe('NotesListComponent', () => {
     });
 
     it('does the delete on "Yes"', () => {
+      const alertController = TestBed.get(AlertController);
+      const notes = TestBed.get(NotesService);
       component.notesList = jasmine.createSpyObj('IonList', [
         'closeSlidingItems'
       ]);
@@ -142,6 +151,7 @@ describe('NotesListComponent', () => {
     });
 
     it('closes the sliding items on "Yes"', () => {
+      const alertController = TestBed.get(AlertController);
       component.notesList = jasmine.createSpyObj('IonList', [
         'closeSlidingItems'
       ]);
@@ -152,6 +162,7 @@ describe('NotesListComponent', () => {
     });
 
     it('does not delete on "No"', () => {
+      const alertController = TestBed.get(AlertController);
       component.delete(note);
       const button = alertController.create.calls.argsFor(0)[0].buttons[1];
       expect(button.role).toEqual('cancel');
@@ -165,6 +176,7 @@ describe('NotesListComponent', () => {
     });
 
     it('creates a modal', () => {
+      const modalController = TestBed.get(ModalController);
       component.view({
         id: '4277785',
         text: 'this is just a test note, nothing more',
@@ -175,6 +187,7 @@ describe('NotesListComponent', () => {
     });
 
     it('uses the notes editor component and passes the note to view', () => {
+      const modalController = TestBed.get(ModalController);
       component.view({
         id: '4277785',
         text: 'this is just a test note, nothing more',

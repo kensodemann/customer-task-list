@@ -16,21 +16,21 @@ import { createNotesServiceMock } from '../../services/firestore-data/notes/note
 describe('NoteEditorComponent', () => {
   let editor: NoteEditorComponent;
   let fixture: ComponentFixture<NoteEditorComponent>;
-  let modal;
-  let notes;
 
   beforeEach(async(() => {
-    modal = createOverlayControllerMock(
-      'ModalController',
-      createOverlayElementMock('Modal')
-    );
-    notes = createNotesServiceMock();
     TestBed.configureTestingModule({
       declarations: [NoteEditorComponent],
       imports: [FormsModule, IonicModule],
       providers: [
-        { provide: ModalController, useValue: modal },
-        { provide: NotesService, useValue: notes }
+        {
+          provide: ModalController,
+          useFactory: () =>
+            createOverlayControllerMock(
+              'ModalController',
+              createOverlayElementMock('Modal')
+            )
+        },
+        { provide: NotesService, useFactory: createNotesServiceMock }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
@@ -53,6 +53,7 @@ describe('NoteEditorComponent', () => {
 
   describe('close', () => {
     it('dismisses the modal', () => {
+      const modal = TestBed.get(ModalController);
       fixture.detectChanges();
       editor.close();
       expect(modal.dismiss).toHaveBeenCalledTimes(1);
@@ -72,12 +73,14 @@ describe('NoteEditorComponent', () => {
 
     describe('save', () => {
       it('adds the note', () => {
+        const notes = TestBed.get(NotesService);
         editor.text = 'The dude, he does abide';
         editor.save();
         expect(notes.add).toHaveBeenCalledTimes(1);
       });
 
       it('passes the text, enteredOn timestamp, and item ID', () => {
+        const notes = TestBed.get(NotesService);
         editor.text = 'The dude, he does abide';
         editor.save();
         expect(notes.add).toHaveBeenCalledWith({
@@ -88,6 +91,7 @@ describe('NoteEditorComponent', () => {
       });
 
       it('dismisses the modal', () => {
+        const modal = TestBed.get(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
@@ -119,12 +123,14 @@ describe('NoteEditorComponent', () => {
 
     describe('save', () => {
       it('updates the node', () => {
+        const notes = TestBed.get(NotesService);
         editor.text = 'The Dude, he does abide';
         editor.save();
         expect(notes.update).toHaveBeenCalledTimes(1);
       });
 
       it('passes text', () => {
+        const notes = TestBed.get(NotesService);
         editor.text = 'The Dude, he does abide';
         editor.save();
         expect(notes.update).toHaveBeenCalledWith({
@@ -136,6 +142,7 @@ describe('NoteEditorComponent', () => {
       });
 
       it('dismisses the modal', () => {
+        const modal = TestBed.get(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
