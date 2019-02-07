@@ -541,9 +541,137 @@ describe('TasksPage', () => {
       }
     ];
 
-    openTasks = testTasks.filter(t => t.status === Statuses.Open);
-    repeatingTasks = testTasks.filter(t => t.status === Statuses.Repeating);
-    onHoldTasks = testTasks.filter(t => t.status === Statuses.OnHold);
+    openTasks = [
+      {
+        id: '39940500987',
+        name: 'Respond to Review',
+        description:
+          'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
+        enteredOn: new firestore.Timestamp(9940593, 0),
+        type: TaskTypes.FollowUp,
+        status: Statuses.Open,
+        priority: Priorities.High,
+        customerId: '314PI',
+        customerName: 'Baker Baker'
+      },
+      {
+        id: '19945005996',
+        name: 'Pull from the dark',
+        description: 'Eliminate your enemy',
+        enteredOn: new firestore.Timestamp(948859023, 0),
+        type: TaskTypes.ProofOfConcept,
+        status: Statuses.Open,
+        priority: Priorities.High,
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
+      },
+      {
+        id: '9999',
+        name: 'Die',
+        description:
+          'We all want to go to heaven, but no one wants to die to get there',
+        enteredOn: new firestore.Timestamp(1114324053, 0),
+        type: TaskTypes.ProofOfConcept,
+        status: Statuses.Open,
+        priority: Priorities.High,
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
+      },
+      {
+        id: '3948SLIP',
+        name: 'People === Shit',
+        description: 'You know it to be true',
+        enteredOn: new firestore.Timestamp(1351424053, 0),
+        type: TaskTypes.FollowUp,
+        status: Statuses.Open,
+        priority: Priorities.High,
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
+      },
+      {
+        id: '73SC',
+        name: 'Bang the Big',
+        description: 'Just like it sounds there captain',
+        enteredOn: new firestore.Timestamp(1432430034, 0),
+        type: TaskTypes.Meeting,
+        status: Statuses.Open,
+        priority: Priorities.Normal,
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
+      },
+      {
+        id: '42DA399458',
+        name: 'Displute the answer',
+        description:
+          'First find Deep Thought, then get the answer from it, then argue about that shit',
+        enteredOn: new firestore.Timestamp(1432405339, 0),
+        type: TaskTypes.Research,
+        status: Statuses.Open,
+        priority: Priorities.Low,
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
+      },
+    ];
+    repeatingTasks = [
+      {
+        id: '985SUCK34IT',
+        name: 'The rain is wet',
+        description: 'Find out why rain is so damn wet',
+        enteredOn: new firestore.Timestamp(1014324053, 0),
+        type: TaskTypes.Research,
+        status: Statuses.Repeating,
+        priority: Priorities.High,
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
+      },
+      {
+        id: '399485',
+        name: 'Eat some fish',
+        description: 'Smartest creatures on Earth like fish',
+        enteredOn: new firestore.Timestamp(1440059420, 0),
+        type: TaskTypes.Meeting,
+        status: Statuses.Repeating,
+        priority: Priorities.High,
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
+      }
+    ];
+    onHoldTasks = [
+      {
+        id: '399405',
+        name: 'Eat some chicken',
+        description: 'It is good',
+        enteredOn: new firestore.Timestamp(914324053, 0),
+        type: TaskTypes.Review,
+        status: Statuses.OnHold,
+        priority: Priorities.High,
+        customerId: '314PI',
+        customerName: 'Baker Baker'
+      },
+      {
+        id: '42DA424242',
+        name: 'I am stuck on the answer',
+        description:
+          'First find Deep Thought, then get the answer from it, then puzzle over it',
+        enteredOn: new firestore.Timestamp(1432405945, 0),
+        type: TaskTypes.Review,
+        status: Statuses.OnHold,
+        priority: Priorities.Normal,
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
+      },
+      {
+        id: 'S9590FGS',
+        name: 'Model It',
+        description: 'They need to see it to believe it',
+        enteredOn: new firestore.Timestamp(1039950234, 0),
+        type: TaskTypes.ProofOfConcept,
+        status: Statuses.OnHold,
+        priority: Priorities.Low,
+        customerId: '451BK',
+        customerName: 'Book Burners R Us'
+      }
+    ];
     closedTasks = testTasks.filter(t => t.status === Statuses.Closed);
   }
 });
