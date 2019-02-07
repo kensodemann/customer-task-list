@@ -25,7 +25,7 @@ export class CustomersPage implements OnDestroy, OnInit {
   ngOnInit() {
     this.customersSubscription = this.customers
       .all()
-      .subscribe(c => (this.allCustomers = c));
+      .subscribe(c => (this.allCustomers = c.sort(this.byName)));
   }
 
   ngOnDestroy() {
@@ -41,5 +41,15 @@ export class CustomersPage implements OnDestroy, OnInit {
 
   view(c: CustomerWithId) {
     this.navController.navigateForward(['customer', c.id]);
+  }
+
+  private byName(c1: CustomerWithId, c2: CustomerWithId): number {
+    if (c1.name.toLowerCase() < c2.name.toLowerCase()) {
+      return -1;
+    }
+    if (c1.name.toLowerCase() > c2.name.toLowerCase()) {
+      return 1;
+    }
+    return 0;
   }
 }
