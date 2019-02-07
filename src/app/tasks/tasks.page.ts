@@ -8,7 +8,7 @@ import {
 } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { Statuses } from '../default-data';
+import { Statuses, Priorities } from '../default-data';
 import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
 import { TasksService } from '../services/firestore-data/tasks/tasks.service';
 import { TaskWithId } from '../models/task';
@@ -91,9 +91,15 @@ export class TasksPage implements OnDestroy, OnInit {
     if (this.list) {
       this.list.closeSlidingItems();
     }
-    this.openTasks = this.tasksWithStatus(t, Statuses.Open);
-    this.repeatingTasks = this.tasksWithStatus(t, Statuses.Repeating);
-    this.onHoldTasks = this.tasksWithStatus(t, Statuses.OnHold);
+    this.openTasks = this.tasksWithStatus(t, Statuses.Open).sort((t1, t2) =>
+      this.taskSort(t1, t2)
+    );
+    this.repeatingTasks = this.tasksWithStatus(t, Statuses.Repeating).sort(
+      (t1, t2) => this.taskSort(t1, t2)
+    );
+    this.onHoldTasks = this.tasksWithStatus(t, Statuses.OnHold).sort((t1, t2) =>
+      this.taskSort(t1, t2)
+    );
     this.closedTasks = this.tasksWithStatus(t, Statuses.Closed);
   }
 
@@ -106,5 +112,40 @@ export class TasksPage implements OnDestroy, OnInit {
     }
 
     return (allTasks && allTasks.filter(t => t.status === status)) || [];
+  }
+
+  private taskSort(t1: TaskWithId, t2: TaskWithId) {
+    if (this.priorityRank(t1) < this.priorityRank(t2)) {
+      return -1;
+    }
+    if (this.priorityRank(t1) > this.priorityRank(t2)) {
+      return 1;
+    }
+    if ((t1.beginDate || 'zzzz') < (t2.beginDate || 'zzzz')) {
+      return -1;
+    }
+    if ((t1.beginDate || 'zzzz') > (t2.beginDate || 'zzzz')) {
+      return 1;
+    }
+    if (t1.enteredOn.seconds < t2.enteredOn.seconds) {
+      return -1;
+    }
+    if (t1.enteredOn.seconds > t2.enteredOn.seconds) {
+      return 1;
+    }
+    return 0;
+  }
+
+  private priorityRank(task: TaskWithId): number {
+    switch (task.priority) {
+      case Priorities.High:
+        return 0;
+      case Priorities.Normal:
+        return 1;
+      case Priorities.Low:
+        return 2;
+      default:
+        return 3;
+    }
   }
 }
