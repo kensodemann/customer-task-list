@@ -53,7 +53,7 @@ describe('CustomersPage', () => {
       {
         id: '420HI',
         name: 'Joe',
-        description: 'Some guy named Joe who sells week on my street corner',
+        description: 'Some guy named Joe who sells weed on my street corner',
         isActive: true
       }
     ];
@@ -71,9 +71,64 @@ describe('CustomersPage', () => {
     expect(customers.all).toHaveBeenCalledTimes(1);
   });
 
-  it('changes the customer list', () => {
+  it('sets all customers on changes to the customers', () => {
     customerList.next(list);
     expect(page.allCustomers).toEqual(list);
+  });
+
+  it('sorts the customers by name', () => {
+    customerList.next([
+      {
+        id: '420HI',
+        name: 'Joe',
+        description: 'Some guy named Joe who sells weed on my street corner',
+        isActive: true
+      },
+      {
+        id: '314PI',
+        name: `Baker's Square`,
+        description: 'Makers of overly sweet pies and otherwise crappy food',
+        isActive: true
+      },
+      {
+        id: '3895WUT',
+        name: `Hello Underdog`,
+        description: 'Underwear for your pooch',
+        isActive: true
+      },
+      {
+        id: '12345',
+        name: `aa bus lines`,
+        description: 'The best bus line for your apparently lacking money',
+        isActive: true
+      }
+    ]);
+    expect(page.allCustomers).toEqual([
+      {
+        id: '12345',
+        name: `aa bus lines`,
+        description: 'The best bus line for your apparently lacking money',
+        isActive: true
+      },
+      {
+        id: '314PI',
+        name: `Baker's Square`,
+        description: 'Makers of overly sweet pies and otherwise crappy food',
+        isActive: true
+      },
+      {
+        id: '3895WUT',
+        name: `Hello Underdog`,
+        description: 'Underwear for your pooch',
+        isActive: true
+      },
+      {
+        id: '420HI',
+        name: 'Joe',
+        description: 'Some guy named Joe who sells weed on my street corner',
+        isActive: true
+      }
+    ]);
   });
 
   describe('add customer', () => {
