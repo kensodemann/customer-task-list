@@ -156,24 +156,24 @@ describe('TaskEditorComponent', () => {
     it('maps the active customers', () => {
       expect(editor.activeCustomers).toEqual([
         {
-          id: '420HI',
-          name: 'Joe'
+          id: '705AMS',
+          name: 'Ashley Furniture'
         },
         {
           id: '42DA',
           name: 'Deep Sea Divers'
         },
         {
-          id: '1138GL',
-          name: 'THX Sound Enterprises'
-        },
-        {
-          id: '705AMS',
-          name: 'Ashley Furniture'
-        },
-        {
           id: '317SP',
           name: 'Harp Brewery'
+        },
+        {
+          id: '420HI',
+          name: 'Joe'
+        },
+        {
+          id: '1138GL',
+          name: 'THX Sound Enterprises'
         }
       ]);
     });
@@ -430,24 +430,24 @@ describe('TaskEditorComponent', () => {
       it('maps the active customers', () => {
         expect(editor.activeCustomers).toEqual([
           {
-            id: '420HI',
-            name: 'Joe'
+            id: '705AMS',
+            name: 'Ashley Furniture'
           },
           {
             id: '42DA',
             name: 'Deep Sea Divers'
           },
           {
-            id: '1138GL',
-            name: 'THX Sound Enterprises'
-          },
-          {
-            id: '705AMS',
-            name: 'Ashley Furniture'
-          },
-          {
             id: '317SP',
             name: 'Harp Brewery'
+          },
+          {
+            id: '420HI',
+            name: 'Joe'
+          },
+          {
+            id: '1138GL',
+            name: 'THX Sound Enterprises'
           }
         ]);
       });
@@ -545,28 +545,28 @@ describe('TaskEditorComponent', () => {
     it('maps the active customers and the assigned customer', () => {
       expect(editor.activeCustomers).toEqual([
         {
-          id: '420HI',
-          name: 'Joe'
-        },
-        {
-          id: '73SC',
-          name: 'Wheels'
+          id: '705AMS',
+          name: 'Ashley Furniture'
         },
         {
           id: '42DA',
           name: 'Deep Sea Divers'
         },
         {
+          id: '317SP',
+          name: 'Harp Brewery'
+        },
+        {
+          id: '420HI',
+          name: 'Joe'
+        },
+        {
           id: '1138GL',
           name: 'THX Sound Enterprises'
         },
         {
-          id: '705AMS',
-          name: 'Ashley Furniture'
-        },
-        {
-          id: '317SP',
-          name: 'Harp Brewery'
+          id: '73SC',
+          name: 'Wheels'
         }
       ]);
     });

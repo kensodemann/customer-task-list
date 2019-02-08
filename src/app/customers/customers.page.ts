@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
 import { CustomersService } from '../services/firestore-data/customers/customers.service';
 import { CustomerWithId } from '../models/customer';
+import { byName } from '../util';
 
 @Component({
   selector: 'app-customers',
@@ -25,7 +26,7 @@ export class CustomersPage implements OnDestroy, OnInit {
   ngOnInit() {
     this.customersSubscription = this.customers
       .all()
-      .subscribe(c => (this.allCustomers = c.sort(this.byName)));
+      .subscribe(c => (this.allCustomers = c.sort(byName)));
   }
 
   ngOnDestroy() {
@@ -41,15 +42,5 @@ export class CustomersPage implements OnDestroy, OnInit {
 
   view(c: CustomerWithId) {
     this.navController.navigateForward(['customer', c.id]);
-  }
-
-  private byName(c1: CustomerWithId, c2: CustomerWithId): number {
-    if (c1.name.toLowerCase() < c2.name.toLowerCase()) {
-      return -1;
-    }
-    if (c1.name.toLowerCase() > c2.name.toLowerCase()) {
-      return 1;
-    }
-    return 0;
   }
 }

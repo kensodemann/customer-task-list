@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { addDays, addYears, differenceInCalendarDays, format } from 'date-fns';
 import { firestore } from 'firebase/app';
 
+import { byName } from '../../util';
 import { CustomersService } from '../../services/firestore-data/customers/customers.service';
 import {
   Priorities,
@@ -72,7 +73,8 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.customerSubscription = this.customers.all().subscribe(customers => {
       this.activeCustomers = customers
         .filter(c => c.isActive || (this.task && this.task.customerId === c.id))
-        .map(c => ({ id: c.id, name: c.name }));
+        .map(c => ({ id: c.id, name: c.name }))
+        .sort(byName);
     });
   }
 
