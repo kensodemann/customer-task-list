@@ -1,3 +1,22 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/kensodemann/customer-task-list/compare/v1.0.0...v1.1.0) (2019-02-08)
+
+
+### Bug Fixes
+
+* **app:** guard data routes for login only ([913230d](https://github.com/kensodemann/customer-task-list/commit/913230d))
+* **login:** provide a login indicator ([a7d88a9](https://github.com/kensodemann/customer-task-list/commit/a7d88a9))
+
+
+### Features
+
+* **app:** show tabs on phone and menu elsewhere ([ea9d123](https://github.com/kensodemann/customer-task-list/commit/ea9d123))
+* **customers:** sort by name ([daaece3](https://github.com/kensodemann/customer-task-list/commit/daaece3))
+* **tasks:** sort the customers in the task editor ([766130f](https://github.com/kensodemann/customer-task-list/commit/766130f))
+* **tasks:** sort the tasks ([bbcfbb0](https://github.com/kensodemann/customer-task-list/commit/bbcfbb0))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/kensodemann/customer-task-list/compare/v0.0.5...v1.0.0) (2019-01-20)
 
