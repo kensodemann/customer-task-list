@@ -48,7 +48,10 @@ export const onCustomerUpdate = functions.firestore
           batch
             .commit()
             .catch(err =>
-              console.log('Error committing update of customer names on tasks', err)
+              console.log(
+                'Error committing update of customer names on tasks',
+                err
+              )
             );
         })
         .catch(err => {
@@ -57,3 +60,27 @@ export const onCustomerUpdate = functions.firestore
     }
     return null;
   });
+
+export const purgeDatabase = functions.https.onRequest((req, res) => {
+  return Promise.all([
+    purgeCollection('customers'),
+    purgeCollection('notes'),
+    purgeCollection('tasks')
+  ])
+    .then(() => res.send('completed the purge'))
+    .catch(err => console.log('error in grouped purge', err));
+});
+
+function purgeCollection(collection: string) {
+  const db = admin.firestore();
+  const c = db.collection(collection);
+
+  const batch = db.batch();
+  return c
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(item => batch.delete(item.ref));
+      batch.commit().catch(err => console.log('Error committing purge', err));
+    })
+    .catch(err => console.log('error deleting collection', err));
+}

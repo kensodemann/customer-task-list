@@ -5,7 +5,7 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="primary">
-      <ion-button color="medium" (click)="add()">
+      <ion-button id="add-button" color="medium" (click)="add()">
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -14,7 +14,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
+  <ion-list id="tasks-list">
     <ion-list-header *ngIf="openTasks && openTasks.length">
       <ion-label>Open Tasks ({{ openTasks.length }})</ion-label>
     </ion-list-header>

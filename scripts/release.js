@@ -97,12 +97,16 @@ function runTasks(oldVersion, inc) {
         new Listr(
           [
             {
-              title: 'Lint',
-              task: () => execa('npm', ['run', 'lint'], { cwd: rootDir })
+              title: 'End-to-end Tests',
+              task: () => execa('npm', ['run', 'e2e'], { cwd: rootDir })
             },
             {
               title: 'Unit Tests',
               task: () => execa('npm', ['run', 'test:ci'], { cwd: rootDir })
+            },
+            {
+              title: 'Lint',
+              task: () => execa('npm', ['run', 'lint'], { cwd: rootDir })
             }
           ],
           { concurrent: true }
@@ -137,9 +141,17 @@ function runTasks(oldVersion, inc) {
       task: () => execa('npm', ['run', 'build'], { cwd: rootDir })
     },
     {
+      title: 'Switch to Production',
+      task: () => execa('firebase', ['use', 'production'], { cwd: rootDir })
+    },
+    {
       title: 'Deploying',
       task: () => execa('firebase', ['deploy'], { cwd: rootDir })
-    }
+    },
+    {
+      title: 'Reset to Development',
+      task: () => execa('firebase', ['use', 'development'], { cwd: rootDir })
+    },
   ]);
 
   return tasks.run();

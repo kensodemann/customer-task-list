@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="primary">
-      <ion-button color="medium" (click)="add()">
+      <ion-button id="add-button" color="medium" (click)="add()">
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
+  <ion-list id="customer-list">
     <ion-item *ngFor="let customer of allCustomers" (click)="view(customer)">
       <ion-label>
         <div class="title">{{ customer.name }}</div>

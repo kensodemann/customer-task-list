@@ -70,6 +70,14 @@
             },
             "ci": {
               "progress": false
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.e2e.ts"
+                }
+              ]
             }
           }
         },
@@ -81,6 +89,9 @@
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
+            },
+            "test": {
+              "browserTarget": "app:build:test"
             },
             "ci": {
               "progress": false
@@ -169,6 +180,9 @@
           "configurations": {
             "ci": {
               "devServerTarget": "app:serve:ci"
+            },
+            "test": {
+              "devServerTarget": "app:serve:test"
             }
           }
         },
