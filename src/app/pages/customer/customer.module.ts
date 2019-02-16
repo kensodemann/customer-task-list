@@ -6,8 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { CustomerPage } from './customer.page';
-import { EditorsModule } from '../editors/editors.module';
-import { SharedModule } from '../shared/shared.module';
+import { EditorsModule } from '../../editors/editors.module';
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {

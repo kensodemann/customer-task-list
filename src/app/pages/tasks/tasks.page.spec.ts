@@ -9,14 +9,14 @@ import {
 import { firestore } from 'firebase/app';
 import { Subject } from 'rxjs';
 
-import { Priorities, Statuses, TaskTypes } from '../default-data';
-import { SharedModule } from '../shared/shared.module';
-import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
+import { Priorities, Statuses, TaskTypes } from '../../default-data';
+import { SharedModule } from '../../shared/shared.module';
+import { TaskEditorComponent } from '../../editors/task-editor/task-editor.component';
 import { TasksPage } from './tasks.page';
-import { TasksService } from '../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../models/task';
+import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
+import { TaskWithId } from '../../models/task';
 
-import { createTasksServiceMock } from '../services/firestore-data/tasks/tasks.mock';
+import { createTasksServiceMock } from '../../services/firestore-data/tasks/tasks.mock';
 import {
   createActivatedRouteMock,
   createNavControllerMock,

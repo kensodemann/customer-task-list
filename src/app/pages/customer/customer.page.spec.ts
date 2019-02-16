@@ -5,22 +5,22 @@ import { firestore } from 'firebase/app';
 import { ModalController, NavController } from '@ionic/angular';
 import { of } from 'rxjs';
 
-import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
+import { CustomerEditorComponent } from '../../editors/customer-editor/customer-editor.component';
 import { CustomerPage } from './customer.page';
-import { CustomersService } from '../services/firestore-data/customers/customers.service';
-import { CustomerWithId } from '../models/customer';
-import { Priorities, Statuses, TaskTypes } from '../default-data';
-import { TasksService } from '../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../models/task';
+import { CustomersService } from '../../services/firestore-data/customers/customers.service';
+import { CustomerWithId } from '../../models/customer';
+import { Priorities, Statuses, TaskTypes } from '../../default-data';
+import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
+import { TaskWithId } from '../../models/task';
 
-import { createCustomersServiceMock } from '../services/firestore-data/customers/customers.mock';
-import { createTasksServiceMock } from '../services/firestore-data/tasks/tasks.mock';
+import { createCustomersServiceMock } from '../../services/firestore-data/customers/customers.mock';
+import { createTasksServiceMock } from '../../services/firestore-data/tasks/tasks.mock';
 import {
   createActivatedRouteMock,
   createNavControllerMock,
   createOverlayControllerMock,
   createOverlayElementMock
-} from '../../../test/mocks';
+} from '../../../../test/mocks';
 
 describe('CustomerPage', () => {
   let page: CustomerPage;

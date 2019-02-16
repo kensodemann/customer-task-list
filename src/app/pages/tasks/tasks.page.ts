@@ -8,10 +8,10 @@ import {
 } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { Statuses, Priorities } from '../default-data';
-import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
-import { TasksService } from '../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../models/task';
+import { Statuses, Priorities } from '../../default-data';
+import { TaskEditorComponent } from '../../editors/task-editor/task-editor.component';
+import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
+import { TaskWithId } from '../../models/task';
 
 @Component({
   selector: 'app-tasks',

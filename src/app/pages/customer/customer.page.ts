@@ -3,12 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
-import { CustomersService } from '../services/firestore-data/customers/customers.service';
-import { CustomerWithId } from '../models/customer';
-import { statuses } from '../default-data';
-import { TasksService } from '../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../models/task';
+import { CustomerEditorComponent } from '../../editors/customer-editor/customer-editor.component';
+import { CustomersService } from '../../services/firestore-data/customers/customers.service';
+import { CustomerWithId } from '../../models/customer';
+import { statuses } from '../../default-data';
+import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
+import { TaskWithId } from '../../models/task';
 
 @Component({
   selector: 'app-customer',

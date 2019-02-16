@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { CustomersPage } from './customers.page';
-import { EditorsModule } from '../editors/editors.module';
+import { EditorsModule } from '../../editors/editors.module';
 
 @NgModule({
   imports: [

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApplicationService } from '../services/application/application.service';
+import { ApplicationService } from '../../services/application/application.service';
 
 @Component({
   selector: 'app-tabs',

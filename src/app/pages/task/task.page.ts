@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { TasksService } from '../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../models/task';
-import { TaskEditorComponent } from '../editors/task-editor/task-editor.component';
+import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
+import { TaskWithId } from '../../models/task';
+import { TaskEditorComponent } from '../../editors/task-editor/task-editor.component';
 
 @Component({
   selector: 'app-task',

@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { CustomerEditorComponent } from '../editors/customer-editor/customer-editor.component';
-import { CustomersService } from '../services/firestore-data/customers/customers.service';
-import { CustomerWithId } from '../models/customer';
-import { byName } from '../util';
+import { CustomerEditorComponent } from '../../editors/customer-editor/customer-editor.component';
+import { CustomersService } from '../../services/firestore-data/customers/customers.service';
+import { CustomerWithId } from '../../models/customer';
+import { byName } from '../../util';
 
 @Component({
   selector: 'app-customers',
