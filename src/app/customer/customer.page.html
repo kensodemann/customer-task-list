@@ -32,7 +32,7 @@
   </div>
 
   <div class="section">
-    <ion-list lines="none">
+    <ion-list id="tasks-list" lines="none">
       <ion-list-header> <ion-label>Tasks:</ion-label> </ion-list-header>
       <ion-item (click)="navController.navigateForward(['tasks', customer.id])">
         <ion-label>All ({{ taskCount() }})</ion-label>

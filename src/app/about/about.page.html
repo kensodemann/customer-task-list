@@ -4,7 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="primary">
-      <ion-button color="medium" (click)="authentication.logout()">
+      <ion-button
+        id="logout-button"
+        color="medium"
+        (click)="authentication.logout()"
+      >
         <ion-icon slot="icon-only" name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>

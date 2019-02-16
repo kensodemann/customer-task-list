@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "customer-task-list"
+    "production": "customer-task-list",
+    "testing": "customer-task-list-e2e",
+    "development": "test-functions-3c8de"
   }
 }
