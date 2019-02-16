@@ -12,22 +12,22 @@ export class ElementObjectBase {
   }
 
   waitUntilInvisible() {
-    browser.wait(ExpectedConditions.invisibilityOf(this.rootElement()), 1000);
+    browser.wait(ExpectedConditions.invisibilityOf(this.rootElement()), 3000);
   }
 
   waitUntilPresent() {
-    browser.wait(ExpectedConditions.presenceOf(this.rootElement()), 1000);
+    browser.wait(ExpectedConditions.presenceOf(this.rootElement()), 3000);
   }
 
   waitUntilNotPresent() {
     browser.wait(
       ExpectedConditions.not(ExpectedConditions.presenceOf(this.rootElement())),
-      1000
+      3000
     );
   }
 
   waitUntilVisible() {
-    browser.wait(ExpectedConditions.visibilityOf(this.rootElement()), 1000);
+    browser.wait(ExpectedConditions.visibilityOf(this.rootElement()), 3000);
   }
 
   getTitle() {
