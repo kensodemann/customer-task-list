@@ -599,7 +599,7 @@ describe('TasksPage', () => {
         customerName: 'Book Burners R Us'
       }
     ];
-    
+
     onHoldTasks = [
       {
         id: '399405',
