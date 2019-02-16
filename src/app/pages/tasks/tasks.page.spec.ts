@@ -32,7 +32,6 @@ describe('TasksPage', () => {
   let taskList: Subject<Array<TaskWithId>>;
   let testTasks: Array<TaskWithId>;
   let openTasks: Array<TaskWithId>;
-  let repeatingTasks: Array<TaskWithId>;
   let onHoldTasks: Array<TaskWithId>;
   let closedTasks: Array<TaskWithId>;
 
@@ -138,40 +137,6 @@ describe('TasksPage', () => {
     });
   });
 
-  describe('repeating tasks', () => {
-    it('returns repeating tasks after loading', () => {
-      fixture.detectChanges();
-      taskList.next(testTasks);
-      expect(page.repeatingTasks).toEqual(repeatingTasks);
-    });
-
-    it('returns repeating tasks if status of repeating specified', () => {
-      const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get
-        .withArgs('customerId')
-        .and.returnValue('33859940039kkd032');
-      route.snapshot.paramMap.get
-        .withArgs('status')
-        .and.returnValue(Statuses.Repeating);
-      fixture.detectChanges();
-      taskList.next(testTasks);
-      expect(page.repeatingTasks).toEqual(repeatingTasks);
-    });
-
-    it('returns empty array if status other than repeating is specified', () => {
-      const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get
-        .withArgs('customerId')
-        .and.returnValue('33859940039kkd032');
-      route.snapshot.paramMap.get
-        .withArgs('status')
-        .and.returnValue(Statuses.Open);
-      fixture.detectChanges();
-      taskList.next(testTasks);
-      expect(page.repeatingTasks).toEqual([]);
-    });
-  });
-
   describe('on hold tasks', () => {
     it('returns on hold tasks after loading', () => {
       fixture.detectChanges();
@@ -199,7 +164,7 @@ describe('TasksPage', () => {
         .and.returnValue('33859940039kkd032');
       route.snapshot.paramMap.get
         .withArgs('status')
-        .and.returnValue(Statuses.Repeating);
+        .and.returnValue(Statuses.Open);
       fixture.detectChanges();
       taskList.next(testTasks);
       expect(page.onHoldTasks).toEqual([]);
@@ -398,7 +363,7 @@ describe('TasksPage', () => {
         description: 'Smartest creatures on Earth like fish',
         enteredOn: new firestore.Timestamp(1440059420, 0),
         type: TaskTypes.Meeting,
-        status: Statuses.Repeating,
+        status: Statuses.Open,
         priority: Priorities.High,
         customerId: '49950',
         customerName: 'Dolphin Schools'
@@ -489,7 +454,7 @@ describe('TasksPage', () => {
         description: 'Find out why rain is so damn wet',
         enteredOn: new firestore.Timestamp(1014324053, 0),
         type: TaskTypes.Research,
-        status: Statuses.Repeating,
+        status: Statuses.Open,
         priority: Priorities.High,
         customerId: '49950',
         customerName: 'Dolphin Schools'
@@ -566,6 +531,17 @@ describe('TasksPage', () => {
         customerName: 'Dolphin Schools'
       },
       {
+        id: '985SUCK34IT',
+        name: 'The rain is wet',
+        description: 'Find out why rain is so damn wet',
+        enteredOn: new firestore.Timestamp(1014324053, 0),
+        type: TaskTypes.Research,
+        status: Statuses.Open,
+        priority: Priorities.High,
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
+      },
+      {
         id: '9999',
         name: 'Die',
         description:
@@ -589,6 +565,17 @@ describe('TasksPage', () => {
         customerName: 'Book Burners R Us'
       },
       {
+        id: '399485',
+        name: 'Eat some fish',
+        description: 'Smartest creatures on Earth like fish',
+        enteredOn: new firestore.Timestamp(1440059420, 0),
+        type: TaskTypes.Meeting,
+        status: Statuses.Open,
+        priority: Priorities.High,
+        customerId: '49950',
+        customerName: 'Dolphin Schools'
+      },
+      {
         id: '73SC',
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
@@ -610,32 +597,9 @@ describe('TasksPage', () => {
         priority: Priorities.Low,
         customerId: '451BK',
         customerName: 'Book Burners R Us'
-      },
-    ];
-    repeatingTasks = [
-      {
-        id: '985SUCK34IT',
-        name: 'The rain is wet',
-        description: 'Find out why rain is so damn wet',
-        enteredOn: new firestore.Timestamp(1014324053, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Repeating,
-        priority: Priorities.High,
-        customerId: '49950',
-        customerName: 'Dolphin Schools'
-      },
-      {
-        id: '399485',
-        name: 'Eat some fish',
-        description: 'Smartest creatures on Earth like fish',
-        enteredOn: new firestore.Timestamp(1440059420, 0),
-        type: TaskTypes.Meeting,
-        status: Statuses.Repeating,
-        priority: Priorities.High,
-        customerId: '49950',
-        customerName: 'Dolphin Schools'
       }
     ];
+    
     onHoldTasks = [
       {
         id: '399405',

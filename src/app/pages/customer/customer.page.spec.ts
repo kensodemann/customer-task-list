@@ -158,11 +158,7 @@ describe('CustomerPage', () => {
       });
 
       it('counts the open tasks', () => {
-        expect(page.taskCount(Statuses.Open)).toEqual(2);
-      });
-
-      it('counts the repeating tasks', () => {
-        expect(page.taskCount(Statuses.Repeating)).toEqual(1);
+        expect(page.taskCount(Statuses.Open)).toEqual(3);
       });
 
       it('counts the on hold tasks', () => {
@@ -198,7 +194,7 @@ describe('CustomerPage', () => {
         description: 'Smartest creatures on Earth like fish',
         enteredOn: new firestore.Timestamp(1340059420, 0),
         type: TaskTypes.Meeting,
-        status: Statuses.Repeating,
+        status: Statuses.Open,
         priority: Priorities.High,
         customerId: '314159PI',
         customerName: 'Cherry'

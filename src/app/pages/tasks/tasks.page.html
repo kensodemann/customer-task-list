@@ -26,17 +26,6 @@
       (done)="close(task)"
     ></app-task-list-item>
 
-    <ion-list-header *ngIf="repeatingTasks && repeatingTasks.length">
-      <ion-label>Repeating Tasks ({{ repeatingTasks.length }})</ion-label>
-    </ion-list-header>
-    <app-task-list-item
-      *ngFor="let task of repeatingTasks"
-      [task]="task"
-      (view)="view(task)"
-      (delete)="delete(task)"
-      (done)="close(task)"
-    ></app-task-list-item>
-
     <ion-list-header *ngIf="onHoldTasks && onHoldTasks.length">
       <ion-label>On Hold ({{ onHoldTasks.length }})</ion-label>
     </ion-list-header>
