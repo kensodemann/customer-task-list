@@ -18,7 +18,7 @@ exports.config = {
     print: function() {}
   },
   onPrepare() {
-    browser.driver.manage().window().setSize(1024, 800);
+    browser.driver.manage().window().setSize(1200, 900);
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
     });

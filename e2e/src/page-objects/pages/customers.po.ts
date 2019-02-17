@@ -1,4 +1,4 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element, ExpectedConditions } from 'protractor';
 import { PageObjectBase } from './base.po';
 
 export class CustomersPage extends PageObjectBase {
@@ -8,6 +8,13 @@ export class CustomersPage extends PageObjectBase {
 
   clickAddButton() {
     this.clickButton('#add-button');
+  }
+
+  clickOnCustomer(idx: number) {
+    const c = this.getCustomers();
+    const el = c.get(idx);
+    browser.wait(ExpectedConditions.elementToBeClickable(el));
+    el.click();
   }
 
   getCustomers() {

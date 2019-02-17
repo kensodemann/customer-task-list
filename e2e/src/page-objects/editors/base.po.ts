@@ -1,4 +1,5 @@
 import { ElementObjectBase } from '../base.po';
+import { element, by, browser, ExpectedConditions } from 'protractor';
 
 export class EditorObjectBase extends ElementObjectBase {
   constructor(tag: string) {

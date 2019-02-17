@@ -1,0 +1,42 @@
+import { by, browser, element, ExpectedConditions } from 'protractor';
+import { PageObjectBase } from './base.po';
+
+export class CustomerPage extends PageObjectBase {
+  constructor() {
+    super('app-customer', '/customer/:id');
+  }
+
+  get nameText() {
+    const root = this.rootElement();
+    return root.element(by.css('#name-section')).getText();
+  }
+
+  get descriptionText() {
+    const root = this.rootElement();
+    return root.element(by.css('#description-section')).getText();
+  }
+
+  get isActiveText() {
+    const root = this.rootElement();
+    return root.element(by.css('#is-active-section')).getText();
+  }
+
+  clickAddNote() {
+    const root = this.rootElement();
+    const el = root.element(by.css('.notes-list ion-button'));
+    browser.wait(ExpectedConditions.elementToBeClickable(el));
+    el.click();
+  }
+
+  clickNote(idx: number) {
+    const notes = this.getNotes();
+    const note = notes.get(idx);
+    const el = note.element(by.css('ion-item'));
+    browser.wait(ExpectedConditions.elementToBeClickable(el), 3000);
+    el.click();
+  }
+
+  getNotes() {
+    return element.all(by.css(`.notes-list app-note-list-item`));
+  }
+}
