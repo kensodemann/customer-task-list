@@ -26,7 +26,6 @@ export class TasksPage implements OnDestroy, OnInit {
   private taskSubscription: Subscription;
 
   openTasks: Array<TaskWithId>;
-  repeatingTasks: Array<TaskWithId>;
   closedTasks: Array<TaskWithId>;
   onHoldTasks: Array<TaskWithId>;
 
@@ -93,9 +92,6 @@ export class TasksPage implements OnDestroy, OnInit {
     }
     this.openTasks = this.tasksWithStatus(t, Statuses.Open).sort((t1, t2) =>
       this.taskSort(t1, t2)
-    );
-    this.repeatingTasks = this.tasksWithStatus(t, Statuses.Repeating).sort(
-      (t1, t2) => this.taskSort(t1, t2)
     );
     this.onHoldTasks = this.tasksWithStatus(t, Statuses.OnHold).sort((t1, t2) =>
       this.taskSort(t1, t2)

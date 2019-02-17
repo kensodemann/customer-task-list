@@ -308,7 +308,7 @@ describe('TaskEditorComponent', () => {
           id: '88395AA930FE',
           name: 'Weekly Status Meeting',
           description: 'Weekly status meeting, usually on Thursdays',
-          status: Statuses.Repeating,
+          status: Statuses.Open,
           priority: Priorities.Low,
           type: TaskTypes.Meeting,
           customerId: '1138GL',
@@ -368,7 +368,7 @@ describe('TaskEditorComponent', () => {
           id: '88395AA930FE',
           name: 'Weekly Status Meeting',
           description: 'Weekly status meeting, usually on Thursdays',
-          status: Statuses.Repeating,
+          status: Statuses.Open,
           priority: Priorities.Low,
           type: TaskTypes.Meeting,
           beginDate: '2019-01-15',
@@ -395,7 +395,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('initializes the status', () => {
-        expect(editor.status).toEqual(Statuses.Repeating);
+        expect(editor.status).toEqual(Statuses.Open);
       });
 
       it('initializes the task type', () => {
@@ -504,7 +504,7 @@ describe('TaskEditorComponent', () => {
             id: '88395AA930FE',
             name: 'Bi-Weekly Status Meeting',
             description: 'Moving to twice a week',
-            status: Statuses.Repeating,
+            status: Statuses.Open,
             priority: Priorities.Low,
             type: TaskTypes.Meeting,
             beginDate: '2019-01-15',
@@ -530,7 +530,7 @@ describe('TaskEditorComponent', () => {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: Statuses.Repeating,
+        status: Statuses.Open,
         priority: Priorities.Low,
         type: TaskTypes.Meeting,
         beginDate: '2019-01-15',
