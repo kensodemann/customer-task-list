@@ -5,12 +5,15 @@ export class CustomerEditor extends EditorObjectBase {
     super('app-customer-editor');
   }
 
-
   enterName(name: string) {
     this.enterInputText('#name-input', name);
   }
 
   enterDescription(description: string) {
     this.enterTextareaText('#description-textarea', description);
+  }
+
+  toggleActive() {
+    this.clickButton('#is-active-checkbox');
   }
 }
