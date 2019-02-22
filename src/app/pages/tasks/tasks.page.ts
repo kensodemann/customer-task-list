@@ -58,10 +58,14 @@ export class TasksPage implements OnDestroy, OnInit {
   async add(): Promise<void> {
     const m = this.customerId
       ? await this.modal.create({
+          backdropDismiss: false,
           component: TaskEditorComponent,
           componentProps: { customerId: this.customerId }
         })
-      : await this.modal.create({ component: TaskEditorComponent });
+      : await this.modal.create({
+          backdropDismiss: false,
+          component: TaskEditorComponent
+        });
     return m.present();
   }
 

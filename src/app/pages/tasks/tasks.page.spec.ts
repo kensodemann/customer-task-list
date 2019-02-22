@@ -295,6 +295,7 @@ describe('TasksPage', () => {
       fixture.detectChanges();
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
+        backdropDismiss: false,
         component: TaskEditorComponent
       });
     });
@@ -309,6 +310,7 @@ describe('TasksPage', () => {
       fixture.detectChanges();
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
+        backdropDismiss: false,
         component: TaskEditorComponent,
         componentProps: { customerId: '33859940039kkd032' }
       });

@@ -36,6 +36,7 @@ export class NotesListComponent implements OnDestroy, OnInit {
 
   async add() {
     const m = await this.modal.create({
+      backdropDismiss: false,
       component: NoteEditorComponent,
       componentProps: { itemId: this.itemId }
     });
@@ -62,6 +63,7 @@ export class NotesListComponent implements OnDestroy, OnInit {
 
   async view(note: NoteWithId) {
     const m = await this.modal.create({
+      backdropDismiss: false,
       component: NoteEditorComponent,
       componentProps: { note: note }
     });

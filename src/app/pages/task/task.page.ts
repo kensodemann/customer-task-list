@@ -33,6 +33,7 @@ export class TaskPage implements OnDestroy, OnInit {
 
   async edit() {
     const m = await this.modal.create({
+      backdropDismiss: false,
       component: TaskEditorComponent,
       componentProps: { task: this.task }
     });

@@ -104,6 +104,7 @@ describe('NotesListComponent', () => {
       const modalController = TestBed.get(ModalController);
       component.add();
       expect(modalController.create).toHaveBeenCalledWith({
+        backdropDismiss: false,
         component: NoteEditorComponent,
         componentProps: { itemId: '4273' }
       });
@@ -195,6 +196,7 @@ describe('NotesListComponent', () => {
         enteredOn: new firestore.Timestamp(1432430034, 0)
       });
       expect(modalController.create).toHaveBeenCalledWith({
+        backdropDismiss: false,
         component: NoteEditorComponent,
         componentProps: {
           note: {

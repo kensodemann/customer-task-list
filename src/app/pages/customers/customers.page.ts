@@ -35,6 +35,7 @@ export class CustomersPage implements OnDestroy, OnInit {
 
   async add() {
     const m = await this.modal.create({
+      backdropDismiss: false,
       component: CustomerEditorComponent
     });
     m.present();

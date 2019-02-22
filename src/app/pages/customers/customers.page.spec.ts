@@ -142,6 +142,7 @@ describe('CustomersPage', () => {
       const modalController = TestBed.get(ModalController);
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
+        backdropDismiss: false,
         component: CustomerEditorComponent
       });
     });

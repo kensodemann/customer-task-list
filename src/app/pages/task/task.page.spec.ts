@@ -128,6 +128,7 @@ describe('TaskPage', () => {
       const modalController = TestBed.get(ModalController);
       page.edit();
       expect(modalController.create).toHaveBeenCalledWith({
+        backdropDismiss: false,
         component: TaskEditorComponent,
         componentProps: { task: task }
       });
