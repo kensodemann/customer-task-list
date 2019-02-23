@@ -97,10 +97,6 @@ function runTasks(oldVersion, inc) {
         new Listr(
           [
             {
-              title: 'End-to-end Tests',
-              task: () => execa('npm', ['run', 'e2e'], { cwd: rootDir })
-            },
-            {
               title: 'Unit Tests',
               task: () => execa('npm', ['run', 'test:ci'], { cwd: rootDir })
             },
