@@ -1,3 +1,23 @@
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/kensodemann/customer-task-list/compare/v1.1.0...v1.1.2) (2019-02-23)
+
+
+### Bug Fixes
+
+* **app:** disable backdrop dismiss on all modals ([e6670b1](https://github.com/kensodemann/customer-task-list/commit/e6670b1))
+* **e2e-test:** set the browser size ([671489c](https://github.com/kensodemann/customer-task-list/commit/671489c))
+* **e2e-test:** update the timeouts ([d8bf660](https://github.com/kensodemann/customer-task-list/commit/d8bf660))
+* **tasks:** remove used types, rename existing type ([f691c5b](https://github.com/kensodemann/customer-task-list/commit/f691c5b))
+
+
+### Features
+
+* **app:** set up basic e2e tests ([196c98d](https://github.com/kensodemann/customer-task-list/commit/196c98d))
+* **e2e-tests:** refactor the tests into a script ([dce171d](https://github.com/kensodemann/customer-task-list/commit/dce171d))
+* **tests:** imporove the testing experience and CI ([cc310c5](https://github.com/kensodemann/customer-task-list/commit/cc310c5))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/kensodemann/customer-task-list/compare/v1.1.0...v1.1.1) (2019-02-22)
 
