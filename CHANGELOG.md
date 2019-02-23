@@ -1,3 +1,14 @@
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/kensodemann/customer-task-list/compare/v1.1.1...v1.1.3) (2019-02-23)
+
+
+### Bug Fixes
+
+* **tasks:** remove backbutton experiment accidently left in ([9036566](https://github.com/kensodemann/customer-task-list/commit/9036566))
+* **tasks:** remove used types, rename existing type ([f691c5b](https://github.com/kensodemann/customer-task-list/commit/f691c5b))
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/kensodemann/customer-task-list/compare/v1.1.0...v1.1.2) (2019-02-23)
 
