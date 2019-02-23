@@ -205,7 +205,7 @@ describe('CustomerPage', () => {
         name: 'Model It',
         description: 'They need to see it to believe it',
         enteredOn: new firestore.Timestamp(1039950234, 0),
-        type: TaskTypes.ProofOfConcept,
+        type: TaskTypes.Research,
         status: Statuses.OnHold,
         priority: Priorities.Low,
         customerId: '314159PI',
@@ -263,7 +263,7 @@ describe('CustomerPage', () => {
         description:
           'We all want to go to heaven, but no one wants to die to get there',
         enteredOn: new firestore.Timestamp(114324053, 0),
-        type: TaskTypes.ProofOfConcept,
+        type: TaskTypes.Research,
         status: Statuses.Open,
         priority: Priorities.High,
         customerId: '314159PI',
