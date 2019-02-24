@@ -13,7 +13,19 @@ export class CustomerEditor extends EditorObjectBase {
     this.enterTextareaText('#description-textarea', description);
   }
 
-  toggleActive() {
+  getName() {
+    return this.getInputText('#name-input');
+  }
+
+  getDescription() {
+    return this.getTextareaText('#description-textarea');
+  }
+
+  toggleIsActive() {
     this.clickButton('#is-active-checkbox');
+  }
+
+  getIsActive() {
+    return this.getInputText('#is-active-checkbox');
   }
 }

@@ -8,4 +8,8 @@ export class NoteEditor extends EditorObjectBase {
   enterNoteText(text: string) {
     this.enterTextareaText('#note-textarea', text);
   }
+
+  getNoteText() {
+    return this.getTextareaText('#note-textarea');
+  }
 }

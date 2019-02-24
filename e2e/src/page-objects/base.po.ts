@@ -40,10 +40,22 @@ export class ElementObjectBase {
     inp.sendKeys(text);
   }
 
+  protected getInputText(sel: string) {
+    const el = element(by.css(`${this.tag} ${sel}`));
+    const inp = el.element(by.css('input'));
+    return inp.getAttribute('value');
+  }
+
   protected enterTextareaText(sel: string, text: string) {
     const el = element(by.css(`${this.tag} ${sel}`));
     const inp = el.element(by.css('textarea'));
     inp.sendKeys(text);
+  }
+
+  protected getTextareaText(sel: string) {
+    const el = element(by.css(`${this.tag} ${sel}`));
+    const inp = el.element(by.css('textarea'));
+    return inp.getAttribute('value');
   }
 
   protected clickButton(sel: string) {

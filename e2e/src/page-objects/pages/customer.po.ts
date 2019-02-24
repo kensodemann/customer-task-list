@@ -22,10 +22,15 @@ export class CustomerPage extends PageObjectBase {
   }
 
   clickAddNote() {
-    const root = this.rootElement();
-    const el = root.element(by.css('.notes-list ion-button'));
-    browser.wait(ExpectedConditions.elementToBeClickable(el));
-    el.click();
+    this.clickButton('.notes-list ion-button');
+  }
+
+  clickBackbutton() {
+    this.clickButton('ion-back-button');
+  }
+
+  clickEditButton() {
+    this.clickButton('#edit-button');
   }
 
   clickNote(idx: number) {

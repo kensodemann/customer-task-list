@@ -17,154 +17,125 @@ export function registerCustomerTests(
       customers.waitUntilVisible();
     });
 
-    it('starts with an empty list', () => {
+    it('shows the existing customers in alphabetical order', () => {
       const c = customers.getCustomers();
-      expect(c.count()).toEqual(0);
+      expect(c.count()).toEqual(7);
+      expect(c.get(0).getText()).toContain('A+ Storage');
+      expect(c.get(1).getText()).toContain('Burger Chef');
+      expect(c.get(2).getText()).toContain('Institutional Food Service');
+      expect(c.get(3).getText()).toContain('JP Morgan Chase Bank');
+      expect(c.get(4).getText()).toContain(`Mike's Modal Meltdown`);
+      expect(c.get(5).getText()).toContain('Penta Technologies');
+      expect(c.get(6).getText()).toContain('Xeno Tech Solutions');
     });
 
-    describe('customer editor', () => {
-      it('does not add if the user cancels', () => {
+    describe('clicking add customer', () => {
+      it('displays the customer editor', () => {
         customers.clickAddButton();
         customerEditor.waitUntilVisible();
-        customerEditor.enterName('Discount Fish');
-        customerEditor.enterDescription(
-          'The fish are cheap, but they may not be all that fresh'
+        expect(customerEditor.getName()).toBeFalsy();
+        expect(customerEditor.getDescription()).toBeFalsy();
+        expect(customerEditor.getIsActive()).toBeTruthy();
+      });
+
+      it('allows entry of name and description', () => {
+        customers.clickAddButton();
+        customerEditor.waitUntilVisible();
+        customerEditor.enterName('a name');
+        customerEditor.enterDescription('this is a description');
+        expect(customerEditor.getName()).toEqual('a name');
+        expect(customerEditor.getDescription()).toEqual(
+          'this is a description'
         );
-        customerEditor.clickCancel();
+      });
+
+      it('allows the active flag to be toggled', () => {
+        customers.clickAddButton();
+        customerEditor.waitUntilVisible();
+        customerEditor.toggleIsActive();
+        expect(customerEditor.getIsActive()).toBeFalsy();
+      });
+    });
+
+    describe('clicking a customer', () => {
+      beforeEach(() => {
         const c = customers.getCustomers();
-        expect(c.count()).toEqual(0);
+        c.get(3).click();
+        customer.waitUntilVisible();
       });
 
-      [
-        {
-          name: 'Discount Fish',
-          description: 'The fish are cheap, but they may not be all that fresh',
-          isActive: true
-        },
-        {
-          name: 'Zoo Trends',
-          description: 'Come for the animals, stay for the peanuts',
-          isActive: true
-        },
-        {
-          name: 'Albatros Airlines',
-          description: 'Our services is like a dead bird hung around your neck',
-          isActive: true
-        },
-        {
-          name: 'Inactive Pete',
-          description: 'Like Stinky Pete, but far less actively stinky',
-          isActive: false
-        }
-      ].forEach(c => {
-        it(`handles the adding of customer ${c.name}`, () => {
-          customers.clickAddButton();
-          customerEditor.waitUntilVisible();
-          customerEditor.enterName(c.name);
-          customerEditor.enterDescription(c.description);
-          if (!c.isActive) {
-            customerEditor.toggleActive();
-          }
-          customerEditor.clickSave();
-          browser.sleep(350);
+      it('loads the customer page', () => {
+        expect(customer.nameText).toContain('JP Morgan Chase Bank');
+        expect(customer.descriptionText).toContain(
+          'One of the larger banks in the banking industry.'
+        );
+        expect(customer.isActiveText).toContain('true');
+      });
+
+      describe('clicking back', () => {
+        it('goes back to the customers list page', () => {
+          customer.clickBackbutton();
+          customer.waitUntilInvisible();
+          customers.waitUntilVisible();
         });
-      });
-    });
-
-    it('displays the customers in alphabetical order', () => {
-      const c = customers.getCustomers();
-      expect(c.count()).toEqual(4);
-      expect(c.get(0).getText()).toContain('Albatros Airlines');
-      expect(c.get(1).getText()).toContain('Discount Fish');
-      expect(c.get(2).getText()).toContain('Inactive Pete');
-      expect(c.get(3).getText()).toContain('Zoo Trends');
-    });
-
-    describe('clicking on a customer', () => {
-      it('opens the customer page', () => {
-        customers.clickOnCustomer(1);
-        customer.waitUntilVisible();
-      });
-
-      it('displays information about the clicked customer', () => {
-        customers.clickOnCustomer(1);
-        customer.waitUntilVisible();
-        expect(customer.nameText).toEqual('Name: Discount Fish');
-        expect(customer.descriptionText).toContain('The fish are cheap');
-        expect(customer.isActiveText).toEqual('Is Active: true');
       });
 
       describe('clicking add note', () => {
-        beforeEach(() => {
-          customers.clickOnCustomer(1);
-          customer.waitUntilVisible();
-        });
-
-        it('opens the notes editor', () => {
+        it('loads the notes editor', () => {
           customer.clickAddNote();
           noteEditor.waitUntilVisible();
+          expect(noteEditor.getNoteText()).toBeFalsy();
         });
 
-        it('does not add the note if canceled', () => {
+        it('allows the entry of note text', () => {
           customer.clickAddNote();
           noteEditor.waitUntilVisible();
-          noteEditor.enterNoteText('This is just a note, nothing more');
-          noteEditor.clickCancel();
-          noteEditor.waitUntilNotPresent();
-          expect(customer.getNotes().count()).toEqual(0);
-        });
-
-        [
-          'This is just a note, nothing more',
-          'another note',
-          'I just called to say I love you',
-          'mmmmm, coffee...'
-        ].forEach((n, i) => {
-          it(`adds note ${i}`, () => {
-            customer.clickAddNote();
-            noteEditor.waitUntilVisible();
-            noteEditor.enterNoteText(n);
-            noteEditor.clickSave();
-          });
+          noteEditor.enterNoteText('this is a happy note');
+          expect(noteEditor.getNoteText()).toEqual('this is a happy note');
         });
       });
 
-      it('shows the entered notes', () => {
-        customers.clickOnCustomer(1);
-        customer.waitUntilVisible();
-        expect(customer.getNotes().count()).toEqual(4);
+      describe('clicking an existing note', () => {
+        it('loads the notes editor with the note', () => {
+          customer.clickNote(1);
+          noteEditor.waitUntilVisible();
+          expect(noteEditor.getNoteText()).toEqual(
+            'This is a note just to make sure that we have three of them.'
+          );
+        });
+
+        it('allows the entry of more note text', () => {
+          customer.clickNote(1);
+          noteEditor.waitUntilVisible();
+          noteEditor.enterNoteText(' And this is new text.');
+          expect(noteEditor.getNoteText()).toEqual(
+            'This is a note just to make sure that we have three of them. And this is new text.'
+          );
+        });
       });
 
-      describe('clicking a note', () => {
-        beforeEach(() => {
-          customers.clickOnCustomer(1);
-          customer.waitUntilVisible();
+      describe('clicking the edit customer button', () => {
+        it('loads the editor page with the customer information', () => {
+          customer.clickEditButton();
+          customerEditor.waitUntilVisible();
+          expect(customerEditor.getName()).toEqual('JP Morgan Chase Bank');
+          expect(customerEditor.getDescription()).toEqual(
+            'One of the larger banks in the banking industry.'
+          );
+          expect(customerEditor.getIsActive()).toBeTruthy();
         });
 
-        it('opens the notes editor', () => {
-          customer.clickNote(2);
-          noteEditor.waitUntilVisible();
-        });
-
-        it('allows save of changes', () => {
-          customer.clickNote(2);
-          noteEditor.waitUntilVisible();
-          noteEditor.enterNoteText('You no add this');
-          noteEditor.clickCancel();
-        });
-
-        it('allows save of changes', () => {
-          customer.clickNote(2);
-          noteEditor.waitUntilVisible();
-          noteEditor.enterNoteText(' Now we are adding to the note');
-          noteEditor.clickSave();
-        });
-
-        it('shows the changes to the notes', () => {
-          const notes = customer.getNotes();
-          const el = notes.get(2);
-          expect(el.getText()).toContain('Now we are adding to the note');
-          expect(el.getText()).not.toContain('You no add this');
+        it('allows the customer data to be changed', () => {
+          customer.clickEditButton();
+          customerEditor.waitUntilVisible();
+          customerEditor.toggleIsActive();
+          customerEditor.enterDescription(' This is more description.');
+          customerEditor.enterName(' This is extra for the name.');
+          expect(customerEditor.getName()).toEqual('JP Morgan Chase Bank This is extra for the name.');
+          expect(customerEditor.getDescription()).toEqual(
+            'One of the larger banks in the banking industry. This is more description.'
+          );
+          expect(customerEditor.getIsActive()).toBeFalsy();
         });
       });
     });

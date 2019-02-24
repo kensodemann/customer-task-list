@@ -25,16 +25,5 @@ exports.config = {
     jasmine
       .getEnv()
       .addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
-  },
-  onCleanUp() {
-    const axios = require('axios');
-    return axios
-      .get(
-        'https://us-central1-customer-task-list-e2e.cloudfunctions.net/purgeDatabase'
-      )
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => console.log(err));
   }
 };

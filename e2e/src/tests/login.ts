@@ -20,6 +20,7 @@ export function registerLoginTests(
 
     describe('before logged in', () => {
       it('displays the login screen', () => {
+        login.waitUntilVisible();
         expect(login.rootElement().isDisplayed()).toEqual(true);
       });
 
