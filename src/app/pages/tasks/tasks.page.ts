@@ -28,6 +28,7 @@ export class TasksPage implements OnDestroy, OnInit {
   openTasks: Array<TaskWithId>;
   closedTasks: Array<TaskWithId>;
   onHoldTasks: Array<TaskWithId>;
+  showBackButton: boolean;
 
   constructor(
     private alert: AlertController,
@@ -39,6 +40,7 @@ export class TasksPage implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.customerId = this.route.snapshot.paramMap.get('customerId');
+    this.showBackButton = !!this.customerId;
     this.status = this.route.snapshot.paramMap.get('status');
     if (this.customerId) {
       this.taskSubscription = this.tasks

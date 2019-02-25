@@ -83,6 +83,21 @@ describe('TasksPage', () => {
     expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('status');
   });
 
+  it('it does not show the back button if navigated to normally', () => {
+    const route = TestBed.get(ActivatedRoute);
+    route.snapshot.paramMap.get.and.returnValue(undefined);
+    fixture.detectChanges();
+    expect(page.showBackButton).toBeFalsy();
+  });
+
+  it('it shows the back button if navigated to for a customer', () => {
+    const route = TestBed.get(ActivatedRoute);
+    route.snapshot.paramMap.get.and.returnValue(undefined);
+    route.snapshot.paramMap.get.withArgs('customerId').and.returnValue('1234');
+    fixture.detectChanges();
+    expect(page.showBackButton).toBeTruthy();
+  });
+
   it('sets up an observable on all tasks if there is no customer', () => {
     const tasks = TestBed.get(TasksService);
     fixture.detectChanges();
