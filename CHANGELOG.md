@@ -1,3 +1,14 @@
+<a name="1.1.4"></a>
+## [1.1.4](https://github.com/kensodemann/customer-task-list/compare/v1.1.2...v1.1.4) (2019-02-25)
+
+
+### Bug Fixes
+
+* **tasks:** remove backbutton experiment accidently left in ([9036566](https://github.com/kensodemann/customer-task-list/commit/9036566))
+* **tasks:** show the back button if navigated to from customer ([eb064a9](https://github.com/kensodemann/customer-task-list/commit/eb064a9))
+
+
+
 <a name="1.1.3"></a>
 ## [1.1.3](https://github.com/kensodemann/customer-task-list/compare/v1.1.1...v1.1.3) (2019-02-23)
 
