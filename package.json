@@ -13,8 +13,8 @@
     "ng": "ng",
     "release": "node scripts/release.js",
     "start": "ng serve",
-    "test": "ng test",
-    "test:dev": "ng test --browsers=ChromeHeadlessCI",
+    "test": "ng test --browsers=ChromeHeadlessCI",
+    "test:debug": "ng test",
     "test:ci": "ng test --no-watch --browsers=ChromeHeadlessCI"
   },
   "private": true,
