@@ -6,7 +6,8 @@
   "homepage": "http://kensodemann.github.io/",
   "scripts": {
     "bump": "node scripts/bump-version.js",
-    "build": "ionic build --engine=browser --prod",
+    "build": "ionic build --engine=browser --prod -- --stats-json",
+    "bundle-report": "webpack-bundle-analyzer www/stats.json",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "e2e": "ng e2e --configuration=test",
     "lint": "ng lint",
@@ -70,6 +71,7 @@
     "semver": "~5.6.0",
     "ts-node": "~8.0.2",
     "tslint": "~5.12.1",
-    "typescript": "~3.2.4"
+    "typescript": "~3.2.4",
+    "webpack-bundle-analyzer": "~3.1.0"
   }
 }
