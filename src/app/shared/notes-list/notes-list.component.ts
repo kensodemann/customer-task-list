@@ -46,7 +46,7 @@ export class NotesListComponent implements OnDestroy, OnInit {
   async delete(note: NoteWithId) {
     const a = await this.alert.create({
       header: 'Confirm Delete',
-      message: 'Are you sure you want to perminantly remove this note?',
+      message: 'Are you sure you want to permanently remove this note?',
       buttons: [
         {
           text: 'Yes',

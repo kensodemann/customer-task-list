@@ -79,7 +79,7 @@ export class TasksPage implements OnDestroy, OnInit {
   async delete(task: TaskWithId): Promise<void> {
     const a = await this.alert.create({
       header: 'Confirm Delete',
-      message: 'Are you sure you want to perminantly remove this task?',
+      message: 'Are you sure you want to permanently remove this task?',
       buttons: [
         { text: 'Yes', handler: () => this.tasks.delete(task) },
         { text: 'No', role: 'cancel' }
