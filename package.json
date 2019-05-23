@@ -9,7 +9,7 @@
     "build": "ionic build --engine=browser --prod -- --stats-json",
     "bundle-report": "webpack-bundle-analyzer www/stats.json",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "e2e": "ng e2e --configuration=test",
+    "e2e": "ng e2e --configuration=test --port=4242",
     "lint": "ng lint",
     "ng": "ng",
     "release": "node scripts/release.js",

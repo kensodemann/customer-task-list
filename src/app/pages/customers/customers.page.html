@@ -3,16 +3,17 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-buttons slot="primary">
-      <ion-button id="add-button" color="medium" (click)="add()">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
-      </ion-button>
-    </ion-buttons>
     <ion-title> Customers </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button id="add-button" (click)="add()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <ion-list id="customer-list">
     <ion-item *ngFor="let customer of allCustomers" (click)="view(customer)">
       <ion-label>

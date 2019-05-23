@@ -1,11 +1,6 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Task</ion-title>
-    <ion-buttons slot="end">
-      <ion-button id="edit-button" color="medium" (click)="edit()"
-        ><ion-icon slot="icon-only" name="create"></ion-icon
-      ></ion-button>
-    </ion-buttons>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
@@ -13,6 +8,12 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button id="edit-button" (click)="edit()">
+      <ion-icon name="create"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <div class="section"><span class="label">Name:</span> {{ task?.name }}</div>
 
   <div class="section">
