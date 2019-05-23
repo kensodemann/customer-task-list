@@ -1,3 +1,19 @@
+<a name="1.1.6"></a>
+## [1.1.6](https://github.com/kensodemann/customer-task-list/compare/v1.1.3...v1.1.6) (2019-05-23)
+
+
+### Bug Fixes
+
+* **tasks:** fix spelling error in confirmation dialog ([3fab5d5](https://github.com/kensodemann/customer-task-list/commit/3fab5d5))
+* **tasks:** show the back button if navigated to from customer ([eb064a9](https://github.com/kensodemann/customer-task-list/commit/eb064a9))
+
+
+### Features
+
+* **tasks, customers:** favor the use of fab buttons ([cfcafc4](https://github.com/kensodemann/customer-task-list/commit/cfcafc4))
+
+
+
 <a name="1.1.5"></a>
 ## [1.1.5](https://github.com/kensodemann/customer-task-list/compare/v1.1.4...v1.1.5) (2019-04-11)
 
