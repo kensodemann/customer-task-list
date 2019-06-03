@@ -4,22 +4,33 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 
 const routes: Routes = [
-  { path: '', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },
-  { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./pages/login/login.module').then(m => m.LoginPageModule)
+  },
   {
     path: 'customer',
     canActivate: [AuthGuardService],
-    loadChildren: './pages/customer/customer.module#CustomerPageModule'
+    loadChildren: () =>
+      import('./pages/customer/customer.module').then(m => m.CustomerPageModule)
   },
   {
     path: 'task',
     canActivate: [AuthGuardService],
-    loadChildren: './pages/task/task.module#TaskPageModule'
+    loadChildren: () =>
+      import('./pages/task/task.module').then(m => m.TaskPageModule)
   },
   {
     path: 'tasks',
     canActivate: [AuthGuardService],
-    loadChildren: './pages/tasks/tasks.module#TasksPageModule'
+    loadChildren: () =>
+      import('./pages/tasks/tasks.module').then(m => m.TasksPageModule)
   }
 ];
 @NgModule({
