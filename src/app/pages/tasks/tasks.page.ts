@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { Statuses, Priorities } from '../../default-data';
 import { TaskEditorComponent } from '../../editors/task-editor/task-editor.component';
 import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../../models/task';
+import { Task } from '../../models/task';
 
 @Component({
   selector: 'app-tasks',
@@ -25,9 +25,9 @@ export class TasksPage implements OnDestroy, OnInit {
   private status;
   private taskSubscription: Subscription;
 
-  openTasks: Array<TaskWithId>;
-  closedTasks: Array<TaskWithId>;
-  onHoldTasks: Array<TaskWithId>;
+  openTasks: Array<Task>;
+  closedTasks: Array<Task>;
+  onHoldTasks: Array<Task>;
   showBackButton: boolean;
 
   constructor(
@@ -71,12 +71,12 @@ export class TasksPage implements OnDestroy, OnInit {
     return m.present();
   }
 
-  close(task: TaskWithId) {
+  close(task: Task) {
     const closedTask = { ...task, status: Statuses.Closed };
     this.tasks.update(closedTask);
   }
 
-  async delete(task: TaskWithId): Promise<void> {
+  async delete(task: Task): Promise<void> {
     const a = await this.alert.create({
       header: 'Confirm Delete',
       message: 'Are you sure you want to permanently remove this task?',
@@ -88,11 +88,11 @@ export class TasksPage implements OnDestroy, OnInit {
     return a.present();
   }
 
-  view(task: TaskWithId) {
+  view(task: Task) {
     this.navController.navigateForward(['task', task.id]);
   }
 
-  private unpackTasks(t: Array<TaskWithId>) {
+  private unpackTasks(t: Array<Task>) {
     if (this.list) {
       this.list.closeSlidingItems();
     }
@@ -106,9 +106,9 @@ export class TasksPage implements OnDestroy, OnInit {
   }
 
   private tasksWithStatus(
-    allTasks: Array<TaskWithId>,
+    allTasks: Array<Task>,
     status: string
-  ): Array<TaskWithId> {
+  ): Array<Task> {
     if (this.status && status !== this.status) {
       return [];
     }
@@ -116,7 +116,7 @@ export class TasksPage implements OnDestroy, OnInit {
     return (allTasks && allTasks.filter(t => t.status === status)) || [];
   }
 
-  private taskSort(t1: TaskWithId, t2: TaskWithId) {
+  private taskSort(t1: Task, t2: Task) {
     if (this.priorityRank(t1) < this.priorityRank(t2)) {
       return -1;
     }
@@ -138,7 +138,7 @@ export class TasksPage implements OnDestroy, OnInit {
     return 0;
   }
 
-  private priorityRank(task: TaskWithId): number {
+  private priorityRank(task: Task): number {
     switch (task.priority) {
       case Priorities.High:
         return 0;

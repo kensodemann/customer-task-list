@@ -8,24 +8,24 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export class FirestoreDataService<T extends object> {
+export class FirestoreDataService<T extends { id?: string }> {
   protected collection: AngularFirestoreCollection<T>;
 
   constructor(firestore: AngularFirestore, collectionName: string) {
     this.collection = firestore.collection(collectionName);
   }
 
-  all(): Observable<Array<{ id: string } & T>> {
+  all(): Observable<Array<T>> {
     return this.collection.snapshotChanges().pipe(map(this.actionsToData));
   }
 
-  get(id: string): Observable<{ id: string } & T> {
+  get(id: string): Observable<T> {
     return this.collection
       .doc<T>(id)
       .valueChanges()
       .pipe(
         map(item => {
-          return { id: id, ...(item as object) } as { id: string } & T;
+          return { id: id, ...(item as object) } as T;
         })
       );
   }
@@ -34,23 +34,23 @@ export class FirestoreDataService<T extends object> {
     return this.collection.add(item);
   }
 
-  delete(item: { id: string } & T): Promise<void> {
+  delete(item: T): Promise<void> {
     return this.collection.doc(item.id).delete();
   }
 
-  update(item: { id: string } & T): Promise<void> {
-    const data = { ...(item as object) } as { id: string } & T;
+  update(item: T): Promise<void> {
+    const data = { ...(item as object) } as T;
     delete data.id;
     return this.collection.doc(item.id).set(data);
   }
 
   protected actionsToData(
     actions: Array<DocumentChangeAction<T>>
-  ): Array<{ id: string } & T> {
+  ): Array<T> {
     return actions.map(a => {
       const data = a.payload.doc.data();
       const id = a.payload.doc.id;
-      return { id, ...(data as object) } as { id: string } & T;
+      return { id, ...(data as object) } as T;
     });
   }
 }

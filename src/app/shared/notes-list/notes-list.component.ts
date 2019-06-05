@@ -3,7 +3,7 @@ import { AlertController, IonList, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { NotesService } from '../../services/firestore-data/notes/notes.service';
-import { NoteWithId } from '../..//models/note';
+import { Note } from '../..//models/note';
 import { NoteEditorComponent } from 'src/app/editors/note-editor/note-editor.component';
 
 @Component({
@@ -16,7 +16,7 @@ export class NotesListComponent implements OnDestroy, OnInit {
 
   @ViewChild(IonList, { static: true }) notesList: IonList;
   @Input() itemId: string;
-  allNotes: Array<NoteWithId>;
+  allNotes: Array<Note>;
 
   constructor(
     private alert: AlertController,
@@ -43,7 +43,7 @@ export class NotesListComponent implements OnDestroy, OnInit {
     m.present();
   }
 
-  async delete(note: NoteWithId) {
+  async delete(note: Note) {
     const a = await this.alert.create({
       header: 'Confirm Delete',
       message: 'Are you sure you want to permanently remove this note?',
@@ -61,7 +61,7 @@ export class NotesListComponent implements OnDestroy, OnInit {
     return a.present();
   }
 
-  async view(note: NoteWithId) {
+  async view(note: Note) {
     const m = await this.modal.create({
       backdropDismiss: false,
       component: NoteEditorComponent,

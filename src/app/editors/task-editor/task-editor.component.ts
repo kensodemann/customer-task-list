@@ -6,8 +6,15 @@ import { firestore } from 'firebase/app';
 
 import { byName } from '../../util';
 import { CustomersService } from '../../services/firestore-data/customers/customers.service';
-import { Priorities, priorities, Statuses, statuses, TaskTypes, taskTypes } from '../../default-data';
-import { Task, TaskWithId } from '../../models/task';
+import {
+  Priorities,
+  priorities,
+  Statuses,
+  statuses,
+  TaskTypes,
+  taskTypes
+} from '../../default-data';
+import { Task } from '../../models/task';
 import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
 
 @Component({
@@ -31,7 +38,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   status: string;
   taskType: string;
 
-  task: TaskWithId;
+  task: Task;
 
   activeCustomers: Array<{ id: string; name: string }>;
   priorities: Array<string>;
@@ -77,7 +84,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
 
   save() {
     if (this.task) {
-      this.tasks.update(this.taskObject() as TaskWithId);
+      this.tasks.update(this.taskObject());
     } else {
       this.tasks.add(this.taskObject());
     }
@@ -135,7 +142,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.taskType = TaskTypes.FollowUp;
   }
 
-  private taskObject(): Task | TaskWithId {
+  private taskObject(): Task {
     const customer = this.activeCustomers.find(c => c.id === this.customerId);
     const task: Task = {
       name: this.name,
@@ -157,7 +164,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     }
 
     if (this.task) {
-      (task as TaskWithId).id = this.task.id;
+      task.id = this.task.id;
     }
 
     return task;

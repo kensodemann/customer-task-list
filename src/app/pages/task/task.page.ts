@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../../models/task';
+import { Task } from '../../models/task';
 import { TaskEditorComponent } from '../../editors/task-editor/task-editor.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { TaskEditorComponent } from '../../editors/task-editor/task-editor.compo
 })
 export class TaskPage implements OnDestroy, OnInit {
   private subscriptions: Array<Subscription> = [];
-  task: TaskWithId;
+  task: Task;
 
   constructor(
     private modal: ModalController,

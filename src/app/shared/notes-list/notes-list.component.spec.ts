@@ -13,7 +13,7 @@ import {
   createOverlayControllerMock,
   createOverlayElementMock
 } from '../../../../test/mocks';
-import { NoteWithId } from 'src/app/models/note';
+import { Note } from 'src/app/models/note';
 
 describe('NotesListComponent', () => {
   let alert;
@@ -63,7 +63,7 @@ describe('NotesListComponent', () => {
 
   it('assigns the returned notes', () => {
     const notes = TestBed.get(NotesService);
-    const n: Array<NoteWithId> = [
+    const n: Array<Note> = [
       {
         id: '42995849',
         text: 'this is note #1',
@@ -121,7 +121,7 @@ describe('NotesListComponent', () => {
       fixture.detectChanges();
     });
 
-    const note: NoteWithId = {
+    const note: Note = {
       id: '42DA',
       text: 'First find Deep Thought, then get the answer from it',
       enteredOn: new firestore.Timestamp(14324053, 0),

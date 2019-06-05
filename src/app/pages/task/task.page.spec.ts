@@ -9,7 +9,7 @@ import { Priorities, Statuses, TaskTypes } from '../../default-data';
 import { TaskEditorComponent } from '../../editors/task-editor/task-editor.component';
 import { TaskPage } from './task.page';
 import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../../models/task';
+import { Task } from '../../models/task';
 
 import {
   createActivatedRouteMock,
@@ -98,7 +98,7 @@ describe('TaskPage', () => {
   });
 
   describe('edit task', () => {
-    const task: TaskWithId = {
+    const task: Task = {
       id: '314159PI',
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',

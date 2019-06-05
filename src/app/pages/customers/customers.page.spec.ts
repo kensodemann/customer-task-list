@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 
 import { CustomersPage } from './customers.page';
 import { CustomersService } from '../../services/firestore-data/customers/customers.service';
-import { CustomerWithId } from '../../models/customer';
+import { Customer } from '../../models/customer';
 
 import { CustomerEditorComponent } from '../../editors/customer-editor/customer-editor.component';
 import { createCustomersServiceMock } from '../../services/firestore-data/customers/customers.mock';
@@ -16,8 +16,8 @@ import {
 } from 'test/mocks';
 
 describe('CustomersPage', () => {
-  let customerList: Subject<Array<CustomerWithId>>;
-  let list: Array<CustomerWithId>;
+  let customerList: Subject<Array<Customer>>;
+  let list: Array<Customer>;
   let modal;
   let page: CustomersPage;
   let fixture: ComponentFixture<CustomersPage>;

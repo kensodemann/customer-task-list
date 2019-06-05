@@ -5,7 +5,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 import { firestore } from 'firebase/app';
 
-import { CustomerWithId } from '../../models/customer';
+import { Customer} from '../../models/customer';
 import { CustomersService } from '../../services/firestore-data/customers/customers.service';
 import { TaskEditorComponent } from './task-editor.component';
 import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
@@ -19,7 +19,7 @@ import { createCustomersServiceMock } from '../../services/firestore-data/custom
 import { createTasksServiceMock } from '../../services/firestore-data/tasks/tasks.mock';
 
 describe('TaskEditorComponent', () => {
-  let allCustomers: Array<CustomerWithId>;
+  let allCustomers: Array<Customer>;
   let editor: TaskEditorComponent;
   let fixture: ComponentFixture<TaskEditorComponent>;
 

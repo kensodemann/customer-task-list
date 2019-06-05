@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 
 import { CustomerEditorComponent } from './customer-editor.component';
 import { CustomersService } from '../../services/firestore-data/customers/customers.service';
-import { CustomerWithId } from '../../models/customer';
+import { Customer} from '../../models/customer';
 
 import { createCustomersServiceMock } from '../../services/firestore-data/customers/customers.mock';
 import {
@@ -17,7 +17,7 @@ import {
 describe('CustomerEditorComponent', () => {
   let editor: CustomerEditorComponent;
   let fixture: ComponentFixture<CustomerEditorComponent>;
-  let customerList: Subject<Array<CustomerWithId>>;
+  let customerList: Subject<Array<Customer>>;
   let list;
 
   beforeEach(async(() => {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { firestore } from 'firebase/app';
 
-import { Note, NoteWithId } from '../../models/note';
+import { Note } from '../../models/note';
 import { NotesService } from '../../services/firestore-data/notes/notes.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { NotesService } from '../../services/firestore-data/notes/notes.service'
 export class NoteEditorComponent implements OnInit {
   title: string;
 
-  note: NoteWithId;
+  note: Note;
   itemId: string;
   text: string;
 
@@ -35,14 +35,14 @@ export class NoteEditorComponent implements OnInit {
   save() {
     const note = this.noteOjbect();
     if (this.note) {
-      this.notes.update(note as NoteWithId);
+      this.notes.update(note as Note);
     } else {
       this.notes.add(note);
     }
     this.modal.dismiss();
   }
 
-  private noteOjbect(): Note | NoteWithId {
+  private noteOjbect(): Note {
     const note: Note = {
       text: this.text,
       itemId: this.note ? this.note.itemId : this.itemId,
@@ -52,7 +52,7 @@ export class NoteEditorComponent implements OnInit {
     };
 
     if (this.note) {
-      (note as NoteWithId).id = this.note.id;
+      note.id = this.note.id;
     }
 
     return note;
