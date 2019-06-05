@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { NoteWithId } from '../../models/note';
+import { Note } from '../../models/note';
 
 @Component({
   selector: 'app-note-list-item',
@@ -8,7 +8,7 @@ import { NoteWithId } from '../../models/note';
   styleUrls: ['./note-list-item.component.scss']
 })
 export class NoteListItemComponent {
-  @Input() note: NoteWithId;
+  @Input() note: Note;
   @Output() delete: EventEmitter<void>;
   @Output() view: EventEmitter<void>;
 

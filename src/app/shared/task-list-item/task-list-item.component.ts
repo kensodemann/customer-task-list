@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Statuses } from 'src/app/default-data';
-import { TaskWithId } from '../../models/task';
+import { Task } from '../../models/task';
 
 @Component({
   selector: 'app-task-list-item',
@@ -9,7 +9,7 @@ import { TaskWithId } from '../../models/task';
   styleUrls: ['./task-list-item.component.scss']
 })
 export class TaskListItemComponent {
-  @Input() task: TaskWithId;
+  @Input() task: Task;
   @Output() done: EventEmitter<void>;
   @Output() delete: EventEmitter<void>;
   @Output() view: EventEmitter<void>;

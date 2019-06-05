@@ -1,9 +1,6 @@
 export interface Customer {
+  id?: string;
   name: string;
   description: string;
   isActive: boolean;
-}
-
-export interface CustomerWithId extends Customer {
-  id: string;
 }

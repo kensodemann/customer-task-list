@@ -5,10 +5,10 @@ import { Subscription } from 'rxjs';
 
 import { CustomerEditorComponent } from '../../editors/customer-editor/customer-editor.component';
 import { CustomersService } from '../../services/firestore-data/customers/customers.service';
-import { CustomerWithId } from '../../models/customer';
+import { Customer } from '../../models/customer';
 import { statuses } from '../../default-data';
 import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../../models/task';
+import { Task } from '../../models/task';
 
 @Component({
   selector: 'app-customer',
@@ -17,9 +17,9 @@ import { TaskWithId } from '../../models/task';
 })
 export class CustomerPage implements OnDestroy, OnInit {
   private subscriptions: Array<Subscription> = [];
-  private customerTasks: Array<TaskWithId>;
+  private customerTasks: Array<Task>;
 
-  customer: CustomerWithId;
+  customer: Customer;
   statuses: Array<string>;
 
   constructor(

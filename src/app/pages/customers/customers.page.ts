@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { CustomerEditorComponent } from '../../editors/customer-editor/customer-editor.component';
 import { CustomersService } from '../../services/firestore-data/customers/customers.service';
-import { CustomerWithId } from '../../models/customer';
+import { Customer } from '../../models/customer';
 import { byName } from '../../util';
 
 @Component({
@@ -15,7 +15,7 @@ import { byName } from '../../util';
 export class CustomersPage implements OnDestroy, OnInit {
   private customersSubscription: Subscription;
 
-  allCustomers: Array<CustomerWithId>;
+  allCustomers: Array<Customer>;
 
   constructor(
     private customers: CustomersService,
@@ -41,7 +41,7 @@ export class CustomersPage implements OnDestroy, OnInit {
     m.present();
   }
 
-  view(c: CustomerWithId) {
+  view(c: Customer) {
     this.navController.navigateForward(['customer', c.id]);
   }
 }

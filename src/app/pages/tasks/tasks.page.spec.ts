@@ -14,7 +14,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { TaskEditorComponent } from '../../editors/task-editor/task-editor.component';
 import { TasksPage } from './tasks.page';
 import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
-import { TaskWithId } from '../../models/task';
+import { Task } from '../../models/task';
 
 import { createTasksServiceMock } from '../../services/firestore-data/tasks/tasks.mock';
 import {
@@ -29,11 +29,11 @@ describe('TasksPage', () => {
   let fixture: ComponentFixture<TasksPage>;
   let modal;
   let page: TasksPage;
-  let taskList: Subject<Array<TaskWithId>>;
-  let testTasks: Array<TaskWithId>;
-  let openTasks: Array<TaskWithId>;
-  let onHoldTasks: Array<TaskWithId>;
-  let closedTasks: Array<TaskWithId>;
+  let taskList: Subject<Array<Task>>;
+  let testTasks: Array<Task>;
+  let openTasks: Array<Task>;
+  let onHoldTasks: Array<Task>;
+  let closedTasks: Array<Task>;
 
   beforeEach(async(() => {
     alert = createOverlayElementMock('Alert');
@@ -225,7 +225,7 @@ describe('TasksPage', () => {
       fixture.detectChanges();
     });
 
-    const task: TaskWithId = {
+    const task: Task = {
       id: '42DA',
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
@@ -256,7 +256,7 @@ describe('TasksPage', () => {
       fixture.detectChanges();
     });
 
-    const task: TaskWithId = {
+    const task: Task = {
       id: '42DA',
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',

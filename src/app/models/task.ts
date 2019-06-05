@@ -1,6 +1,7 @@
 import { firestore } from 'firebase/app';
 
 export interface Task {
+  id?: string;
   name: string;
   description: string;
   type: string;
@@ -11,8 +12,4 @@ export interface Task {
   customerId: string;
   customerName: string;
   enteredOn: firestore.Timestamp;
-}
-
-export interface TaskWithId extends Task {
-  id: string;
 }
