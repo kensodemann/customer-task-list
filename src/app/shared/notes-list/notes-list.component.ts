@@ -14,7 +14,7 @@ import { NoteEditorComponent } from 'src/app/editors/note-editor/note-editor.com
 export class NotesListComponent implements OnDestroy, OnInit {
   private subscriptions: Array<Subscription> = [];
 
-  @ViewChild(IonList, {static: true}) notesList: IonList;
+  @ViewChild(IonList, { static: true }) notesList: IonList;
   @Input() itemId: string;
   allNotes: Array<NoteWithId>;
 

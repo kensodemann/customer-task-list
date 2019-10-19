@@ -35,7 +35,7 @@ function writeVersionFile(pkg) {
   fs.appendFileSync(versionFile, `  name: '${adjNoun().join(' ')}',\n`);
   fs.appendFileSync(
     versionFile,
-    `  date: '${dateFns.format(new Date(), 'YYYY-MM-DD')}'\n`
+    `  date: '${dateFns.format(new Date(), 'yyyy-MM-dd')}'\n`
   );
   fs.appendFileSync(versionFile, `};\n`);
 }

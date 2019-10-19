@@ -15,8 +15,7 @@ const routes: Routes = [
           {
             path: '',
             canActivate: [AuthGuardService],
-            loadChildren: () =>
-              import('../tasks/tasks.module').then(m => m.TasksPageModule)
+            loadChildren: () => import('../tasks/tasks.module').then(m => m.TasksPageModule)
           }
         ]
       },
@@ -26,10 +25,7 @@ const routes: Routes = [
           {
             path: '',
             canActivate: [AuthGuardService],
-            loadChildren: () =>
-              import('../customers/customers.module').then(
-                m => m.CustomersPageModule
-              )
+            loadChildren: () => import('../customers/customers.module').then(m => m.CustomersPageModule)
           }
         ]
       },
@@ -38,8 +34,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () =>
-              import('../about/about.module').then(m => m.AboutPageModule)
+            loadChildren: () => import('../about/about.module').then(m => m.AboutPageModule)
           }
         ]
       },

@@ -19,7 +19,7 @@ import { TaskWithId } from '../../models/task';
   styleUrls: ['tasks.page.scss']
 })
 export class TasksPage implements OnDestroy, OnInit {
-  @ViewChild(IonList, {static: true}) list: IonList;
+  @ViewChild(IonList, { static: true }) list: IonList;
 
   private customerId;
   private status;

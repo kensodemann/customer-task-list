@@ -1,8 +1,8 @@
 <ion-app>
   <ion-router-outlet *ngIf="application.showTabs"></ion-router-outlet>
 
-  <ion-split-pane *ngIf="!application.showTabs">
-    <ion-menu>
+  <ion-split-pane contentId="main-content" *ngIf="!application.showTabs">
+    <ion-menu contentId="main-content">
       <ion-header>
         <ion-toolbar> <ion-title>Menu</ion-title> </ion-toolbar>
       </ion-header>
@@ -35,6 +35,6 @@
       </ion-content>
     </ion-menu>
 
-    <ion-router-outlet main></ion-router-outlet>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>
