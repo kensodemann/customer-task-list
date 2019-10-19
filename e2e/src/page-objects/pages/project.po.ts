@@ -1,9 +1,9 @@
 import { by, browser, element, ExpectedConditions } from 'protractor';
 import { PageObjectBase } from './base.po';
 
-export class CustomerPage extends PageObjectBase {
+export class ProjectPage extends PageObjectBase {
   constructor() {
-    super('app-customer', '/customer/:id');
+    super('app-project', '/project/:id');
   }
 
   get nameText() {

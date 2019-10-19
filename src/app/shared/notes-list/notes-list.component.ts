@@ -2,9 +2,9 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, IonList, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { NotesService } from '../../services/firestore-data/notes/notes.service';
-import { Note } from '../..//models/note';
-import { NoteEditorComponent } from 'src/app/editors/note-editor/note-editor.component';
+import { NotesService } from '@app/services/firestore-data';
+import { Note } from '@app/models';
+import { NoteEditorComponent } from '@app/editors';
 
 @Component({
   selector: 'app-notes-list',
@@ -18,16 +18,10 @@ export class NotesListComponent implements OnDestroy, OnInit {
   @Input() itemId: string;
   allNotes: Array<Note>;
 
-  constructor(
-    private alert: AlertController,
-    private modal: ModalController,
-    private notes: NotesService
-  ) {}
+  constructor(private alert: AlertController, private modal: ModalController, private notes: NotesService) {}
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.notes.allFor(this.itemId).subscribe(n => (this.allNotes = n))
-    );
+    this.subscriptions.push(this.notes.allFor(this.itemId).subscribe(n => (this.allNotes = n)));
   }
 
   ngOnDestroy() {

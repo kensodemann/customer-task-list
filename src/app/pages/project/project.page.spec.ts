@@ -5,40 +5,37 @@ import { firestore } from 'firebase/app';
 import { ModalController, NavController } from '@ionic/angular';
 import { of } from 'rxjs';
 
-import { CustomerEditorComponent } from '../../editors/customer-editor/customer-editor.component';
-import { CustomerPage } from './customer.page';
-import { CustomersService } from '../../services/firestore-data/customers/customers.service';
-import { Customer } from '../../models/customer';
-import { Priorities, Statuses, TaskTypes } from '../../default-data';
-import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
-import { Task } from '../../models/task';
+import { ProjectEditorComponent } from '@app/editors';
+import { ProjectPage } from './project.page';
+import { ProjectsService, TasksService } from '@app/services/firestore-data';
+import { createProjectsServiceMock, createTasksServiceMock } from '@app/services/firestore-data/mocks';
+import { Project } from '@app/models';
+import { Priorities, Statuses, TaskTypes } from '@app/default-data';
+import { Task } from '@app/models/task';
 
-import { createCustomersServiceMock } from '../../services/firestore-data/customers/customers.mock';
-import { createTasksServiceMock } from '../../services/firestore-data/tasks/tasks.mock';
 import {
   createActivatedRouteMock,
   createNavControllerMock,
   createOverlayControllerMock,
   createOverlayElementMock
-} from '../../../../test/mocks';
+} from '@test/mocks';
 
-describe('CustomerPage', () => {
-  let page: CustomerPage;
-  let fixture: ComponentFixture<CustomerPage>;
+describe('ProjectPage', () => {
+  let page: ProjectPage;
+  let fixture: ComponentFixture<ProjectPage>;
   let modal;
   let testTasks: Array<Task>;
 
   beforeEach(async(() => {
     modal = createOverlayElementMock('Modal');
     TestBed.configureTestingModule({
-      declarations: [CustomerPage],
+      declarations: [ProjectPage],
       providers: [
         { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
-        { provide: CustomersService, useFactory: createCustomersServiceMock },
+        { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
-          useFactory: () =>
-            createOverlayControllerMock('ModalController', modal)
+          useFactory: () => createOverlayControllerMock('ModalController', modal)
         },
         { provide: NavController, useFactory: createNavControllerMock },
         { provide: TasksService, useFactory: createTasksServiceMock }
@@ -50,8 +47,8 @@ describe('CustomerPage', () => {
   beforeEach(() => {
     const tasks = TestBed.get(TasksService);
     initializeTestTasks();
-    tasks.forCustomer.and.returnValue(of(testTasks));
-    fixture = TestBed.createComponent(CustomerPage);
+    tasks.forProject.and.returnValue(of(testTasks));
+    fixture = TestBed.createComponent(ProjectPage);
     page = fixture.componentInstance;
   });
 
@@ -67,20 +64,20 @@ describe('CustomerPage', () => {
     expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('id');
   });
 
-  it('get the customer for the id', () => {
-    const customers = TestBed.get(CustomersService);
+  it('get the project for the id', () => {
+    const projects = TestBed.get(ProjectsService);
     const route = TestBed.get(ActivatedRoute);
     route.snapshot.paramMap.get.and.returnValue('314159PI');
     fixture.detectChanges();
-    expect(customers.get).toHaveBeenCalledTimes(1);
-    expect(customers.get).toHaveBeenCalledWith('314159PI');
+    expect(projects.get).toHaveBeenCalledTimes(1);
+    expect(projects.get).toHaveBeenCalledWith('314159PI');
   });
 
-  it('assigns the customer', () => {
-    const customers = TestBed.get(CustomersService);
+  it('assigns the project', () => {
+    const projects = TestBed.get(ProjectsService);
     const route = TestBed.get(ActivatedRoute);
     route.snapshot.paramMap.get.and.returnValue('314159PI');
-    customers.get.and.returnValue(
+    projects.get.and.returnValue(
       of({
         id: '314159PI',
         name: 'Cherry',
@@ -89,7 +86,7 @@ describe('CustomerPage', () => {
       })
     );
     fixture.detectChanges();
-    expect(page.customer).toEqual({
+    expect(page.project).toEqual({
       id: '314159PI',
       name: 'Cherry',
       description: 'Makers of really tasty pi',
@@ -97,17 +94,17 @@ describe('CustomerPage', () => {
     });
   });
 
-  it('gets the tasks for the customer', () => {
+  it('gets the tasks for the project', () => {
     const route = TestBed.get(ActivatedRoute);
     const tasks = TestBed.get(TasksService);
     route.snapshot.paramMap.get.and.returnValue('314159PI');
     fixture.detectChanges();
-    expect(tasks.forCustomer).toHaveBeenCalledTimes(1);
-    expect(tasks.forCustomer).toHaveBeenCalledWith('314159PI');
+    expect(tasks.forProject).toHaveBeenCalledTimes(1);
+    expect(tasks.forProject).toHaveBeenCalledWith('314159PI');
   });
 
-  describe('edit customer', () => {
-    const customer: Customer = {
+  describe('edit project', () => {
+    const project: Project = {
       id: '4273',
       name: 'Dominos',
       description: 'Pizza apps that rock, the pizza not so much',
@@ -115,10 +112,10 @@ describe('CustomerPage', () => {
     };
 
     beforeEach(() => {
-      const customers = TestBed.get(CustomersService);
+      const projects = TestBed.get(ProjectsService);
       const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get.and.returnValue('4273');
-      customers.get.and.returnValue(of(customer));
+      projects.get.and.returnValue(of(project));
       fixture.detectChanges();
     });
 
@@ -128,13 +125,13 @@ describe('CustomerPage', () => {
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
-    it('uses the correct component and passes the customer', () => {
+    it('uses the correct component and passes the project', () => {
       const modalController = TestBed.get(ModalController);
       page.edit();
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
-        component: CustomerEditorComponent,
-        componentProps: { customer: customer }
+        component: ProjectEditorComponent,
+        componentProps: { project: project }
       });
     });
 
@@ -186,8 +183,8 @@ describe('CustomerPage', () => {
         type: TaskTypes.FollowUp,
         status: Statuses.Closed,
         priority: Priorities.Normal,
-        customerId: '314159PI',
-        customerName: 'Cherry'
+        projectId: '314159PI',
+        projectName: 'Cherry'
       },
       {
         id: '399485',
@@ -197,8 +194,8 @@ describe('CustomerPage', () => {
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.High,
-        customerId: '314159PI',
-        customerName: 'Cherry'
+        projectId: '314159PI',
+        projectName: 'Cherry'
       },
       {
         id: 'S9590FGS',
@@ -208,20 +205,19 @@ describe('CustomerPage', () => {
         type: TaskTypes.Research,
         status: Statuses.OnHold,
         priority: Priorities.Low,
-        customerId: '314159PI',
-        customerName: 'Cherry'
+        projectId: '314159PI',
+        projectName: 'Cherry'
       },
       {
         id: '39940500987',
         name: 'Respond to Review',
-        description:
-          'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
+        description: 'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
         enteredOn: new firestore.Timestamp(9940593, 0),
         type: TaskTypes.FollowUp,
         status: Statuses.Open,
         priority: Priorities.High,
-        customerId: '314159PI',
-        customerName: 'Cherry'
+        projectId: '314159PI',
+        projectName: 'Cherry'
       },
       {
         id: '119490SDF1945',
@@ -231,8 +227,8 @@ describe('CustomerPage', () => {
         type: TaskTypes.Research,
         status: Statuses.Closed,
         priority: Priorities.Low,
-        customerId: '314159PI',
-        customerName: 'Cherry'
+        projectId: '314159PI',
+        projectName: 'Cherry'
       },
       {
         id: '399405',
@@ -242,32 +238,30 @@ describe('CustomerPage', () => {
         type: TaskTypes.Review,
         status: Statuses.OnHold,
         priority: Priorities.High,
-        customerId: '314159PI',
-        customerName: 'Cherry'
+        projectId: '314159PI',
+        projectName: 'Cherry'
       },
       {
         id: '42DA424242',
         name: 'I am stuck on the answer',
-        description:
-          'First find Deep Thought, then get the answer from it, then puzzle over it',
+        description: 'First find Deep Thought, then get the answer from it, then puzzle over it',
         enteredOn: new firestore.Timestamp(1432405339, 0),
         type: TaskTypes.Review,
         status: Statuses.OnHold,
         priority: Priorities.Normal,
-        customerId: '314159PI',
-        customerName: 'Cherry'
+        projectId: '314159PI',
+        projectName: 'Cherry'
       },
       {
         id: '9999',
         name: 'Die',
-        description:
-          'We all want to go to heaven, but no one wants to die to get there',
+        description: 'We all want to go to heaven, but no one wants to die to get there',
         enteredOn: new firestore.Timestamp(114324053, 0),
         type: TaskTypes.Research,
         status: Statuses.Open,
         priority: Priorities.High,
-        customerId: '314159PI',
-        customerName: 'Cherry'
+        projectId: '314159PI',
+        projectName: 'Cherry'
       }
     ];
   }

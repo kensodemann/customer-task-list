@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { firestore } from 'firebase/app';
 
-import { Priorities, Statuses, TaskTypes, statuses } from '../../default-data';
+import { Priorities, Statuses, TaskTypes } from '@app/default-data';
 import { TaskListItemComponent } from './task-list-item.component';
 
 describe('TaskListItemComponent', () => {
@@ -27,8 +27,8 @@ describe('TaskListItemComponent', () => {
       type: TaskTypes.FollowUp,
       status: Statuses.Closed,
       priority: Priorities.Normal,
-      customerId: '451BK',
-      customerName: 'Book Burners R Us'
+      projectId: '451BK',
+      projectName: 'Book Burners R Us'
     };
     fixture.detectChanges();
   });

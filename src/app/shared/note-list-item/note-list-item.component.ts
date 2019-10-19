@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Note } from '../../models/note';
+import { Note } from '@app/models';
 
 @Component({
   selector: 'app-note-list-item',
@@ -20,7 +20,7 @@ export class NoteListItemComponent {
   get noteText() {
     const maxlen = 160;
     if (this.note.text.length <= maxlen) {
-    return this.note.text;
+      return this.note.text;
     } else {
       return this.note.text.substring(0, maxlen - 3) + '...';
     }

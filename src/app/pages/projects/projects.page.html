@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title> Customers </ion-title>
+    <ion-title> Projects </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,11 +14,11 @@
     </ion-fab-button>
   </ion-fab>
 
-  <ion-list id="customer-list">
-    <ion-item *ngFor="let customer of allCustomers" (click)="view(customer)">
+  <ion-list id="projects-list">
+    <ion-item *ngFor="let project of allProjects" (click)="view(project)">
       <ion-label>
-        <div class="title">{{ customer.name }}</div>
-        <div class="description">{{ customer.description }}</div>
+        <div class="title">{{ project.name }}</div>
+        <div class="description">{{ project.description }}</div>
       </ion-label>
     </ion-item>
   </ion-list>

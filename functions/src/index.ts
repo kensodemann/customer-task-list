@@ -5,68 +5,49 @@ admin.initializeApp({
   credential: admin.credential.applicationDefault()
 });
 
-export const onTaskDelete = functions.firestore
-  .document('tasks/{taskId}')
-  .onDelete(snapshot => {
-    const db = admin.firestore();
-    const notes = db.collection('notes').where('itemId', '==', snapshot.id);
-    notes
+export const onTaskDelete = functions.firestore.document('tasks/{taskId}').onDelete(snapshot => {
+  const db = admin.firestore();
+  const notes = db.collection('notes').where('itemId', '==', snapshot.id);
+  notes
+    .get()
+    .then(notesSnapshot => {
+      const batch = db.batch();
+      notesSnapshot.forEach(note => {
+        console.log('batching delete of note:', note.id);
+        batch.delete(note.ref);
+      });
+      batch.commit().catch(err => console.log('Error committing removal of notes', err));
+    })
+    .catch(err => {
+      console.log('Error getting notes', err);
+    });
+  return null;
+});
+
+export const onProjectUpdate = functions.firestore.document('projects/{projectId}').onUpdate(change => {
+  const db = admin.firestore();
+  const newName = change.after.data().name;
+  if (change.before.data().name !== newName) {
+    const tasks = db.collection('tasks').where('projectId', '==', change.before.id);
+    tasks
       .get()
-      .then(notesSnapshot => {
+      .then(tasksSnapshot => {
         const batch = db.batch();
-        notesSnapshot.forEach(note => {
-          console.log('batching delete of note:', note.id);
-          batch.delete(note.ref);
+        tasksSnapshot.forEach(task => {
+          console.log('batching update of task:', task.id);
+          batch.update(task.ref, { projectName: newName });
         });
-        batch
-          .commit()
-          .catch(err => console.log('Error committing removal of notes', err));
+        batch.commit().catch(err => console.log('Error committing update of project names on tasks', err));
       })
       .catch(err => {
-        console.log('Error getting notes', err);
+        console.log('Error getting tasks for update of project name', err);
       });
-    return null;
-  });
-
-export const onCustomerUpdate = functions.firestore
-  .document('customers/{customerId}')
-  .onUpdate(change => {
-    const db = admin.firestore();
-    const newName = change.after.data().name;
-    if (change.before.data().name !== newName) {
-      const tasks = db
-        .collection('tasks')
-        .where('customerId', '==', change.before.id);
-      tasks
-        .get()
-        .then(tasksSnapshot => {
-          const batch = db.batch();
-          tasksSnapshot.forEach(task => {
-            console.log('batching update of task:', task.id);
-            batch.update(task.ref, { customerName: newName });
-          });
-          batch
-            .commit()
-            .catch(err =>
-              console.log(
-                'Error committing update of customer names on tasks',
-                err
-              )
-            );
-        })
-        .catch(err => {
-          console.log('Error getting tasks for update of customer name', err);
-        });
-    }
-    return null;
-  });
+  }
+  return null;
+});
 
 export const purgeDatabase = functions.https.onRequest((req, res) => {
-  return Promise.all([
-    purgeCollection('customers'),
-    purgeCollection('notes'),
-    purgeCollection('tasks')
-  ])
+  return Promise.all([purgeCollection('projects'), purgeCollection('notes'), purgeCollection('tasks')])
     .then(() => res.send('completed the purge'))
     .catch(err => console.log('error in grouped purge', err));
 });

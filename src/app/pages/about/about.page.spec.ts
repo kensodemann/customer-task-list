@@ -2,8 +2,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AboutPage } from './about.page';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { createAuthenticationServiceMock } from '../../services/authentication/authentication.mock';
+import { AuthenticationService } from '@app/services';
+import { createAuthenticationServiceMock } from '@app/services/mocks';
 
 describe('AboutPage', () => {
   let page: AboutPage;
@@ -13,9 +13,7 @@ describe('AboutPage', () => {
     TestBed.configureTestingModule({
       declarations: [AboutPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        { provide: AuthenticationService, useFactory: createAuthenticationServiceMock }
-      ]
+      providers: [{ provide: AuthenticationService, useFactory: createAuthenticationServiceMock }]
     }).compileComponents();
   }));
 

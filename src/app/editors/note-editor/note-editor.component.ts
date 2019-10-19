@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { firestore } from 'firebase/app';
 
-import { Note } from '../../models/note';
-import { NotesService } from '../../services/firestore-data/notes/notes.service';
+import { Note } from '@app/models';
+import { NotesService } from '@app/services/firestore-data';
 
 @Component({
   selector: 'app-note-editor',
@@ -46,9 +46,7 @@ export class NoteEditorComponent implements OnInit {
     const note: Note = {
       text: this.text,
       itemId: this.note ? this.note.itemId : this.itemId,
-      enteredOn: this.note
-        ? this.note.enteredOn
-        : new firestore.Timestamp(this.getSeconds(), 0)
+      enteredOn: this.note ? this.note.enteredOn : new firestore.Timestamp(this.getSeconds(), 0)
     };
 
     if (this.note) {

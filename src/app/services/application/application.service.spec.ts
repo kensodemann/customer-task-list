@@ -7,7 +7,7 @@ import {
   createOverlayElementMock,
   createPlatformMock,
   createSwUpdateMock
-} from '../../../../test/mocks';
+} from '@test/mocks';
 import { SwUpdate } from '@angular/service-worker';
 
 describe('ApplicationService', () => {
@@ -19,8 +19,7 @@ describe('ApplicationService', () => {
       providers: [
         {
           provide: AlertController,
-          useFactory: () =>
-            createOverlayControllerMock('AlertComtroller', alert)
+          useFactory: () => createOverlayControllerMock('AlertComtroller', alert)
         },
         { provide: SwUpdate, useFactory: createSwUpdateMock },
         { provide: Platform, useFactory: createPlatformMock }

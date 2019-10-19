@@ -5,8 +5,8 @@ export class MenuPage {
     return element(by.css('#menu-item-about')).click();
   }
 
-  clickCustomers() {
-    return element(by.css('#menu-item-customers')).click();
+  clickProjects() {
+    return element(by.css('#menu-item-projects')).click();
   }
 
   clickTasks() {

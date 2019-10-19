@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { version } from '../../default-data';
-import { Version } from '../../models/version';
+import { AuthenticationService } from '@app/services';
+import { version } from '@app/default-data';
+import { Version } from '@app/models';
 
 @Component({
   selector: 'app-about',
@@ -12,7 +12,5 @@ import { Version } from '../../models/version';
 export class AboutPage {
   appVersion: Version = version;
 
-  constructor(
-    public authentication: AuthenticationService
-  ) {}
+  constructor(public authentication: AuthenticationService) {}
 }

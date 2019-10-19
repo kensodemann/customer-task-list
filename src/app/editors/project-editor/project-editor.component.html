@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <form #customerForm="ngForm">
+  <form #projectForm="ngForm">
     <ion-list>
       <ion-item>
         <ion-label position="floating">Name</ion-label>
@@ -37,28 +37,16 @@
       </ion-item>
       <ion-item>
         <ion-label>Is Active</ion-label>
-        <ion-checkbox
-          id="is-active-checkbox"
-          name="isActive"
-          [(ngModel)]="isActive"
-        ></ion-checkbox>
+        <ion-checkbox id="is-active-checkbox" name="isActive" [(ngModel)]="isActive"></ion-checkbox>
       </ion-item>
     </ion-list>
     <div class="error" *ngIf="errorMessage">Error: {{ errorMessage }}</div>
-    <div class="warning" *ngIf="warningMessage">
-      Warning: {{ warningMessage }}
-    </div>
+    <div class="warning" *ngIf="warningMessage">Warning: {{ warningMessage }}</div>
   </form>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button
-      id="save-button"
-      expand="full"
-      [disabled]="!customerForm.form.valid"
-      (click)="save()"
-      >Save</ion-button
-    >
+    <ion-button id="save-button" expand="full" [disabled]="!projectForm.form.valid" (click)="save()">Save</ion-button>
   </ion-toolbar>
 </ion-footer>

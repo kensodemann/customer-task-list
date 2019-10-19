@@ -3,37 +3,32 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalController, NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
-import { CustomersPage } from './customers.page';
-import { CustomersService } from '../../services/firestore-data/customers/customers.service';
-import { Customer } from '../../models/customer';
+import { ProjectsPage } from './projects.page';
+import { ProjectsService } from '@app/services/firestore-data';
+import { createProjectsServiceMock } from '@app/services/firestore-data/mocks';
+import { Project } from '@app/models';
 
-import { CustomerEditorComponent } from '../../editors/customer-editor/customer-editor.component';
-import { createCustomersServiceMock } from '../../services/firestore-data/customers/customers.mock';
-import {
-  createNavControllerMock,
-  createOverlayControllerMock,
-  createOverlayElementMock
-} from 'test/mocks';
+import { ProjectEditorComponent } from '@app/editors';
+import { createNavControllerMock, createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
 
-describe('CustomersPage', () => {
-  let customerList: Subject<Array<Customer>>;
-  let list: Array<Customer>;
+describe('ProjectsPage', () => {
+  let projectList: Subject<Array<Project>>;
+  let list: Array<Project>;
   let modal;
-  let page: CustomersPage;
-  let fixture: ComponentFixture<CustomersPage>;
+  let page: ProjectsPage;
+  let fixture: ComponentFixture<ProjectsPage>;
 
   beforeEach(async(() => {
-    customerList = new Subject();
+    projectList = new Subject();
     modal = createOverlayElementMock('Modal');
     TestBed.configureTestingModule({
-      declarations: [CustomersPage],
+      declarations: [ProjectsPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        { provide: CustomersService, useFactory: createCustomersServiceMock },
+        { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
-          useFactory: () =>
-            createOverlayControllerMock('ModalController', modal)
+          useFactory: () => createOverlayControllerMock('ModalController', modal)
         },
         { provide: NavController, useFactory: createNavControllerMock }
       ]
@@ -41,8 +36,8 @@ describe('CustomersPage', () => {
   }));
 
   beforeEach(() => {
-    const customers = TestBed.get(CustomersService);
-    customers.all.and.returnValue(customerList);
+    const projects = TestBed.get(ProjectsService);
+    projects.all.and.returnValue(projectList);
     list = [
       {
         id: '314PI',
@@ -57,7 +52,7 @@ describe('CustomersPage', () => {
         isActive: true
       }
     ];
-    fixture = TestBed.createComponent(CustomersPage);
+    fixture = TestBed.createComponent(ProjectsPage);
     page = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -66,18 +61,18 @@ describe('CustomersPage', () => {
     expect(page).toBeTruthy();
   });
 
-  it('sets up an observable on the customers', () => {
-    const customers = TestBed.get(CustomersService);
-    expect(customers.all).toHaveBeenCalledTimes(1);
+  it('sets up an observable on the projects', () => {
+    const projects = TestBed.get(ProjectsService);
+    expect(projects.all).toHaveBeenCalledTimes(1);
   });
 
-  it('sets all customers on changes to the customers', () => {
-    customerList.next(list);
-    expect(page.allCustomers).toEqual(list);
+  it('sets all projects on changes to the projects', () => {
+    projectList.next(list);
+    expect(page.allProjects).toEqual(list);
   });
 
-  it('sorts the customers by name', () => {
-    customerList.next([
+  it('sorts the projects by name', () => {
+    projectList.next([
       {
         id: '420HI',
         name: 'Joe',
@@ -103,7 +98,7 @@ describe('CustomersPage', () => {
         isActive: true
       }
     ]);
-    expect(page.allCustomers).toEqual([
+    expect(page.allProjects).toEqual([
       {
         id: '12345',
         name: `aa bus lines`,
@@ -131,7 +126,7 @@ describe('CustomersPage', () => {
     ]);
   });
 
-  describe('add customer', () => {
+  describe('add project', () => {
     it('creates a modal', () => {
       const modalController = TestBed.get(ModalController);
       page.add();
@@ -143,7 +138,7 @@ describe('CustomersPage', () => {
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
-        component: CustomerEditorComponent
+        component: ProjectEditorComponent
       });
     });
 
@@ -153,8 +148,8 @@ describe('CustomersPage', () => {
     });
   });
 
-  describe('view customer', () => {
-    it('navigates to the customer', () => {
+  describe('view project', () => {
+    it('navigates to the project', () => {
       const navController = TestBed.get(NavController);
       page.view({
         id: '4273',
@@ -163,10 +158,7 @@ describe('CustomersPage', () => {
         isActive: true
       });
       expect(navController.navigateForward).toHaveBeenCalledTimes(1);
-      expect(navController.navigateForward).toHaveBeenCalledWith([
-        'customer',
-        '4273'
-      ]);
+      expect(navController.navigateForward).toHaveBeenCalledWith(['project', '4273']);
     });
   });
 });

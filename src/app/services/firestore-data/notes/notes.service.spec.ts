@@ -10,7 +10,7 @@ import {
   createAngularFirestoreDocumentMock,
   createAngularFirestoreMock,
   createAngularFirestoreCollectionMock
-} from '../../../../../test/mocks';
+} from '@test/mocks';
 
 describe('NotesService', () => {
   let collection;
@@ -39,7 +39,7 @@ describe('NotesService', () => {
     expect(angularFirestore.collection).toHaveBeenCalledWith('notes');
   });
 
-  describe('all for (customer or task)', () => {
+  describe('all for (project or task)', () => {
     beforeEach(() => {
       const angularFirestore = TestBed.get(AngularFirestore);
       angularFirestore.collection.calls.reset();

@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
-import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
-import { Task } from '../../models/task';
-import { TaskEditorComponent } from '../../editors/task-editor/task-editor.component';
+import { TasksService } from '@app/services/firestore-data';
+import { Task } from '@app/models';
+import { TaskEditorComponent } from '@app/editors';
 
 @Component({
   selector: 'app-task',
@@ -16,11 +16,7 @@ export class TaskPage implements OnDestroy, OnInit {
   private subscriptions: Array<Subscription> = [];
   task: Task;
 
-  constructor(
-    private modal: ModalController,
-    private route: ActivatedRoute,
-    private tasks: TasksService
-  ) {}
+  constructor(private modal: ModalController, private route: ActivatedRoute, private tasks: TasksService) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');

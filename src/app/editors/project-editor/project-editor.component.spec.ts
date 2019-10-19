@@ -4,36 +4,29 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 
-import { CustomerEditorComponent } from './customer-editor.component';
-import { CustomersService } from '../../services/firestore-data/customers/customers.service';
-import { Customer} from '../../models/customer';
+import { ProjectEditorComponent } from './project-editor.component';
+import { ProjectsService } from '@app/services/firestore-data';
+import { createProjectsServiceMock } from '@app/services/firestore-data/mocks';
+import { Project } from '@app/models';
 
-import { createCustomersServiceMock } from '../../services/firestore-data/customers/customers.mock';
-import {
-  createOverlayControllerMock,
-  createOverlayElementMock
-} from 'test/mocks';
+import { createOverlayControllerMock, createOverlayElementMock } from 'test/mocks';
 
-describe('CustomerEditorComponent', () => {
-  let editor: CustomerEditorComponent;
-  let fixture: ComponentFixture<CustomerEditorComponent>;
-  let customerList: Subject<Array<Customer>>;
+describe('ProjectEditorComponent', () => {
+  let editor: ProjectEditorComponent;
+  let fixture: ComponentFixture<ProjectEditorComponent>;
+  let projectList: Subject<Array<Project>>;
   let list;
 
   beforeEach(async(() => {
-    customerList = new Subject();
+    projectList = new Subject();
     TestBed.configureTestingModule({
-      declarations: [CustomerEditorComponent],
+      declarations: [ProjectEditorComponent],
       imports: [FormsModule, IonicModule],
       providers: [
-        { provide: CustomersService, useFactory: createCustomersServiceMock },
+        { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
-          useFactory: () =>
-            createOverlayControllerMock(
-              'ModalController',
-              createOverlayElementMock('Modal')
-            )
+          useFactory: () => createOverlayControllerMock('ModalController', createOverlayElementMock('Modal'))
         }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -41,8 +34,8 @@ describe('CustomerEditorComponent', () => {
   }));
 
   beforeEach(() => {
-    const customers = TestBed.get(CustomersService);
-    fixture = TestBed.createComponent(CustomerEditorComponent);
+    const projects = TestBed.get(ProjectsService);
+    fixture = TestBed.createComponent(ProjectEditorComponent);
     editor = fixture.componentInstance;
     list = [
       {
@@ -64,7 +57,7 @@ describe('CustomerEditorComponent', () => {
         isActive: false
       }
     ];
-    customers.all.and.returnValue(customerList);
+    projects.all.and.returnValue(projectList);
   });
 
   it('should create', () => {
@@ -72,16 +65,16 @@ describe('CustomerEditorComponent', () => {
     expect(editor).toBeTruthy();
   });
 
-  it('sets up an observable on the customers', () => {
-    const customers = TestBed.get(CustomersService);
+  it('sets up an observable on the projects', () => {
+    const projects = TestBed.get(ProjectsService);
     fixture.detectChanges();
-    expect(customers.all).toHaveBeenCalledTimes(1);
+    expect(projects.all).toHaveBeenCalledTimes(1);
   });
 
-  it('changes the customer list', () => {
+  it('changes the project list', () => {
     fixture.detectChanges();
-    customerList.next(list);
-    expect(editor.allCustomers).toEqual(list);
+    projectList.next(list);
+    expect(editor.allProjects).toEqual(list);
   });
 
   describe('close', () => {
@@ -96,7 +89,7 @@ describe('CustomerEditorComponent', () => {
   describe('in add mode', () => {
     beforeEach(() => {
       fixture.detectChanges();
-      customerList.next(list);
+      projectList.next(list);
     });
 
     it('starts with a true active status', () => {
@@ -104,39 +97,38 @@ describe('CustomerEditorComponent', () => {
     });
 
     it('sets the title', () => {
-      expect(editor.title).toEqual('Add New Customer');
+      expect(editor.title).toEqual('Add New Project');
     });
 
     describe('save', () => {
-      it('adds the customer', () => {
-        const customers = TestBed.get(CustomersService);
+      it('adds the project', () => {
+        const projects = TestBed.get(ProjectsService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.isActive = true;
         editor.save();
-        expect(customers.add).toHaveBeenCalledTimes(1);
+        expect(projects.add).toHaveBeenCalledTimes(1);
       });
 
       it('passes the name, description, and isActive status', () => {
-        const customers = TestBed.get(CustomersService);
+        const projects = TestBed.get(ProjectsService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.isActive = true;
         editor.save();
-        expect(customers.add).toHaveBeenCalledWith({
+        expect(projects.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
           isActive: true
         });
       });
 
-      it('allows inactive customers to be created', () => {
-        const customers = TestBed.get(CustomersService);
+      it('allows inactive projects to be created', () => {
+        const projects = TestBed.get(ProjectsService);
         editor.name = 'Lazy Leopard';
-        (editor.description = 'Cats like to sleep, even the bigger ones.'),
-          (editor.isActive = false);
+        (editor.description = 'Cats like to sleep, even the bigger ones.'), (editor.isActive = false);
         editor.save();
-        expect(customers.add).toHaveBeenCalledWith({
+        expect(projects.add).toHaveBeenCalledWith({
           name: 'Lazy Leopard',
           description: 'Cats like to sleep, even the bigger ones.',
           isActive: false
@@ -151,51 +143,39 @@ describe('CustomerEditorComponent', () => {
     });
 
     describe('check name', () => {
-      it('sets a warning message if a customer by the same name exists', () => {
+      it('sets a warning message if a project by the same name exists', () => {
         editor.name = 'Joe';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
       });
 
       it('does the check case-insensitive', () => {
         editor.name = 'jOe';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
       });
 
       it('ignores starting white-space', () => {
         editor.name = '  Joe';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
 
         editor.name = 'Kenmore ';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
       });
 
       it('ignores ending white-space', () => {
         editor.name = 'Joe  ';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
 
         editor.name = ' Kenmore';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
       });
 
-      it('clears the error message if no matching customer', () => {
+      it('clears the error message if no matching project', () => {
         editor.name = 'Joe';
         editor.checkName();
         expect(editor.warningMessage).toBeTruthy();
@@ -209,18 +189,18 @@ describe('CustomerEditorComponent', () => {
 
   describe('in edit mode', () => {
     beforeEach(() => {
-      editor.customer = {
+      editor.project = {
         id: '531LLS',
         name: 'Lillies and Cream',
         description: 'I have no idea what that would be',
         isActive: false
       };
       fixture.detectChanges();
-      customerList.next(list);
+      projectList.next(list);
     });
 
     it('sets the title', () => {
-      expect(editor.title).toEqual('Modify Customer');
+      expect(editor.title).toEqual('Modify Project');
     });
 
     it('initializes the name', () => {
@@ -236,22 +216,22 @@ describe('CustomerEditorComponent', () => {
     });
 
     describe('save', () => {
-      it('updates the customer', () => {
-        const customers = TestBed.get(CustomersService);
+      it('updates the project', () => {
+        const projects = TestBed.get(ProjectsService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.isActive = true;
         editor.save();
-        expect(customers.update).toHaveBeenCalledTimes(1);
+        expect(projects.update).toHaveBeenCalledTimes(1);
       });
 
       it('passes the id, name, description, and isActive status', () => {
-        const customers = TestBed.get(CustomersService);
+        const projects = TestBed.get(ProjectsService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.isActive = true;
         editor.save();
-        expect(customers.update).toHaveBeenCalledWith({
+        expect(projects.update).toHaveBeenCalledWith({
           id: '531LLS',
           name: 'The Dude',
           description: 'He does abide',
@@ -259,13 +239,12 @@ describe('CustomerEditorComponent', () => {
         });
       });
 
-      it('allows customers to be made inactive', () => {
-        const customers = TestBed.get(CustomersService);
+      it('allows projects to be made inactive', () => {
+        const projects = TestBed.get(ProjectsService);
         editor.name = 'Lazy Leopard';
-        (editor.description = 'Cats like to sleep, even the bigger ones.'),
-          (editor.isActive = false);
+        (editor.description = 'Cats like to sleep, even the bigger ones.'), (editor.isActive = false);
         editor.save();
-        expect(customers.update).toHaveBeenCalledWith({
+        expect(projects.update).toHaveBeenCalledWith({
           id: '531LLS',
           name: 'Lazy Leopard',
           description: 'Cats like to sleep, even the bigger ones.',
@@ -281,16 +260,14 @@ describe('CustomerEditorComponent', () => {
     });
 
     describe('check name', () => {
-      it('sets a warning message if a customer by the same name exists', () => {
+      it('sets a warning message if a project by the same name exists', () => {
         editor.name = 'Joe';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
       });
 
-      it('ignore the customer with the same ID', () => {
-        editor.customer.id = '420HI';
+      it('ignore the project with the same ID', () => {
+        editor.project.id = '420HI';
         editor.name = 'Joe';
         editor.checkName();
         expect(editor.warningMessage).toBeFalsy();
@@ -299,40 +276,30 @@ describe('CustomerEditorComponent', () => {
       it('does the check case-insensitive', () => {
         editor.name = 'jOe';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
       });
 
       it('ignores starting white-space', () => {
         editor.name = '  Joe';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
 
         editor.name = 'Kenmore ';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
       });
 
       it('ignores ending white-space', () => {
         editor.name = 'Joe  ';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
 
         editor.name = ' Kenmore';
         editor.checkName();
-        expect(editor.warningMessage).toEqual(
-          'a customer with this name already exists'
-        );
+        expect(editor.warningMessage).toEqual('a project with this name already exists');
       });
 
-      it('clears the error message if no matching customer', () => {
+      it('clears the error message if no matching project', () => {
         editor.name = 'Joe';
         editor.checkName();
         expect(editor.warningMessage).toBeTruthy();

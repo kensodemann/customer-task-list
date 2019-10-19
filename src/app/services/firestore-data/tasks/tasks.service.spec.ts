@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
 import { firestore } from 'firebase/app';
 
-import { Priorities, Statuses, TaskTypes } from '../../../default-data';
+import { Priorities, Statuses, TaskTypes } from '@app/default-data';
 import { TasksService } from './tasks.service';
 import {
   createAction,
@@ -55,8 +55,8 @@ describe('TasksService', () => {
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
-            customerId: '451BK',
-            customerName: 'Book Burners R Us'
+            projectId: '451BK',
+            projectName: 'Book Burners R Us'
           }),
           createAction('73SC', {
             name: 'Bang the Big',
@@ -65,8 +65,8 @@ describe('TasksService', () => {
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
-            customerId: '451BK',
-            customerName: 'Book Burners R Us'
+            projectId: '451BK',
+            projectName: 'Book Burners R Us'
           })
         ])
       );
@@ -80,8 +80,8 @@ describe('TasksService', () => {
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
-            customerId: '451BK',
-            customerName: 'Book Burners R Us'
+            projectId: '451BK',
+            projectName: 'Book Burners R Us'
           },
           {
             id: '73SC',
@@ -91,15 +91,15 @@ describe('TasksService', () => {
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
-            customerId: '451BK',
-            customerName: 'Book Burners R Us'
+            projectId: '451BK',
+            projectName: 'Book Burners R Us'
           }
         ])
       );
     });
   });
 
-  describe('for customer', () => {
+  describe('for project', () => {
     beforeEach(() => {
       const angularFirestore = TestBed.get(AngularFirestore);
       angularFirestore.collection.calls.reset();
@@ -107,12 +107,12 @@ describe('TasksService', () => {
 
     it('grabs a references to the tasks collection', () => {
       const angularFirestore = TestBed.get(AngularFirestore);
-      tasks.forCustomer('451BK');
+      tasks.forProject('451BK');
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
     });
 
     it('looks for snapshot changes', () => {
-      tasks.forCustomer('451BK');
+      tasks.forProject('451BK');
       expect(collection.snapshotChanges).toHaveBeenCalledTimes(1);
     });
 
@@ -126,8 +126,8 @@ describe('TasksService', () => {
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
-            customerId: '451BK',
-            customerName: 'Book Burners R Us'
+            projectId: '451BK',
+            projectName: 'Book Burners R Us'
           }),
           createAction('73SC', {
             name: 'Bang the Big',
@@ -136,12 +136,12 @@ describe('TasksService', () => {
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
-            customerId: '451BK',
-            customerName: 'Book Burners R Us'
+            projectId: '451BK',
+            projectName: 'Book Burners R Us'
           })
         ])
       );
-      tasks.forCustomer('451BK').subscribe(d =>
+      tasks.forProject('451BK').subscribe(d =>
         expect(d).toEqual([
           {
             id: '42DA',
@@ -151,8 +151,8 @@ describe('TasksService', () => {
             type: TaskTypes.Research,
             status: Statuses.Closed,
             priority: Priorities.Normal,
-            customerId: '451BK',
-            customerName: 'Book Burners R Us'
+            projectId: '451BK',
+            projectName: 'Book Burners R Us'
           },
           {
             id: '73SC',
@@ -162,8 +162,8 @@ describe('TasksService', () => {
             type: TaskTypes.Meeting,
             status: Statuses.Open,
             priority: Priorities.Normal,
-            customerId: '451BK',
-            customerName: 'Book Burners R Us'
+            projectId: '451BK',
+            projectName: 'Book Burners R Us'
           }
         ])
       );
@@ -197,8 +197,8 @@ describe('TasksService', () => {
           type: TaskTypes.Meeting,
           status: Statuses.Open,
           priority: Priorities.Normal,
-          customerId: '451BK',
-          customerName: 'Book Burners R Us'
+          projectId: '451BK',
+          projectName: 'Book Burners R Us'
         })
       );
       tasks.get('199405fkkgi59').subscribe(c =>
@@ -210,8 +210,8 @@ describe('TasksService', () => {
           type: TaskTypes.Meeting,
           status: Statuses.Open,
           priority: Priorities.Normal,
-          customerId: '451BK',
-          customerName: 'Book Burners R Us'
+          projectId: '451BK',
+          projectName: 'Book Burners R Us'
         })
       );
     });
@@ -226,8 +226,8 @@ describe('TasksService', () => {
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.Normal,
-        customerId: '451BK',
-        customerName: 'Book Burners R Us'
+        projectId: '451BK',
+        projectName: 'Book Burners R Us'
       });
       expect(collection.add).toHaveBeenCalledTimes(1);
       expect(collection.add).toHaveBeenCalledWith({
@@ -237,8 +237,8 @@ describe('TasksService', () => {
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.Normal,
-        customerId: '451BK',
-        customerName: 'Book Burners R Us'
+        projectId: '451BK',
+        projectName: 'Book Burners R Us'
       });
     });
   });
@@ -260,8 +260,8 @@ describe('TasksService', () => {
         type: TaskTypes.Meeting,
         beginDate: '2019-01-15',
         endDate: '2019-01-17',
-        customerId: '73SC',
-        customerName: 'Wheels',
+        projectId: '73SC',
+        projectName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
@@ -278,8 +278,8 @@ describe('TasksService', () => {
         type: TaskTypes.Meeting,
         beginDate: '2019-01-15',
         endDate: '2019-01-17',
-        customerId: '73SC',
-        customerName: 'Wheels',
+        projectId: '73SC',
+        projectName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       });
       expect(document.set).toHaveBeenCalledTimes(1);
@@ -291,8 +291,8 @@ describe('TasksService', () => {
         type: TaskTypes.Meeting,
         beginDate: '2019-01-15',
         endDate: '2019-01-17',
-        customerId: '73SC',
-        customerName: 'Wheels',
+        projectId: '73SC',
+        projectName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       });
     });
@@ -314,8 +314,8 @@ describe('TasksService', () => {
         status: Statuses.Open,
         enteredOn: new firestore.Timestamp(0, 0),
         priority: Priorities.Normal,
-        customerId: '451BK',
-        customerName: 'Book Burners R Us'
+        projectId: '451BK',
+        projectName: 'Book Burners R Us'
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('49950399KT');
@@ -330,8 +330,8 @@ describe('TasksService', () => {
         status: Statuses.Open,
         enteredOn: new firestore.Timestamp(0, 0),
         priority: Priorities.Normal,
-        customerId: '451BK',
-        customerName: 'Book Burners R Us'
+        projectId: '451BK',
+        projectName: 'Book Burners R Us'
       });
       expect(document.delete).toHaveBeenCalledTimes(1);
     });

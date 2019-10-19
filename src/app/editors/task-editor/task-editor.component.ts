@@ -4,18 +4,10 @@ import { Subscription } from 'rxjs';
 import { addDays, addYears, differenceInCalendarDays, format, parseISO } from 'date-fns';
 import { firestore } from 'firebase/app';
 
-import { byName } from '../../util';
-import { CustomersService } from '../../services/firestore-data/customers/customers.service';
-import {
-  Priorities,
-  priorities,
-  Statuses,
-  statuses,
-  TaskTypes,
-  taskTypes
-} from '../../default-data';
-import { Task } from '../../models/task';
-import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
+import { byName } from '@app/util';
+import { ProjectsService, TasksService } from '@app/services/firestore-data';
+import { Priorities, priorities, Statuses, statuses, TaskTypes, taskTypes } from '@app/default-data';
+import { Task } from '@app/models';
 
 @Component({
   selector: 'app-task-editor',
@@ -27,7 +19,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
 
   title: string;
 
-  customerId: string;
+  projectId: string;
   description: string;
   beginDate: string;
   endDate: string;
@@ -40,7 +32,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
 
   task: Task;
 
-  activeCustomers: Array<{ id: string; name: string }>;
+  activeProjects: Array<{ id: string; name: string }>;
   priorities: Array<string>;
   statuses: Array<string>;
   taskTypes: Array<string>;
@@ -48,9 +40,9 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   errorMessage: string;
   warningMessage: string;
 
-  customerSubscription: Subscription;
+  projectSubscription: Subscription;
 
-  constructor(private customers: CustomersService, private modal: ModalController, private tasks: TasksService) {}
+  constructor(private projects: ProjectsService, private modal: ModalController, private tasks: TasksService) {}
 
   ngOnInit() {
     this.priorities = [...priorities];
@@ -66,16 +58,16 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       this.defaultTaskProperties();
     }
 
-    this.customerSubscription = this.customers.all().subscribe(customers => {
-      this.activeCustomers = customers
-        .filter(c => c.isActive || (this.task && this.task.customerId === c.id))
+    this.projectSubscription = this.projects.all().subscribe(projects => {
+      this.activeProjects = projects
+        .filter(c => c.isActive || (this.task && this.task.projectId === c.id))
         .map(c => ({ id: c.id, name: c.name }))
         .sort(byName);
     });
   }
 
   ngOnDestroy() {
-    this.customerSubscription.unsubscribe();
+    this.projectSubscription.unsubscribe();
   }
 
   close() {
@@ -113,7 +105,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.status = this.task.status;
     this.priority = this.task.priority;
     this.taskType = this.task.type;
-    this.customerId = this.task.customerId;
+    this.projectId = this.task.projectId;
     this.schedule = !!this.task.beginDate;
     this.beginDate = this.task.beginDate;
     this.endDate = this.task.endDate;
@@ -143,7 +135,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   }
 
   private taskObject(): Task {
-    const customer = this.activeCustomers.find(c => c.id === this.customerId);
+    const project = this.activeProjects.find(c => c.id === this.projectId);
     const task: Task = {
       name: this.name,
       description: this.description,
@@ -151,8 +143,8 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       type: this.taskType,
       priority: this.priority,
       enteredOn: (this.task && this.task.enteredOn) || new firestore.Timestamp(this.getSeconds(), 0),
-      customerId: this.customerId,
-      customerName: customer && customer.name
+      projectId: this.projectId,
+      projectName: project && project.name
     };
 
     if (this.beginDate) {

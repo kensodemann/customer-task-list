@@ -1,7 +1,7 @@
 <ion-item-sliding>
   <ion-item (click)="view.emit()">
     <ion-label>
-      <div class="title">{{ task.name }} - {{ task.customerName }}</div>
+      <div class="title">{{ task.name }} - {{ task.projectName }}</div>
       <div class="timestamp">
         Opened: {{ task.enteredOn.seconds * 1000 | date }}
       </div>

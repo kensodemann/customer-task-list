@@ -9,7 +9,7 @@ export interface Task {
   priority: string;
   beginDate?: string;
   endDate?: string;
-  customerId: string;
-  customerName: string;
+  projectId: string;
+  projectName: string;
   enteredOn: firestore.Timestamp;
 }

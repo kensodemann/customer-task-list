@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { EditorsModule } from '../../editors/editors.module';
-import { SharedModule } from '../../shared/shared.module';
+import { EditorsModule } from '@app/editors';
+import { SharedModule } from '@app/shared';
 import { TasksPage } from './tasks.page';
 
 const routes: Routes = [
@@ -14,24 +14,17 @@ const routes: Routes = [
     component: TasksPage
   },
   {
-    path: ':customerId',
+    path: ':projectId',
     component: TasksPage
   },
   {
-    path: ':customerId/:status',
+    path: ':projectId/:status',
     component: TasksPage
   }
 ];
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    EditorsModule,
-    FormsModule,
-    RouterModule.forChild(routes),
-    SharedModule
-  ],
+  imports: [IonicModule, CommonModule, EditorsModule, FormsModule, RouterModule.forChild(routes), SharedModule],
   declarations: [TasksPage]
 })
 export class TasksPageModule {}

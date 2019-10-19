@@ -1,6 +1,6 @@
 {
-  "name": "Customer Task List",
-  "short_name": "CustomerTaskList",
+  "name": "Project Task List",
+  "short_name": "ProjectTaskList",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

@@ -2,7 +2,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
 
-import { CustomersService } from './customers.service';
+import { ProjectsService } from './projects.service';
 import {
   createAction,
   createAngularFirestoreMock,
@@ -10,9 +10,9 @@ import {
   createAngularFirestoreDocumentMock
 } from 'test/mocks';
 
-describe('CustomersService', () => {
+describe('ProjectsService', () => {
   let collection;
-  let customers: CustomersService;
+  let projects: ProjectsService;
 
   beforeEach(() => {
     const angularFirestore = createAngularFirestoreMock();
@@ -23,23 +23,23 @@ describe('CustomersService', () => {
     });
   });
 
-  beforeEach(inject([CustomersService], (service: CustomersService) => {
-    customers = service;
+  beforeEach(inject([ProjectsService], (service: ProjectsService) => {
+    projects = service;
   }));
 
   it('should be created', () => {
-    expect(customers).toBeTruthy();
+    expect(projects).toBeTruthy();
   });
 
   it('grabs a references to the tasks collection', () => {
     const angularFirestore = TestBed.get(AngularFirestore);
     expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
-    expect(angularFirestore.collection).toHaveBeenCalledWith('customers');
+    expect(angularFirestore.collection).toHaveBeenCalledWith('projects');
   });
 
   describe('all', () => {
     it('looks for snapshot changes', () => {
-      customers.all();
+      projects.all();
       expect(collection.snapshotChanges).toHaveBeenCalledTimes(1);
     });
 
@@ -48,32 +48,28 @@ describe('CustomersService', () => {
         of([
           createAction('314PI', {
             name: `Baker's Square`,
-            description:
-              'Makers of overly sweet pies and otherwise crappy food',
+            description: 'Makers of overly sweet pies and otherwise crappy food',
             isActive: true
           }),
           createAction('420HI', {
             name: 'Joe',
-            description:
-              'Some guy named Joe who sells week on my street corner',
+            description: 'Some guy named Joe who sells week on my street corner',
             isActive: false
           })
         ])
       );
-      customers.all().subscribe(d =>
+      projects.all().subscribe(d =>
         expect(d).toEqual([
           {
             id: '314PI',
             name: `Baker's Square`,
-            description:
-              'Makers of overly sweet pies and otherwise crappy food',
+            description: 'Makers of overly sweet pies and otherwise crappy food',
             isActive: true
           },
           {
             id: '420HI',
             name: 'Joe',
-            description:
-              'Some guy named Joe who sells week on my street corner',
+            description: 'Some guy named Joe who sells week on my street corner',
             isActive: false
           }
         ])
@@ -89,13 +85,13 @@ describe('CustomersService', () => {
     });
 
     it('gets a references to the document', () => {
-      customers.get('199405fkkgi59');
+      projects.get('199405fkkgi59');
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('199405fkkgi59');
     });
 
     it('gets the value of the document', () => {
-      customers.get('199405fkkgi59');
+      projects.get('199405fkkgi59');
       expect(document.valueChanges).toHaveBeenCalledTimes(1);
     });
 
@@ -107,18 +103,20 @@ describe('CustomersService', () => {
           isActive: false
         })
       );
-      customers.get('199405fkkgi59').subscribe(c => expect(c).toEqual({
-        id: '199405fkkgi59',
-        name: 'Joe',
-        description: 'Some guy named Joe who sells week on my street corner',
-        isActive: false
-      }));
+      projects.get('199405fkkgi59').subscribe(c =>
+        expect(c).toEqual({
+          id: '199405fkkgi59',
+          name: 'Joe',
+          description: 'Some guy named Joe who sells week on my street corner',
+          isActive: false
+        })
+      );
     });
   });
 
   describe('add', () => {
     it('adds the item to the collection', () => {
-      customers.add({
+      projects.add({
         name: 'Fred Flintstone',
         description: 'Head of a modnern stone-age family',
         isActive: true
@@ -140,7 +138,7 @@ describe('CustomersService', () => {
     });
 
     it('gets a reference to the document', () => {
-      customers.update({
+      projects.update({
         id: '49950399KT',
         name: 'Kyle',
         description: 'some kid in South Park',
@@ -151,7 +149,7 @@ describe('CustomersService', () => {
     });
 
     it('sets the document data', () => {
-      customers.update({
+      projects.update({
         id: '49950399KT',
         name: 'Kyle',
         description: 'some kid in South Park',

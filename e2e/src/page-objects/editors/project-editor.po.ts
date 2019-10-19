@@ -1,8 +1,8 @@
 import { EditorObjectBase } from './base.po';
 
-export class CustomerEditor extends EditorObjectBase {
+export class ProjectEditor extends EditorObjectBase {
   constructor() {
-    super('app-customer-editor');
+    super('app-project-editor');
   }
 
   enterName(name: string) {

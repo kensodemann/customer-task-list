@@ -5,18 +5,14 @@ import { firestore } from 'firebase/app';
 import { ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 
-import { Priorities, Statuses, TaskTypes } from '../../default-data';
-import { TaskEditorComponent } from '../../editors/task-editor/task-editor.component';
+import { Priorities, Statuses, TaskTypes } from '@app/default-data';
+import { TaskEditorComponent } from '@app/editors';
 import { TaskPage } from './task.page';
-import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
-import { Task } from '../../models/task';
+import { TasksService } from '@app/services/firestore-data';
+import { Task } from '@app/models';
 
-import {
-  createActivatedRouteMock,
-  createOverlayControllerMock,
-  createOverlayElementMock
-} from '../../../../test/mocks';
-import { createTasksServiceMock } from '../../services/firestore-data/tasks/tasks.mock';
+import { createActivatedRouteMock, createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
 
 describe('TaskPage', () => {
   let page: TaskPage;
@@ -31,8 +27,7 @@ describe('TaskPage', () => {
         { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
         {
           provide: ModalController,
-          useFactory: () =>
-            createOverlayControllerMock('ModalController', modal)
+          useFactory: () => createOverlayControllerMock('ModalController', modal)
         },
         { provide: TasksService, useFactory: createTasksServiceMock }
       ],
@@ -66,7 +61,7 @@ describe('TaskPage', () => {
     expect(tasks.get).toHaveBeenCalledWith('314159PI');
   });
 
-  it('assigns the customer', () => {
+  it('assigns the project', () => {
     const route = TestBed.get(ActivatedRoute);
     const tasks = TestBed.get(TasksService);
     route.snapshot.paramMap.get.and.returnValue('314159PI');
@@ -79,8 +74,8 @@ describe('TaskPage', () => {
         type: TaskTypes.Meeting,
         status: Statuses.Open,
         priority: Priorities.Normal,
-        customerId: '451BK',
-        customerName: 'Book Burners R Us'
+        projectId: '451BK',
+        projectName: 'Book Burners R Us'
       })
     );
     fixture.detectChanges();
@@ -92,8 +87,8 @@ describe('TaskPage', () => {
       type: TaskTypes.Meeting,
       status: Statuses.Open,
       priority: Priorities.Normal,
-      customerId: '451BK',
-      customerName: 'Book Burners R Us'
+      projectId: '451BK',
+      projectName: 'Book Burners R Us'
     });
   });
 
@@ -106,8 +101,8 @@ describe('TaskPage', () => {
       type: TaskTypes.FollowUp,
       status: Statuses.Closed,
       priority: Priorities.Normal,
-      customerId: '451BK',
-      customerName: 'Book Burners R Us'
+      projectId: '451BK',
+      projectName: 'Book Burners R Us'
     };
 
     beforeEach(() => {

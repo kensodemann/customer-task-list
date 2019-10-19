@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import { CustomersPage } from './customers.page';
-import { EditorsModule } from '../../editors/editors.module';
+import { ProjectsPage } from './projects.page';
+import { EditorsModule } from '@app/editors';
 
 @NgModule({
   imports: [
@@ -13,8 +13,8 @@ import { EditorsModule } from '../../editors/editors.module';
     EditorsModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([{ path: '', component: CustomersPage }])
+    RouterModule.forChild([{ path: '', component: ProjectsPage }])
   ],
-  declarations: [CustomersPage]
+  declarations: [ProjectsPage]
 })
-export class CustomersPageModule {}
+export class ProjectsPageModule {}

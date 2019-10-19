@@ -5,21 +5,16 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { of } from 'rxjs';
 import { firestore } from 'firebase/app';
 
-import { Customer} from '../../models/customer';
-import { CustomersService } from '../../services/firestore-data/customers/customers.service';
+import { Project } from '@app/models';
+import { ProjectsService, TasksService } from '@app/services/firestore-data';
+import { createProjectsServiceMock, createTasksServiceMock } from '@app/services/firestore-data/mocks';
 import { TaskEditorComponent } from './task-editor.component';
-import { TasksService } from '../../services/firestore-data/tasks/tasks.service';
-import { Priorities, Statuses, TaskTypes } from '../../default-data';
+import { Priorities, Statuses, TaskTypes } from '@app/default-data';
 
-import {
-  createOverlayControllerMock,
-  createOverlayElementMock
-} from 'test/mocks';
-import { createCustomersServiceMock } from '../../services/firestore-data/customers/customers.mock';
-import { createTasksServiceMock } from '../../services/firestore-data/tasks/tasks.mock';
+import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
 
 describe('TaskEditorComponent', () => {
-  let allCustomers: Array<Customer>;
+  let allProjects: Array<Project>;
   let editor: TaskEditorComponent;
   let fixture: ComponentFixture<TaskEditorComponent>;
 
@@ -28,14 +23,10 @@ describe('TaskEditorComponent', () => {
       declarations: [TaskEditorComponent],
       imports: [FormsModule, IonicModule],
       providers: [
-        { provide: CustomersService, useFactory: createCustomersServiceMock },
+        { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
-          useFactory: () =>
-            createOverlayControllerMock(
-              'ModalController',
-              createOverlayElementMock('Modal')
-            )
+          useFactory: () => createOverlayControllerMock('ModalController', createOverlayElementMock('Modal'))
         },
         { provide: TasksService, useFactory: createTasksServiceMock }
       ],
@@ -44,8 +35,8 @@ describe('TaskEditorComponent', () => {
   }));
 
   beforeEach(() => {
-    const customers = TestBed.get(CustomersService);
-    allCustomers = [
+    const projects = TestBed.get(ProjectsService);
+    allProjects = [
       {
         id: '314PI',
         name: `Baker's Square`,
@@ -95,7 +86,7 @@ describe('TaskEditorComponent', () => {
         isActive: true
       }
     ];
-    customers.all.and.returnValue(of(allCustomers));
+    projects.all.and.returnValue(of(allProjects));
     fixture = TestBed.createComponent(TaskEditorComponent);
     editor = fixture.componentInstance;
   });
@@ -142,9 +133,9 @@ describe('TaskEditorComponent', () => {
       expect(editor.priority).toEqual(Priorities.Normal);
     });
 
-    it('gets the customers', () => {
-      const customers = TestBed.get(CustomersService);
-      expect(customers.all).toHaveBeenCalledTimes(1);
+    it('gets the projects', () => {
+      const projects = TestBed.get(ProjectsService);
+      expect(projects.all).toHaveBeenCalledTimes(1);
     });
 
     it('defaults to not scheduling the task', () => {
@@ -153,8 +144,8 @@ describe('TaskEditorComponent', () => {
       expect(editor.endDate).toBeFalsy();
     });
 
-    it('maps the active customers', () => {
-      expect(editor.activeCustomers).toEqual([
+    it('maps the active projects', () => {
+      expect(editor.activeProjects).toEqual([
         {
           id: '705AMS',
           name: 'Ashley Furniture'
@@ -226,7 +217,7 @@ describe('TaskEditorComponent', () => {
         const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
-        editor.customerId = '1138GL';
+        editor.projectId = '1138GL';
         editor.save();
         expect(tasks.add).toHaveBeenCalledTimes(1);
       });
@@ -235,7 +226,7 @@ describe('TaskEditorComponent', () => {
         const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
-        editor.customerId = '1138GL';
+        editor.projectId = '1138GL';
         editor.save();
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
@@ -243,8 +234,8 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           type: TaskTypes.FollowUp,
           priority: Priorities.Normal,
-          customerId: '1138GL',
-          customerName: 'THX Sound Enterprises',
+          projectId: '1138GL',
+          projectName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0)
         });
       });
@@ -253,7 +244,7 @@ describe('TaskEditorComponent', () => {
         const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
-        editor.customerId = '1138GL';
+        editor.projectId = '1138GL';
         editor.beginDate = '2019-01-03';
         editor.endDate = '2019-01-04';
         editor.save();
@@ -263,19 +254,19 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           type: TaskTypes.FollowUp,
           priority: Priorities.Normal,
-          customerId: '1138GL',
-          customerName: 'THX Sound Enterprises',
+          projectId: '1138GL',
+          projectName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0),
           beginDate: '2019-01-03',
           endDate: '2019-01-04'
         });
       });
 
-      it('has a blank customer name if the customer cannot be found', () => {
+      it('has a blank project name if the project cannot be found', () => {
         const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
-        editor.customerId = '1139GL';
+        editor.projectId = '1139GL';
         editor.save();
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
@@ -283,8 +274,8 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           type: TaskTypes.FollowUp,
           priority: Priorities.Normal,
-          customerId: '1139GL',
-          customerName: undefined,
+          projectId: '1139GL',
+          projectName: undefined,
           enteredOn: new firestore.Timestamp(1545765815, 0)
         });
       });
@@ -311,8 +302,8 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           priority: Priorities.Low,
           type: TaskTypes.Meeting,
-          customerId: '1138GL',
-          customerName: 'THX Sound Enterprises',
+          projectId: '1138GL',
+          projectName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0)
         };
         fixture.detectChanges();
@@ -373,8 +364,8 @@ describe('TaskEditorComponent', () => {
           type: TaskTypes.Meeting,
           beginDate: '2019-01-15',
           endDate: '2019-01-18',
-          customerId: '1138GL',
-          customerName: 'THX Sound Enterprises',
+          projectId: '1138GL',
+          projectName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0)
         };
         fixture.detectChanges();
@@ -389,9 +380,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('initializes the description', () => {
-        expect(editor.description).toEqual(
-          'Weekly status meeting, usually on Thursdays'
-        );
+        expect(editor.description).toEqual('Weekly status meeting, usually on Thursdays');
       });
 
       it('initializes the status', () => {
@@ -418,17 +407,17 @@ describe('TaskEditorComponent', () => {
         expect(editor.schedule).toEqual(true);
       });
 
-      it('initializes the customer ID', () => {
-        expect(editor.customerId).toEqual('1138GL');
+      it('initializes the project ID', () => {
+        expect(editor.projectId).toEqual('1138GL');
       });
 
-      it('gets the customers', () => {
-        const customers = TestBed.get(CustomersService);
-        expect(customers.all).toHaveBeenCalledTimes(1);
+      it('gets the projects', () => {
+        const projects = TestBed.get(ProjectsService);
+        expect(projects.all).toHaveBeenCalledTimes(1);
       });
 
-      it('maps the active customers', () => {
-        expect(editor.activeCustomers).toEqual([
+      it('maps the active projects', () => {
+        expect(editor.activeProjects).toEqual([
           {
             id: '705AMS',
             name: 'Ashley Furniture'
@@ -509,8 +498,8 @@ describe('TaskEditorComponent', () => {
             type: TaskTypes.Meeting,
             beginDate: '2019-01-15',
             endDate: '2019-01-18',
-            customerId: '1138GL',
-            customerName: 'THX Sound Enterprises',
+            projectId: '1138GL',
+            projectName: 'THX Sound Enterprises',
             enteredOn: new firestore.Timestamp(1545765815, 0)
           });
         });
@@ -524,7 +513,7 @@ describe('TaskEditorComponent', () => {
     });
   });
 
-  describe('in update mode with inactive customer', () => {
+  describe('in update mode with inactive project', () => {
     beforeEach(() => {
       editor.task = {
         id: '88395AA930FE',
@@ -535,15 +524,15 @@ describe('TaskEditorComponent', () => {
         type: TaskTypes.Meeting,
         beginDate: '2019-01-15',
         endDate: '2019-01-18',
-        customerId: '73SC',
-        customerName: 'Wheels',
+        projectId: '73SC',
+        projectName: 'Wheels',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       };
       fixture.detectChanges();
     });
 
-    it('maps the active customers and the assigned customer', () => {
-      expect(editor.activeCustomers).toEqual([
+    it('maps the active projects and the assigned project', () => {
+      expect(editor.activeProjects).toEqual([
         {
           id: '705AMS',
           name: 'Ashley Furniture'

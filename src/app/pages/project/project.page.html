@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Customer</ion-title>
+    <ion-title>Project</ion-title>
     <ion-buttons slot="start">
-      <!-- <ion-back-button defaultHref="tabs/customers"></ion-back-button> -->
+      <!-- <ion-back-button defaultHref="tabs/projects"></ion-back-button> -->
       <!-- see https://github.com/ionic-team/ionic/issues/15216 -->
       <ion-back-button
-        defaultHref="tabs/customers"
-        (click)="navController.navigateBack('tabs/customers')"
+        defaultHref="tabs/projects"
+        (click)="navController.navigateBack('tabs/projects')"
       ></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
@@ -19,32 +19,26 @@
     </ion-fab-button>
   </ion-fab>
 
-  <div id="name-section" class="section">
-    <span class="label">Name:</span> {{ customer?.name }}
-  </div>
+  <div id="name-section" class="section"><span class="label">Name:</span> {{ project?.name }}</div>
 
   <div id="description-section" class="section">
     <div class="label">Description:</div>
-    <div>{{ customer?.description }}</div>
+    <div>{{ project?.description }}</div>
   </div>
 
-  <div id="is-active-section" class="section">
-    <span class="label">Is Active:</span> {{ customer?.isActive }}
-  </div>
+  <div id="is-active-section" class="section"><span class="label">Is Active:</span> {{ project?.isActive }}</div>
 
   <div class="section">
     <ion-list id="tasks-list" lines="none">
       <ion-list-header> <ion-label>Tasks:</ion-label> </ion-list-header>
-      <ion-item (click)="navController.navigateForward(['tasks', customer.id])">
+      <ion-item (click)="navController.navigateForward(['tasks', project.id])">
         <ion-label>All ({{ taskCount() }})</ion-label>
       </ion-item>
-      <ion-item
-        *ngFor="let status of statuses"
-        (click)="navController.navigateForward(['tasks', customer.id, status])"
+      <ion-item *ngFor="let status of statuses" (click)="navController.navigateForward(['tasks', project.id, status])"
         ><ion-label>{{ status }} ({{ taskCount(status) }})</ion-label></ion-item
       >
     </ion-list>
   </div>
 
-  <app-notes-list *ngIf="customer" [itemId]="customer.id"></app-notes-list>
+  <app-notes-list *ngIf="project" [itemId]="project.id"></app-notes-list>
 </ion-content>

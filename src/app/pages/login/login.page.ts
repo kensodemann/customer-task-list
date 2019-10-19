@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import {
-  AlertController,
-  LoadingController,
-  NavController
-} from '@ionic/angular';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
 
-import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { AuthenticationService } from '@app/services';
 
 @Component({
   selector: 'app-login',
@@ -77,18 +73,10 @@ export class LoginPage {
   }
 
   private async sendPasswordResetEmail(response: any) {
-    if (
-      response &&
-      response.data.values.emailAddress &&
-      response.role === 'send'
-    ) {
+    if (response && response.data.values.emailAddress && response.role === 'send') {
       try {
-        await this.auth.sendPasswordResetEmail(
-          response.data.values.emailAddress
-        );
-        this.infoMessage = `An e-mail has been sent to ${
-          response.data.values.emailAddress
-        } with password reset instructions.`;
+        await this.auth.sendPasswordResetEmail(response.data.values.emailAddress);
+        this.infoMessage = `An e-mail has been sent to ${response.data.values.emailAddress} with password reset instructions.`;
       } catch (err) {
         this.errorMessage = err.message;
       }

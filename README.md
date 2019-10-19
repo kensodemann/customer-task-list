@@ -1,4 +1,4 @@
-# Customer Task List
+# Project Task List
 
 [![Build Status][travis-badge]][travis-badge-url]
 

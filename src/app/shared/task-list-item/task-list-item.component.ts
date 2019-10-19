@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Statuses } from 'src/app/default-data';
-import { Task } from '../../models/task';
+import { Statuses } from '@app/default-data';
+import { Task } from '@app/models';
 
 @Component({
   selector: 'app-task-list-item',

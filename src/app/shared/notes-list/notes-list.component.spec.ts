@@ -4,16 +4,13 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { firestore } from 'firebase/app';
 import { of } from 'rxjs';
 
-import { NoteEditorComponent } from '../../editors/note-editor/note-editor.component';
+import { NoteEditorComponent } from '@app/editors';
 import { NotesListComponent } from './notes-list.component';
-import { NotesService } from '../../services/firestore-data/notes/notes.service';
+import { NotesService } from '@app/services/firestore-data';
 
-import { createNotesServiceMock } from '../../services/firestore-data/notes/notes.mock';
-import {
-  createOverlayControllerMock,
-  createOverlayElementMock
-} from '../../../../test/mocks';
-import { Note } from 'src/app/models/note';
+import { createNotesServiceMock } from '@app/services/firestore-data/mocks';
+import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import { Note } from '@app/models';
 
 describe('NotesListComponent', () => {
   let alert;
@@ -29,13 +26,11 @@ describe('NotesListComponent', () => {
       providers: [
         {
           provide: AlertController,
-          useFactory: () =>
-            createOverlayControllerMock('AlertController', alert)
+          useFactory: () => createOverlayControllerMock('AlertController', alert)
         },
         {
           provide: ModalController,
-          useFactory: () =>
-            createOverlayControllerMock('ModalController', modal)
+          useFactory: () => createOverlayControllerMock('ModalController', modal)
         },
         { provide: NotesService, useFactory: createNotesServiceMock }
       ],
@@ -142,9 +137,7 @@ describe('NotesListComponent', () => {
     it('does the delete on "Yes"', () => {
       const alertController = TestBed.get(AlertController);
       const notes = TestBed.get(NotesService);
-      component.notesList = jasmine.createSpyObj('IonList', [
-        'closeSlidingItems'
-      ]);
+      component.notesList = jasmine.createSpyObj('IonList', ['closeSlidingItems']);
       component.delete(note);
       const button = alertController.create.calls.argsFor(0)[0].buttons[0];
       button.handler();
@@ -153,9 +146,7 @@ describe('NotesListComponent', () => {
 
     it('closes the sliding items on "Yes"', () => {
       const alertController = TestBed.get(AlertController);
-      component.notesList = jasmine.createSpyObj('IonList', [
-        'closeSlidingItems'
-      ]);
+      component.notesList = jasmine.createSpyObj('IonList', ['closeSlidingItems']);
       component.delete(note);
       const button = alertController.create.calls.argsFor(0)[0].buttons[0];
       button.handler();

@@ -3,21 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import { CustomerEditorComponent } from './customer-editor/customer-editor.component';
+import { ProjectEditorComponent } from './project-editor/project-editor.component';
 import { TaskEditorComponent } from './task-editor/task-editor.component';
 import { NoteEditorComponent } from './note-editor/note-editor.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule],
-  declarations: [
-    CustomerEditorComponent,
-    NoteEditorComponent,
-    TaskEditorComponent
-  ],
-  entryComponents: [
-    CustomerEditorComponent,
-    NoteEditorComponent,
-    TaskEditorComponent
-  ]
+  declarations: [ProjectEditorComponent, NoteEditorComponent, TaskEditorComponent],
+  entryComponents: [ProjectEditorComponent, NoteEditorComponent, TaskEditorComponent]
 })
 export class EditorsModule {}
