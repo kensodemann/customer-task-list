@@ -10,15 +10,7 @@ const rimraf = require('rimraf');
 const semver = require('semver');
 
 const rootDir = path.join(__dirname, '../');
-const SEMVER_INCREMENTS = [
-  'patch',
-  'minor',
-  'major',
-  'prepatch',
-  'preminor',
-  'premajor',
-  'prerelease'
-];
+const SEMVER_INCREMENTS = ['patch', 'minor', 'major', 'prepatch', 'preminor', 'premajor', 'prerelease'];
 
 function runTasks(oldVersion, inc) {
   const newVersion = semver.inc(oldVersion, inc);
@@ -30,40 +22,30 @@ function runTasks(oldVersion, inc) {
           [
             {
               title: 'Checking Git Status',
-              task: () =>
-                execa.stdout('git', ['status', '--porcelain']).then(result => {
-                  if (result !== '') {
-                    throw new Error(
-                      'Unclean working tree. Commit or stash changes first.'
-                    );
-                  }
-                })
+              task: async () => {
+                const { stdout } = await execa('git', ['status', '--porcelain']);
+                if (stdout !== '') {
+                  throw new Error('Unclean working tree. Commit or stash changes first.');
+                }
+              }
             },
             {
               title: 'Checking Current Branch',
-              task: () => execa.stdout('git', ['symbolic-ref', '--short', 'HEAD']).then(branch => {
-                if (branch !== 'master') {
+              task: async () => {
+                const { stdout } = await execa('git', ['symbolic-ref', '--short', 'HEAD']);
+                if (stdout !== '') {
                   throw new Error('Not on `master` branch.');
                 }
-              })
+              }
             },
             {
               title: 'Checking Remote History',
-              task: () =>
-                execa
-                  .stdout('git', [
-                    'rev-list',
-                    '--count',
-                    '--left-only',
-                    '@{u}...HEAD'
-                  ])
-                  .then(result => {
-                    if (result !== '0') {
-                      throw new Error(
-                        'Remote history differ. Please pull changes.'
-                      );
-                    }
-                  })
+              task: async () => {
+                const { stdout } = execa('git', ['rev-list', '--count', '--left-only', '@{u}...HEAD']);
+                if (stdout !== '') {
+                  throw new Error('Remote history differ. Please pull changes.');
+                }
+              }
             }
           ],
           { concurrent: true }
@@ -109,11 +91,11 @@ function runTasks(oldVersion, inc) {
         )
     },
     {
-      title:'Bumping',
+      title: 'Bumping',
       task: () => execa('npm', ['run', 'bump', inc], { cwd: rootDir })
     },
     {
-      title:'Generating Changelog',
+      title: 'Generating Changelog',
       task: () => execa('npm', ['run', 'changelog'], { cwd: rootDir })
     },
     {
@@ -147,7 +129,7 @@ function runTasks(oldVersion, inc) {
     {
       title: 'Reset to Development',
       task: () => execa('firebase', ['use', 'development'], { cwd: rootDir })
-    },
+    }
   ]);
 
   return tasks.run();
@@ -158,9 +140,7 @@ function releaseUI() {
   const oldVersion = pkg.version;
 
   console.log(
-    `\nPrepare to release a new version of ${chalk.bold.magenta(
-      pkg.name
-    )} ${chalk.dim(`(${oldVersion})`)}\n`
+    `\nPrepare to release a new version of ${chalk.bold.magenta(pkg.name)} ${chalk.dim(`(${oldVersion})`)}\n`
   );
 
   const prompts = [
