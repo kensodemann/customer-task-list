@@ -33,7 +33,7 @@ function runTasks(oldVersion, inc) {
               title: 'Checking Current Branch',
               task: async () => {
                 const { stdout } = await execa('git', ['symbolic-ref', '--short', 'HEAD']);
-                if (stdout !== '') {
+                if (stdout !== 'master') {
                   throw new Error('Not on `master` branch.');
                 }
               }
@@ -41,8 +41,8 @@ function runTasks(oldVersion, inc) {
             {
               title: 'Checking Remote History',
               task: async () => {
-                const { stdout } = execa('git', ['rev-list', '--count', '--left-only', '@{u}...HEAD']);
-                if (stdout !== '') {
+                const { stdout } = await execa('git', ['rev-list', '--count', '--left-only', '@{u}...HEAD']);
+                if (stdout !== '0') {
                   throw new Error('Remote history differ. Please pull changes.');
                 }
               }
