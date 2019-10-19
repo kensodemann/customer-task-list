@@ -126,7 +126,7 @@ describe('TaskEditorComponent', () => {
     });
 
     it('defaults the type to Follow-up', () => {
-      expect(editor.taskType).toEqual(TaskTypes.FollowUp);
+      expect(editor.taskType).toEqual(TaskTypes.Feature);
     });
 
     it('defaults the priority to Normal', () => {
@@ -232,7 +232,7 @@ describe('TaskEditorComponent', () => {
           name: 'The Dude',
           description: 'He does abide',
           status: Statuses.Open,
-          type: TaskTypes.FollowUp,
+          type: TaskTypes.Feature,
           priority: Priorities.Normal,
           projectId: '1138GL',
           projectName: 'THX Sound Enterprises',
@@ -252,7 +252,7 @@ describe('TaskEditorComponent', () => {
           name: 'The Dude',
           description: 'He does abide',
           status: Statuses.Open,
-          type: TaskTypes.FollowUp,
+          type: TaskTypes.Feature,
           priority: Priorities.Normal,
           projectId: '1138GL',
           projectName: 'THX Sound Enterprises',
@@ -272,7 +272,7 @@ describe('TaskEditorComponent', () => {
           name: 'The Dude',
           description: 'He does abide',
           status: Statuses.Open,
-          type: TaskTypes.FollowUp,
+          type: TaskTypes.Feature,
           priority: Priorities.Normal,
           projectId: '1139GL',
           projectName: undefined,
@@ -301,7 +301,7 @@ describe('TaskEditorComponent', () => {
           description: 'Weekly status meeting, usually on Thursdays',
           status: Statuses.Open,
           priority: Priorities.Low,
-          type: TaskTypes.Meeting,
+          type: TaskTypes.Task,
           projectId: '1138GL',
           projectName: 'THX Sound Enterprises',
           enteredOn: new firestore.Timestamp(1545765815, 0)
@@ -361,7 +361,7 @@ describe('TaskEditorComponent', () => {
           description: 'Weekly status meeting, usually on Thursdays',
           status: Statuses.Open,
           priority: Priorities.Low,
-          type: TaskTypes.Meeting,
+          type: TaskTypes.Task,
           beginDate: '2019-01-15',
           endDate: '2019-01-18',
           projectId: '1138GL',
@@ -388,7 +388,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('initializes the task type', () => {
-        expect(editor.taskType).toEqual(TaskTypes.Meeting);
+        expect(editor.taskType).toEqual(TaskTypes.Task);
       });
 
       it('initializes the priority', () => {
@@ -495,7 +495,7 @@ describe('TaskEditorComponent', () => {
             description: 'Moving to twice a week',
             status: Statuses.Open,
             priority: Priorities.Low,
-            type: TaskTypes.Meeting,
+            type: TaskTypes.Task,
             beginDate: '2019-01-15',
             endDate: '2019-01-18',
             projectId: '1138GL',
@@ -521,7 +521,7 @@ describe('TaskEditorComponent', () => {
         description: 'Weekly status meeting, usually on Thursdays',
         status: Statuses.Open,
         priority: Priorities.Low,
-        type: TaskTypes.Meeting,
+        type: TaskTypes.Task,
         beginDate: '2019-01-15',
         endDate: '2019-01-18',
         projectId: '73SC',

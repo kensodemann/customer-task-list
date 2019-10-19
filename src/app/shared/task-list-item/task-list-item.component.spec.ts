@@ -24,7 +24,7 @@ describe('TaskListItemComponent', () => {
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
       enteredOn: new firestore.Timestamp(14324053, 0),
-      type: TaskTypes.FollowUp,
+      type: TaskTypes.Feature,
       status: Statuses.Closed,
       priority: Priorities.Normal,
       projectId: '451BK',

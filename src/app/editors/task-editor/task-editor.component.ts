@@ -131,7 +131,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   private defaultTaskProperties() {
     this.priority = Priorities.Normal;
     this.status = Statuses.Open;
-    this.taskType = TaskTypes.FollowUp;
+    this.taskType = TaskTypes.Feature;
   }
 
   private taskObject(): Task {

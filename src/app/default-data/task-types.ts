@@ -1,15 +1,15 @@
 export const enum TaskTypes {
-  Enhancement = 'Enhancement',
-  FollowUp = 'Follow-up',
-  Meeting = 'Meeting',
+  Bug = 'Bug',
+  Feature = 'Feature',
   Research = 'Research',
-  Review = 'Review'
+  Review = 'Review',
+  Task = 'Task'
 }
 
 export const taskTypes: Array<string> = [
-  TaskTypes.FollowUp,
-  TaskTypes.Enhancement,
+  TaskTypes.Bug,
+  TaskTypes.Feature,
   TaskTypes.Research,
   TaskTypes.Review,
-  TaskTypes.Meeting
+  TaskTypes.Task
 ];
