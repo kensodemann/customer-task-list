@@ -57,6 +57,6 @@ export class NoteEditorComponent implements OnInit {
   }
 
   private getSeconds(): number {
-    return Math.round(new Date().getTime() / 1000);
+    return Math.round(Date.now() / 1000);
   }
 }

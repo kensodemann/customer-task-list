@@ -27,7 +27,7 @@ describe('ProjectPage', () => {
   let testTasks: Array<Task>;
 
   beforeEach(async(() => {
-    modal = createOverlayElementMock('Modal');
+    modal = createOverlayElementMock();
     TestBed.configureTestingModule({
       declarations: [ProjectPage],
       providers: [
@@ -35,7 +35,7 @@ describe('ProjectPage', () => {
         { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock('ModalController', modal)
+          useFactory: () => createOverlayControllerMock(modal)
         },
         { provide: NavController, useFactory: createNavControllerMock },
         { provide: TasksService, useFactory: createTasksServiceMock }
@@ -47,7 +47,7 @@ describe('ProjectPage', () => {
   beforeEach(() => {
     const tasks = TestBed.get(TasksService);
     initializeTestTasks();
-    tasks.forProject.and.returnValue(of(testTasks));
+    tasks.forProject.mockReturnValue(of(testTasks));
     fixture = TestBed.createComponent(ProjectPage);
     page = fixture.componentInstance;
   });
@@ -67,7 +67,7 @@ describe('ProjectPage', () => {
   it('get the project for the id', () => {
     const projects = TestBed.get(ProjectsService);
     const route = TestBed.get(ActivatedRoute);
-    route.snapshot.paramMap.get.and.returnValue('314159PI');
+    route.snapshot.paramMap.get.mockReturnValue('314159PI');
     fixture.detectChanges();
     expect(projects.get).toHaveBeenCalledTimes(1);
     expect(projects.get).toHaveBeenCalledWith('314159PI');
@@ -76,8 +76,8 @@ describe('ProjectPage', () => {
   it('assigns the project', () => {
     const projects = TestBed.get(ProjectsService);
     const route = TestBed.get(ActivatedRoute);
-    route.snapshot.paramMap.get.and.returnValue('314159PI');
-    projects.get.and.returnValue(
+    route.snapshot.paramMap.get.mockReturnValue('314159PI');
+    projects.get.mockReturnValue(
       of({
         id: '314159PI',
         name: 'Cherry',
@@ -97,7 +97,7 @@ describe('ProjectPage', () => {
   it('gets the tasks for the project', () => {
     const route = TestBed.get(ActivatedRoute);
     const tasks = TestBed.get(TasksService);
-    route.snapshot.paramMap.get.and.returnValue('314159PI');
+    route.snapshot.paramMap.get.mockReturnValue('314159PI');
     fixture.detectChanges();
     expect(tasks.forProject).toHaveBeenCalledTimes(1);
     expect(tasks.forProject).toHaveBeenCalledWith('314159PI');
@@ -114,8 +114,8 @@ describe('ProjectPage', () => {
     beforeEach(() => {
       const projects = TestBed.get(ProjectsService);
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get.and.returnValue('4273');
-      projects.get.and.returnValue(of(project));
+      route.snapshot.paramMap.get.mockReturnValue('4273');
+      projects.get.mockReturnValue(of(project));
       fixture.detectChanges();
     });
 

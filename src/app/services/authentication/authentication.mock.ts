@@ -1,7 +1,7 @@
 export function createAuthenticationServiceMock() {
-  return jasmine.createSpyObj('AuthenticationService', {
-    login: Promise.resolve(),
-    logout: Promise.resolve(),
-    sendPasswordResetEmail: Promise.resolve()
-  });
+  return {
+    login: jest.fn(() => Promise.resolve()),
+    logout: jest.fn(() => Promise.resolve()),
+    sendPasswordResetEmail: jest.fn(() => Promise.resolve())
+  };
 }

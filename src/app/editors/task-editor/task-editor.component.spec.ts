@@ -26,7 +26,7 @@ describe('TaskEditorComponent', () => {
         { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock('ModalController', createOverlayElementMock('Modal'))
+          useFactory: () => createOverlayControllerMock(createOverlayElementMock())
         },
         { provide: TasksService, useFactory: createTasksServiceMock }
       ],
@@ -86,7 +86,7 @@ describe('TaskEditorComponent', () => {
         isActive: true
       }
     ];
-    projects.all.and.returnValue(of(allProjects));
+    projects.all.mockReturnValue(of(allProjects));
     fixture = TestBed.createComponent(TaskEditorComponent);
     editor = fixture.componentInstance;
   });
@@ -97,9 +97,11 @@ describe('TaskEditorComponent', () => {
   });
 
   it('calculates a max due date', () => {
-    jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
+    const now = Date.now;
+    Date.now = jest.fn(() => new Date('2018-12-25T14:23:35.000-05:00').getTime());
     fixture.detectChanges();
     expect(editor.maxDate).toEqual('2021-12-25');
+    Date.now = now;
   });
 
   describe('close', () => {
@@ -112,10 +114,14 @@ describe('TaskEditorComponent', () => {
   });
 
   describe('in add mode', () => {
+    let now;
     beforeEach(() => {
-      jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
+      now = Date.now;
+      Date.now = jest.fn(() => new Date('2018-12-25T14:23:35.000-05:00').getTime());
       fixture.detectChanges();
     });
+
+    afterEach(() => (Date.now = now));
 
     it('sets the title to "Add New Task"', () => {
       expect(editor.title).toEqual('Add New Task');
@@ -210,7 +216,7 @@ describe('TaskEditorComponent', () => {
 
     describe('save', () => {
       beforeEach(() => {
-        jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
+        Date.now = jest.fn(() => new Date('2018-12-25T14:23:35.000-05:00').getTime());
       });
 
       it('adds the task', () => {
@@ -289,9 +295,13 @@ describe('TaskEditorComponent', () => {
   });
 
   describe('in update mode', () => {
+    let now;
     beforeEach(() => {
-      jasmine.clock().mockDate(new Date('2019-03-13T12:05:45.000-05:00'));
+      now = Date.now;
+      Date.now = jest.fn(() => new Date('2019-03-13T12:05:45.000-05:00').getTime());
     });
+
+    afterEach(() => (Date.now = now));
 
     describe('without schedule dates', () => {
       beforeEach(() => {

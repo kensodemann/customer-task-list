@@ -20,14 +20,14 @@ describe('TaskPage', () => {
   let modal;
 
   beforeEach(async(() => {
-    modal = createOverlayElementMock('Modal');
+    modal = createOverlayElementMock();
     TestBed.configureTestingModule({
       declarations: [TaskPage],
       providers: [
         { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock('ModalController', modal)
+          useFactory: () => createOverlayControllerMock(modal)
         },
         { provide: TasksService, useFactory: createTasksServiceMock }
       ],
@@ -55,7 +55,7 @@ describe('TaskPage', () => {
   it('get the task for the id', () => {
     const route = TestBed.get(ActivatedRoute);
     const tasks = TestBed.get(TasksService);
-    route.snapshot.paramMap.get.and.returnValue('314159PI');
+    route.snapshot.paramMap.get.mockReturnValue('314159PI');
     fixture.detectChanges();
     expect(tasks.get).toHaveBeenCalledTimes(1);
     expect(tasks.get).toHaveBeenCalledWith('314159PI');
@@ -64,8 +64,8 @@ describe('TaskPage', () => {
   it('assigns the project', () => {
     const route = TestBed.get(ActivatedRoute);
     const tasks = TestBed.get(TasksService);
-    route.snapshot.paramMap.get.and.returnValue('314159PI');
-    tasks.get.and.returnValue(
+    route.snapshot.paramMap.get.mockReturnValue('314159PI');
+    tasks.get.mockReturnValue(
       of({
         id: '314159PI',
         name: 'Bang the Big',
@@ -108,8 +108,8 @@ describe('TaskPage', () => {
     beforeEach(() => {
       const route = TestBed.get(ActivatedRoute);
       const tasks = TestBed.get(TasksService);
-      route.snapshot.paramMap.get.and.returnValue('314159PI');
-      tasks.get.and.returnValue(of(task));
+      route.snapshot.paramMap.get.mockReturnValue('314159PI');
+      tasks.get.mockReturnValue(of(task));
       fixture.detectChanges();
     });
 

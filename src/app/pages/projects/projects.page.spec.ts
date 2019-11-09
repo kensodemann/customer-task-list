@@ -20,7 +20,7 @@ describe('ProjectsPage', () => {
 
   beforeEach(async(() => {
     projectList = new Subject();
-    modal = createOverlayElementMock('Modal');
+    modal = createOverlayElementMock();
     TestBed.configureTestingModule({
       declarations: [ProjectsPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -28,7 +28,7 @@ describe('ProjectsPage', () => {
         { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock('ModalController', modal)
+          useFactory: () => createOverlayControllerMock(modal)
         },
         { provide: NavController, useFactory: createNavControllerMock }
       ]
@@ -37,7 +37,7 @@ describe('ProjectsPage', () => {
 
   beforeEach(() => {
     const projects = TestBed.get(ProjectsService);
-    projects.all.and.returnValue(projectList);
+    projects.all.mockReturnValue(projectList);
     list = [
       {
         id: '314PI',

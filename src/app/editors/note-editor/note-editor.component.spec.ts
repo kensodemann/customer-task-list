@@ -21,7 +21,7 @@ describe('NoteEditorComponent', () => {
       providers: [
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock('ModalController', createOverlayElementMock('Modal'))
+          useFactory: () => createOverlayControllerMock(createOverlayElementMock())
         },
         { provide: NotesService, useFactory: createNotesServiceMock }
       ],
@@ -32,11 +32,6 @@ describe('NoteEditorComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NoteEditorComponent);
     editor = fixture.componentInstance;
-    jasmine.clock().install();
-  });
-
-  afterEach(() => {
-    jasmine.clock().uninstall();
   });
 
   it('should create', () => {
@@ -54,11 +49,15 @@ describe('NoteEditorComponent', () => {
   });
 
   describe('in add mode', () => {
+    let now;
     beforeEach(() => {
-      jasmine.clock().mockDate(new Date('2018-12-25T14:23:35.000-05:00'));
+      now = Date.now;
+      Date.now = jest.fn(() => new Date('2018-12-25T14:23:35.000-05:00').getTime());
       editor.itemId = '39945akf953';
       fixture.detectChanges();
     });
+
+    afterEach(() => (Date.now = now));
 
     it('sets the title', () => {
       expect(editor.title).toEqual('Add New Note');

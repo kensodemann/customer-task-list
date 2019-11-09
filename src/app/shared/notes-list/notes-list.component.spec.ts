@@ -19,18 +19,18 @@ describe('NotesListComponent', () => {
   let modal;
 
   beforeEach(async(() => {
-    alert = createOverlayElementMock('Alert');
-    modal = createOverlayElementMock('Modal');
+    alert = createOverlayElementMock();
+    modal = createOverlayElementMock();
     TestBed.configureTestingModule({
       declarations: [NotesListComponent],
       providers: [
         {
           provide: AlertController,
-          useFactory: () => createOverlayControllerMock('AlertController', alert)
+          useFactory: () => createOverlayControllerMock(alert)
         },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock('ModalController', modal)
+          useFactory: () => createOverlayControllerMock(modal)
         },
         { provide: NotesService, useFactory: createNotesServiceMock }
       ],
@@ -78,7 +78,7 @@ describe('NotesListComponent', () => {
         itemId: '314159PI'
       }
     ];
-    notes.allFor.and.returnValue(of(n));
+    notes.allFor.mockReturnValue(of(n));
     fixture.detectChanges();
     expect(component.allNotes).toEqual(n);
   });
@@ -137,18 +137,18 @@ describe('NotesListComponent', () => {
     it('does the delete on "Yes"', () => {
       const alertController = TestBed.get(AlertController);
       const notes = TestBed.get(NotesService);
-      component.notesList = jasmine.createSpyObj('IonList', ['closeSlidingItems']);
+      component.notesList = { closeSlidingItems: jest.fn() } as any;
       component.delete(note);
-      const button = alertController.create.calls.argsFor(0)[0].buttons[0];
+      const button = alertController.create.mock.calls[0][0].buttons[0];
       button.handler();
       expect(notes.delete).toHaveBeenCalledTimes(1);
     });
 
     it('closes the sliding items on "Yes"', () => {
       const alertController = TestBed.get(AlertController);
-      component.notesList = jasmine.createSpyObj('IonList', ['closeSlidingItems']);
+      component.notesList = { closeSlidingItems: jest.fn() } as any;
       component.delete(note);
-      const button = alertController.create.calls.argsFor(0)[0].buttons[0];
+      const button = alertController.create.mock.calls[0][0].buttons[0];
       button.handler();
       expect(component.notesList.closeSlidingItems).toHaveBeenCalledTimes(1);
     });
@@ -156,7 +156,7 @@ describe('NotesListComponent', () => {
     it('does not delete on "No"', () => {
       const alertController = TestBed.get(AlertController);
       component.delete(note);
-      const button = alertController.create.calls.argsFor(0)[0].buttons[1];
+      const button = alertController.create.mock.calls[0][0].buttons[1];
       expect(button.role).toEqual('cancel');
       expect(button.handler).toBeUndefined();
     });

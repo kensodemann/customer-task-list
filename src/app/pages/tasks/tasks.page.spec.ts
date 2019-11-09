@@ -18,7 +18,7 @@ import {
   createNavControllerMock,
   createOverlayControllerMock,
   createOverlayElementMock
-} from 'test/mocks';
+} from '@test/mocks';
 
 describe('TasksPage', () => {
   let alert;
@@ -32,8 +32,8 @@ describe('TasksPage', () => {
   let closedTasks: Array<Task>;
 
   beforeEach(async(() => {
-    alert = createOverlayElementMock('Alert');
-    modal = createOverlayElementMock('Modal');
+    alert = createOverlayElementMock();
+    modal = createOverlayElementMock();
     TestBed.configureTestingModule({
       declarations: [TasksPage],
       imports: [SharedModule],
@@ -42,11 +42,11 @@ describe('TasksPage', () => {
         { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
         {
           provide: AlertController,
-          useFactory: () => createOverlayControllerMock('AlertController', alert)
+          useFactory: () => createOverlayControllerMock(alert)
         },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock('ModalController', modal)
+          useFactory: () => createOverlayControllerMock(modal)
         },
         { provide: NavController, useFactory: createNavControllerMock },
         { provide: TasksService, useFactory: createTasksServiceMock }
@@ -57,8 +57,8 @@ describe('TasksPage', () => {
   beforeEach(() => {
     const tasks = TestBed.get(TasksService);
     taskList = new Subject();
-    tasks.all.and.returnValue(taskList);
-    tasks.forProject.and.returnValue(taskList);
+    tasks.all.mockReturnValue(taskList);
+    tasks.forProject.mockReturnValue(taskList);
     initializeTestTasks();
     fixture = TestBed.createComponent(TasksPage);
     page = fixture.componentInstance;
@@ -79,15 +79,18 @@ describe('TasksPage', () => {
 
   it('it does not show the back button if navigated to normally', () => {
     const route = TestBed.get(ActivatedRoute);
-    route.snapshot.paramMap.get.and.returnValue(undefined);
+    route.snapshot.paramMap.get.mockReturnValue(undefined);
     fixture.detectChanges();
     expect(page.showBackButton).toBeFalsy();
   });
 
   it('it shows the back button if navigated to for a project', () => {
     const route = TestBed.get(ActivatedRoute);
-    route.snapshot.paramMap.get.and.returnValue(undefined);
-    route.snapshot.paramMap.get.withArgs('projectId').and.returnValue('1234');
+    route.snapshot.paramMap.get = jest.fn(arg => {
+      if (arg === 'projectId') {
+        return '1234';
+      }
+    });
     fixture.detectChanges();
     expect(page.showBackButton).toBeTruthy();
   });
@@ -102,8 +105,11 @@ describe('TasksPage', () => {
   it('sets up an observable on the project tasks if there is a cutomer', () => {
     const route = TestBed.get(ActivatedRoute);
     const tasks = TestBed.get(TasksService);
-    route.snapshot.paramMap.get.withArgs('projectId').and.returnValue('33859940039kkd032');
-    route.snapshot.paramMap.get.withArgs('status').and.returnValue(undefined);
+    route.snapshot.paramMap.get = jest.fn(arg => {
+      if (arg === 'projectId') {
+        return '33859940039kkd032';
+      }
+    });
     fixture.detectChanges();
     expect(tasks.all).not.toHaveBeenCalled();
     expect(tasks.forProject).toHaveBeenCalledTimes(1);
@@ -119,8 +125,13 @@ describe('TasksPage', () => {
 
     it('returns open tasks if status of open specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get.withArgs('projectId').and.returnValue('33859940039kkd032');
-      route.snapshot.paramMap.get.withArgs('status').and.returnValue(Statuses.Open);
+      route.snapshot.paramMap.get = jest.fn(arg => {
+        if (arg === 'projectId') {
+          return '33859940039kkd032';
+        } else if (arg === 'status') {
+          return Statuses.Open;
+        }
+      });
       fixture.detectChanges();
       taskList.next(testTasks);
       expect(page.openTasks).toEqual(openTasks);
@@ -128,8 +139,13 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than open is specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get.withArgs('projectId').and.returnValue('33859940039kkd032');
-      route.snapshot.paramMap.get.withArgs('status').and.returnValue(Statuses.Closed);
+      route.snapshot.paramMap.get = jest.fn(arg => {
+        if (arg === 'projectId') {
+          return '33859940039kkd032';
+        } else if (arg === 'status') {
+          return Statuses.Closed;
+        }
+      });
       fixture.detectChanges();
       taskList.next(testTasks);
       expect(page.openTasks).toEqual([]);
@@ -145,8 +161,13 @@ describe('TasksPage', () => {
 
     it('returns On Hold tasks if status of On Hold specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get.withArgs('projectId').and.returnValue('33859940039kkd032');
-      route.snapshot.paramMap.get.withArgs('status').and.returnValue(Statuses.OnHold);
+      route.snapshot.paramMap.get = jest.fn(arg => {
+        if (arg === 'projectId') {
+          return '33859940039kkd032';
+        } else if (arg === 'status') {
+          return Statuses.OnHold;
+        }
+      });
       fixture.detectChanges();
       taskList.next(testTasks);
       expect(page.onHoldTasks).toEqual(onHoldTasks);
@@ -154,8 +175,13 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than on hold is specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get.withArgs('projectId').and.returnValue('33859940039kkd032');
-      route.snapshot.paramMap.get.withArgs('status').and.returnValue(Statuses.Open);
+      route.snapshot.paramMap.get = jest.fn(arg => {
+        if (arg === 'projectId') {
+          return '33859940039kkd032';
+        } else if (arg === 'status') {
+          return Statuses.Open;
+        }
+      });
       fixture.detectChanges();
       taskList.next(testTasks);
       expect(page.onHoldTasks).toEqual([]);
@@ -171,8 +197,13 @@ describe('TasksPage', () => {
 
     it('returns closed tasks if status of closed specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get.withArgs('projectId').and.returnValue('33859940039kkd032');
-      route.snapshot.paramMap.get.withArgs('status').and.returnValue(Statuses.Closed);
+      route.snapshot.paramMap.get = jest.fn(arg => {
+        if (arg === 'projectId') {
+          return '33859940039kkd032';
+        } else if (arg === 'status') {
+          return Statuses.Closed;
+        }
+      });
       fixture.detectChanges();
       taskList.next(testTasks);
       expect(page.closedTasks).toEqual(closedTasks);
@@ -180,8 +211,13 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than closed is specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get.withArgs('projectId').and.returnValue('33859940039kkd032');
-      route.snapshot.paramMap.get.withArgs('status').and.returnValue(Statuses.OnHold);
+      route.snapshot.paramMap.get = jest.fn(arg => {
+        if (arg === 'projectId') {
+          return '33859940039kkd032';
+        } else if (arg === 'status') {
+          return Statuses.OnHold;
+        }
+      });
       fixture.detectChanges();
       taskList.next(testTasks);
       expect(page.closedTasks).toEqual([]);
@@ -251,7 +287,7 @@ describe('TasksPage', () => {
       const alertController = TestBed.get(AlertController);
       const tasks = TestBed.get(TasksService);
       page.delete(task);
-      const button = alertController.create.calls.argsFor(0)[0].buttons[0];
+      const button = alertController.create.mock.calls[0][0].buttons[0];
       button.handler();
       expect(tasks.delete).toHaveBeenCalledTimes(1);
     });
@@ -259,7 +295,7 @@ describe('TasksPage', () => {
     it('does not delete on "No"', () => {
       const alertController = TestBed.get(AlertController);
       page.delete(task);
-      const button = alertController.create.calls.argsFor(0)[0].buttons[1];
+      const button = alertController.create.mock.calls[0][0].buttons[1];
       expect(button.role).toEqual('cancel');
       expect(button.handler).toBeUndefined();
     });
@@ -286,8 +322,11 @@ describe('TasksPage', () => {
     it('passes the project ID if one is specified in the route', () => {
       const modalController = TestBed.get(ModalController);
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get.withArgs('projectId').and.returnValue('33859940039kkd032');
-      route.snapshot.paramMap.get.withArgs('status').and.returnValue(undefined);
+      route.snapshot.paramMap.get = jest.fn(arg => {
+        if (arg === 'projectId') {
+          return '33859940039kkd032';
+        }
+      });
       fixture.detectChanges();
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({

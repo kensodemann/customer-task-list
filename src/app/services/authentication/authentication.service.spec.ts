@@ -2,7 +2,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 import { AuthenticationService } from './authentication.service';
-import { createAngularFireAuthMock } from 'test/mocks';
+import { createAngularFireAuthMock } from '@test/mocks';
 
 describe('AuthenticationService', () => {
   let authenticationService: AuthenticationService;
@@ -13,12 +13,9 @@ describe('AuthenticationService', () => {
     });
   });
 
-  beforeEach(inject(
-    [AuthenticationService],
-    (service: AuthenticationService) => {
-      authenticationService = service;
-    }
-  ));
+  beforeEach(inject([AuthenticationService], (service: AuthenticationService) => {
+    authenticationService = service;
+  }));
 
   it('should be created', () => {
     expect(authenticationService).toBeTruthy();
@@ -28,18 +25,13 @@ describe('AuthenticationService', () => {
     it('calls the signin with email and password', () => {
       const angularFireAuth = TestBed.get(AngularFireAuth);
       authenticationService.login('test@test.com', 'testpassword');
-      expect(
-        angularFireAuth.auth.signInWithEmailAndPassword
-      ).toHaveBeenCalledTimes(1);
+      expect(angularFireAuth.auth.signInWithEmailAndPassword).toHaveBeenCalledTimes(1);
     });
 
     it('passes the email and password', () => {
       const angularFireAuth = TestBed.get(AngularFireAuth);
       authenticationService.login('test@test.com', 'testpassword');
-      expect(angularFireAuth.auth.signInWithEmailAndPassword).toHaveBeenCalledWith(
-        'test@test.com',
-        'testpassword'
-      );
+      expect(angularFireAuth.auth.signInWithEmailAndPassword).toHaveBeenCalledWith('test@test.com', 'testpassword');
     });
   });
 

@@ -4,24 +4,26 @@ export function createAngularFireAuthMock() {
   return {
     authState: new Subject(),
     user: of(null),
-    auth: jasmine.createSpyObj('Auth', {
-      sendPasswordResetEmail: Promise.resolve(),
-      signInWithEmailAndPassword: Promise.resolve(),
-      signInWithPopup: Promise.resolve(),
-      signOut: Promise.resolve()
-    })
+    idToken: of(null),
+    idTokenResult: of(null),
+    auth: {
+      sendPasswordResetEmail: jest.fn(() => Promise.resolve()),
+      signInWithEmailAndPassword: jest.fn(() => Promise.resolve()),
+      signInWithPopup: jest.fn(() => Promise.resolve()),
+      signOut: jest.fn(() => Promise.resolve())
+    }
   };
 }
 
 class TestDocument<T> {
-  private _data: T;
+  private lclData: T;
 
   constructor(public id: string, data: T) {
-    this._data = data;
+    this.lclData = data;
   }
 
   data(): T {
-    return this._data;
+    return this.lclData;
   }
 }
 
@@ -34,27 +36,56 @@ export function createAction<T>(id: string, data: T) {
 }
 
 export function createAngularFirestoreDocumentMock() {
-  return jasmine.createSpyObj('AngularFirestoreDocument', {
-    set: Promise.resolve(),
-    update: Promise.resolve(),
-    delete: Promise.resolve(),
-    valueChanges: EMPTY,
-    snapshotChanges: EMPTY
-  });
+  return {
+    set: jest.fn(() => Promise.resolve()),
+    update: jest.fn(() => Promise.resolve()),
+    delete: jest.fn(() => Promise.resolve()),
+    valueChanges: jest.fn(() => EMPTY),
+    snapshotChanges: jest.fn(() => EMPTY),
+    collection: jest.fn(),
+    ref: createDocumentReferenceMock()
+  };
 }
 
 export function createAngularFirestoreCollectionMock() {
-  return jasmine.createSpyObj('AngularFirestoreCollection', {
-    doc: createAngularFirestoreDocumentMock(),
-    add: Promise.resolve(),
-    valueChanges: EMPTY,
-    snapshotChanges: EMPTY
-  });
+  return {
+    doc: jest.fn(() => createAngularFirestoreDocumentMock()),
+    add: jest.fn(() => Promise.resolve(createDocumentReferenceMock())),
+    valueChanges: jest.fn(() => EMPTY),
+    snapshotChanges: jest.fn(() => EMPTY),
+    ref: createCollectionReferenceMock([])
+  };
 }
 
 export function createAngularFirestoreMock() {
-  return jasmine.createSpyObj('AngularFirestore', {
-    collection: createAngularFirestoreCollectionMock(),
-    doc: createAngularFirestoreDocumentMock()
-  });
+  return {
+    collection: jest.fn(() => createAngularFirestoreCollectionMock()),
+    doc: jest.fn(() => createAngularFirestoreDocumentMock())
+  };
+}
+
+export function createCollectionReferenceMock(docs: Array<any>) {
+  return {
+    where: jest.fn(() => ({
+      get: jest.fn(() =>
+        Promise.resolve({
+          size: docs.length,
+          docs
+        })
+      )
+    }))
+  };
+}
+
+export function createDocumentReferenceMock(doc?: { id: string; data: any }) {
+  return {
+    get: jest.fn(() => Promise.resolve(createDocumentSnapshotMock(doc)))
+  };
+}
+
+export function createDocumentSnapshotMock(doc?: { id: string; data: any }) {
+  return {
+    id: doc ? doc.id : 0,
+    data: jest.fn(() => (doc ? doc.data : {}))
+  };
 }

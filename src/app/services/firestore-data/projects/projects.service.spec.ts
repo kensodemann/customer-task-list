@@ -8,7 +8,7 @@ import {
   createAngularFirestoreMock,
   createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock
-} from 'test/mocks';
+} from '@test/mocks';
 
 describe('ProjectsService', () => {
   let collection;
@@ -17,7 +17,7 @@ describe('ProjectsService', () => {
   beforeEach(() => {
     const angularFirestore = createAngularFirestoreMock();
     collection = createAngularFirestoreCollectionMock();
-    angularFirestore.collection.and.returnValue(collection);
+    angularFirestore.collection.mockReturnValue(collection);
     TestBed.configureTestingModule({
       providers: [{ provide: AngularFirestore, useValue: angularFirestore }]
     });
@@ -44,7 +44,7 @@ describe('ProjectsService', () => {
     });
 
     it('maps the changes', () => {
-      collection.snapshotChanges.and.returnValue(
+      collection.snapshotChanges.mockReturnValue(
         of([
           createAction('314PI', {
             name: `Baker's Square`,
@@ -81,7 +81,7 @@ describe('ProjectsService', () => {
     let document;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
-      collection.doc.and.returnValue(document);
+      collection.doc.mockReturnValue(document);
     });
 
     it('gets a references to the document', () => {
@@ -96,7 +96,7 @@ describe('ProjectsService', () => {
     });
 
     it('returns the document with the ID', () => {
-      document.valueChanges.and.returnValue(
+      document.valueChanges.mockReturnValue(
         of({
           name: 'Joe',
           description: 'Some guy named Joe who sells week on my street corner',
@@ -134,7 +134,7 @@ describe('ProjectsService', () => {
     let document;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
-      collection.doc.and.returnValue(document);
+      collection.doc.mockReturnValue(document);
     });
 
     it('gets a reference to the document', () => {

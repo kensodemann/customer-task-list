@@ -1,10 +1,10 @@
 import { EMPTY } from 'rxjs';
 
 export function createProjectsServiceMock() {
-  return jasmine.createSpyObj('ProjectsService', {
-    all: EMPTY,
-    get: EMPTY,
-    add: Promise.resolve(),
-    update: Promise.resolve()
-  });
+  return {
+    all: jest.fn(() => EMPTY),
+    get: jest.fn(() => EMPTY),
+    add: jest.fn(() => Promise.resolve()),
+    update: jest.fn(() => Promise.resolve())
+  };
 }

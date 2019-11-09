@@ -1,31 +1,31 @@
 export function createNavControllerMock() {
-  return jasmine.createSpyObj('NavController', [
-    'goBack',
-    'navigateForward',
-    'navigateRoot'
-  ]);
+  return {
+    goBack: jest.fn(),
+    navigateForward: jest.fn(),
+    navigateRoot: jest.fn()
+  };
 }
 
-export function createOverlayElementMock(name: string) {
-  return jasmine.createSpyObj(name, {
-    dismiss: Promise.resolve(),
-    onDidDismiss: Promise.resolve(),
-    onWillDismiss: Promise.resolve(),
-    present: Promise.resolve()
-  });
+export function createOverlayElementMock() {
+  return {
+    dismiss: jest.fn(() => Promise.resolve()),
+    onDidDismiss: jest.fn(() => Promise.resolve()),
+    onWillDismiss: jest.fn(() => Promise.resolve()),
+    present: jest.fn(() => Promise.resolve())
+  };
 }
 
-export function createOverlayControllerMock(name: string, element?: any) {
-  return jasmine.createSpyObj(name, {
-    create: Promise.resolve(element),
-    dismiss: undefined,
-    getTop: Promise.resolve(element)
-  });
+export function createOverlayControllerMock(element?: any) {
+  return {
+    create: jest.fn(() => Promise.resolve(element)),
+    dismiss: jest.fn(),
+    getTop: jest.fn(() => Promise.resolve(element))
+  };
 }
 
 export function createPlatformMock() {
-  return jasmine.createSpyObj('Platform', {
-    is: false,
-    ready: Promise.resolve()
-  });
+  return {
+    is: jest.fn(() => false),
+    ready: jest.fn(() => Promise.resolve())
+  };
 }

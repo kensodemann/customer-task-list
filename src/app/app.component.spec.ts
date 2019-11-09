@@ -6,7 +6,7 @@ import { ApplicationService } from './services/application/application.service';
 
 import { AppComponent } from './app.component';
 import { createApplicationServiceMock } from './services/application/application.mock';
-import { createAngularFireAuthMock, createNavControllerMock } from 'test/mocks';
+import { createAngularFireAuthMock, createNavControllerMock } from '@test/mocks';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {

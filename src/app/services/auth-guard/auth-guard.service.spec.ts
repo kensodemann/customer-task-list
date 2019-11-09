@@ -1,7 +1,7 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
-import { createAngularFireAuthMock, createNavControllerMock } from 'test/mocks';
+import { createAngularFireAuthMock, createNavControllerMock } from '@test/mocks';
 import { of } from 'rxjs';
 
 import { AuthGuardService } from './auth-guard.service';

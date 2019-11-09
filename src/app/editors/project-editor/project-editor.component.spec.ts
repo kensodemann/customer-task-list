@@ -9,7 +9,7 @@ import { ProjectsService } from '@app/services/firestore-data';
 import { createProjectsServiceMock } from '@app/services/firestore-data/mocks';
 import { Project } from '@app/models';
 
-import { createOverlayControllerMock, createOverlayElementMock } from 'test/mocks';
+import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
 
 describe('ProjectEditorComponent', () => {
   let editor: ProjectEditorComponent;
@@ -26,7 +26,7 @@ describe('ProjectEditorComponent', () => {
         { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock('ModalController', createOverlayElementMock('Modal'))
+          useFactory: () => createOverlayControllerMock(createOverlayElementMock())
         }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -57,7 +57,7 @@ describe('ProjectEditorComponent', () => {
         isActive: false
       }
     ];
-    projects.all.and.returnValue(projectList);
+    projects.all.mockReturnValue(projectList);
   });
 
   it('should create', () => {

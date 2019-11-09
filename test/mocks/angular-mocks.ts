@@ -3,15 +3,14 @@ import { EMPTY } from 'rxjs';
 export function createActivatedRouteMock() {
   return {
     snapshot: {
-      paramMap: jasmine.createSpyObj('Snapshot', ['get'])
+      paramMap: { get: jest.fn() }
     }
   };
 }
 
 export function createSwUpdateMock() {
-  const mock = jasmine.createSpyObj('SwUpdate', {
-    activateUpdate: Promise.resolve()
-  });
-  mock['available'] = EMPTY;
-  return mock;
+  return {
+    activateUpdate: jest.fn(() => Promise.resolve()),
+    available: EMPTY
+  };
 }

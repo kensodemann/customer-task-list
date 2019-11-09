@@ -14,12 +14,12 @@ describe('ApplicationService', () => {
   let alert;
   let application: ApplicationService;
   beforeEach(() => {
-    alert = createOverlayElementMock('Alert');
+    alert = createOverlayElementMock();
     TestBed.configureTestingModule({
       providers: [
         {
           provide: AlertController,
-          useFactory: () => createOverlayControllerMock('AlertComtroller', alert)
+          useFactory: () => createOverlayControllerMock(alert)
         },
         { provide: SwUpdate, useFactory: createSwUpdateMock },
         { provide: Platform, useFactory: createPlatformMock }
@@ -44,8 +44,7 @@ describe('ApplicationService', () => {
     ].forEach(test => {
       it(`is ${test.expected} for "${test.plt}"`, () => {
         const platform = TestBed.get(Platform);
-        platform.is.and.returnValue(false);
-        platform.is.withArgs(test.plt).and.returnValue(true);
+        platform.is = jest.fn(arg => arg === test.plt);
         expect(application.showTabs).toEqual(test.expected);
       });
     });

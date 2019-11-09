@@ -48,7 +48,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.priorities = [...priorities];
     this.statuses = [...statuses];
     this.taskTypes = [...taskTypes];
-    this.maxDate = format(addYears(new Date(), 3), 'yyyy-MM-dd');
+    this.maxDate = format(addYears(new Date(Date.now()), 3), 'yyyy-MM-dd');
 
     if (this.task) {
       this.title = 'Modify Task';
@@ -125,7 +125,8 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   }
 
   private today(): string {
-    return format(new Date(), 'yyyy-MM-dd');
+    // The Date.now() is to ease the testing
+    return format(new Date(Date.now()), 'yyyy-MM-dd');
   }
 
   private defaultTaskProperties() {
@@ -163,6 +164,6 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   }
 
   private getSeconds(): number {
-    return Math.round(new Date().getTime() / 1000);
+    return Math.round(Date.now() / 1000);
   }
 }
