@@ -1,4 +1,4 @@
-import { EMPTY } from 'rxjs';
+import { Subject } from 'rxjs';
 
 export function createActivatedRouteMock() {
   return {
@@ -11,6 +11,6 @@ export function createActivatedRouteMock() {
 export function createSwUpdateMock() {
   return {
     activateUpdate: jest.fn(() => Promise.resolve()),
-    available: EMPTY
+    available: new Subject()
   };
 }

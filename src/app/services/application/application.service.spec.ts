@@ -35,6 +35,22 @@ describe('ApplicationService', () => {
     expect(application).toBeTruthy();
   });
 
+  describe('registered for updates', () => {
+    beforeEach(() => {
+      alert.onDidDismiss.mockResolvedValue({ role: 'cancel' });
+      const service: ApplicationService = TestBed.get(ApplicationService);
+      service.registerForUpdates();
+    });
+
+    it('asks the user if they would like an update', () => {
+      const update = TestBed.get(SwUpdate);
+      const alertController = TestBed.get(AlertController);
+      expect(alertController.create).not.toHaveBeenCalled();
+      update.available.next();
+      expect(alertController.create).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('show tabs', () => {
     [
       { plt: 'tablet', expected: false },

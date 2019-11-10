@@ -14,7 +14,7 @@
     "ng": "ng",
     "release": "node scripts/release.js",
     "start": "ng serve",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:ci": "jest --runInBand",
     "test:watch": "jest --watch"
   },

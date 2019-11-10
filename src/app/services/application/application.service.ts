@@ -6,11 +6,7 @@ import { SwUpdate } from '@angular/service-worker';
   providedIn: 'root'
 })
 export class ApplicationService {
-  constructor(
-    private alert: AlertController,
-    private platform: Platform,
-    private update: SwUpdate
-  ) {}
+  constructor(private alert: AlertController, private platform: Platform, private update: SwUpdate) {}
 
   get showTabs(): boolean {
     return !(this.platform.is('tablet') || this.platform.is('desktop'));
@@ -25,15 +21,12 @@ export class ApplicationService {
       header: 'Update Available',
       message:
         'An update is available for this application. Would you like to restart this application to get the update?',
-      buttons: [
-        {
-          text: 'Yes',
-          handler: () =>
-            this.update.activateUpdate().then(() => document.location.reload())
-        },
-        { text: 'No', role: 'cancel' }
-      ]
+      buttons: [{ text: 'Yes', role: 'confirm' }, { text: 'No', role: 'cancel' }]
     });
-    alert.present();
+    await alert.present();
+    const result = await alert.onDidDismiss();
+    if (result.role === 'confirm') {
+      this.update.activateUpdate().then(() => document.location.reload());
+    }
   }
 }
