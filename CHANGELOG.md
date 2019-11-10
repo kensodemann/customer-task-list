@@ -1,3 +1,13 @@
+## [2.1.1](https://github.com/kensodemann/customer-task-list/compare/v2.1.0...v2.1.1) (2019-11-10)
+
+
+### Bug Fixes
+
+* **editors:** rename name inputs to something else ([c3a2b18](https://github.com/kensodemann/customer-task-list/commit/c3a2b1884c0ee9974bf00231d0580f3bb6bf1caa))
+* **global:** add a clickable class ([e51178d](https://github.com/kensodemann/customer-task-list/commit/e51178d38b201a4d243ecddb2c2d5241b3548711))
+
+
+
 # [2.1.0](https://github.com/kensodemann/customer-task-list/compare/v2.0.0...v2.1.0) (2019-11-10)
 
 
