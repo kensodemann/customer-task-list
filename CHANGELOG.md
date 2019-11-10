@@ -1,3 +1,17 @@
+# [2.1.0](https://github.com/kensodemann/customer-task-list/compare/v2.0.0...v2.1.0) (2019-11-10)
+
+
+### Bug Fixes
+
+* **tests:** increase the test coverage ([7bb37db](https://github.com/kensodemann/customer-task-list/commit/7bb37db683e6ed742367fcaed2fedf8a6be80796))
+
+
+### Features
+
+* **tasks:** add an in process status ([9470d45](https://github.com/kensodemann/customer-task-list/commit/9470d45bd9db23d291f5c4e94675a5531414010f))
+
+
+
 # [2.0.0](https://github.com/kensodemann/customer-task-list/compare/v1.1.0...v2.0.0) (2019-10-19)
 
 
