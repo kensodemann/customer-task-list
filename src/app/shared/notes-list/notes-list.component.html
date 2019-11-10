@@ -7,6 +7,7 @@
   </ion-list-header>
   <app-note-list-item
     *ngFor="let note of allNotes"
+    class="clickable"
     [note]="note"
     (delete)="delete(note)"
     (view)="view(note)"

@@ -39,6 +39,10 @@
   font-weight: bolder;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .description {
   color: var(--ion-color-medium, black);
   white-space: normal;

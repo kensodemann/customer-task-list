@@ -21,6 +21,7 @@
     </ion-list-header>
     <app-task-list-item
       *ngFor="let task of inProcessTasks"
+      class="clickable"
       [task]="task"
       (view)="view(task)"
       (delete)="delete(task)"
@@ -32,6 +33,7 @@
     </ion-list-header>
     <app-task-list-item
       *ngFor="let task of openTasks"
+      class="clickable"
       [task]="task"
       (view)="view(task)"
       (delete)="delete(task)"
@@ -43,6 +45,7 @@
     </ion-list-header>
     <app-task-list-item
       *ngFor="let task of onHoldTasks"
+      class="clickable"
       [task]="task"
       (view)="view(task)"
       (delete)="delete(task)"
@@ -54,6 +57,7 @@
     </ion-list-header>
     <app-task-list-item
       *ngFor="let task of closedTasks"
+      class="clickable"
       [task]="task"
       (view)="view(task)"
       (delete)="delete(task)"
