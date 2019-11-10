@@ -27,6 +27,7 @@ describe('TasksPage', () => {
   let page: TasksPage;
   let taskList: Subject<Array<Task>>;
   let testTasks: Array<Task>;
+  let inProcessTasks: Array<Task>;
   let openTasks: Array<Task>;
   let onHoldTasks: Array<Task>;
   let closedTasks: Array<Task>;
@@ -114,6 +115,42 @@ describe('TasksPage', () => {
     expect(tasks.all).not.toHaveBeenCalled();
     expect(tasks.forProject).toHaveBeenCalledTimes(1);
     expect(tasks.forProject).toHaveBeenCalledWith('33859940039kkd032');
+  });
+
+  describe('in process tasks', () => {
+    it('returns in process tasks after loading', () => {
+      fixture.detectChanges();
+      taskList.next(testTasks);
+      expect(page.inProcessTasks).toEqual(inProcessTasks);
+    });
+
+    it('returns in process tasks if status of in process specified', () => {
+      const route = TestBed.get(ActivatedRoute);
+      route.snapshot.paramMap.get = jest.fn(arg => {
+        if (arg === 'projectId') {
+          return '33859940039kkd032';
+        } else if (arg === 'status') {
+          return Statuses.InProcess;
+        }
+      });
+      fixture.detectChanges();
+      taskList.next(testTasks);
+      expect(page.inProcessTasks).toEqual(inProcessTasks);
+    });
+
+    it('returns empty array if status other than open is specified', () => {
+      const route = TestBed.get(ActivatedRoute);
+      route.snapshot.paramMap.get = jest.fn(arg => {
+        if (arg === 'projectId') {
+          return '33859940039kkd032';
+        } else if (arg === 'status') {
+          return Statuses.Closed;
+        }
+      });
+      fixture.detectChanges();
+      taskList.next(testTasks);
+      expect(page.inProcessTasks).toEqual([]);
+    });
   });
 
   describe('open tasks', () => {
@@ -454,6 +491,17 @@ describe('TasksPage', () => {
         projectName: 'Book Burners R Us'
       },
       {
+        id: '5599tuy838499395',
+        name: 'Why is the sky blue?',
+        description: 'I try to make it other colors, but it does not work. Find out why.',
+        enteredOn: new firestore.Timestamp(1586884995, 0),
+        type: TaskTypes.Research,
+        status: Statuses.InProcess,
+        priority: Priorities.Low,
+        projectId: '49950',
+        projectName: 'Dolphin Schools'
+      },
+      {
         id: '11111',
         name: 'One',
         description: 'One one one one one',
@@ -474,6 +522,17 @@ describe('TasksPage', () => {
         priority: Priorities.High,
         projectId: '49950',
         projectName: 'Dolphin Schools'
+      },
+      {
+        id: '49499503fkkei395',
+        name: 'The snow is hot',
+        description: 'I got burned by the snow today. I thought it was supposed to be cold.',
+        enteredOn: new firestore.Timestamp(2948588495, 0),
+        type: TaskTypes.Bug,
+        status: Statuses.InProcess,
+        priority: Priorities.High,
+        projectId: '451BK',
+        projectName: 'Book Burners R Us'
       },
       {
         id: '3948SLIP',
@@ -516,6 +575,31 @@ describe('TasksPage', () => {
         type: TaskTypes.Task,
         status: Statuses.Open,
         priority: Priorities.Normal,
+        projectId: '49950',
+        projectName: 'Dolphin Schools'
+      }
+    ];
+
+    inProcessTasks = [
+      {
+        id: '49499503fkkei395',
+        name: 'The snow is hot',
+        description: 'I got burned by the snow today. I thought it was supposed to be cold.',
+        enteredOn: new firestore.Timestamp(2948588495, 0),
+        type: TaskTypes.Bug,
+        status: Statuses.InProcess,
+        priority: Priorities.High,
+        projectId: '451BK',
+        projectName: 'Book Burners R Us'
+      },
+      {
+        id: '5599tuy838499395',
+        name: 'Why is the sky blue?',
+        description: 'I try to make it other colors, but it does not work. Find out why.',
+        enteredOn: new firestore.Timestamp(1586884995, 0),
+        type: TaskTypes.Research,
+        status: Statuses.InProcess,
+        priority: Priorities.Low,
         projectId: '49950',
         projectName: 'Dolphin Schools'
       }

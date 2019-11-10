@@ -21,6 +21,7 @@ export class TasksPage implements OnDestroy, OnInit {
   private taskSubscription: Subscription;
 
   openTasks: Array<Task>;
+  inProcessTasks: Array<Task>;
   closedTasks: Array<Task>;
   onHoldTasks: Array<Task>;
   showBackButton: boolean;
@@ -85,6 +86,7 @@ export class TasksPage implements OnDestroy, OnInit {
       this.list.closeSlidingItems();
     }
     this.openTasks = this.tasksWithStatus(t, Statuses.Open).sort((t1, t2) => this.taskSort(t1, t2));
+    this.inProcessTasks = this.tasksWithStatus(t, Statuses.InProcess).sort((t1, t2) => this.taskSort(t1, t2));
     this.onHoldTasks = this.tasksWithStatus(t, Statuses.OnHold).sort((t1, t2) => this.taskSort(t1, t2));
     this.closedTasks = this.tasksWithStatus(t, Statuses.Closed);
   }

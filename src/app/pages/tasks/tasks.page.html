@@ -16,6 +16,17 @@
   </ion-fab>
 
   <ion-list id="tasks-list">
+    <ion-list-header *ngIf="inProcessTasks && inProcessTasks.length">
+      <ion-label>In Process Tasks ({{ inProcessTasks.length }})</ion-label>
+    </ion-list-header>
+    <app-task-list-item
+      *ngFor="let task of inProcessTasks"
+      [task]="task"
+      (view)="view(task)"
+      (delete)="delete(task)"
+      (done)="close(task)"
+    ></app-task-list-item>
+
     <ion-list-header *ngIf="openTasks && openTasks.length">
       <ion-label>Open Tasks ({{ openTasks.length }})</ion-label>
     </ion-list-header>
