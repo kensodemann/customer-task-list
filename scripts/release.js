@@ -139,9 +139,7 @@ function releaseUI() {
   const pkg = packageFile.read();
   const oldVersion = pkg.version;
 
-  console.log(
-    `\nPrepare to release a new version of ${chalk.bold.magenta(pkg.name)} ${chalk.dim(`(${oldVersion})`)}\n`
-  );
+  console.log(`\nPrepare to release a new version of ${chalk.bold.magenta(pkg.name)} ${chalk.dim(`(${oldVersion})`)}\n`);
 
   const prompts = [
     {

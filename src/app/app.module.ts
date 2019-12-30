@@ -22,7 +22,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot({ mode: 'md' }),
+    IonicModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
     })
