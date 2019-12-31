@@ -1,3 +1,30 @@
+## [2.1.3](https://github.com/kensodemann/customer-task-list/compare/v1.1.0...v2.1.3) (2019-12-31)
+
+
+### Bug Fixes
+
+* **app:** disable backdrop dismiss on all modals ([e6670b1](https://github.com/kensodemann/customer-task-list/commit/e6670b1235b81c208b253c0c58226bd97ddb49aa))
+* **e2e-test:** set the browser size ([671489c](https://github.com/kensodemann/customer-task-list/commit/671489c8738093e56521b566d9dc75fc3123bd15))
+* **e2e-test:** update the timeouts ([d8bf660](https://github.com/kensodemann/customer-task-list/commit/d8bf660efe3d6e97f510c0166a126e75bbdfcbb5))
+* **editors:** rename name inputs to something else ([c3a2b18](https://github.com/kensodemann/customer-task-list/commit/c3a2b1884c0ee9974bf00231d0580f3bb6bf1caa))
+* **global:** add a clickable class ([e51178d](https://github.com/kensodemann/customer-task-list/commit/e51178d38b201a4d243ecddb2c2d5241b3548711))
+* **tasks:** fix spelling error in confirmation dialog ([3fab5d5](https://github.com/kensodemann/customer-task-list/commit/3fab5d52f30c56c83194667fa052a18b68dbf8aa))
+* **tasks:** remove backbutton experiment accidently left in ([9036566](https://github.com/kensodemann/customer-task-list/commit/9036566100ac80c90906cf5609541f5aade249f2))
+* **tasks:** remove used types, rename existing type ([f691c5b](https://github.com/kensodemann/customer-task-list/commit/f691c5b8a9e441a390b3b829b1bbe66ddd172f3f))
+* **tasks:** show the back button if navigated to from customer ([eb064a9](https://github.com/kensodemann/customer-task-list/commit/eb064a95b80910a84efaa82c6537a21297b64925))
+* **tests:** increase the test coverage ([7bb37db](https://github.com/kensodemann/customer-task-list/commit/7bb37db683e6ed742367fcaed2fedf8a6be80796))
+
+
+### Features
+
+* **app:** set up basic e2e tests ([196c98d](https://github.com/kensodemann/customer-task-list/commit/196c98dc6598593441121a8cd3cd0a75020abbe2))
+* **e2e-tests:** refactor the tests into a script ([dce171d](https://github.com/kensodemann/customer-task-list/commit/dce171d5babf298b863b90d21025733b047a11f1))
+* **tasks:** add an in process status ([9470d45](https://github.com/kensodemann/customer-task-list/commit/9470d45bd9db23d291f5c4e94675a5531414010f))
+* **tasks, customers:** favor the use of fab buttons ([cfcafc4](https://github.com/kensodemann/customer-task-list/commit/cfcafc465f0610bf8ce7edfc0f05689a9634b17b))
+* **tests:** imporove the testing experience and CI ([cc310c5](https://github.com/kensodemann/customer-task-list/commit/cc310c5a29df90e53d822ece78b4a4e881fe9dbf))
+
+
+
 ## [2.1.2](https://github.com/kensodemann/customer-task-list/compare/v2.0.0...v2.1.2) (2019-12-30)
 
 

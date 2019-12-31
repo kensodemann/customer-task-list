@@ -1,7 +1,7 @@
 {
   "name": "project-task-list",
   "description": "Project Task List",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "author": "Ken Sodemann",
   "homepage": "http://kensodemann.github.io/",
   "scripts": {
