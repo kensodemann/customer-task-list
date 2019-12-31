@@ -47,7 +47,7 @@
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
     "@ionic/angular-toolkit": "~2.1.1",
-    "@types/node": "~13.1.1",
+    "@types/node": "~13.1.2",
     "adj-noun": "~0.1.1",
     "axios": "~0.19.0",
     "chalk": "~3.0.0",
