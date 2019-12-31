@@ -1,9 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import { AboutPage } from './about.page';
-import { AuthenticationService } from '@app/services';
-import { createAuthenticationServiceMock } from '@app/services/mocks';
+import { logout } from '@app/store/actions/auth.actions';
 
 describe('AboutPage', () => {
   let page: AboutPage;
@@ -13,7 +14,7 @@ describe('AboutPage', () => {
     TestBed.configureTestingModule({
       declarations: [AboutPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [{ provide: AuthenticationService, useFactory: createAuthenticationServiceMock }]
+      providers: [provideMockStore()]
     }).compileComponents();
   }));
 
@@ -25,5 +26,15 @@ describe('AboutPage', () => {
 
   it('should create', () => {
     expect(page).toBeTruthy();
+  });
+
+  describe('logout', () => {
+    it('dispatches the logout action', () => {
+      const store = TestBed.get(Store);
+      store.dispatch = jest.fn();
+      page.logout();
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith(logout());
+    });
   });
 });

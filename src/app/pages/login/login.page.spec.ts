@@ -2,11 +2,14 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonicModule, LoadingController, NavController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { AuthenticationService } from '@app/services';
-import { createAuthenticationServiceMock } from '@app/services/mocks';
 import { createNavControllerMock, createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
 import { LoginPage } from './login.page';
+import { login, resetPassword } from '@app/store/actions/auth.actions';
+import { AuthState } from '@app/store/reducers/auth/auth.reducer';
+import { selectAuthLoading, selectAuthEmail, selectAuthError, selectAuthMessage, State } from '@app/store';
 
 describe('LoginPage', () => {
   let alert;
@@ -27,14 +30,11 @@ describe('LoginPage', () => {
           useFactory: () => createOverlayControllerMock(alert)
         },
         {
-          provide: AuthenticationService,
-          useFactory: createAuthenticationServiceMock
-        },
-        {
           provide: LoadingController,
           useFactory: () => createOverlayControllerMock(loading)
         },
-        { provide: NavController, useFactory: createNavControllerMock }
+        { provide: NavController, useFactory: createNavControllerMock },
+        provideMockStore<{ auth: AuthState }>({ initialState: { auth: { email: '', loading: false } } })
       ]
     }).compileComponents();
   }));
@@ -55,80 +55,115 @@ describe('LoginPage', () => {
       page.password = 'something secret';
     });
 
-    it('creates a loading indicator', async () => {
-      const lc = TestBed.get(LoadingController);
-      await page.login();
-      expect(lc.create).toHaveBeenCalledTimes(1);
+    it('dispatches the login action', () => {
+      const store = TestBed.get(Store);
+      store.dispatch = jest.fn();
+      page.login();
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith(login({ email: 'test@mctesty.com', password: 'something secret' }));
+    });
+  });
+
+  describe('on loading changed', () => {
+    let store: MockStore<State>;
+    let mockAuthLoadingSelector;
+    beforeEach(() => {
+      store = TestBed.get(Store);
+      mockAuthLoadingSelector = store.overrideSelector(selectAuthLoading, false);
+      fixture.detectChanges();
+      loading.dismiss.mockClear();
+    });
+
+    it('presents and dismisses the loading indicator', () => {
+      mockAuthLoadingSelector.setResult(true);
+      store.refreshState();
+      fixture.detectChanges();
       expect(loading.present).toHaveBeenCalledTimes(1);
+      expect(loading.dismiss).not.toHaveBeenCalled();
+      loading.present.mockClear();
+      mockAuthLoadingSelector.setResult(false);
+      store.refreshState();
+      fixture.detectChanges();
+      expect(loading.present).not.toHaveBeenCalled();
+      expect(loading.dismiss).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('on email changed', () => {
+    let store: MockStore<State>;
+    let mockAuthEmailSelector;
+    beforeEach(() => {
+      store = TestBed.get(Store);
+      mockAuthEmailSelector = store.overrideSelector(selectAuthEmail, undefined);
+      fixture.detectChanges();
     });
 
-    it('calls the authentication login', async () => {
-      const authentication = TestBed.get(AuthenticationService);
-      await page.login();
-      expect(authentication.login).toHaveBeenCalledTimes(1);
+    it('navigates to the app when the email is set', () => {
+      const navController = TestBed.get(NavController);
+      mockAuthEmailSelector.setResult(null);
+      store.refreshState();
+      fixture.detectChanges();
+      expect(navController.navigateRoot).not.toHaveBeenCalled();
+      mockAuthEmailSelector.setResult('test@mctesterson.org');
+      store.refreshState();
+      fixture.detectChanges();
+      expect(navController.navigateRoot).toHaveBeenCalledTimes(1);
+      expect(navController.navigateRoot).toHaveBeenCalledWith('');
+    });
+  });
+
+  describe('on error changed', () => {
+    let store: MockStore<State>;
+    let mockAuthErrorSelector;
+    beforeEach(() => {
+      store = TestBed.get(Store);
+      mockAuthErrorSelector = store.overrideSelector(selectAuthError, undefined);
+      fixture.detectChanges();
     });
 
-    it('passes the email address and password to the login', async () => {
-      const authentication = TestBed.get(AuthenticationService);
-      await page.login();
-      expect(authentication.login).toHaveBeenCalledWith('test@mctesty.com', 'something secret');
+    it('sets and clears the error message', () => {
+      mockAuthErrorSelector.setResult(new Error('This is an error logging in'));
+      store.refreshState();
+      fixture.detectChanges();
+      expect(page.errorMessage).toEqual('This is an error logging in');
+      mockAuthErrorSelector.setResult(undefined);
+      store.refreshState();
+      fixture.detectChanges();
+      expect(page.errorMessage).toEqual(undefined);
     });
 
-    describe('when no user is returned', () => {
-      it('does not navigate', async () => {
-        const navController = TestBed.get(NavController);
-        await page.login();
-        expect(navController.navigateRoot).not.toHaveBeenCalled();
-      });
+    it('clears the password on error', () => {
+      page.password = 'my dark secrets';
+      mockAuthErrorSelector.setResult(new Error('This is an error logging in'));
+      store.refreshState();
+      fixture.detectChanges();
+      expect(page.password).toEqual('');
+      page.password = 'my dark secrets';
+      mockAuthErrorSelector.setResult(undefined);
+      store.refreshState();
+      fixture.detectChanges();
+      expect(page.password).toEqual('my dark secrets');
+    });
+  });
 
-      it('dismisses the loading indicator', async () => {
-        await page.login();
-        expect(loading.dismiss).toHaveBeenCalledTimes(1);
-      });
+  describe('on message changed', () => {
+    let store: MockStore<State>;
+    let mockAuthMessageSelector;
+    beforeEach(() => {
+      store = TestBed.get(Store);
+      mockAuthMessageSelector = store.overrideSelector(selectAuthMessage, undefined);
+      fixture.detectChanges();
     });
 
-    describe('when a user is returned', () => {
-      beforeEach(() => {
-        const authentication = TestBed.get(AuthenticationService);
-        authentication.login.mockResolvedValue({ id: 42 });
-      });
-
-      it('navigates to the main page', async () => {
-        const navController = TestBed.get(NavController);
-        await page.login();
-        expect(navController.navigateRoot).toHaveBeenCalledTimes(1);
-        expect(navController.navigateRoot).toHaveBeenCalledWith('');
-      });
-
-      it('dismisses the loading indicator', async () => {
-        await page.login();
-        expect(loading.dismiss).toHaveBeenCalledTimes(1);
-      });
-    });
-
-    describe('when the login fails', () => {
-      beforeEach(() => {
-        const authentication = TestBed.get(AuthenticationService);
-        authentication.login.mockRejectedValue({
-          code: 'auth/wrong-password',
-          message: 'The password is invalid or the user does not have a password.'
-        });
-      });
-
-      it('displays an error message', async () => {
-        await page.login();
-        expect(page.errorMessage).toEqual('The password is invalid or the user does not have a password.');
-      });
-
-      it('clears the password', async () => {
-        await page.login();
-        expect(page.password).toBeFalsy();
-      });
-
-      it('dismisses the loading indicator', async () => {
-        await page.login();
-        expect(loading.dismiss).toHaveBeenCalledTimes(1);
-      });
+    it('sets the info message', () => {
+      mockAuthMessageSelector.setResult('It worked!!');
+      store.refreshState();
+      fixture.detectChanges();
+      expect(page.infoMessage).toEqual('It worked!!');
+      mockAuthMessageSelector.setResult(undefined);
+      store.refreshState();
+      fixture.detectChanges();
+      expect(page.infoMessage).toEqual(undefined);
     });
   });
 
@@ -179,45 +214,47 @@ describe('LoginPage', () => {
     });
 
     describe('on alert dismiss', () => {
-      it('sends the reset e-mail if entered and send is pressed', async () => {
-        const authentication = TestBed.get(AuthenticationService);
+      let store: MockStore<State>;
+      beforeEach(() => {
+        store = TestBed.get(Store);
+        store.dispatch = jest.fn();
+      });
+
+      it('dispatches the reset action if and e-mail is entered and send is pressed', async () => {
         alert.onDidDismiss.mockResolvedValue({
           data: { values: { emailAddress: 'test@testy.com' } },
           role: 'send'
         });
         await page.handlePasswordReset();
-        expect(authentication.sendPasswordResetEmail).toHaveBeenCalledTimes(1);
-        expect(authentication.sendPasswordResetEmail).toHaveBeenCalledWith('test@testy.com');
+        expect(store.dispatch).toHaveBeenCalledTimes(1);
+        expect(store.dispatch).toHaveBeenCalledWith(resetPassword({ email: 'test@testy.com' }));
       });
 
-      it('does not send the reset e-mail if no email address is entered', async () => {
-        const authentication = TestBed.get(AuthenticationService);
+      it('does not dispatch the reset action if no email address is entered', async () => {
         alert.onDidDismiss.mockResolvedValue({
           data: { values: {} },
           role: 'send'
         });
         await page.handlePasswordReset();
-        expect(authentication.sendPasswordResetEmail).not.toHaveBeenCalled();
+        expect(store.dispatch).not.toHaveBeenCalled();
       });
 
-      it('does not send the reset e-mail if cancel is pressed', async () => {
-        const authentication = TestBed.get(AuthenticationService);
+      it('does not dispatch the reset action if cancel is pressed', async () => {
         alert.onDidDismiss.mockResolvedValue({
           data: { values: { emailAddress: 'test@testy.com' } },
           role: 'cancel'
         });
         await page.handlePasswordReset();
-        expect(authentication.sendPasswordResetEmail).not.toHaveBeenCalled();
+        expect(store.dispatch).not.toHaveBeenCalled();
       });
 
-      it('does not send the reset e-mail if background is pressed', async () => {
-        const authentication = TestBed.get(AuthenticationService);
+      it('does not dispatch the reset action if background is pressed', async () => {
         alert.onDidDismiss.mockResolvedValue({
           data: { values: { emailAddress: 'test@testy.com' } },
           role: 'background'
         });
         await page.handlePasswordReset();
-        expect(authentication.sendPasswordResetEmail).not.toHaveBeenCalled();
+        expect(store.dispatch).not.toHaveBeenCalled();
       });
     });
   });

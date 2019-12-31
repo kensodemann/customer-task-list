@@ -4,11 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="primary">
-      <ion-button
-        id="logout-button"
-        color="medium"
-        (click)="authentication.logout()"
-      >
+      <ion-button id="logout-button" color="medium" (click)="logout()">
         <ion-icon slot="icon-only" name="log-out"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -20,25 +16,14 @@
   <ion-img src="assets/icon/task-list.png"></ion-img>
 
   <div class="version">
-    <div>
-      <span class="label">Version: </span>{{ appVersion?.version }} -
-      {{ appVersion?.name }}
-    </div>
-    <div>
-      <span class="label">Released: </span>{{ appVersion?.date | date }}
-    </div>
+    <div><span class="label">Version: </span>{{ appVersion?.version }} - {{ appVersion?.name }}</div>
+    <div><span class="label">Released: </span>{{ appVersion?.date | date }}</div>
   </div>
 
   <div class="attribution">
     Icons made by
     <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from
-    <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is
-    licensed by
-    <a
-      href="http://creativecommons.org/licenses/by/3.0/"
-      title="Creative Commons BY 3.0"
-      target="_blank"
-      >CC 3.0 BY</a
-    >
+    <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
+    <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
   </div>
 </ion-content>

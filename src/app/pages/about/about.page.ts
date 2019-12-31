@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
 
-import { AuthenticationService } from '@app/services';
+import { State } from '@app/store';
 import { version } from '@app/default-data';
 import { Version } from '@app/models';
+import { logout } from '@app/store/actions/auth.actions';
 
 @Component({
   selector: 'app-about',
@@ -12,5 +14,9 @@ import { Version } from '@app/models';
 export class AboutPage {
   appVersion: Version = version;
 
-  constructor(public authentication: AuthenticationService) {}
+  constructor(private store: Store<State>) {}
+
+  logout() {
+    this.store.dispatch(logout());
+  }
 }

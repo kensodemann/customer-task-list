@@ -1,14 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AlertController, LoadingController, NavController } from '@ionic/angular';
+import { Store, select } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { AuthenticationService } from '@app/services';
+import { selectAuthEmail, selectAuthError, selectAuthLoading, selectAuthMessage, State } from '@app/store';
+import { login, resetPassword } from '@app/store/actions/auth.actions';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss']
 })
-export class LoginPage {
+export class LoginPage implements OnInit, OnDestroy {
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+  private loading: HTMLIonLoadingElement;
+
   email: string;
   password: string;
   errorMessage: string;
@@ -16,30 +23,60 @@ export class LoginPage {
 
   constructor(
     private alert: AlertController,
-    private loading: LoadingController,
-    private auth: AuthenticationService,
-    private navController: NavController
+    private loadingController: LoadingController,
+    private navController: NavController,
+    private store: Store<State>
   ) {}
+
+  async ngOnInit() {
+    this.loading = await this.loadingController.create({ message: 'Verifying...' });
+    this.store.pipe(select(selectAuthLoading), takeUntil(this.destroy$)).subscribe(l => {
+      this.showLoading(l);
+    });
+    this.store.pipe(select(selectAuthError), takeUntil(this.destroy$)).subscribe(e => {
+      this.setErrorMessage(e);
+    });
+    this.store.pipe(select(selectAuthMessage), takeUntil(this.destroy$)).subscribe(msg => {
+      this.infoMessage = msg;
+    });
+    this.store.pipe(select(selectAuthEmail), takeUntil(this.destroy$)).subscribe(e => {
+      this.goToApp(!!e);
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
+  private showLoading(show: boolean) {
+    if (show) {
+      this.loading.present();
+    } else {
+      this.loading.dismiss();
+    }
+  }
+
+  private setErrorMessage(error: Error) {
+    this.errorMessage = error && error.message;
+    if (this.errorMessage) {
+      this.password = '';
+    }
+  }
+
+  private goToApp(doNav: boolean) {
+    if (doNav) {
+      this.navController.navigateRoot('');
+    }
+  }
 
   clearMessages() {
     this.errorMessage = '';
     this.infoMessage = '';
   }
 
-  async login() {
-    const l = await this.loading.create({ message: 'Verifying...' });
-    l.present();
-    try {
-      const u = await this.auth.login(this.email, this.password);
-      if (u) {
-        this.navController.navigateRoot('');
-      }
-    } catch (err) {
-      this.password = '';
-      this.errorMessage = err.message;
-    } finally {
-      l.dismiss();
-    }
+  login() {
+    this.store.dispatch(login({ email: this.email, password: this.password }));
   }
 
   async handlePasswordReset() {
@@ -69,17 +106,8 @@ export class LoginPage {
     });
     await a.present();
     const response = await a.onDidDismiss();
-    await this.sendPasswordResetEmail(response);
-  }
-
-  private async sendPasswordResetEmail(response: any) {
-    if (response && response.data.values.emailAddress && response.role === 'send') {
-      try {
-        await this.auth.sendPasswordResetEmail(response.data.values.emailAddress);
-        this.infoMessage = `An e-mail has been sent to ${response.data.values.emailAddress} with password reset instructions.`;
-      } catch (err) {
-        this.errorMessage = err.message;
-      }
+    if (response && response.data && response.data.values.emailAddress && response.role === 'send') {
+      this.store.dispatch(resetPassword({ email: response.data.values.emailAddress }));
     }
   }
 }
