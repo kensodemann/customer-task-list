@@ -70,14 +70,14 @@ function runTasks(oldVersion, inc) {
       task: () => execa('npm', ['install'], { cwd: rootDir })
     },
     {
-      title: 'Building',
-      task: () => execa('npm', ['run', 'build'], { cwd: rootDir })
-    },
-    {
       title: 'Testing',
       task: () =>
         new Listr(
           [
+            {
+              title: 'Test Build',
+              task: () => execa('npm', ['run', 'build'], { cwd: rootDir })
+            },
             {
               title: 'Unit Tests',
               task: () => execa('npm', ['run', 'test:ci'], { cwd: rootDir })
@@ -115,8 +115,8 @@ function runTasks(oldVersion, inc) {
       task: () => execa('git', ['push', '--follow-tags'], { cwd: rootDir })
     },
     {
-      title: 'Final Build',
-      task: () => execa('npm', ['run', 'build'], { cwd: rootDir })
+      title: 'Production Build',
+      task: () => execa('npm', ['run', 'build:web'], { cwd: rootDir })
     },
     {
       title: 'Switch to Production',
@@ -139,7 +139,9 @@ function releaseUI() {
   const pkg = packageFile.read();
   const oldVersion = pkg.version;
 
-  console.log(`\nPrepare to release a new version of ${chalk.bold.magenta(pkg.name)} ${chalk.dim(`(${oldVersion})`)}\n`);
+  console.log(
+    `\nPrepare to release a new version of ${chalk.bold.magenta(pkg.name)} ${chalk.dim(`(${oldVersion})`)}\n`
+  );
 
   const prompts = [
     {

@@ -6,7 +6,8 @@
   "homepage": "http://kensodemann.github.io/",
   "scripts": {
     "bump": "node scripts/bump-version.js",
-    "build": "ionic build --engine=browser --prod -- --stats-json",
+    "build": "ng build",
+    "build:web": "ionic build --engine=browser --prod -- --stats-json",
     "bundle-report": "webpack-bundle-analyzer www/stats.json",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "e2e": "ng e2e --configuration=test --port=4242",
