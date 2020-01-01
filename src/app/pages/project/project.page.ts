@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
+import { logout } from '@app/store/actions/auth.actions';
 import { ProjectEditorComponent } from '@app/editors';
 import { ProjectsService, TasksService } from '@app/services/firestore-data';
 import { Project, Task } from '@app/models';
 import { statuses } from '@app/default-data';
+import { State } from '@app/store';
 
 @Component({
   selector: 'app-project',
@@ -25,6 +28,7 @@ export class ProjectPage implements OnDestroy, OnInit {
     private modal: ModalController,
     public navController: NavController,
     private route: ActivatedRoute,
+    private store: Store<State>,
     private tasks: TasksService
   ) {}
 
@@ -50,5 +54,9 @@ export class ProjectPage implements OnDestroy, OnInit {
 
   taskCount(status?: string): number {
     return this.projectTasks ? this.projectTasks.filter(t => !status || t.status === status).length : 0;
+  }
+
+  logout() {
+    this.store.dispatch(logout());
   }
 }

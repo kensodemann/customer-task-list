@@ -1,12 +1,15 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalController, NavController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { Subject } from 'rxjs';
 
 import { ProjectsPage } from './projects.page';
 import { ProjectsService } from '@app/services/firestore-data';
 import { createProjectsServiceMock } from '@app/services/firestore-data/mocks';
 import { Project } from '@app/models';
+import { logout } from '@app/store/actions/auth.actions';
 
 import { ProjectEditorComponent } from '@app/editors';
 import { createNavControllerMock, createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
@@ -30,7 +33,8 @@ describe('ProjectsPage', () => {
           provide: ModalController,
           useFactory: () => createOverlayControllerMock(modal)
         },
-        { provide: NavController, useFactory: createNavControllerMock }
+        { provide: NavController, useFactory: createNavControllerMock },
+        provideMockStore()
       ]
     }).compileComponents();
   }));
@@ -159,6 +163,16 @@ describe('ProjectsPage', () => {
       });
       expect(navController.navigateForward).toHaveBeenCalledTimes(1);
       expect(navController.navigateForward).toHaveBeenCalledWith(['tabs', 'projects', '4273']);
+    });
+  });
+
+  describe('logout', () => {
+    it('dispatches the logout action', () => {
+      const store = TestBed.get(Store);
+      store.dispatch = jest.fn();
+      page.logout();
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith(logout());
     });
   });
 });

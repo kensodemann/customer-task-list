@@ -3,8 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { firestore } from 'firebase/app';
 import { ModalController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 
+import { logout } from '@app/store/actions/auth.actions';
 import { Priorities, Statuses, TaskTypes } from '@app/default-data';
 import { TaskEditorComponent } from '@app/editors';
 import { TaskPage } from './task.page';
@@ -29,7 +32,8 @@ describe('TaskPage', () => {
           provide: ModalController,
           useFactory: () => createOverlayControllerMock(modal)
         },
-        { provide: TasksService, useFactory: createTasksServiceMock }
+        { provide: TasksService, useFactory: createTasksServiceMock },
+        provideMockStore()
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
@@ -132,6 +136,16 @@ describe('TaskPage', () => {
     it('presents the modal', async () => {
       await page.edit();
       expect(modal.present).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('logout', () => {
+    it('dispatches the logout action', () => {
+      const store = TestBed.get(Store);
+      store.dispatch = jest.fn();
+      page.logout();
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith(logout());
     });
   });
 });

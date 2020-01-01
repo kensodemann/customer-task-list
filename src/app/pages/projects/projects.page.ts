@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
+import { byName } from '@app/util';
+import { logout } from '@app/store/actions/auth.actions';
 import { ProjectEditorComponent } from '@app/editors';
 import { ProjectsService } from '@app/services/firestore-data';
 import { Project } from '@app/models';
-import { byName } from '@app/util';
+import { State } from '@app/store';
 
 @Component({
   selector: 'app-projects',
@@ -20,7 +23,8 @@ export class ProjectsPage implements OnDestroy, OnInit {
   constructor(
     private projects: ProjectsService,
     private modal: ModalController,
-    private navController: NavController
+    private navController: NavController,
+    private store: Store<State>
   ) {}
 
   ngOnInit() {
@@ -41,5 +45,9 @@ export class ProjectsPage implements OnDestroy, OnInit {
 
   view(c: Project) {
     this.navController.navigateForward(['tabs', 'projects', c.id]);
+  }
+
+  logout() {
+    this.store.dispatch(logout());
   }
 }

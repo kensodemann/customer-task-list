@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, IonList, ModalController, NavController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
+import { logout } from '@app/store/actions/auth.actions';
+import { State } from '@app/store';
 import { Statuses, Priorities } from '@app/default-data';
 import { TaskEditorComponent } from '@app/editors';
 import { TasksService } from '@app/services/firestore-data';
@@ -31,6 +34,7 @@ export class TasksPage implements OnDestroy, OnInit {
     private modal: ModalController,
     private navController: NavController,
     private route: ActivatedRoute,
+    private store: Store<State>,
     private tasks: TasksService
   ) {}
 
@@ -88,6 +92,10 @@ export class TasksPage implements OnDestroy, OnInit {
     } else {
       this.navController.navigateForward(['tabs', 'tasks', task.id]);
     }
+  }
+
+  logout() {
+    this.store.dispatch(logout());
   }
 
   private unpackTasks(t: Array<Task>) {

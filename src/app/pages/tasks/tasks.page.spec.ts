@@ -2,9 +2,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { firestore } from 'firebase/app';
 import { Subject } from 'rxjs';
 
+import { logout } from '@app/store/actions/auth.actions';
 import { Priorities, Statuses, TaskTypes } from '@app/default-data';
 import { SharedModule } from '@app/shared';
 import { TaskEditorComponent } from '@app/editors';
@@ -50,7 +53,8 @@ describe('TasksPage', () => {
           useFactory: () => createOverlayControllerMock(modal)
         },
         { provide: NavController, useFactory: createNavControllerMock },
-        { provide: TasksService, useFactory: createTasksServiceMock }
+        { provide: TasksService, useFactory: createTasksServiceMock },
+        provideMockStore()
       ]
     }).compileComponents();
   }));
@@ -427,6 +431,16 @@ describe('TasksPage', () => {
         expect(navController.navigateForward).toHaveBeenCalledTimes(1);
         expect(navController.navigateForward).toHaveBeenCalledWith(test.path);
       });
+    });
+  });
+
+  describe('logout', () => {
+    it('dispatches the logout action', () => {
+      const store = TestBed.get(Store);
+      store.dispatch = jest.fn();
+      page.logout();
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith(logout());
     });
   });
 

@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { firestore } from 'firebase/app';
 import { ModalController, NavController } from '@ionic/angular';
 import { of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 
 import { ProjectEditorComponent } from '@app/editors';
 import { ProjectPage } from './project.page';
@@ -12,6 +14,7 @@ import { createProjectsServiceMock, createTasksServiceMock } from '@app/services
 import { Project } from '@app/models';
 import { Priorities, Statuses, TaskTypes } from '@app/default-data';
 import { Task } from '@app/models/task';
+import { logout } from '@app/store/actions/auth.actions';
 
 import {
   createActivatedRouteMock,
@@ -38,7 +41,8 @@ describe('ProjectPage', () => {
           useFactory: () => createOverlayControllerMock(modal)
         },
         { provide: NavController, useFactory: createNavControllerMock },
-        { provide: TasksService, useFactory: createTasksServiceMock }
+        { provide: TasksService, useFactory: createTasksServiceMock },
+        provideMockStore()
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
@@ -170,6 +174,16 @@ describe('ProjectPage', () => {
       it('returns zero if the status is not valid', () => {
         expect(page.taskCount('SomeInvalidStatus')).toEqual(0);
       });
+    });
+  });
+
+  describe('logout', () => {
+    it('dispatches the logout action', () => {
+      const store = TestBed.get(Store);
+      store.dispatch = jest.fn();
+      page.logout();
+      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledWith(logout());
     });
   });
 

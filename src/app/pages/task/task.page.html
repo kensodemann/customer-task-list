@@ -4,6 +4,11 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button id="logout-button" color="medium" (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -21,9 +26,7 @@
     <div>{{ task?.description }}</div>
   </div>
 
-  <div class="section">
-    <span class="label">Project:</span> {{ task?.projectName }}
-  </div>
+  <div class="section"><span class="label">Project:</span> {{ task?.projectName }}</div>
 
   <div class="section">
     <div><span class="label">Status:</span> {{ task?.status }}</div>
@@ -35,9 +38,7 @@
     </div>
     <div *ngIf="task?.beginDate">
       <span class="label">Scheduled:</span> {{ task?.beginDate | date }}
-      <span *ngIf="task?.beginDate !== task?.endDate">
-        - {{ task.endDate | date }}</span
-      >
+      <span *ngIf="task?.beginDate !== task?.endDate"> - {{ task.endDate | date }}</span>
     </div>
   </div>
 
