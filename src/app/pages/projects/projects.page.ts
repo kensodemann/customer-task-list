@@ -1,38 +1,31 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { byName } from '@app/util';
 import { logout } from '@app/store/actions/auth.actions';
 import { ProjectEditorComponent } from '@app/editors';
-import { ProjectsService } from '@app/services/firestore-data';
 import { Project } from '@app/models';
-import { State } from '@app/store';
+import { State, selectAllProjects } from '@app/store';
 
 @Component({
   selector: 'app-projects',
   templateUrl: 'projects.page.html',
   styleUrls: ['projects.page.scss']
 })
-export class ProjectsPage implements OnDestroy, OnInit {
-  private projectsSubscription: Subscription;
-
+export class ProjectsPage implements OnInit {
   allProjects: Array<Project>;
+  projects$: Observable<Array<Project>>;
 
-  constructor(
-    private projects: ProjectsService,
-    private modal: ModalController,
-    private navController: NavController,
-    private store: Store<State>
-  ) {}
+  constructor(private modal: ModalController, private navController: NavController, private store: Store<State>) {}
 
   ngOnInit() {
-    this.projectsSubscription = this.projects.all().subscribe(c => (this.allProjects = c.sort(byName)));
-  }
-
-  ngOnDestroy() {
-    this.projectsSubscription.unsubscribe();
+    this.projects$ = this.store.pipe(
+      select(selectAllProjects),
+      map(p => p.sort(byName))
+    );
   }
 
   async add() {

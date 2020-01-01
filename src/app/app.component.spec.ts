@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
 import { loginChanged } from './store/actions/auth.actions';
+import { load as loadProjects } from './store/actions/project.actions';
 import { State } from './store/reducers';
 import { createApplicationServiceMock } from './services/application/application.mock';
 import { createAngularFireAuthMock, createNavControllerMock } from '@test/mocks';
@@ -63,8 +64,9 @@ describe('AppComponent', () => {
       it('dispatches the user change and load', () => {
         const angularFireAuth = TestBed.get(AngularFireAuth);
         angularFireAuth.authState.next({ id: 42, email: 'test@testty.com' });
-        expect(store.dispatch).toHaveBeenCalledTimes(1);
+        expect(store.dispatch).toHaveBeenCalledTimes(2);
         expect(store.dispatch).toHaveBeenCalledWith(loginChanged({ email: 'test@testty.com' }));
+        expect(store.dispatch).toHaveBeenCalledWith(loadProjects());
       });
     });
 

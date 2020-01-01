@@ -53,6 +53,7 @@ export function createAngularFirestoreCollectionMock() {
     add: jest.fn(() => Promise.resolve(createDocumentReferenceMock())),
     valueChanges: jest.fn(() => EMPTY),
     snapshotChanges: jest.fn(() => EMPTY),
+    stateChanges: jest.fn(() => EMPTY),
     ref: createCollectionReferenceMock([])
   };
 }

@@ -20,7 +20,7 @@
   </ion-fab>
 
   <ion-list id="projects-list">
-    <ion-item *ngFor="let project of allProjects" class="clickable" (click)="view(project)">
+    <ion-item *ngFor="let project of projects$ | async" class="clickable" (click)="view(project)">
       <ion-label>
         <div class="title">{{ project.name }}</div>
         <div class="description">{{ project.description }}</div>

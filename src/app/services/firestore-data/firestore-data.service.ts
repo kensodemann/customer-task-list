@@ -10,6 +10,10 @@ export abstract class FirestoreDataService<T extends { id?: string }> {
 
   constructor() {}
 
+  observeChanges(): Observable<Array<DocumentChangeAction<T>>> {
+    return this.collection.stateChanges();
+  }
+
   all(): Observable<Array<T>> {
     return this.collection.snapshotChanges().pipe(map(this.actionsToData));
   }

@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Subject } from 'rxjs';
 
-import { ProjectsService } from '@app/services/firestore-data';
 import { Project } from '@app/models';
+import { State, selectAllProjects } from '@app/store';
+import { takeUntil } from 'rxjs/operators';
+import { update, create } from '@app/store/actions/project.actions';
 
 @Component({
   selector: 'app-project-editor',
@@ -11,6 +14,9 @@ import { Project } from '@app/models';
   styleUrls: ['./project-editor.component.scss']
 })
 export class ProjectEditorComponent implements OnDestroy, OnInit {
+  private allProjects: Array<Project>;
+  private destroy$: Subject<boolean> = new Subject();
+
   name: string;
   description: string;
   isActive: boolean;
@@ -18,11 +24,9 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
   warningMessage: string;
   title: string;
 
-  allProjects: Array<Project>;
-  projectsSubscription: Subscription;
   project: Project;
 
-  constructor(private projects: ProjectsService, private modal: ModalController) {}
+  constructor(private modal: ModalController, private store: Store<State>) {}
 
   ngOnInit() {
     this.getProjects();
@@ -31,7 +35,8 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this.projectsSubscription.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   close() {
@@ -46,16 +51,12 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
   }
 
   save() {
-    try {
-      if (this.project) {
-        this.projects.update(this.projectObject());
-      } else {
-        this.projects.add(this.projectObject());
-      }
-      this.modal.dismiss();
-    } catch (err) {
-      this.errorMessage = err.message || 'Unknown error saving project';
+    if (this.project) {
+      this.store.dispatch(update({ project: this.projectObject() }));
+    } else {
+      this.store.dispatch(create({ project: this.projectObject() }));
     }
+    this.modal.dismiss();
   }
 
   private projectObject(): Project {
@@ -73,7 +74,7 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
   }
 
   private getProjects() {
-    this.projectsSubscription = this.projects.all().subscribe(c => (this.allProjects = c));
+    this.store.pipe(select(selectAllProjects), takeUntil(this.destroy$)).subscribe(c => (this.allProjects = c));
   }
 
   private initializeProperties() {

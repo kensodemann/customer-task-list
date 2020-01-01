@@ -1,13 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { addDays, addYears, differenceInCalendarDays, format, parseISO } from 'date-fns';
 import { firestore } from 'firebase/app';
 
 import { byName } from '@app/util';
-import { ProjectsService, TasksService } from '@app/services/firestore-data';
+import { TasksService } from '@app/services/firestore-data';
 import { Priorities, priorities, Statuses, statuses, TaskTypes, taskTypes } from '@app/default-data';
 import { Task } from '@app/models';
+import { Store, select } from '@ngrx/store';
+import { State, selectAllProjects } from '@app/store';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-task-editor',
@@ -16,6 +19,7 @@ import { Task } from '@app/models';
 })
 export class TaskEditorComponent implements OnInit, OnDestroy {
   private daysBetween;
+  private destroy$: Subject<boolean> = new Subject();
 
   title: string;
 
@@ -42,7 +46,11 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
 
   projectSubscription: Subscription;
 
-  constructor(private projects: ProjectsService, private modal: ModalController, private tasks: TasksService) {}
+  constructor(
+    private modal: ModalController,
+    private store: Store<State>,
+    private tasks: TasksService
+  ) {}
 
   ngOnInit() {
     this.priorities = [...priorities];
@@ -58,7 +66,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       this.defaultTaskProperties();
     }
 
-    this.projectSubscription = this.projects.all().subscribe(projects => {
+    this.store.pipe(select(selectAllProjects), takeUntil(this.destroy$)).subscribe(projects => {
       this.activeProjects = projects
         .filter(c => c.isActive || (this.task && this.task.projectId === c.id))
         .map(c => ({ id: c.id, name: c.name }))
@@ -67,7 +75,8 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.projectSubscription.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   close() {

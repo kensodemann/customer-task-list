@@ -59,6 +59,20 @@ describe('FirestoreDataService', () => {
     expect(dataService).toBeTruthy();
   });
 
+  describe('observe changes', () => {
+    it('grabs a references to the data collection', () => {
+      const angularFirestore = TestBed.get(AngularFirestore);
+      dataService.observeChanges();
+      expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
+      expect(angularFirestore.collection).toHaveBeenCalledWith('data-collection');
+    });
+
+    it('looks for state changes', () => {
+      dataService.observeChanges();
+      expect(collection.stateChanges).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('all', () => {
     it('grabs a references to the data collection', () => {
       const angularFirestore = TestBed.get(AngularFirestore);

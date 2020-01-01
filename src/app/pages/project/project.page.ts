@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
-import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { Subject } from 'rxjs';
 
 import { logout } from '@app/store/actions/auth.actions';
 import { ProjectEditorComponent } from '@app/editors';
-import { ProjectsService, TasksService } from '@app/services/firestore-data';
+import { TasksService } from '@app/services/firestore-data';
 import { Project, Task } from '@app/models';
 import { statuses } from '@app/default-data';
-import { State } from '@app/store';
+import { State, selectProject } from '@app/store';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project',
@@ -17,14 +18,13 @@ import { State } from '@app/store';
   styleUrls: ['./project.page.scss']
 })
 export class ProjectPage implements OnDestroy, OnInit {
-  private subscriptions: Array<Subscription> = [];
+  private destroy$: Subject<boolean> = new Subject<boolean>();
   private projectTasks: Array<Task>;
 
   project: Project;
   statuses: Array<string>;
 
   constructor(
-    private projects: ProjectsService,
     private modal: ModalController,
     public navController: NavController,
     private route: ActivatedRoute,
@@ -35,12 +35,16 @@ export class ProjectPage implements OnDestroy, OnInit {
   async ngOnInit() {
     this.statuses = [...statuses];
     const id = this.route.snapshot.paramMap.get('projectId');
-    this.subscriptions.push(this.tasks.forProject(id).subscribe(t => (this.projectTasks = t)));
-    this.project = await this.projects.get(id);
+    this.tasks
+      .forProject(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(t => (this.projectTasks = t));
+    this.store.pipe(select(selectProject, { id }), takeUntil(this.destroy$)).subscribe(p => (this.project = p));
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   async edit() {

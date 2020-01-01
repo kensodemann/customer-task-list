@@ -9,9 +9,8 @@ import { provideMockStore } from '@ngrx/store/testing';
 
 import { ProjectEditorComponent } from '@app/editors';
 import { ProjectPage } from './project.page';
-import { ProjectsService, TasksService } from '@app/services/firestore-data';
-import { createProjectsServiceMock, createTasksServiceMock } from '@app/services/firestore-data/mocks';
-import { Project } from '@app/models';
+import { TasksService } from '@app/services/firestore-data';
+import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
 import { Priorities, Statuses, TaskTypes } from '@app/default-data';
 import { Task } from '@app/models/task';
 import { logout } from '@app/store/actions/auth.actions';
@@ -22,6 +21,8 @@ import {
   createOverlayControllerMock,
   createOverlayElementMock
 } from '@test/mocks';
+import { ProjectState } from '@app/store/reducers/project/project.reducer';
+import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
 
 describe('ProjectPage', () => {
   let page: ProjectPage;
@@ -30,19 +31,21 @@ describe('ProjectPage', () => {
   let testTasks: Array<Task>;
 
   beforeEach(async(() => {
+    initializeTestProjects();
     modal = createOverlayElementMock();
     TestBed.configureTestingModule({
       declarations: [ProjectPage],
       providers: [
         { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
-        { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
           useFactory: () => createOverlayControllerMock(modal)
         },
         { provide: NavController, useFactory: createNavControllerMock },
         { provide: TasksService, useFactory: createTasksServiceMock },
-        provideMockStore()
+        provideMockStore<{ projects: ProjectState }>({
+          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } }
+        })
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
@@ -68,32 +71,12 @@ describe('ProjectPage', () => {
     expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('projectId');
   });
 
-  it('get the project for the id', () => {
-    const projects = TestBed.get(ProjectsService);
+  it('gets the project from the store', async () => {
+    const id = testProjectIds[2];
     const route = TestBed.get(ActivatedRoute);
-    route.snapshot.paramMap.get.mockReturnValue('314159PI');
-    fixture.detectChanges();
-    expect(projects.get).toHaveBeenCalledTimes(1);
-    expect(projects.get).toHaveBeenCalledWith('314159PI');
-  });
-
-  it('assigns the project', async () => {
-    const projects = TestBed.get(ProjectsService);
-    const route = TestBed.get(ActivatedRoute);
-    route.snapshot.paramMap.get.mockReturnValue('314159PI');
-    projects.get.mockResolvedValue({
-      id: '314159PI',
-      name: 'Cherry',
-      description: 'Makers of really tasty pi',
-      isActive: true
-    });
+    route.snapshot.paramMap.get.mockReturnValue(id);
     await page.ngOnInit();
-    expect(page.project).toEqual({
-      id: '314159PI',
-      name: 'Cherry',
-      description: 'Makers of really tasty pi',
-      isActive: true
-    });
+    expect(page.project).toEqual(testProjects[id]);
   });
 
   it('gets the tasks for the project', () => {
@@ -106,18 +89,11 @@ describe('ProjectPage', () => {
   });
 
   describe('edit project', () => {
-    const project: Project = {
-      id: '4273',
-      name: 'Dominos',
-      description: 'Pizza apps that rock, the pizza not so much',
-      isActive: true
-    };
-
+    let id: string;
     beforeEach(() => {
-      const projects = TestBed.get(ProjectsService);
+      id = testProjectIds[3];
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get.mockReturnValue('4273');
-      projects.get.mockResolvedValue(project);
+      route.snapshot.paramMap.get.mockReturnValue(id);
       fixture.detectChanges();
     });
 
@@ -133,7 +109,7 @@ describe('ProjectPage', () => {
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
         component: ProjectEditorComponent,
-        componentProps: { project: project }
+        componentProps: { project: testProjects[id] }
       });
     });
 

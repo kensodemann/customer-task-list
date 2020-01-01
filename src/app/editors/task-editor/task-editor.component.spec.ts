@@ -2,91 +2,42 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { of } from 'rxjs';
 import { firestore } from 'firebase/app';
 
-import { Project } from '@app/models';
-import { ProjectsService, TasksService } from '@app/services/firestore-data';
-import { createProjectsServiceMock, createTasksServiceMock } from '@app/services/firestore-data/mocks';
+import { TasksService } from '@app/services/firestore-data';
+import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
 import { TaskEditorComponent } from './task-editor.component';
 import { Priorities, Statuses, TaskTypes } from '@app/default-data';
+import { ProjectState } from '@app/store/reducers/project/project.reducer';
 
 import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import { provideMockStore } from '@ngrx/store/testing';
+import { testProjectIds, testProjects, initializeTestProjects } from '@test/data';
 
 describe('TaskEditorComponent', () => {
-  let allProjects: Array<Project>;
   let editor: TaskEditorComponent;
   let fixture: ComponentFixture<TaskEditorComponent>;
 
   beforeEach(async(() => {
+    initializeTestProjects();
     TestBed.configureTestingModule({
       declarations: [TaskEditorComponent],
       imports: [FormsModule, IonicModule],
       providers: [
-        { provide: ProjectsService, useFactory: createProjectsServiceMock },
         {
           provide: ModalController,
           useFactory: () => createOverlayControllerMock(createOverlayElementMock())
         },
-        { provide: TasksService, useFactory: createTasksServiceMock }
+        { provide: TasksService, useFactory: createTasksServiceMock },
+        provideMockStore<{ projects: ProjectState }>({
+          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } }
+        })
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    const projects = TestBed.get(ProjectsService);
-    allProjects = [
-      {
-        id: '314PI',
-        name: `Baker's Square`,
-        description: 'Makers of overly sweet pies and otherwise crappy food',
-        isActive: false
-      },
-      {
-        id: '420HI',
-        name: 'Joe',
-        description: 'Some guy named Joe who sells week on my street corner',
-        isActive: true
-      },
-      {
-        id: '73SC',
-        name: 'Wheels',
-        description: 'Not what it sounds like',
-        isActive: false
-      },
-      {
-        id: '42DA',
-        name: 'Deep Sea Divers',
-        description: 'Thanks for all the fish!',
-        isActive: true
-      },
-      {
-        id: '1138GL',
-        name: 'THX Sound Enterprises',
-        description: 'Loud, proud, and all around you',
-        isActive: true
-      },
-      {
-        id: '531LLS',
-        name: 'Lillies Love Secrets',
-        description: 'Sexy stuff, currently out of business',
-        isActive: false
-      },
-      {
-        id: '705AMS',
-        name: 'Ashley Furniture',
-        description: 'Moderatly good quality furniture for your boring home',
-        isActive: true
-      },
-      {
-        id: '317SP',
-        name: 'Harp Brewery',
-        description: 'Time to do some puking on your shoes',
-        isActive: true
-      }
-    ];
-    projects.all.mockReturnValue(of(allProjects));
     fixture = TestBed.createComponent(TaskEditorComponent);
     editor = fixture.componentInstance;
   });
@@ -139,11 +90,6 @@ describe('TaskEditorComponent', () => {
       expect(editor.priority).toEqual(Priorities.Normal);
     });
 
-    it('gets the projects', () => {
-      const projects = TestBed.get(ProjectsService);
-      expect(projects.all).toHaveBeenCalledTimes(1);
-    });
-
     it('defaults to not scheduling the task', () => {
       expect(editor.schedule).toBeFalsy();
       expect(editor.beginDate).toBeFalsy();
@@ -153,24 +99,24 @@ describe('TaskEditorComponent', () => {
     it('maps the active projects', () => {
       expect(editor.activeProjects).toEqual([
         {
-          id: '705AMS',
-          name: 'Ashley Furniture'
+          id: 'fiig9488593',
+          name: 'Cow'
         },
         {
-          id: '42DA',
-          name: 'Deep Sea Divers'
+          id: 'b99f03590do',
+          name: 'Figmo'
         },
         {
-          id: '317SP',
-          name: 'Harp Brewery'
+          id: 'a19943kkg039',
+          name: 'Gizmo'
         },
         {
-          id: '420HI',
-          name: 'Joe'
+          id: 'iriit003499340',
+          name: 'Personal Task Timer'
         },
         {
-          id: '1138GL',
-          name: 'THX Sound Enterprises'
+          id: 'ri49950399vf',
+          name: 'Project Task List'
         }
       ]);
     });
@@ -223,7 +169,7 @@ describe('TaskEditorComponent', () => {
         const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
-        editor.projectId = '1138GL';
+        editor.projectId = 'iriit003499340';
         editor.save();
         expect(tasks.add).toHaveBeenCalledTimes(1);
       });
@@ -232,7 +178,7 @@ describe('TaskEditorComponent', () => {
         const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
-        editor.projectId = '1138GL';
+        editor.projectId = 'iriit003499340';
         editor.save();
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
@@ -240,8 +186,8 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           type: TaskTypes.Feature,
           priority: Priorities.Normal,
-          projectId: '1138GL',
-          projectName: 'THX Sound Enterprises',
+          projectId: 'iriit003499340',
+          projectName: 'Personal Task Timer',
           enteredOn: new firestore.Timestamp(1545765815, 0)
         });
       });
@@ -250,7 +196,7 @@ describe('TaskEditorComponent', () => {
         const tasks = TestBed.get(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
-        editor.projectId = '1138GL';
+        editor.projectId = 'iriit003499340';
         editor.beginDate = '2019-01-03';
         editor.endDate = '2019-01-04';
         editor.save();
@@ -260,8 +206,8 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           type: TaskTypes.Feature,
           priority: Priorities.Normal,
-          projectId: '1138GL',
-          projectName: 'THX Sound Enterprises',
+          projectId: 'iriit003499340',
+          projectName: 'Personal Task Timer',
           enteredOn: new firestore.Timestamp(1545765815, 0),
           beginDate: '2019-01-03',
           endDate: '2019-01-04'
@@ -312,8 +258,8 @@ describe('TaskEditorComponent', () => {
           status: Statuses.Open,
           priority: Priorities.Low,
           type: TaskTypes.Task,
-          projectId: '1138GL',
-          projectName: 'THX Sound Enterprises',
+          projectId: 'iriit003499340',
+          projectName: 'Personal Task Timer',
           enteredOn: new firestore.Timestamp(1545765815, 0)
         };
         fixture.detectChanges();
@@ -374,8 +320,8 @@ describe('TaskEditorComponent', () => {
           type: TaskTypes.Task,
           beginDate: '2019-01-15',
           endDate: '2019-01-18',
-          projectId: '1138GL',
-          projectName: 'THX Sound Enterprises',
+          projectId: 'iriit003499340',
+          projectName: 'Personal Task Timer',
           enteredOn: new firestore.Timestamp(1545765815, 0)
         };
         fixture.detectChanges();
@@ -418,35 +364,30 @@ describe('TaskEditorComponent', () => {
       });
 
       it('initializes the project ID', () => {
-        expect(editor.projectId).toEqual('1138GL');
-      });
-
-      it('gets the projects', () => {
-        const projects = TestBed.get(ProjectsService);
-        expect(projects.all).toHaveBeenCalledTimes(1);
+        expect(editor.projectId).toEqual('iriit003499340');
       });
 
       it('maps the active projects', () => {
         expect(editor.activeProjects).toEqual([
           {
-            id: '705AMS',
-            name: 'Ashley Furniture'
+            id: 'fiig9488593',
+            name: 'Cow'
           },
           {
-            id: '42DA',
-            name: 'Deep Sea Divers'
+            id: 'b99f03590do',
+            name: 'Figmo'
           },
           {
-            id: '317SP',
-            name: 'Harp Brewery'
+            id: 'a19943kkg039',
+            name: 'Gizmo'
           },
           {
-            id: '420HI',
-            name: 'Joe'
+            id: 'iriit003499340',
+            name: 'Personal Task Timer'
           },
           {
-            id: '1138GL',
-            name: 'THX Sound Enterprises'
+            id: 'ri49950399vf',
+            name: 'Project Task List'
           }
         ]);
       });
@@ -508,8 +449,8 @@ describe('TaskEditorComponent', () => {
             type: TaskTypes.Task,
             beginDate: '2019-01-15',
             endDate: '2019-01-18',
-            projectId: '1138GL',
-            projectName: 'THX Sound Enterprises',
+            projectId: 'iriit003499340',
+            projectName: 'Personal Task Timer',
             enteredOn: new firestore.Timestamp(1545765815, 0)
           });
         });
@@ -534,8 +475,8 @@ describe('TaskEditorComponent', () => {
         type: TaskTypes.Task,
         beginDate: '2019-01-15',
         endDate: '2019-01-18',
-        projectId: '73SC',
-        projectName: 'Wheels',
+        projectId: 'aa9300kfii593',
+        projectName: 'Math War',
         enteredOn: new firestore.Timestamp(1545765815, 0)
       };
       fixture.detectChanges();
@@ -544,28 +485,28 @@ describe('TaskEditorComponent', () => {
     it('maps the active projects and the assigned project', () => {
       expect(editor.activeProjects).toEqual([
         {
-          id: '705AMS',
-          name: 'Ashley Furniture'
+          id: 'fiig9488593',
+          name: 'Cow'
         },
         {
-          id: '42DA',
-          name: 'Deep Sea Divers'
+          id: 'b99f03590do',
+          name: 'Figmo'
         },
         {
-          id: '317SP',
-          name: 'Harp Brewery'
+          id: 'a19943kkg039',
+          name: 'Gizmo'
         },
         {
-          id: '420HI',
-          name: 'Joe'
+          id: 'aa9300kfii593',
+          name: 'Math War'
         },
         {
-          id: '1138GL',
-          name: 'THX Sound Enterprises'
+          id: 'iriit003499340',
+          name: 'Personal Task Timer'
         },
         {
-          id: '73SC',
-          name: 'Wheels'
+          id: 'ri49950399vf',
+          name: 'Project Task List'
         }
       ]);
     });
