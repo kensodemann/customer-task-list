@@ -1,3 +1,13 @@
+# [2.2.0](https://github.com/kensodemann/customer-task-list/compare/v2.1.1...v2.2.0) (2020-01-01)
+
+
+### Features
+
+* **app:** add logout to all pages ([ce91fe5](https://github.com/kensodemann/customer-task-list/commit/ce91fe5d44b3631a97d1accb0995a13ef6b48976))
+* **app:** redo the routing to make more sense ([5eac250](https://github.com/kensodemann/customer-task-list/commit/5eac250de2656a9ab6a5a34c4f4ac98ae49a86dd))
+
+
+
 ## [2.1.3](https://github.com/kensodemann/customer-task-list/compare/v1.1.0...v2.1.3) (2019-12-31)
 
 
