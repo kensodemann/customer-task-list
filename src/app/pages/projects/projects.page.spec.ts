@@ -158,7 +158,7 @@ describe('ProjectsPage', () => {
         isActive: true
       });
       expect(navController.navigateForward).toHaveBeenCalledTimes(1);
-      expect(navController.navigateForward).toHaveBeenCalledWith(['project', '4273']);
+      expect(navController.navigateForward).toHaveBeenCalledWith(['tabs', 'projects', '4273']);
     });
   });
 });

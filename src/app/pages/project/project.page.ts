@@ -30,7 +30,7 @@ export class ProjectPage implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.statuses = [...statuses];
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('projectId');
     this.subscriptions.push(this.tasks.forProject(id).subscribe(t => (this.projectTasks = t)));
     this.subscriptions.push(this.projects.get(id).subscribe(c => (this.project = c)));
   }

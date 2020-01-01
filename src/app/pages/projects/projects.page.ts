@@ -40,6 +40,6 @@ export class ProjectsPage implements OnDestroy, OnInit {
   }
 
   view(c: Project) {
-    this.navController.navigateForward(['project', c.id]);
+    this.navController.navigateForward(['tabs', 'projects', c.id]);
   }
 }

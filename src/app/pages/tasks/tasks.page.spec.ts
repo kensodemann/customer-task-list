@@ -380,23 +380,53 @@ describe('TasksPage', () => {
     });
   });
 
-  describe('view project', () => {
-    it('navigates to the project', () => {
-      const navController = TestBed.get(NavController);
-      fixture.detectChanges();
-      page.view({
-        id: 'S9590FGS',
-        name: 'Model It',
-        description: 'They need to see it to believe it',
-        enteredOn: new firestore.Timestamp(1440059420, 0),
-        type: TaskTypes.Research,
-        status: Statuses.OnHold,
-        priority: Priorities.Low,
+  describe('view task', () => {
+    [
+      {
+        case: 'standard',
+        projectId: undefined,
+        status: undefined,
+        path: ['tabs', 'tasks', 'S9590FGS']
+      },
+      {
+        case: 'project',
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        status: undefined,
+        path: ['tabs', 'projects', '451BK', 'tasks', 'task', 'S9590FGS']
+      },
+      {
+        case: 'project status',
+        projectId: '451BK',
+        status: 'On Hold',
+        path: ['tabs', 'projects', '451BK', 'tasks', 'On Hold', 'task', 'S9590FGS']
+      }
+    ].forEach(test => {
+      it(`navigates to the task from the ${test.case} task list`, () => {
+        const navController = TestBed.get(NavController);
+        const route = TestBed.get(ActivatedRoute);
+        route.snapshot.paramMap.get = jest.fn(arg => {
+          if (arg === 'projectId') {
+            return test.projectId;
+          }
+          if (arg === 'status') {
+            return test.status;
+          }
+        });
+        fixture.detectChanges();
+        page.view({
+          id: 'S9590FGS',
+          name: 'Model It',
+          description: 'They need to see it to believe it',
+          enteredOn: new firestore.Timestamp(1440059420, 0),
+          type: TaskTypes.Research,
+          status: Statuses.OnHold,
+          priority: Priorities.Low,
+          projectId: '451BK',
+          projectName: 'Book Burners R Us'
+        });
+        expect(navController.navigateForward).toHaveBeenCalledTimes(1);
+        expect(navController.navigateForward).toHaveBeenCalledWith(test.path);
       });
-      expect(navController.navigateForward).toHaveBeenCalledTimes(1);
-      expect(navController.navigateForward).toHaveBeenCalledWith(['task', 'S9590FGS']);
     });
   });
 

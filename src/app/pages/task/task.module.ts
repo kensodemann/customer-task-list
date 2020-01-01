@@ -11,7 +11,7 @@ import { TaskPage } from './task.page';
 
 const routes: Routes = [
   {
-    path: ':id',
+    path: '',
     component: TaskPage
   }
 ];

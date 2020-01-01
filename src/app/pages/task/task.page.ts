@@ -19,7 +19,7 @@ export class TaskPage implements OnDestroy, OnInit {
   constructor(private modal: ModalController, private route: ActivatedRoute, private tasks: TasksService) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('taskId');
     this.subscriptions.push(this.tasks.get(id).subscribe(t => (this.task = t)));
   }
 

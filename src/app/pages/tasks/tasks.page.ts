@@ -72,13 +72,22 @@ export class TasksPage implements OnDestroy, OnInit {
     const a = await this.alert.create({
       header: 'Confirm Delete',
       message: 'Are you sure you want to permanently remove this task?',
-      buttons: [{ text: 'Yes', handler: () => this.tasks.delete(task) }, { text: 'No', role: 'cancel' }]
+      buttons: [
+        { text: 'Yes', handler: () => this.tasks.delete(task) },
+        { text: 'No', role: 'cancel' }
+      ]
     });
     return a.present();
   }
 
   view(task: Task) {
-    this.navController.navigateForward(['task', task.id]);
+    if (this.projectId && this.status) {
+      this.navController.navigateForward(['tabs', 'projects', this.projectId, 'tasks', this.status, 'task', task.id]);
+    } else if (this.projectId) {
+      this.navController.navigateForward(['tabs', 'projects', this.projectId, 'tasks', 'task', task.id]);
+    } else {
+      this.navController.navigateForward(['tabs', 'tasks', task.id]);
+    }
   }
 
   private unpackTasks(t: Array<Task>) {

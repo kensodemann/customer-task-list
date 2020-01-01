@@ -12,14 +12,6 @@ const routes: Routes = [
   {
     path: '',
     component: TasksPage
-  },
-  {
-    path: ':projectId',
-    component: TasksPage
-  },
-  {
-    path: ':projectId/:status',
-    component: TasksPage
   }
 ];
 

@@ -49,7 +49,7 @@ describe('TaskPage', () => {
     const route = TestBed.get(ActivatedRoute);
     fixture.detectChanges();
     expect(route.snapshot.paramMap.get).toHaveBeenCalledTimes(1);
-    expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('id');
+    expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('taskId');
   });
 
   it('get the task for the id', () => {

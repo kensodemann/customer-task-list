@@ -61,7 +61,7 @@ describe('ProjectPage', () => {
     const route = TestBed.get(ActivatedRoute);
     fixture.detectChanges();
     expect(route.snapshot.paramMap.get).toHaveBeenCalledTimes(1);
-    expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('id');
+    expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('projectId');
   });
 
   it('get the project for the id', () => {
