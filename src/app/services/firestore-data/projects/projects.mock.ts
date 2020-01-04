@@ -1,10 +1,5 @@
-import { EMPTY } from 'rxjs';
+import { createFirestoreDataServiceMock } from '../firestore-data.service.mock';
 
 export function createProjectsServiceMock() {
-  return {
-    all: jest.fn(() => EMPTY),
-    get: jest.fn(() => EMPTY),
-    add: jest.fn(() => Promise.resolve()),
-    update: jest.fn(() => Promise.resolve())
-  };
+  return createFirestoreDataServiceMock();
 }

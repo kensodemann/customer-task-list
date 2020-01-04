@@ -1,44 +1,78 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { of } from 'rxjs';
 
-import { ProjectsService } from './projects.service';
+import { FirestoreDataService } from './firestore-data.service';
 import {
   createAction,
   createAngularFirestoreMock,
   createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock,
+  createAngularFireAuthMock,
   createDocumentSnapshotMock
 } from '@test/mocks';
 
-describe('ProjectsService', () => {
+interface DataType {
+  id?: string;
+  name: string;
+  description: string;
+  isActive: boolean;
+}
+
+@Injectable()
+class TestService extends FirestoreDataService<DataType> {
+  constructor(private firestore: AngularFirestore) {
+    super();
+  }
+
+  protected getCollection(): AngularFirestoreCollection<DataType> {
+    return this.firestore.collection('data-collection');
+  }
+}
+
+describe('FirestoreDataService', () => {
   let collection;
-  let projects: ProjectsService;
+  let dataService: FirestoreDataService<DataType>;
 
   beforeEach(() => {
-    const angularFirestore = createAngularFirestoreMock();
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: AngularFireAuth, useFactory: createAngularFireAuthMock },
+        { provide: AngularFirestore, useFactory: createAngularFirestoreMock },
+        TestService
+      ]
+    });
+    const angularFirestore = TestBed.get(AngularFirestore);
     collection = createAngularFirestoreCollectionMock();
     angularFirestore.collection.mockReturnValue(collection);
-    TestBed.configureTestingModule({
-      providers: [{ provide: AngularFirestore, useValue: angularFirestore }]
-    });
   });
 
-  beforeEach(inject([ProjectsService], (service: ProjectsService) => {
-    projects = service;
+  beforeEach(inject([TestService], (service: TestService) => {
+    dataService = service;
+    const afAuth = TestBed.get(AngularFireAuth);
+    afAuth.authState.next();
   }));
 
   it('should be created', () => {
-    expect(projects).toBeTruthy();
+    expect(dataService).toBeTruthy();
   });
 
   describe('all', () => {
+    it('grabs a references to the data collection', () => {
+      const angularFirestore = TestBed.get(AngularFirestore);
+      dataService.all();
+      expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
+      expect(angularFirestore.collection).toHaveBeenCalledWith('data-collection');
+    });
+
     it('looks for snapshot changes', () => {
-      projects.all();
+      dataService.all();
       expect(collection.snapshotChanges).toHaveBeenCalledTimes(1);
     });
 
-    it('maps the changes', () => {
+    it('maps the changes', done => {
       collection.snapshotChanges.mockReturnValue(
         of([
           createAction('314PI', {
@@ -53,7 +87,7 @@ describe('ProjectsService', () => {
           })
         ])
       );
-      projects.all().subscribe(d =>
+      dataService.all().subscribe(d => {
         expect(d).toEqual([
           {
             id: '314PI',
@@ -67,8 +101,9 @@ describe('ProjectsService', () => {
             description: 'Some guy named Joe who sells week on my street corner',
             isActive: false
           }
-        ])
-      );
+        ]);
+        done();
+      });
     });
   });
 
@@ -80,26 +115,25 @@ describe('ProjectsService', () => {
     });
 
     it('gets a references to the document', () => {
-      projects.get('199405fkkgi59');
+      dataService.get('199405fkkgi59');
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('199405fkkgi59');
     });
 
-    it('gets the document', () => {
-      projects.get('199405fkkgi59');
+    it('gets the value of the document', () => {
+      dataService.get('199405fkkgi59');
       expect(document.ref.get).toHaveBeenCalledTimes(1);
     });
 
     it('returns the document with the ID', async () => {
       const snapshot = createDocumentSnapshotMock();
-      document.ref.get.mockResolvedValue(snapshot);
       snapshot.data.mockReturnValue({
         name: 'Joe',
         description: 'Some guy named Joe who sells week on my street corner',
         isActive: false
       });
-      const p = await projects.get('199405fkkgi59');
-      expect(p).toEqual({
+      document.ref.get.mockReturnValue(snapshot);
+      expect(await dataService.get('199405fkkgi59')).toEqual({
         id: '199405fkkgi59',
         name: 'Joe',
         description: 'Some guy named Joe who sells week on my street corner',
@@ -110,7 +144,7 @@ describe('ProjectsService', () => {
 
   describe('add', () => {
     it('adds the item to the collection', () => {
-      projects.add({
+      dataService.add({
         name: 'Fred Flintstone',
         description: 'Head of a modnern stone-age family',
         isActive: true
@@ -124,6 +158,35 @@ describe('ProjectsService', () => {
     });
   });
 
+  describe('delete', () => {
+    let document;
+    beforeEach(() => {
+      document = createAngularFirestoreDocumentMock();
+      collection.doc.mockReturnValue(document);
+    });
+
+    it('gets a reference to the document', () => {
+      dataService.delete({
+        id: '49950399KT',
+        name: 'shiny',
+        description: 'Make them extra shiny',
+        isActive: true
+      });
+      expect(collection.doc).toHaveBeenCalledTimes(1);
+      expect(collection.doc).toHaveBeenCalledWith('49950399KT');
+    });
+
+    it('deletes the document', () => {
+      dataService.delete({
+        id: '49950399KT',
+        name: 'shiny',
+        description: 'Make them extra shiny',
+        isActive: true
+      });
+      expect(document.delete).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('update', () => {
     let document;
     beforeEach(() => {
@@ -132,7 +195,7 @@ describe('ProjectsService', () => {
     });
 
     it('gets a reference to the document', () => {
-      projects.update({
+      dataService.update({
         id: '49950399KT',
         name: 'Kyle',
         description: 'some kid in South Park',
@@ -143,7 +206,7 @@ describe('ProjectsService', () => {
     });
 
     it('sets the document data', () => {
-      projects.update({
+      dataService.update({
         id: '49950399KT',
         name: 'Kyle',
         description: 'some kid in South Park',

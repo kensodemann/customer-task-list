@@ -9,7 +9,8 @@ import {
   createAction,
   createAngularFirestoreDocumentMock,
   createAngularFirestoreMock,
-  createAngularFirestoreCollectionMock
+  createAngularFirestoreCollectionMock,
+  createDocumentSnapshotMock
 } from '@test/mocks';
 
 describe('NotesService', () => {
@@ -31,12 +32,6 @@ describe('NotesService', () => {
 
   it('should be created', () => {
     expect(notes).toBeTruthy();
-  });
-
-  it('grabs a references to the tasks collection', () => {
-    const angularFirestore = TestBed.get(AngularFirestore);
-    expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
-    expect(angularFirestore.collection).toHaveBeenCalledWith('notes');
   });
 
   describe('all for (project or task)', () => {
@@ -103,27 +98,26 @@ describe('NotesService', () => {
       expect(collection.doc).toHaveBeenCalledWith('199405fkkgi59');
     });
 
-    it('gets the value of the document', () => {
+    it('gets the document', () => {
       notes.get('199405fkkgi59');
-      expect(document.valueChanges).toHaveBeenCalledTimes(1);
+      expect(document.ref.get).toHaveBeenCalledTimes(1);
     });
 
-    it('returns the document with the ID', () => {
-      document.valueChanges.mockReturnValue(
-        of({
-          text: 'Just like it sounds there captain',
-          enteredOn: new firestore.Timestamp(1432430053, 0),
-          itemId: '451BK'
-        })
-      );
-      notes.get('199405fkkgi59').subscribe(c =>
-        expect(c).toEqual({
-          id: '199405fkkgi59',
-          text: 'Just like it sounds there captain',
-          enteredOn: new firestore.Timestamp(1432430053, 0),
-          itemId: '451BK'
-        })
-      );
+    it('returns the document with the ID', async () => {
+      const snapshot = createDocumentSnapshotMock();
+      document.ref.get.mockResolvedValue(snapshot);
+      snapshot.data.mockReturnValue({
+        text: 'Just like it sounds there captain',
+        enteredOn: new firestore.Timestamp(1432430053, 0),
+        itemId: '451BK'
+      });
+      const n = await notes.get('199405fkkgi59');
+      expect(n).toEqual({
+        id: '199405fkkgi59',
+        text: 'Just like it sounds there captain',
+        enteredOn: new firestore.Timestamp(1432430053, 0),
+        itemId: '451BK'
+      });
     });
   });
 

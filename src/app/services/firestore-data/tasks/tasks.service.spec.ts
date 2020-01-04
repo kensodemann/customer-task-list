@@ -9,7 +9,8 @@ import {
   createAction,
   createAngularFirestoreMock,
   createAngularFirestoreCollectionMock,
-  createAngularFirestoreDocumentMock
+  createAngularFirestoreDocumentMock,
+  createDocumentSnapshotMock
 } from '@test/mocks';
 
 describe('TasksService', () => {
@@ -33,13 +34,14 @@ describe('TasksService', () => {
     expect(tasks).toBeTruthy();
   });
 
-  it('grabs a references to the tasks collection', () => {
-    const angularFirestore = TestBed.get(AngularFirestore);
-    expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
-    expect(angularFirestore.collection).toHaveBeenCalledWith('tasks');
-  });
-
   describe('all', () => {
+    it('grabs a references to the tasks collection', () => {
+      const angularFirestore = TestBed.get(AngularFirestore);
+      tasks.all();
+      expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
+      expect(angularFirestore.collection).toHaveBeenCalledWith('tasks');
+    });
+
     it('looks for snapshot changes', () => {
       tasks.all();
       expect(collection.snapshotChanges).toHaveBeenCalledTimes(1);
@@ -177,43 +179,49 @@ describe('TasksService', () => {
       collection.doc.mockReturnValue(document);
     });
 
-    it('gets a references to the document', () => {
-      tasks.get('199405fkkgi59');
+    it('grabs a references to the tasks collection', () => {
+      const angularFirestore = TestBed.get(AngularFirestore);
+      tasks.get('1994309500349');
+      expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
+      expect(angularFirestore.collection).toHaveBeenCalledWith('tasks');
+    });
+
+    it('gets a references to the document', async () => {
+      await tasks.get('199405fkkgi59');
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('199405fkkgi59');
     });
 
-    it('gets the value of the document', () => {
-      tasks.get('199405fkkgi59');
-      expect(document.valueChanges).toHaveBeenCalledTimes(1);
+    it('gets the the document', async () => {
+      await tasks.get('199405fkkgi59');
+      expect(document.ref.get).toHaveBeenCalledTimes(1);
     });
 
-    it('returns the document with the ID', () => {
-      document.valueChanges.mockReturnValue(
-        of({
-          name: 'Bang the Big',
-          description: 'Just like it sounds there captain',
-          enteredOn: new firestore.Timestamp(1424303405, 0),
-          type: TaskTypes.Task,
-          status: Statuses.Open,
-          priority: Priorities.Normal,
-          projectId: '451BK',
-          projectName: 'Book Burners R Us'
-        })
-      );
-      tasks.get('199405fkkgi59').subscribe(c =>
-        expect(c).toEqual({
-          id: '199405fkkgi59',
-          name: 'Bang the Big',
-          description: 'Just like it sounds there captain',
-          enteredOn: new firestore.Timestamp(1424303405, 0),
-          type: TaskTypes.Task,
-          status: Statuses.Open,
-          priority: Priorities.Normal,
-          projectId: '451BK',
-          projectName: 'Book Burners R Us'
-        })
-      );
+    it('returns the document with the ID', async () => {
+      const snapshot = createDocumentSnapshotMock();
+      document.ref.get.mockResolvedValue(snapshot);
+      snapshot.data.mockReturnValue({
+        name: 'Bang the Big',
+        description: 'Just like it sounds there captain',
+        enteredOn: new firestore.Timestamp(1424303405, 0),
+        type: TaskTypes.Task,
+        status: Statuses.Open,
+        priority: Priorities.Normal,
+        projectId: '451BK',
+        projectName: 'Book Burners R Us'
+      });
+      const t = await tasks.get('199405fkkgi59');
+      expect(t).toEqual({
+        id: '199405fkkgi59',
+        name: 'Bang the Big',
+        description: 'Just like it sounds there captain',
+        enteredOn: new firestore.Timestamp(1424303405, 0),
+        type: TaskTypes.Task,
+        status: Statuses.Open,
+        priority: Priorities.Normal,
+        projectId: '451BK',
+        projectName: 'Book Burners R Us'
+      });
     });
   });
 

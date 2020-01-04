@@ -77,19 +77,17 @@ describe('ProjectPage', () => {
     expect(projects.get).toHaveBeenCalledWith('314159PI');
   });
 
-  it('assigns the project', () => {
+  it('assigns the project', async () => {
     const projects = TestBed.get(ProjectsService);
     const route = TestBed.get(ActivatedRoute);
     route.snapshot.paramMap.get.mockReturnValue('314159PI');
-    projects.get.mockReturnValue(
-      of({
-        id: '314159PI',
-        name: 'Cherry',
-        description: 'Makers of really tasty pi',
-        isActive: true
-      })
-    );
-    fixture.detectChanges();
+    projects.get.mockResolvedValue({
+      id: '314159PI',
+      name: 'Cherry',
+      description: 'Makers of really tasty pi',
+      isActive: true
+    });
+    await page.ngOnInit();
     expect(page.project).toEqual({
       id: '314159PI',
       name: 'Cherry',
@@ -119,7 +117,7 @@ describe('ProjectPage', () => {
       const projects = TestBed.get(ProjectsService);
       const route = TestBed.get(ActivatedRoute);
       route.snapshot.paramMap.get.mockReturnValue('4273');
-      projects.get.mockReturnValue(of(project));
+      projects.get.mockResolvedValue(project);
       fixture.detectChanges();
     });
 

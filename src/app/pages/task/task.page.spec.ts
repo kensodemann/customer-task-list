@@ -1,11 +1,10 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { firestore } from 'firebase/app';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { of } from 'rxjs';
 
 import { logout } from '@app/store/actions/auth.actions';
 import { Priorities, Statuses, TaskTypes } from '@app/default-data';
@@ -65,24 +64,22 @@ describe('TaskPage', () => {
     expect(tasks.get).toHaveBeenCalledWith('314159PI');
   });
 
-  it('assigns the project', () => {
+  it('assigns the project', async () => {
     const route = TestBed.get(ActivatedRoute);
     const tasks = TestBed.get(TasksService);
     route.snapshot.paramMap.get.mockReturnValue('314159PI');
-    tasks.get.mockReturnValue(
-      of({
-        id: '314159PI',
-        name: 'Bang the Big',
-        description: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1432430034, 0),
-        type: TaskTypes.Task,
-        status: Statuses.Open,
-        priority: Priorities.Normal,
-        projectId: '451BK',
-        projectName: 'Book Burners R Us'
-      })
-    );
-    fixture.detectChanges();
+    tasks.get.mockResolvedValue({
+      id: '314159PI',
+      name: 'Bang the Big',
+      description: 'Just like it sounds there captain',
+      enteredOn: new firestore.Timestamp(1432430034, 0),
+      type: TaskTypes.Task,
+      status: Statuses.Open,
+      priority: Priorities.Normal,
+      projectId: '451BK',
+      projectName: 'Book Burners R Us'
+    });
+    await page.ngOnInit();
     expect(page.task).toEqual({
       id: '314159PI',
       name: 'Bang the Big',
@@ -113,7 +110,7 @@ describe('TaskPage', () => {
       const route = TestBed.get(ActivatedRoute);
       const tasks = TestBed.get(TasksService);
       route.snapshot.paramMap.get.mockReturnValue('314159PI');
-      tasks.get.mockReturnValue(of(task));
+      tasks.get.mockResolvedValue(task);
       fixture.detectChanges();
     });
 

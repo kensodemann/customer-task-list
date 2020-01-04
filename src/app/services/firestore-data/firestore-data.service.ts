@@ -1,33 +1,22 @@
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-  DocumentChangeAction,
-  DocumentReference
-} from '@angular/fire/firestore';
+import { AngularFirestoreCollection, DocumentChangeAction, DocumentReference } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export class FirestoreDataService<T extends { id?: string }> {
-  protected collection: AngularFirestoreCollection<T>;
-
-  constructor(firestore: AngularFirestore, collectionName: string) {
-    this.collection = firestore.collection(collectionName);
+export abstract class FirestoreDataService<T extends { id?: string }> {
+  get collection(): AngularFirestoreCollection<T> {
+    return this.getCollection();
   }
+
+  constructor() {}
 
   all(): Observable<Array<T>> {
     return this.collection.snapshotChanges().pipe(map(this.actionsToData));
   }
 
-  get(id: string): Observable<T> {
-    return this.collection
-      .doc<T>(id)
-      .valueChanges()
-      .pipe(
-        map(item => {
-          return { id: id, ...(item as object) } as T;
-        })
-      );
+  async get(id: string): Promise<T> {
+    const doc = await this.collection.doc<T>(id).ref.get();
+    return { id, ...(doc && doc.data()) } as T;
   }
 
   add(item: T): Promise<DocumentReference> {
@@ -44,13 +33,13 @@ export class FirestoreDataService<T extends { id?: string }> {
     return this.collection.doc(item.id).set(data);
   }
 
-  protected actionsToData(
-    actions: Array<DocumentChangeAction<T>>
-  ): Array<T> {
+  protected actionsToData(actions: Array<DocumentChangeAction<T>>): Array<T> {
     return actions.map(a => {
       const data = a.payload.doc.data();
       const id = a.payload.doc.id;
       return { id, ...(data as object) } as T;
     });
   }
+
+  protected abstract getCollection(): AngularFirestoreCollection<T>;
 }

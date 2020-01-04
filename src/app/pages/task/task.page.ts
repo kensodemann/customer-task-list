@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
 
 import { logout } from '@app/store/actions/auth.actions';
 import { State } from '@app/store';
@@ -15,8 +14,7 @@ import { TaskEditorComponent } from '@app/editors';
   templateUrl: './task.page.html',
   styleUrls: ['./task.page.scss']
 })
-export class TaskPage implements OnDestroy, OnInit {
-  private subscriptions: Array<Subscription> = [];
+export class TaskPage implements OnInit {
   task: Task;
 
   constructor(
@@ -26,13 +24,9 @@ export class TaskPage implements OnDestroy, OnInit {
     private tasks: TasksService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('taskId');
-    this.subscriptions.push(this.tasks.get(id).subscribe(t => (this.task = t)));
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.task = await this.tasks.get(id);
   }
 
   async edit() {
