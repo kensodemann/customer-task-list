@@ -52,7 +52,7 @@ describe('project selectors', () => {
         {
           id: 'b99f03590do',
           name: 'Figmo',
-          description: 'A figment of my imagination', 
+          description: 'A figment of my imagination',
           isActive: true
         }
       ]);

@@ -184,7 +184,8 @@ describe('ProjectEditorComponent', () => {
         const store = TestBed.get(Store);
         store.dispatch = jest.fn();
         editor.name = 'Lazy Leopard';
-        editor.description = 'Cats like to sleep, even the bigger ones.';editor.isActive = false;
+        editor.description = 'Cats like to sleep, even the bigger ones.';
+        editor.isActive = false;
         editor.save();
         expect(store.dispatch).toHaveBeenCalledTimes(1);
         expect(store.dispatch).toHaveBeenCalledWith(
