@@ -26,14 +26,14 @@ describe('TaskEditorComponent', () => {
       providers: [
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock(createOverlayElementMock())
+          useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
         },
         { provide: TasksService, useFactory: createTasksServiceMock },
         provideMockStore<{ projects: ProjectState }>({
-          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } }
-        })
+          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+        }),
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -100,24 +100,24 @@ describe('TaskEditorComponent', () => {
       expect(editor.activeProjects).toEqual([
         {
           id: 'fiig9488593',
-          name: 'Cow'
+          name: 'Cow',
         },
         {
           id: 'b99f03590do',
-          name: 'Figmo'
+          name: 'Figmo',
         },
         {
           id: 'a19943kkg039',
-          name: 'Gizmo'
+          name: 'Gizmo',
         },
         {
           id: 'iriit003499340',
-          name: 'Personal Task Timer'
+          name: 'Personal Task Timer',
         },
         {
           id: 'ri49950399vf',
-          name: 'Project Task List'
-        }
+          name: 'Project Task List',
+        },
       ]);
     });
 
@@ -188,7 +188,7 @@ describe('TaskEditorComponent', () => {
           priority: Priorities.Normal,
           projectId: 'iriit003499340',
           projectName: 'Personal Task Timer',
-          enteredOn: new firestore.Timestamp(1545765815, 0)
+          enteredOn: new firestore.Timestamp(1545765815, 0),
         });
       });
 
@@ -210,7 +210,7 @@ describe('TaskEditorComponent', () => {
           projectName: 'Personal Task Timer',
           enteredOn: new firestore.Timestamp(1545765815, 0),
           beginDate: '2019-01-03',
-          endDate: '2019-01-04'
+          endDate: '2019-01-04',
         });
       });
 
@@ -228,7 +228,7 @@ describe('TaskEditorComponent', () => {
           priority: Priorities.Normal,
           projectId: '1139GL',
           projectName: undefined,
-          enteredOn: new firestore.Timestamp(1545765815, 0)
+          enteredOn: new firestore.Timestamp(1545765815, 0),
         });
       });
 
@@ -260,7 +260,7 @@ describe('TaskEditorComponent', () => {
           type: TaskTypes.Task,
           projectId: 'iriit003499340',
           projectName: 'Personal Task Timer',
-          enteredOn: new firestore.Timestamp(1545765815, 0)
+          enteredOn: new firestore.Timestamp(1545765815, 0),
         };
         fixture.detectChanges();
       });
@@ -322,7 +322,7 @@ describe('TaskEditorComponent', () => {
           endDate: '2019-01-18',
           projectId: 'iriit003499340',
           projectName: 'Personal Task Timer',
-          enteredOn: new firestore.Timestamp(1545765815, 0)
+          enteredOn: new firestore.Timestamp(1545765815, 0),
         };
         fixture.detectChanges();
       });
@@ -371,24 +371,24 @@ describe('TaskEditorComponent', () => {
         expect(editor.activeProjects).toEqual([
           {
             id: 'fiig9488593',
-            name: 'Cow'
+            name: 'Cow',
           },
           {
             id: 'b99f03590do',
-            name: 'Figmo'
+            name: 'Figmo',
           },
           {
             id: 'a19943kkg039',
-            name: 'Gizmo'
+            name: 'Gizmo',
           },
           {
             id: 'iriit003499340',
-            name: 'Personal Task Timer'
+            name: 'Personal Task Timer',
           },
           {
             id: 'ri49950399vf',
-            name: 'Project Task List'
-          }
+            name: 'Project Task List',
+          },
         ]);
       });
 
@@ -451,7 +451,7 @@ describe('TaskEditorComponent', () => {
             endDate: '2019-01-18',
             projectId: 'iriit003499340',
             projectName: 'Personal Task Timer',
-            enteredOn: new firestore.Timestamp(1545765815, 0)
+            enteredOn: new firestore.Timestamp(1545765815, 0),
           });
         });
 
@@ -477,7 +477,7 @@ describe('TaskEditorComponent', () => {
         endDate: '2019-01-18',
         projectId: 'aa9300kfii593',
         projectName: 'Math War',
-        enteredOn: new firestore.Timestamp(1545765815, 0)
+        enteredOn: new firestore.Timestamp(1545765815, 0),
       };
       fixture.detectChanges();
     });
@@ -486,28 +486,28 @@ describe('TaskEditorComponent', () => {
       expect(editor.activeProjects).toEqual([
         {
           id: 'fiig9488593',
-          name: 'Cow'
+          name: 'Cow',
         },
         {
           id: 'b99f03590do',
-          name: 'Figmo'
+          name: 'Figmo',
         },
         {
           id: 'a19943kkg039',
-          name: 'Gizmo'
+          name: 'Gizmo',
         },
         {
           id: 'aa9300kfii593',
-          name: 'Math War'
+          name: 'Math War',
         },
         {
           id: 'iriit003499340',
-          name: 'Personal Task Timer'
+          name: 'Personal Task Timer',
         },
         {
           id: 'ri49950399vf',
-          name: 'Project Task List'
-        }
+          name: 'Project Task List',
+        },
       ]);
     });
   });

@@ -10,8 +10,8 @@ export const environment = {
     databaseURL: 'https://test-functions-3c8de.firebaseio.com',
     projectId: 'test-functions-3c8de',
     storageBucket: 'test-functions-3c8de.appspot.com',
-    messagingSenderId: '901820227460'
-  }
+    messagingSenderId: '901820227460',
+  },
 };
 
 /*

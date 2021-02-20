@@ -9,7 +9,7 @@ import { NoteEditorComponent } from '@app/editors';
 @Component({
   selector: 'app-notes-list',
   templateUrl: './notes-list.component.html',
-  styleUrls: ['./notes-list.component.css']
+  styleUrls: ['./notes-list.component.css'],
 })
 export class NotesListComponent implements OnDestroy, OnInit {
   private subscriptions: Array<Subscription> = [];
@@ -21,18 +21,18 @@ export class NotesListComponent implements OnDestroy, OnInit {
   constructor(private alert: AlertController, private modal: ModalController, private notes: NotesService) {}
 
   ngOnInit() {
-    this.subscriptions.push(this.notes.allFor(this.itemId).subscribe(n => (this.allNotes = n)));
+    this.subscriptions.push(this.notes.allFor(this.itemId).subscribe((n) => (this.allNotes = n)));
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   async add() {
     const m = await this.modal.create({
       backdropDismiss: false,
       component: NoteEditorComponent,
-      componentProps: { itemId: this.itemId }
+      componentProps: { itemId: this.itemId },
     });
     m.present();
   }
@@ -47,10 +47,10 @@ export class NotesListComponent implements OnDestroy, OnInit {
           handler: () => {
             this.notes.delete(note);
             this.notesList.closeSlidingItems();
-          }
+          },
         },
-        { text: 'No', role: 'cancel' }
-      ]
+        { text: 'No', role: 'cancel' },
+      ],
     });
     return a.present();
   }
@@ -59,7 +59,7 @@ export class NotesListComponent implements OnDestroy, OnInit {
     const m = await this.modal.create({
       backdropDismiss: false,
       component: NoteEditorComponent,
-      componentProps: { note: note }
+      componentProps: { note: note },
     });
     m.present();
   }

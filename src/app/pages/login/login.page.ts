@@ -10,7 +10,7 @@ import { login, resetPassword } from '@app/store/actions/auth.actions';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss']
+  styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -30,16 +30,16 @@ export class LoginPage implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.loading = await this.loadingController.create({ message: 'Verifying...' });
-    this.store.pipe(select(selectAuthLoading), takeUntil(this.destroy$)).subscribe(l => {
+    this.store.pipe(select(selectAuthLoading), takeUntil(this.destroy$)).subscribe((l) => {
       this.showLoading(l);
     });
-    this.store.pipe(select(selectAuthError), takeUntil(this.destroy$)).subscribe(e => {
+    this.store.pipe(select(selectAuthError), takeUntil(this.destroy$)).subscribe((e) => {
       this.setErrorMessage(e);
     });
-    this.store.pipe(select(selectAuthMessage), takeUntil(this.destroy$)).subscribe(msg => {
+    this.store.pipe(select(selectAuthMessage), takeUntil(this.destroy$)).subscribe((msg) => {
       this.infoMessage = msg;
     });
-    this.store.pipe(select(selectAuthEmail), takeUntil(this.destroy$)).subscribe(e => {
+    this.store.pipe(select(selectAuthEmail), takeUntil(this.destroy$)).subscribe((e) => {
       this.goToApp(!!e);
     });
   }
@@ -90,19 +90,19 @@ export class LoginPage implements OnInit, OnDestroy {
         {
           name: 'emailAddress',
           type: 'email',
-          placeholder: 'your.email@address.com'
-        }
+          placeholder: 'your.email@address.com',
+        },
       ],
       buttons: [
         {
           text: 'Cancel',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'Send e-mail',
-          role: 'send'
-        }
-      ]
+          role: 'send',
+        },
+      ],
     });
     await a.present();
     const response = await a.onDidDismiss();

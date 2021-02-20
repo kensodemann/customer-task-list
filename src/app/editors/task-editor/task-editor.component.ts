@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-task-editor',
   templateUrl: './task-editor.component.html',
-  styleUrls: ['./task-editor.component.scss']
+  styleUrls: ['./task-editor.component.scss'],
 })
 export class TaskEditorComponent implements OnInit, OnDestroy {
   private daysBetween;
@@ -46,11 +46,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
 
   projectSubscription: Subscription;
 
-  constructor(
-    private modal: ModalController,
-    private store: Store<State>,
-    private tasks: TasksService
-  ) {}
+  constructor(private modal: ModalController, private store: Store<State>, private tasks: TasksService) {}
 
   ngOnInit() {
     this.priorities = [...priorities];
@@ -66,10 +62,10 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       this.defaultTaskProperties();
     }
 
-    this.store.pipe(select(selectAllProjects), takeUntil(this.destroy$)).subscribe(projects => {
+    this.store.pipe(select(selectAllProjects), takeUntil(this.destroy$)).subscribe((projects) => {
       this.activeProjects = projects
-        .filter(c => c.isActive || (this.task && this.task.projectId === c.id))
-        .map(c => ({ id: c.id, name: c.name }))
+        .filter((c) => c.isActive || (this.task && this.task.projectId === c.id))
+        .map((c) => ({ id: c.id, name: c.name }))
         .sort(byName);
     });
   }
@@ -145,7 +141,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   }
 
   private taskObject(): Task {
-    const project = this.activeProjects.find(c => c.id === this.projectId);
+    const project = this.activeProjects.find((c) => c.id === this.projectId);
     const task: Task = {
       name: this.name,
       description: this.description,
@@ -154,7 +150,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       priority: this.priority,
       enteredOn: (this.task && this.task.enteredOn) || new firestore.Timestamp(this.getSeconds(), 0),
       projectId: this.projectId,
-      projectName: project && project.name
+      projectName: project && project.name,
     };
 
     if (this.beginDate) {

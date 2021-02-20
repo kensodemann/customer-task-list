@@ -9,7 +9,7 @@ describe('AuthenticationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: AngularFireAuth, useFactory: createAngularFireAuthMock }]
+      providers: [{ provide: AngularFireAuth, useFactory: createAngularFireAuthMock }],
     });
   });
 

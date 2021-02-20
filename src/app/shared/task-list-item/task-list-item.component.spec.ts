@@ -12,7 +12,7 @@ describe('TaskListItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TaskListItemComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -28,7 +28,7 @@ describe('TaskListItemComponent', () => {
       status: Statuses.Closed,
       priority: Priorities.Normal,
       projectId: '451BK',
-      projectName: 'Book Burners R Us'
+      projectName: 'Book Burners R Us',
     };
     fixture.detectChanges();
   });

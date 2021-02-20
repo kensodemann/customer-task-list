@@ -28,13 +28,13 @@ describe('ProjectsPage', () => {
       providers: [
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock(modal)
+          useFactory: () => createOverlayControllerMock(modal),
         },
         { provide: NavController, useFactory: createNavControllerMock },
         provideMockStore<{ projects: ProjectState }>({
-          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } }
-        })
-      ]
+          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+        }),
+      ],
     }).compileComponents();
   }));
 
@@ -44,14 +44,14 @@ describe('ProjectsPage', () => {
         id: '314PI',
         name: `Baker's Square`,
         description: 'Makers of overly sweet pies and otherwise crappy food',
-        isActive: false
+        isActive: false,
       },
       {
         id: '420HI',
         name: 'Joe',
         description: 'Some guy named Joe who sells weed on my street corner',
-        isActive: true
-      }
+        isActive: true,
+      },
     ];
     fixture = TestBed.createComponent(ProjectsPage);
     page = fixture.componentInstance;
@@ -74,7 +74,7 @@ describe('ProjectsPage', () => {
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
-        component: ProjectEditorComponent
+        component: ProjectEditorComponent,
       });
     });
 
@@ -91,7 +91,7 @@ describe('ProjectsPage', () => {
         id: '4273',
         name: 'Dominos',
         description: 'Pizza apps that rock, the pizza not so much',
-        isActive: true
+        isActive: true,
       });
       expect(navController.navigateForward).toHaveBeenCalledTimes(1);
       expect(navController.navigateForward).toHaveBeenCalledWith(['tabs', 'projects', '4273']);

@@ -11,7 +11,7 @@ describe('NoteListItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [NoteListItemComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -22,7 +22,7 @@ describe('NoteListItemComponent', () => {
       id: '42DA',
       text: 'First find Deep Thought, then get the answer from it',
       enteredOn: new firestore.Timestamp(14324053, 0),
-      itemId: '451BK'
+      itemId: '451BK',
     };
     fixture.detectChanges();
   });

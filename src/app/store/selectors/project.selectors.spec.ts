@@ -17,44 +17,44 @@ describe('project selectors', () => {
           id: 'a19943kkg039',
           name: 'Gizmo',
           description: 'She is my biggest pet project',
-          isActive: true
+          isActive: true,
         },
         {
           id: 'ri49950399vf',
           name: 'Project Task List',
           description: 'Keep track of my own projects',
-          isActive: true
+          isActive: true,
         },
         {
           id: 'iriit003499340',
           name: 'Personal Task Timer',
           description: 'A simple time tracking app',
-          isActive: true
+          isActive: true,
         },
         {
           id: 'fiig9488593',
           name: 'Cow',
           description: 'She is another pet project',
-          isActive: true
+          isActive: true,
         },
         {
           id: 'pproti3993kgi',
           name: 'Time Trax',
           description: 'An older time tracking project',
-          isActive: false
+          isActive: false,
         },
         {
           id: 'aa9300kfii593',
           name: 'Math War',
           description: 'War style flashcard game',
-          isActive: false
+          isActive: false,
         },
         {
           id: 'b99f03590do',
           name: 'Figmo',
           description: 'A figment of my imagination',
-          isActive: true
-        }
+          isActive: true,
+        },
       ]);
     });
   });
@@ -66,32 +66,32 @@ describe('project selectors', () => {
           id: 'a19943kkg039',
           name: 'Gizmo',
           description: 'She is my biggest pet project',
-          isActive: true
+          isActive: true,
         },
         {
           id: 'ri49950399vf',
           name: 'Project Task List',
           description: 'Keep track of my own projects',
-          isActive: true
+          isActive: true,
         },
         {
           id: 'iriit003499340',
           name: 'Personal Task Timer',
           description: 'A simple time tracking app',
-          isActive: true
+          isActive: true,
         },
         {
           id: 'fiig9488593',
           name: 'Cow',
           description: 'She is another pet project',
-          isActive: true
+          isActive: true,
         },
         {
           id: 'b99f03590do',
           name: 'Figmo',
           description: 'A figment of my imagination',
-          isActive: true
-        }
+          isActive: true,
+        },
       ]);
     });
 
@@ -111,7 +111,7 @@ describe('project selectors', () => {
         id: 'iriit003499340',
         name: 'Personal Task Timer',
         description: 'A simple time tracking app',
-        isActive: true
+        isActive: true,
       });
     });
 

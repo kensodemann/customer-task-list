@@ -13,8 +13,8 @@ import { EditorsModule } from '@app/editors';
     EditorsModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([{ path: '', component: ProjectsPage }])
+    RouterModule.forChild([{ path: '', component: ProjectsPage }]),
   ],
-  declarations: [ProjectsPage]
+  declarations: [ProjectsPage],
 })
 export class ProjectsPageModule {}

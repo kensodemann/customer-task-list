@@ -28,18 +28,18 @@ import { AuthEffects, ProjectEffects } from '@app/store/effects';
     HttpClientModule,
     IonicModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production
+      enabled: environment.production,
     }),
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {
         strictStateImmutability: true,
-        strictActionImmutability: true
-      }
+        strictActionImmutability: true,
+      },
     }),
-    EffectsModule.forRoot([AuthEffects, ProjectEffects])
+    EffectsModule.forRoot([AuthEffects, ProjectEffects]),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

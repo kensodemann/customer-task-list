@@ -11,12 +11,12 @@ import { TasksPage } from './tasks.page';
 const routes: Routes = [
   {
     path: '',
-    component: TasksPage
-  }
+    component: TasksPage,
+  },
 ];
 
 @NgModule({
   imports: [IonicModule, CommonModule, EditorsModule, FormsModule, RouterModule.forChild(routes), SharedModule],
-  declarations: [TasksPage]
+  declarations: [TasksPage],
 })
 export class TasksPageModule {}

@@ -14,7 +14,7 @@ describe('AboutPage', () => {
     TestBed.configureTestingModule({
       declarations: [AboutPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [provideMockStore()]
+      providers: [provideMockStore()],
     }).compileComponents();
   }));
 

@@ -27,15 +27,15 @@ describe('LoginPage', () => {
       providers: [
         {
           provide: AlertController,
-          useFactory: () => createOverlayControllerMock(alert)
+          useFactory: () => createOverlayControllerMock(alert),
         },
         {
           provide: LoadingController,
-          useFactory: () => createOverlayControllerMock(loading)
+          useFactory: () => createOverlayControllerMock(loading),
         },
         { provide: NavController, useFactory: createNavControllerMock },
-        provideMockStore<{ auth: AuthState }>({ initialState: { auth: { email: '', loading: false } } })
-      ]
+        provideMockStore<{ auth: AuthState }>({ initialState: { auth: { email: '', loading: false } } }),
+      ],
     }).compileComponents();
   }));
 
@@ -196,7 +196,7 @@ describe('LoginPage', () => {
         expect(params.inputs[0]).toEqual({
           name: 'emailAddress',
           type: 'email',
-          placeholder: 'your.email@address.com'
+          placeholder: 'your.email@address.com',
         });
       });
 
@@ -204,7 +204,7 @@ describe('LoginPage', () => {
         expect(params.buttons[0]).toEqual({ text: 'Cancel', role: 'cancel' });
         expect(params.buttons[1]).toEqual({
           text: 'Send e-mail',
-          role: 'send'
+          role: 'send',
         });
       });
 
@@ -223,7 +223,7 @@ describe('LoginPage', () => {
       it('dispatches the reset action if and e-mail is entered and send is pressed', async () => {
         alert.onDidDismiss.mockResolvedValue({
           data: { values: { emailAddress: 'test@testy.com' } },
-          role: 'send'
+          role: 'send',
         });
         await page.handlePasswordReset();
         expect(store.dispatch).toHaveBeenCalledTimes(1);
@@ -233,7 +233,7 @@ describe('LoginPage', () => {
       it('does not dispatch the reset action if no email address is entered', async () => {
         alert.onDidDismiss.mockResolvedValue({
           data: { values: {} },
-          role: 'send'
+          role: 'send',
         });
         await page.handlePasswordReset();
         expect(store.dispatch).not.toHaveBeenCalled();
@@ -242,7 +242,7 @@ describe('LoginPage', () => {
       it('does not dispatch the reset action if cancel is pressed', async () => {
         alert.onDidDismiss.mockResolvedValue({
           data: { values: { emailAddress: 'test@testy.com' } },
-          role: 'cancel'
+          role: 'cancel',
         });
         await page.handlePasswordReset();
         expect(store.dispatch).not.toHaveBeenCalled();
@@ -251,7 +251,7 @@ describe('LoginPage', () => {
       it('does not dispatch the reset action if background is pressed', async () => {
         alert.onDidDismiss.mockResolvedValue({
           data: { values: { emailAddress: 'test@testy.com' } },
-          role: 'background'
+          role: 'background',
         });
         await page.handlePasswordReset();
         expect(store.dispatch).not.toHaveBeenCalled();

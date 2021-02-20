@@ -10,7 +10,7 @@ import {
   logoutSuccess,
   resetPassword,
   resetPasswordSuccess,
-  resetPasswordFailure
+  resetPasswordFailure,
 } from '@app/store/actions/auth.actions';
 
 it('returns the default state', () => {
@@ -27,7 +27,7 @@ describe(AuthActionTypes.LoginChanged, () => {
     const action = loginChanged({ email: undefined });
     expect(reducer({ email: 'test@testy.com', loading: false }, action)).toEqual({
       email: undefined,
-      loading: false
+      loading: false,
     });
   });
 });
@@ -44,7 +44,7 @@ describe(AuthActionTypes.Login, () => {
       email: '',
       loading: true,
       message: undefined,
-      error: undefined
+      error: undefined,
     });
   });
 });
@@ -56,7 +56,7 @@ describe(AuthActionTypes.LoginSuccess, () => {
       email: '',
       loading: false,
       message: undefined,
-      error: undefined
+      error: undefined,
     });
   });
 });
@@ -68,7 +68,7 @@ describe(AuthActionTypes.LoginFailure, () => {
       email: '',
       loading: false,
       message: undefined,
-      error: new Error('There was a failure, it was a mess')
+      error: new Error('There was a failure, it was a mess'),
     });
   });
 });
@@ -82,7 +82,7 @@ describe(AuthActionTypes.Logout, () => {
           email: '',
           loading: false,
           message: 'this is useless information',
-          error: new Error('How can you fail to logout?')
+          error: new Error('How can you fail to logout?'),
         },
         action
       )
@@ -90,7 +90,7 @@ describe(AuthActionTypes.Logout, () => {
       email: '',
       loading: true,
       message: undefined,
-      error: undefined
+      error: undefined,
     });
   });
 });
@@ -102,7 +102,7 @@ describe(AuthActionTypes.LogoutSuccess, () => {
       email: '',
       loading: false,
       message: undefined,
-      error: undefined
+      error: undefined,
     });
   });
 });
@@ -114,7 +114,7 @@ describe(AuthActionTypes.LogoutFailure, () => {
       email: '',
       loading: false,
       message: undefined,
-      error: new Error('There was a failure, it was a mess')
+      error: new Error('There was a failure, it was a mess'),
     });
   });
 });
@@ -128,7 +128,7 @@ describe(AuthActionTypes.ResetPassword, () => {
           email: '',
           loading: false,
           message: 'this is useless information',
-          error: new Error('How can you fail to logout?')
+          error: new Error('How can you fail to logout?'),
         },
         action
       )
@@ -136,7 +136,7 @@ describe(AuthActionTypes.ResetPassword, () => {
       email: '',
       loading: false,
       message: undefined,
-      error: undefined
+      error: undefined,
     });
   });
 });
@@ -148,7 +148,7 @@ describe(AuthActionTypes.ResetPasswordSuccess, () => {
       email: '',
       loading: false,
       message: 'An e-mail has been sent to test@testtea.com with password reset instructions.',
-      error: undefined
+      error: undefined,
     });
   });
 });
@@ -160,7 +160,7 @@ describe(AuthActionTypes.ResetPasswordFailure, () => {
       email: '',
       loading: false,
       message: undefined,
-      error: new Error('There was a failure, it was a mess')
+      error: new Error('There was a failure, it was a mess'),
     });
   });
 });

@@ -20,7 +20,7 @@ import {
   createActivatedRouteMock,
   createNavControllerMock,
   createOverlayControllerMock,
-  createOverlayElementMock
+  createOverlayElementMock,
 } from '@test/mocks';
 
 describe('TasksPage', () => {
@@ -46,16 +46,16 @@ describe('TasksPage', () => {
         { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
         {
           provide: AlertController,
-          useFactory: () => createOverlayControllerMock(alert)
+          useFactory: () => createOverlayControllerMock(alert),
         },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock(modal)
+          useFactory: () => createOverlayControllerMock(modal),
         },
         { provide: NavController, useFactory: createNavControllerMock },
         { provide: TasksService, useFactory: createTasksServiceMock },
-        provideMockStore()
-      ]
+        provideMockStore(),
+      ],
     }).compileComponents();
   }));
 
@@ -91,7 +91,7 @@ describe('TasksPage', () => {
 
   it('it shows the back button if navigated to for a project', () => {
     const route = TestBed.get(ActivatedRoute);
-    route.snapshot.paramMap.get = jest.fn(arg => {
+    route.snapshot.paramMap.get = jest.fn((arg) => {
       if (arg === 'projectId') {
         return '1234';
       }
@@ -110,7 +110,7 @@ describe('TasksPage', () => {
   it('sets up an observable on the project tasks if there is a cutomer', () => {
     const route = TestBed.get(ActivatedRoute);
     const tasks = TestBed.get(TasksService);
-    route.snapshot.paramMap.get = jest.fn(arg => {
+    route.snapshot.paramMap.get = jest.fn((arg) => {
       if (arg === 'projectId') {
         return '33859940039kkd032';
       }
@@ -130,7 +130,7 @@ describe('TasksPage', () => {
 
     it('returns in process tasks if status of in process specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn(arg => {
+      route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -144,7 +144,7 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than open is specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn(arg => {
+      route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -166,7 +166,7 @@ describe('TasksPage', () => {
 
     it('returns open tasks if status of open specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn(arg => {
+      route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -180,7 +180,7 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than open is specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn(arg => {
+      route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -202,7 +202,7 @@ describe('TasksPage', () => {
 
     it('returns On Hold tasks if status of On Hold specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn(arg => {
+      route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -216,7 +216,7 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than on hold is specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn(arg => {
+      route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -238,7 +238,7 @@ describe('TasksPage', () => {
 
     it('returns closed tasks if status of closed specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn(arg => {
+      route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -252,7 +252,7 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than closed is specified', () => {
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn(arg => {
+      route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -279,7 +279,7 @@ describe('TasksPage', () => {
       status: Statuses.Open,
       priority: Priorities.Normal,
       projectId: '451BK',
-      projectName: 'Book Burners R Us'
+      projectName: 'Book Burners R Us',
     };
 
     it('saves the task', () => {
@@ -310,7 +310,7 @@ describe('TasksPage', () => {
       status: Statuses.Closed,
       priority: Priorities.Normal,
       projectId: '451BK',
-      projectName: 'Book Burners R Us'
+      projectName: 'Book Burners R Us',
     };
 
     it('creates an alert', () => {
@@ -356,14 +356,14 @@ describe('TasksPage', () => {
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
-        component: TaskEditorComponent
+        component: TaskEditorComponent,
       });
     });
 
     it('passes the project ID if one is specified in the route', () => {
       const modalController = TestBed.get(ModalController);
       const route = TestBed.get(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn(arg => {
+      route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         }
@@ -373,7 +373,7 @@ describe('TasksPage', () => {
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
         component: TaskEditorComponent,
-        componentProps: { projectId: '33859940039kkd032' }
+        componentProps: { projectId: '33859940039kkd032' },
       });
     });
 
@@ -390,25 +390,25 @@ describe('TasksPage', () => {
         case: 'standard',
         projectId: undefined,
         status: undefined,
-        path: ['tabs', 'tasks', 'S9590FGS']
+        path: ['tabs', 'tasks', 'S9590FGS'],
       },
       {
         case: 'project',
         projectId: '451BK',
         status: undefined,
-        path: ['tabs', 'projects', '451BK', 'tasks', 'task', 'S9590FGS']
+        path: ['tabs', 'projects', '451BK', 'tasks', 'task', 'S9590FGS'],
       },
       {
         case: 'project status',
         projectId: '451BK',
         status: 'On Hold',
-        path: ['tabs', 'projects', '451BK', 'tasks', 'On Hold', 'task', 'S9590FGS']
-      }
-    ].forEach(test => {
+        path: ['tabs', 'projects', '451BK', 'tasks', 'On Hold', 'task', 'S9590FGS'],
+      },
+    ].forEach((test) => {
       it(`navigates to the task from the ${test.case} task list`, () => {
         const navController = TestBed.get(NavController);
         const route = TestBed.get(ActivatedRoute);
-        route.snapshot.paramMap.get = jest.fn(arg => {
+        route.snapshot.paramMap.get = jest.fn((arg) => {
           if (arg === 'projectId') {
             return test.projectId;
           }
@@ -426,7 +426,7 @@ describe('TasksPage', () => {
           status: Statuses.OnHold,
           priority: Priorities.Low,
           projectId: '451BK',
-          projectName: 'Book Burners R Us'
+          projectName: 'Book Burners R Us',
         });
         expect(navController.navigateForward).toHaveBeenCalledTimes(1);
         expect(navController.navigateForward).toHaveBeenCalledWith(test.path);
@@ -455,7 +455,7 @@ describe('TasksPage', () => {
         status: Statuses.Closed,
         priority: Priorities.Normal,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '399485',
@@ -466,7 +466,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
+        projectName: 'Dolphin Schools',
       },
       {
         id: 'S9590FGS',
@@ -477,7 +477,7 @@ describe('TasksPage', () => {
         status: Statuses.OnHold,
         priority: Priorities.Low,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '39940500987',
@@ -488,7 +488,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '314PI',
-        projectName: 'Baker Baker'
+        projectName: 'Baker Baker',
       },
       {
         id: '119490SDF1945',
@@ -499,7 +499,7 @@ describe('TasksPage', () => {
         status: Statuses.Closed,
         priority: Priorities.Low,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '399405',
@@ -510,7 +510,7 @@ describe('TasksPage', () => {
         status: Statuses.OnHold,
         priority: Priorities.High,
         projectId: '314PI',
-        projectName: 'Baker Baker'
+        projectName: 'Baker Baker',
       },
       {
         id: '42DA424242',
@@ -521,7 +521,7 @@ describe('TasksPage', () => {
         status: Statuses.OnHold,
         priority: Priorities.Normal,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '9999',
@@ -532,7 +532,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '5599tuy838499395',
@@ -543,7 +543,7 @@ describe('TasksPage', () => {
         status: Statuses.InProcess,
         priority: Priorities.Low,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
+        projectName: 'Dolphin Schools',
       },
       {
         id: '11111',
@@ -554,7 +554,7 @@ describe('TasksPage', () => {
         status: Statuses.Closed,
         priority: Priorities.Low,
         projectId: '314PI',
-        projectName: 'Baker Baker'
+        projectName: 'Baker Baker',
       },
       {
         id: '985SUCK34IT',
@@ -565,7 +565,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
+        projectName: 'Dolphin Schools',
       },
       {
         id: '49499503fkkei395',
@@ -576,7 +576,7 @@ describe('TasksPage', () => {
         status: Statuses.InProcess,
         priority: Priorities.High,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '3948SLIP',
@@ -587,7 +587,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '42DA399458',
@@ -598,7 +598,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.Low,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '19945005996',
@@ -609,7 +609,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
+        projectName: 'Dolphin Schools',
       },
       {
         id: '73SC',
@@ -620,8 +620,8 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.Normal,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
-      }
+        projectName: 'Dolphin Schools',
+      },
     ];
 
     inProcessTasks = [
@@ -634,7 +634,7 @@ describe('TasksPage', () => {
         status: Statuses.InProcess,
         priority: Priorities.High,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '5599tuy838499395',
@@ -645,8 +645,8 @@ describe('TasksPage', () => {
         status: Statuses.InProcess,
         priority: Priorities.Low,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
-      }
+        projectName: 'Dolphin Schools',
+      },
     ];
 
     openTasks = [
@@ -659,7 +659,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '314PI',
-        projectName: 'Baker Baker'
+        projectName: 'Baker Baker',
       },
       {
         id: '19945005996',
@@ -670,7 +670,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
+        projectName: 'Dolphin Schools',
       },
       {
         id: '985SUCK34IT',
@@ -681,7 +681,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
+        projectName: 'Dolphin Schools',
       },
       {
         id: '9999',
@@ -692,7 +692,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '3948SLIP',
@@ -703,7 +703,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: '399485',
@@ -714,7 +714,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
+        projectName: 'Dolphin Schools',
       },
       {
         id: '73SC',
@@ -725,7 +725,7 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.Normal,
         projectId: '49950',
-        projectName: 'Dolphin Schools'
+        projectName: 'Dolphin Schools',
       },
       {
         id: '42DA399458',
@@ -736,8 +736,8 @@ describe('TasksPage', () => {
         status: Statuses.Open,
         priority: Priorities.Low,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
-      }
+        projectName: 'Book Burners R Us',
+      },
     ];
 
     onHoldTasks = [
@@ -750,7 +750,7 @@ describe('TasksPage', () => {
         status: Statuses.OnHold,
         priority: Priorities.High,
         projectId: '314PI',
-        projectName: 'Baker Baker'
+        projectName: 'Baker Baker',
       },
       {
         id: '42DA424242',
@@ -761,7 +761,7 @@ describe('TasksPage', () => {
         status: Statuses.OnHold,
         priority: Priorities.Normal,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       },
       {
         id: 'S9590FGS',
@@ -772,9 +772,9 @@ describe('TasksPage', () => {
         status: Statuses.OnHold,
         priority: Priorities.Low,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
-      }
+        projectName: 'Book Burners R Us',
+      },
     ];
-    closedTasks = testTasks.filter(t => t.status === Statuses.Closed);
+    closedTasks = testTasks.filter((t) => t.status === Statuses.Closed);
   }
 });

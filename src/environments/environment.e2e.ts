@@ -6,6 +6,6 @@ export const environment = {
     databaseURL: 'https://customer-task-list-e2e.firebaseio.com',
     projectId: 'customer-task-list-e2e',
     storageBucket: 'customer-task-list-e2e.appspot.com',
-    messagingSenderId: '867160175264'
-  }
+    messagingSenderId: '867160175264',
+  },
 };

@@ -1,7 +1,7 @@
 <ion-item-sliding>
   <ion-item (click)="view.emit()">
     <ion-label>
-      <div class="title"> {{ note.enteredOn.seconds * 1000 | date}}</div>
+      <div class="title">{{ note.enteredOn.seconds * 1000 | date }}</div>
       <div class="description">{{ noteText }}</div>
     </ion-label>
   </ion-item>

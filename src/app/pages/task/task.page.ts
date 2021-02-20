@@ -12,7 +12,7 @@ import { TaskEditorComponent } from '@app/editors';
 @Component({
   selector: 'app-task',
   templateUrl: './task.page.html',
-  styleUrls: ['./task.page.scss']
+  styleUrls: ['./task.page.scss'],
 })
 export class TaskPage implements OnInit {
   task: Task;
@@ -33,7 +33,7 @@ export class TaskPage implements OnInit {
     const m = await this.modal.create({
       backdropDismiss: false,
       component: TaskEditorComponent,
-      componentProps: { task: this.task }
+      componentProps: { task: this.task },
     });
     m.present();
   }

@@ -13,7 +13,7 @@ import { State, selectAllProjects } from '@app/store';
 @Component({
   selector: 'app-projects',
   templateUrl: 'projects.page.html',
-  styleUrls: ['projects.page.scss']
+  styleUrls: ['projects.page.scss'],
 })
 export class ProjectsPage implements OnInit {
   allProjects: Array<Project>;
@@ -24,14 +24,14 @@ export class ProjectsPage implements OnInit {
   ngOnInit() {
     this.projects$ = this.store.pipe(
       select(selectAllProjects),
-      map(p => p.sort(byName))
+      map((p) => p.sort(byName))
     );
   }
 
   async add() {
     const m = await this.modal.create({
       backdropDismiss: false,
-      component: ProjectEditorComponent
+      component: ProjectEditorComponent,
     });
     m.present();
   }

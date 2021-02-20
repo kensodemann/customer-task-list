@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 import { FirestoreDataService } from '../firestore-data.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TasksService extends FirestoreDataService<Task> {
   constructor(private firestore: AngularFirestore) {
@@ -17,7 +17,7 @@ export class TasksService extends FirestoreDataService<Task> {
 
   forProject(id: string): Observable<Array<Task>> {
     return this.firestore
-      .collection('tasks', ref => ref.where('projectId', '==', id))
+      .collection('tasks', (ref) => ref.where('projectId', '==', id))
       .snapshotChanges()
       .pipe(map(this.actionsToData));
   }

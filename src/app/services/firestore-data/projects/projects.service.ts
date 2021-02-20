@@ -6,7 +6,7 @@ import { Project } from '@app/models';
 import { FirestoreDataService } from '../firestore-data.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProjectsService extends FirestoreDataService<Project> {
   constructor(private firestore: AngularFirestore) {

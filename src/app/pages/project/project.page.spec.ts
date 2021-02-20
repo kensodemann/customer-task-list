@@ -19,7 +19,7 @@ import {
   createActivatedRouteMock,
   createNavControllerMock,
   createOverlayControllerMock,
-  createOverlayElementMock
+  createOverlayElementMock,
 } from '@test/mocks';
 import { ProjectState } from '@app/store/reducers/project/project.reducer';
 import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
@@ -39,15 +39,15 @@ describe('ProjectPage', () => {
         { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock(modal)
+          useFactory: () => createOverlayControllerMock(modal),
         },
         { provide: NavController, useFactory: createNavControllerMock },
         { provide: TasksService, useFactory: createTasksServiceMock },
         provideMockStore<{ projects: ProjectState }>({
-          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } }
-        })
+          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+        }),
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -109,7 +109,7 @@ describe('ProjectPage', () => {
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
         component: ProjectEditorComponent,
-        componentProps: { project: testProjects[id] }
+        componentProps: { project: testProjects[id] },
       });
     });
 
@@ -172,7 +172,7 @@ describe('ProjectPage', () => {
         status: Statuses.Closed,
         priority: Priorities.Normal,
         projectId: '314159PI',
-        projectName: 'Cherry'
+        projectName: 'Cherry',
       },
       {
         id: '399485',
@@ -183,7 +183,7 @@ describe('ProjectPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '314159PI',
-        projectName: 'Cherry'
+        projectName: 'Cherry',
       },
       {
         id: 'S9590FGS',
@@ -194,7 +194,7 @@ describe('ProjectPage', () => {
         status: Statuses.OnHold,
         priority: Priorities.Low,
         projectId: '314159PI',
-        projectName: 'Cherry'
+        projectName: 'Cherry',
       },
       {
         id: '39940500987',
@@ -205,7 +205,7 @@ describe('ProjectPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '314159PI',
-        projectName: 'Cherry'
+        projectName: 'Cherry',
       },
       {
         id: '119490SDF1945',
@@ -216,7 +216,7 @@ describe('ProjectPage', () => {
         status: Statuses.Closed,
         priority: Priorities.Low,
         projectId: '314159PI',
-        projectName: 'Cherry'
+        projectName: 'Cherry',
       },
       {
         id: '399405',
@@ -227,7 +227,7 @@ describe('ProjectPage', () => {
         status: Statuses.OnHold,
         priority: Priorities.High,
         projectId: '314159PI',
-        projectName: 'Cherry'
+        projectName: 'Cherry',
       },
       {
         id: '42DA424242',
@@ -238,7 +238,7 @@ describe('ProjectPage', () => {
         status: Statuses.OnHold,
         priority: Priorities.Normal,
         projectId: '314159PI',
-        projectName: 'Cherry'
+        projectName: 'Cherry',
       },
       {
         id: '9999',
@@ -249,8 +249,8 @@ describe('ProjectPage', () => {
         status: Statuses.Open,
         priority: Priorities.High,
         projectId: '314159PI',
-        projectName: 'Cherry'
-      }
+        projectName: 'Cherry',
+      },
     ];
   }
 });

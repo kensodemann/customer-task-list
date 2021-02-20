@@ -29,12 +29,12 @@ describe('TaskPage', () => {
         { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock(modal)
+          useFactory: () => createOverlayControllerMock(modal),
         },
         { provide: TasksService, useFactory: createTasksServiceMock },
-        provideMockStore()
+        provideMockStore(),
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -77,7 +77,7 @@ describe('TaskPage', () => {
       status: Statuses.Open,
       priority: Priorities.Normal,
       projectId: '451BK',
-      projectName: 'Book Burners R Us'
+      projectName: 'Book Burners R Us',
     });
     await page.ngOnInit();
     expect(page.task).toEqual({
@@ -89,7 +89,7 @@ describe('TaskPage', () => {
       status: Statuses.Open,
       priority: Priorities.Normal,
       projectId: '451BK',
-      projectName: 'Book Burners R Us'
+      projectName: 'Book Burners R Us',
     });
   });
 
@@ -103,7 +103,7 @@ describe('TaskPage', () => {
       status: Statuses.Closed,
       priority: Priorities.Normal,
       projectId: '451BK',
-      projectName: 'Book Burners R Us'
+      projectName: 'Book Burners R Us',
     };
 
     beforeEach(() => {
@@ -126,7 +126,7 @@ describe('TaskPage', () => {
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
         component: TaskEditorComponent,
-        componentProps: { task: task }
+        componentProps: { task: task },
       });
     });
 

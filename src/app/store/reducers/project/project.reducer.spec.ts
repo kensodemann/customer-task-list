@@ -10,7 +10,7 @@ import {
   projectAdded,
   projectsAdded,
   projectModified,
-  projectRemoved
+  projectRemoved,
 } from '@app/store/actions/project.actions';
 import { testProjectIds, testProjects, initializeTestProjects } from '@test/data';
 
@@ -30,14 +30,14 @@ describe(ProjectActionTypes.load, () => {
           ...initialState,
           ids: [...testProjectIds],
           entities: { ...testProjects },
-          error: new Error('the last load failed')
+          error: new Error('the last load failed'),
         },
         { type: ProjectActionTypes.load }
       )
     ).toEqual({
       ...initialState,
       loading: true,
-      error: undefined
+      error: undefined,
     });
   });
 });
@@ -48,7 +48,7 @@ describe(ProjectActionTypes.loadFailure, () => {
     expect(reducer({ ...initialState, loading: true }, action)).toEqual({
       ...initialState,
       loading: false,
-      error: new Error('Could not load the data')
+      error: new Error('Could not load the data'),
     });
   });
 });
@@ -60,7 +60,7 @@ describe(ProjectActionTypes.create, () => {
     ).toEqual({
       ...initialState,
       loading: true,
-      error: undefined
+      error: undefined,
     });
   });
 });
@@ -71,7 +71,7 @@ describe(ProjectActionTypes.createFailure, () => {
     expect(reducer({ ...initialState, loading: true }, action)).toEqual({
       ...initialState,
       loading: false,
-      error: new Error('Could not create the data')
+      error: new Error('Could not create the data'),
     });
   });
 });
@@ -83,7 +83,7 @@ describe(ProjectActionTypes.update, () => {
     ).toEqual({
       ...initialState,
       loading: true,
-      error: undefined
+      error: undefined,
     });
   });
 });
@@ -94,7 +94,7 @@ describe(ProjectActionTypes.updateFailure, () => {
     expect(reducer({ ...initialState, loading: true }, action)).toEqual({
       ...initialState,
       loading: false,
-      error: new Error('Could not update the data')
+      error: new Error('Could not update the data'),
     });
   });
 });
@@ -105,7 +105,7 @@ describe(ProjectActionTypes.projectAdded, () => {
       id: '194309fkadsfoi',
       name: 'Newbie',
       description: 'I am a newly added project',
-      isActive: true
+      isActive: true,
     };
     const action = projectAdded({ project });
     expect(reducer(undefined, action)).toEqual({
@@ -116,9 +116,9 @@ describe(ProjectActionTypes.projectAdded, () => {
           id: '194309fkadsfoi',
           name: 'Newbie',
           description: 'I am a newly added project',
-          isActive: true
-        }
-      }
+          isActive: true,
+        },
+      },
     });
   });
 
@@ -127,7 +127,7 @@ describe(ProjectActionTypes.projectAdded, () => {
       id: '194309fkadsfoi',
       name: 'Newbie',
       description: 'I am a newly added project',
-      isActive: true
+      isActive: true,
     };
     const action = projectAdded({ project });
     expect(reducer({ ...initialState, loading: true, ids: testProjectIds, entities: testProjects }, action)).toEqual({
@@ -140,9 +140,9 @@ describe(ProjectActionTypes.projectAdded, () => {
           id: '194309fkadsfoi',
           name: 'Newbie',
           description: 'I am a newly added project',
-          isActive: true
-        }
-      }
+          isActive: true,
+        },
+      },
     });
   });
 });
@@ -154,20 +154,20 @@ describe(ProjectActionTypes.projectsAdded, () => {
         id: '194309fkadsfoi',
         name: 'Newbie',
         description: 'I am a newly added project',
-        isActive: true
+        isActive: true,
       },
       {
         id: 'fiiagoie92',
         name: 'Newbie Too',
         description: 'I am another newly added project',
-        isActive: true
+        isActive: true,
       },
       {
         id: 'figof003f3',
         name: 'the day',
         description: 'It is all ok',
-        isActive: false
-      }
+        isActive: false,
+      },
     ];
     const action = projectsAdded({ projects });
     expect(reducer(undefined, action)).toEqual({
@@ -179,21 +179,21 @@ describe(ProjectActionTypes.projectsAdded, () => {
           id: '194309fkadsfoi',
           name: 'Newbie',
           description: 'I am a newly added project',
-          isActive: true
+          isActive: true,
         },
         fiiagoie92: {
           id: 'fiiagoie92',
           name: 'Newbie Too',
           description: 'I am another newly added project',
-          isActive: true
+          isActive: true,
         },
         figof003f3: {
           id: 'figof003f3',
           name: 'the day',
           description: 'It is all ok',
-          isActive: false
-        }
-      }
+          isActive: false,
+        },
+      },
     });
   });
 
@@ -203,20 +203,20 @@ describe(ProjectActionTypes.projectsAdded, () => {
         id: '194309fkadsfoi',
         name: 'Newbie',
         description: 'I am a newly added project',
-        isActive: true
+        isActive: true,
       },
       {
         id: 'fiiagoie92',
         name: 'Newbie Too',
         description: 'I am another newly added project',
-        isActive: true
+        isActive: true,
       },
       {
         id: 'figof003f3',
         name: 'the day',
         description: 'It is all ok',
-        isActive: false
-      }
+        isActive: false,
+      },
     ];
     const action = projectsAdded({ projects });
     expect(reducer({ ...initialState, loading: true, ids: testProjectIds, entities: testProjects }, action)).toEqual({
@@ -229,21 +229,21 @@ describe(ProjectActionTypes.projectsAdded, () => {
           id: '194309fkadsfoi',
           name: 'Newbie',
           description: 'I am a newly added project',
-          isActive: true
+          isActive: true,
         },
         fiiagoie92: {
           id: 'fiiagoie92',
           name: 'Newbie Too',
           description: 'I am another newly added project',
-          isActive: true
+          isActive: true,
         },
         figof003f3: {
           id: 'figof003f3',
           name: 'the day',
           description: 'It is all ok',
-          isActive: false
-        }
-      }
+          isActive: false,
+        },
+      },
     });
   });
 });
@@ -254,7 +254,7 @@ describe(ProjectActionTypes.projectModified, () => {
       id: 'ri49950399vf',
       name: 'Changling',
       description: 'I am a modified project',
-      isActive: true
+      isActive: true,
     };
     const expected = { ...testProjects };
     expected.ri49950399vf = project;
@@ -263,7 +263,7 @@ describe(ProjectActionTypes.projectModified, () => {
       ...initialState,
       loading: false,
       ids: testProjectIds,
-      entities: expected
+      entities: expected,
     });
   });
 });
@@ -274,7 +274,7 @@ describe(ProjectActionTypes.projectRemoved, () => {
       id: 'pproti3993kgi',
       name: 'Time Trax',
       description: 'An older time tracking project',
-      isActive: false
+      isActive: false,
     };
     const expected = { ...testProjects };
     delete expected.pproti3993kgi;
@@ -288,9 +288,9 @@ describe(ProjectActionTypes.projectRemoved, () => {
         testProjectIds[2],
         testProjectIds[3],
         testProjectIds[5],
-        testProjectIds[6]
+        testProjectIds[6],
       ],
-      entities: expected
+      entities: expected,
     });
   });
 });

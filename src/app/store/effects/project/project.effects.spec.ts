@@ -17,8 +17,8 @@ beforeEach(() => {
     providers: [
       ProjectEffects,
       { provide: ProjectsService, useFactory: createProjectsServiceMock },
-      provideMockActions(() => actions$)
-    ]
+      provideMockActions(() => actions$),
+    ],
   });
 
   effects = TestBed.get<ProjectEffects>(ProjectEffects);
@@ -37,7 +37,7 @@ describe('load$', () => {
   });
 
   describe('added change', () => {
-    it('dispaches and added project action', done => {
+    it('dispaches and added project action', (done) => {
       const projectsService = TestBed.get(ProjectsService);
       projectsService.observeChanges.mockReturnValue(
         of([
@@ -49,22 +49,22 @@ describe('load$', () => {
                 data: () => ({
                   name: 'Newbie',
                   description: 'I am a newly added project',
-                  isActive: true
-                })
-              }
-            }
-          }
+                  isActive: true,
+                }),
+              },
+            },
+          },
         ])
       );
       actions$ = of(projectActions.load());
-      effects.changes$.subscribe(action => {
+      effects.changes$.subscribe((action) => {
         const expected = projectActions.projectAdded({
           project: {
             id: '123499dfi',
             name: 'Newbie',
             description: 'I am a newly added project',
-            isActive: true
-          }
+            isActive: true,
+          },
         });
         expect(action).toEqual(expected);
         done();
@@ -73,7 +73,7 @@ describe('load$', () => {
   });
 
   describe('modified change', () => {
-    it('dispaches and modified project action', done => {
+    it('dispaches and modified project action', (done) => {
       const projectsService = TestBed.get(ProjectsService);
       projectsService.observeChanges.mockReturnValue(
         of([
@@ -85,22 +85,22 @@ describe('load$', () => {
                 data: () => ({
                   name: 'Tree Planting',
                   description: 'I am a modified project',
-                  isActive: false
-                })
-              }
-            }
-          }
+                  isActive: false,
+                }),
+              },
+            },
+          },
         ])
       );
       actions$ = of(projectActions.load());
-      effects.changes$.subscribe(action => {
+      effects.changes$.subscribe((action) => {
         const expected = projectActions.projectModified({
           project: {
             id: '123499dfi',
             name: 'Tree Planting',
             description: 'I am a modified project',
-            isActive: false
-          }
+            isActive: false,
+          },
         });
         expect(action).toEqual(expected);
         done();
@@ -109,7 +109,7 @@ describe('load$', () => {
   });
 
   describe('removed change', () => {
-    it('dispaches and removed project action', done => {
+    it('dispaches and removed project action', (done) => {
       const projectsService = TestBed.get(ProjectsService);
       projectsService.observeChanges.mockReturnValue(
         of([
@@ -121,22 +121,22 @@ describe('load$', () => {
                 data: () => ({
                   name: 'Testing',
                   description: 'I am a project',
-                  isActive: true
-                })
-              }
-            }
-          }
+                  isActive: true,
+                }),
+              },
+            },
+          },
         ])
       );
       actions$ = of(projectActions.load());
-      effects.changes$.subscribe(action => {
+      effects.changes$.subscribe((action) => {
         const expected = projectActions.projectRemoved({
           project: {
             id: '123499dfi',
             name: 'Testing',
             description: 'I am a project',
-            isActive: true
-          }
+            isActive: true,
+          },
         });
         expect(action).toEqual(expected);
         done();
@@ -157,10 +157,10 @@ describe('load$', () => {
                 data: () => ({
                   name: 'Do Something',
                   description: 'I am a project',
-                  isActive: false
-                })
-              }
-            }
+                  isActive: false,
+                }),
+              },
+            },
           },
           {
             type: 'removed',
@@ -170,10 +170,10 @@ describe('load$', () => {
                 data: () => ({
                   name: 'Do Something Else',
                   description: 'I am another project',
-                  isActive: true
-                })
-              }
-            }
+                  isActive: true,
+                }),
+              },
+            },
           },
           {
             type: 'added',
@@ -183,10 +183,10 @@ describe('load$', () => {
                 data: () => ({
                   name: 'New One',
                   description: 'I am a new project',
-                  isActive: true
-                })
-              }
-            }
+                  isActive: true,
+                }),
+              },
+            },
           },
           {
             type: 'added',
@@ -196,10 +196,10 @@ describe('load$', () => {
                 data: () => ({
                   name: 'Freebie',
                   description: 'I am another new project',
-                  isActive: true
-                })
-              }
-            }
+                  isActive: true,
+                }),
+              },
+            },
           },
           {
             type: 'modified',
@@ -209,16 +209,16 @@ describe('load$', () => {
                 data: () => ({
                   name: 'Rehab',
                   description: 'I am a changed project',
-                  isActive: true
-                })
-              }
-            }
-          }
+                  isActive: true,
+                }),
+              },
+            },
+          },
         ])
       );
       actions$ = of(projectActions.load());
       let calls = 0;
-      effects.changes$.subscribe(action => {
+      effects.changes$.subscribe((action) => {
         let expected: Action;
         switch (calls) {
           case 0:
@@ -227,8 +227,8 @@ describe('load$', () => {
                 id: '123499dfi',
                 name: 'Do Something Else',
                 description: 'I am another project',
-                isActive: true
-              }
+                isActive: true,
+              },
             });
             break;
 
@@ -238,8 +238,8 @@ describe('load$', () => {
                 id: 'fi38849958392j',
                 name: 'Rehab',
                 description: 'I am a changed project',
-                isActive: true
-              }
+                isActive: true,
+              },
             });
             break;
 
@@ -250,21 +250,21 @@ describe('load$', () => {
                   id: 'f99g0e9fg',
                   name: 'Do Something',
                   description: 'I am a project',
-                  isActive: false
+                  isActive: false,
                 },
                 {
                   id: 'fkkfig0939r',
                   name: 'New One',
                   description: 'I am a new project',
-                  isActive: true
+                  isActive: true,
                 },
                 {
                   id: 'fiig0939034',
                   name: 'Freebie',
                   description: 'I am another new project',
-                  isActive: true
-                }
-              ]
+                  isActive: true,
+                },
+              ],
             });
             break;
 
@@ -294,7 +294,7 @@ describe('create$', () => {
       id: 'fkkfig0939r',
       name: 'Something',
       description: 'I am a project',
-      isActive: true
+      isActive: true,
     };
   });
 
@@ -306,22 +306,22 @@ describe('create$', () => {
     expect(service.add).toHaveBeenCalledWith(project);
   });
 
-  it('dispatches create success', done => {
+  it('dispatches create success', (done) => {
     actions$ = of(projectActions.create({ project }));
-    effects.create$.subscribe(action => {
+    effects.create$.subscribe((action) => {
       expect(action).toEqual({ type: projectActions.ProjectActionTypes.createSuccess });
       done();
     });
   });
 
-  it('dispatches create errors', done => {
+  it('dispatches create errors', (done) => {
     const service = TestBed.get(ProjectsService);
     service.add.mockRejectedValue(new Error('The create failed'));
     actions$ = of(projectActions.create({ project }));
-    effects.create$.subscribe(action => {
+    effects.create$.subscribe((action) => {
       expect(action).toEqual({
         type: projectActions.ProjectActionTypes.createFailure,
-        error: new Error('The create failed')
+        error: new Error('The create failed'),
       });
       done();
     });
@@ -342,7 +342,7 @@ describe('update$', () => {
       id: 'fkkfig0939r',
       name: 'Something',
       description: 'I am a project',
-      isActive: true
+      isActive: true,
     };
   });
 
@@ -354,22 +354,22 @@ describe('update$', () => {
     expect(service.update).toHaveBeenCalledWith(project);
   });
 
-  it('dispatches update success', done => {
+  it('dispatches update success', (done) => {
     actions$ = of(projectActions.update({ project }));
-    effects.update$.subscribe(action => {
+    effects.update$.subscribe((action) => {
       expect(action).toEqual({ type: projectActions.ProjectActionTypes.updateSuccess });
       done();
     });
   });
 
-  it('dispatches update errors', done => {
+  it('dispatches update errors', (done) => {
     const service = TestBed.get(ProjectsService);
     service.update.mockRejectedValue(new Error('The update failed'));
     actions$ = of(projectActions.update({ project }));
-    effects.update$.subscribe(action => {
+    effects.update$.subscribe((action) => {
       expect(action).toEqual({
         type: projectActions.ProjectActionTypes.updateFailure,
-        error: new Error('The update failed')
+        error: new Error('The update failed'),
       });
       done();
     });

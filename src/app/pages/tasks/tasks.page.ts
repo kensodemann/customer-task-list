@@ -14,7 +14,7 @@ import { Task } from '@app/models';
 @Component({
   selector: 'app-tasks',
   templateUrl: 'tasks.page.html',
-  styleUrls: ['tasks.page.scss']
+  styleUrls: ['tasks.page.scss'],
 })
 export class TasksPage implements OnDestroy, OnInit {
   @ViewChild(IonList, { static: true }) list: IonList;
@@ -43,9 +43,9 @@ export class TasksPage implements OnDestroy, OnInit {
     this.showBackButton = !!this.projectId;
     this.status = this.route.snapshot.paramMap.get('status');
     if (this.projectId) {
-      this.taskSubscription = this.tasks.forProject(this.projectId).subscribe(t => this.unpackTasks(t));
+      this.taskSubscription = this.tasks.forProject(this.projectId).subscribe((t) => this.unpackTasks(t));
     } else {
-      this.taskSubscription = this.tasks.all().subscribe(t => this.unpackTasks(t));
+      this.taskSubscription = this.tasks.all().subscribe((t) => this.unpackTasks(t));
     }
   }
 
@@ -58,11 +58,11 @@ export class TasksPage implements OnDestroy, OnInit {
       ? await this.modal.create({
           backdropDismiss: false,
           component: TaskEditorComponent,
-          componentProps: { projectId: this.projectId }
+          componentProps: { projectId: this.projectId },
         })
       : await this.modal.create({
           backdropDismiss: false,
-          component: TaskEditorComponent
+          component: TaskEditorComponent,
         });
     return m.present();
   }
@@ -78,8 +78,8 @@ export class TasksPage implements OnDestroy, OnInit {
       message: 'Are you sure you want to permanently remove this task?',
       buttons: [
         { text: 'Yes', handler: () => this.tasks.delete(task) },
-        { text: 'No', role: 'cancel' }
-      ]
+        { text: 'No', role: 'cancel' },
+      ],
     });
     return a.present();
   }
@@ -113,7 +113,7 @@ export class TasksPage implements OnDestroy, OnInit {
       return [];
     }
 
-    return (allTasks && allTasks.filter(t => t.status === status)) || [];
+    return (allTasks && allTasks.filter((t) => t.status === status)) || [];
   }
 
   private taskSort(t1: Task, t2: Task) {

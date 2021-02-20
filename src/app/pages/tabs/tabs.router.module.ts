@@ -15,14 +15,14 @@ const routes: Routes = [
           {
             path: '',
             canActivate: [AuthGuardService],
-            loadChildren: () => import('../tasks/tasks.module').then(m => m.TasksPageModule)
+            loadChildren: () => import('../tasks/tasks.module').then((m) => m.TasksPageModule),
           },
           {
             path: ':taskId',
             canActivate: [AuthGuardService],
-            loadChildren: () => import('../task/task.module').then(m => m.TaskPageModule)
-          }
-        ]
+            loadChildren: () => import('../task/task.module').then((m) => m.TaskPageModule),
+          },
+        ],
       },
       {
         path: 'projects',
@@ -30,40 +30,40 @@ const routes: Routes = [
           {
             path: '',
             canActivate: [AuthGuardService],
-            loadChildren: () => import('../projects/projects.module').then(m => m.ProjectsPageModule)
+            loadChildren: () => import('../projects/projects.module').then((m) => m.ProjectsPageModule),
           },
           {
             path: ':projectId',
             canActivate: [AuthGuardService],
-            loadChildren: () => import('../project/project.module').then(m => m.ProjectPageModule)
-          }
-        ]
+            loadChildren: () => import('../project/project.module').then((m) => m.ProjectPageModule),
+          },
+        ],
       },
       {
         path: 'about',
         children: [
           {
             path: '',
-            loadChildren: () => import('../about/about.module').then(m => m.AboutPageModule)
-          }
-        ]
+            loadChildren: () => import('../about/about.module').then((m) => m.AboutPageModule),
+          },
+        ],
       },
       {
         path: '',
         redirectTo: '/tabs/tasks',
-        pathMatch: 'full'
-      }
-    ]
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: '',
     redirectTo: '/tabs/tasks',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class TabsPageRoutingModule {}

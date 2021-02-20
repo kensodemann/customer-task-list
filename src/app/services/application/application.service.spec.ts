@@ -6,7 +6,7 @@ import {
   createOverlayControllerMock,
   createOverlayElementMock,
   createPlatformMock,
-  createSwUpdateMock
+  createSwUpdateMock,
 } from '@test/mocks';
 import { SwUpdate } from '@angular/service-worker';
 
@@ -19,11 +19,11 @@ describe('ApplicationService', () => {
       providers: [
         {
           provide: AlertController,
-          useFactory: () => createOverlayControllerMock(alert)
+          useFactory: () => createOverlayControllerMock(alert),
         },
         { provide: SwUpdate, useFactory: createSwUpdateMock },
-        { provide: Platform, useFactory: createPlatformMock }
-      ]
+        { provide: Platform, useFactory: createPlatformMock },
+      ],
     });
   });
 
@@ -56,11 +56,11 @@ describe('ApplicationService', () => {
       { plt: 'tablet', expected: false },
       { plt: 'desktop', expected: false },
       { plt: 'phablet', expected: true },
-      { plt: 'iphone', expected: true }
-    ].forEach(test => {
+      { plt: 'iphone', expected: true },
+    ].forEach((test) => {
       it(`is ${test.expected} for "${test.plt}"`, () => {
         const platform = TestBed.get(Platform);
-        platform.is = jest.fn(arg => arg === test.plt);
+        platform.is = jest.fn((arg) => arg === test.plt);
         expect(application.showTabs).toEqual(test.expected);
       });
     });

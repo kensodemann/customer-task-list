@@ -17,7 +17,7 @@ export enum ProjectActionTypes {
   projectAdded = '[Project Load State Change] added',
   projectsAdded = '[Project Load State Change] added many',
   projectModified = '[Project Load State Change] modified',
-  projectRemoved = '[Project Load State Change] removed'
+  projectRemoved = '[Project Load State Change] removed',
 }
 
 export const create = createAction(ProjectActionTypes.create, props<{ project: Project }>());

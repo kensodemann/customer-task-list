@@ -10,7 +10,7 @@ import {
   createAngularFirestoreDocumentMock,
   createAngularFirestoreMock,
   createAngularFirestoreCollectionMock,
-  createDocumentSnapshotMock
+  createDocumentSnapshotMock,
 } from '@test/mocks';
 
 describe('NotesService', () => {
@@ -22,7 +22,7 @@ describe('NotesService', () => {
     collection = createAngularFirestoreCollectionMock();
     angularFirestore.collection.mockReturnValue(collection);
     TestBed.configureTestingModule({
-      providers: [{ provide: AngularFirestore, useValue: angularFirestore }]
+      providers: [{ provide: AngularFirestore, useValue: angularFirestore }],
     });
   });
 
@@ -57,29 +57,29 @@ describe('NotesService', () => {
           createAction('42DA', {
             text: 'First find Deep Thought, then get the answer from it',
             enteredOn: new firestore.Timestamp(14324053, 0),
-            itemId: '451BK'
+            itemId: '451BK',
           }),
           createAction('73SC', {
             text: 'Just like it sounds there captain',
             enteredOn: new firestore.Timestamp(1432430034, 0),
-            itemId: '451BK'
-          })
+            itemId: '451BK',
+          }),
         ])
       );
-      notes.allFor('451BK').subscribe(d =>
+      notes.allFor('451BK').subscribe((d) =>
         expect(d).toEqual([
           {
             id: '42DA',
             text: 'First find Deep Thought, then get the answer from it',
             enteredOn: new firestore.Timestamp(14324053, 0),
-            itemId: '451BK'
+            itemId: '451BK',
           },
           {
             id: '73SC',
             text: 'Just like it sounds there captain',
             enteredOn: new firestore.Timestamp(1432430034, 0),
-            itemId: '451BK'
-          }
+            itemId: '451BK',
+          },
         ])
       );
     });
@@ -109,14 +109,14 @@ describe('NotesService', () => {
       snapshot.data.mockReturnValue({
         text: 'Just like it sounds there captain',
         enteredOn: new firestore.Timestamp(1432430053, 0),
-        itemId: '451BK'
+        itemId: '451BK',
       });
       const n = await notes.get('199405fkkgi59');
       expect(n).toEqual({
         id: '199405fkkgi59',
         text: 'Just like it sounds there captain',
         enteredOn: new firestore.Timestamp(1432430053, 0),
-        itemId: '451BK'
+        itemId: '451BK',
       });
     });
   });
@@ -126,13 +126,13 @@ describe('NotesService', () => {
       notes.add({
         text: 'Just like it sounds there captain',
         enteredOn: new firestore.Timestamp(1432434053, 0),
-        itemId: '451BK'
+        itemId: '451BK',
       });
       expect(collection.add).toHaveBeenCalledTimes(1);
       expect(collection.add).toHaveBeenCalledWith({
         text: 'Just like it sounds there captain',
         enteredOn: new firestore.Timestamp(1432434053, 0),
-        itemId: '451BK'
+        itemId: '451BK',
       });
     });
   });
@@ -149,7 +149,7 @@ describe('NotesService', () => {
         id: '88395AA930FE',
         text: 'Weekly status meeting, usually on Thursdays',
         itemId: '73SC',
-        enteredOn: new firestore.Timestamp(1545765815, 0)
+        enteredOn: new firestore.Timestamp(1545765815, 0),
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('88395AA930FE');
@@ -160,13 +160,13 @@ describe('NotesService', () => {
         id: '88395AA930FE',
         text: 'Weekly status meeting, usually on Thursdays',
         itemId: '73SC',
-        enteredOn: new firestore.Timestamp(1545765815, 0)
+        enteredOn: new firestore.Timestamp(1545765815, 0),
       });
       expect(document.set).toHaveBeenCalledTimes(1);
       expect(document.set).toHaveBeenCalledWith({
         text: 'Weekly status meeting, usually on Thursdays',
         itemId: '73SC',
-        enteredOn: new firestore.Timestamp(1545765815, 0)
+        enteredOn: new firestore.Timestamp(1545765815, 0),
       });
     });
   });
@@ -183,7 +183,7 @@ describe('NotesService', () => {
         id: '49950399KT',
         text: 'Make them extra shiny',
         enteredOn: new firestore.Timestamp(0, 0),
-        itemId: '451BK'
+        itemId: '451BK',
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('49950399KT');
@@ -194,7 +194,7 @@ describe('NotesService', () => {
         id: '49950399KT',
         text: 'Make them extra shiny',
         enteredOn: new firestore.Timestamp(0, 0),
-        itemId: '451BK'
+        itemId: '451BK',
       });
       expect(document.delete).toHaveBeenCalledTimes(1);
     });

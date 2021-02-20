@@ -13,7 +13,7 @@ import { AuthGuardService } from '@app/services';
 const routes: Routes = [
   {
     path: '',
-    component: ProjectPage
+    component: ProjectPage,
   },
   {
     path: 'tasks',
@@ -21,29 +21,29 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [AuthGuardService],
-        loadChildren: () => import('../tasks/tasks.module').then(m => m.TasksPageModule)
+        loadChildren: () => import('../tasks/tasks.module').then((m) => m.TasksPageModule),
       },
       {
         path: ':status',
         canActivate: [AuthGuardService],
-        loadChildren: () => import('../tasks/tasks.module').then(m => m.TasksPageModule)
+        loadChildren: () => import('../tasks/tasks.module').then((m) => m.TasksPageModule),
       },
       {
         path: 'task/:taskId',
         canActivate: [AuthGuardService],
-        loadChildren: () => import('../task/task.module').then(m => m.TaskPageModule)
+        loadChildren: () => import('../task/task.module').then((m) => m.TaskPageModule),
       },
       {
         path: ':status/task/:taskId',
         canActivate: [AuthGuardService],
-        loadChildren: () => import('../task/task.module').then(m => m.TaskPageModule)
-      }
-    ]
-  }
+        loadChildren: () => import('../task/task.module').then((m) => m.TaskPageModule),
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [CommonModule, EditorsModule, FormsModule, IonicModule, RouterModule.forChild(routes), SharedModule],
-  declarations: [ProjectPage]
+  declarations: [ProjectPage],
 })
 export class ProjectPageModule {}

@@ -11,7 +11,7 @@ import { update, create } from '@app/store/actions/project.actions';
 @Component({
   selector: 'app-project-editor',
   templateUrl: './project-editor.component.html',
-  styleUrls: ['./project-editor.component.scss']
+  styleUrls: ['./project-editor.component.scss'],
 })
 export class ProjectEditorComponent implements OnDestroy, OnInit {
   private allProjects: Array<Project>;
@@ -46,7 +46,7 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
   checkName() {
     const name = this.name && this.name.toLowerCase().trim();
     const id = this.project && this.project.id;
-    const dup = this.allProjects && this.allProjects.find(x => x.id !== id && x.name.toLowerCase().trim() === name);
+    const dup = this.allProjects && this.allProjects.find((x) => x.id !== id && x.name.toLowerCase().trim() === name);
     this.warningMessage = dup ? 'a project with this name already exists' : '';
   }
 
@@ -63,7 +63,7 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
     const cus: Project = {
       name: this.name,
       description: this.description,
-      isActive: this.isActive
+      isActive: this.isActive,
     };
 
     if (this.project) {
@@ -74,7 +74,7 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
   }
 
   private getProjects() {
-    this.store.pipe(select(selectAllProjects), takeUntil(this.destroy$)).subscribe(c => (this.allProjects = c));
+    this.store.pipe(select(selectAllProjects), takeUntil(this.destroy$)).subscribe((c) => (this.allProjects = c));
   }
 
   private initializeProperties() {

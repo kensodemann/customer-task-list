@@ -9,7 +9,7 @@ import { logout } from '@app/store/actions/auth.actions';
 @Component({
   selector: 'app-about',
   templateUrl: 'about.page.html',
-  styleUrls: ['about.page.scss']
+  styleUrls: ['about.page.scss'],
 })
 export class AboutPage {
   appVersion: Version = version;

@@ -31,9 +31,7 @@
         ></ion-input>
       </ion-item>
     </ion-list>
-    <ion-button fill="clear" (click)="handlePasswordReset()"
-      >Reset Password
-    </ion-button>
+    <ion-button fill="clear" (click)="handlePasswordReset()">Reset Password </ion-button>
     <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
     <div class="info" *ngIf="infoMessage">{{ infoMessage }}</div>
   </form>
@@ -41,11 +39,7 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button
-      id="signin-button"
-      expand="full"
-      [disabled]="!loginForm.form.valid"
-      (click)="login()"
+    <ion-button id="signin-button" expand="full" [disabled]="!loginForm.form.valid" (click)="login()"
       >Sign in</ion-button
     >
   </ion-toolbar>

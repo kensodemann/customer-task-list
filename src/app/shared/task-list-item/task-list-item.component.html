@@ -2,25 +2,17 @@
   <ion-item (click)="view.emit()">
     <ion-label>
       <div class="title">{{ task.name }} - {{ task.projectName }}</div>
-      <div class="timestamp">
-        Opened: {{ task.enteredOn.seconds * 1000 | date }}
-      </div>
+      <div class="timestamp">Opened: {{ task.enteredOn.seconds * 1000 | date }}</div>
       <div class="timestamp" *ngIf="task && task.beginDate">
         Scheduled: {{ task.beginDate | date }}
-        <span *ngIf="task.beginDate !== task.endDate">
-          - {{ task.endDate | date }}</span
-        >
+        <span *ngIf="task.beginDate !== task.endDate"> - {{ task.endDate | date }}</span>
       </div>
       <div class="description">{{ task.description }}</div>
     </ion-label>
   </ion-item>
 
   <ion-item-options>
-    <ion-item-option color="danger" (click)="delete.emit()">
-      Delete
-    </ion-item-option>
-    <ion-item-option *ngIf="showClosed" (click)="done.emit()">
-      Done
-    </ion-item-option>
+    <ion-item-option color="danger" (click)="delete.emit()"> Delete </ion-item-option>
+    <ion-item-option *ngIf="showClosed" (click)="done.emit()"> Done </ion-item-option>
   </ion-item-options>
 </ion-item-sliding>

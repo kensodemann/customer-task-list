@@ -21,11 +21,11 @@ describe('NoteEditorComponent', () => {
       providers: [
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock(createOverlayElementMock())
+          useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
         },
-        { provide: NotesService, useFactory: createNotesServiceMock }
+        { provide: NotesService, useFactory: createNotesServiceMock },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -78,7 +78,7 @@ describe('NoteEditorComponent', () => {
         expect(notes.add).toHaveBeenCalledWith({
           text: 'The dude, he does abide',
           itemId: '39945akf953',
-          enteredOn: new firestore.Timestamp(1545765815, 0)
+          enteredOn: new firestore.Timestamp(1545765815, 0),
         });
       });
 
@@ -96,7 +96,7 @@ describe('NoteEditorComponent', () => {
         id: '531LLS',
         text: 'I have no idea what that would be',
         itemId: '420STNR',
-        enteredOn: new firestore.Timestamp(1545765815, 0)
+        enteredOn: new firestore.Timestamp(1545765815, 0),
       };
       fixture.detectChanges();
     });
@@ -129,7 +129,7 @@ describe('NoteEditorComponent', () => {
           id: '531LLS',
           text: 'The Dude, he does abide',
           itemId: '420STNR',
-          enteredOn: new firestore.Timestamp(1545765815, 0)
+          enteredOn: new firestore.Timestamp(1545765815, 0),
         });
       });
 

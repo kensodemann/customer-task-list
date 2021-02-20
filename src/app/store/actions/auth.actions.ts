@@ -13,7 +13,7 @@ export enum AuthActionTypes {
 
   Logout = '[Application] logout',
   LogoutSuccess = '[Auth API] logout success',
-  LogoutFailure = '[Auth API] logout failure'
+  LogoutFailure = '[Auth API] logout failure',
 }
 
 export const loginChanged = createAction(AuthActionTypes.LoginChanged, props<{ email: string }>());

@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-project',
   templateUrl: './project.page.html',
-  styleUrls: ['./project.page.scss']
+  styleUrls: ['./project.page.scss'],
 })
 export class ProjectPage implements OnDestroy, OnInit {
   private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -38,8 +38,8 @@ export class ProjectPage implements OnDestroy, OnInit {
     this.tasks
       .forProject(id)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(t => (this.projectTasks = t));
-    this.store.pipe(select(selectProject, { id }), takeUntil(this.destroy$)).subscribe(p => (this.project = p));
+      .subscribe((t) => (this.projectTasks = t));
+    this.store.pipe(select(selectProject, { id }), takeUntil(this.destroy$)).subscribe((p) => (this.project = p));
   }
 
   ngOnDestroy() {
@@ -51,13 +51,13 @@ export class ProjectPage implements OnDestroy, OnInit {
     const m = await this.modal.create({
       backdropDismiss: false,
       component: ProjectEditorComponent,
-      componentProps: { project: this.project }
+      componentProps: { project: this.project },
     });
     return await m.present();
   }
 
   taskCount(status?: string): number {
-    return this.projectTasks ? this.projectTasks.filter(t => !status || t.status === status).length : 0;
+    return this.projectTasks ? this.projectTasks.filter((t) => !status || t.status === status).length : 0;
   }
 
   logout() {

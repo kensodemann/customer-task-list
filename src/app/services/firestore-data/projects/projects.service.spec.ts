@@ -8,7 +8,7 @@ import {
   createAngularFirestoreMock,
   createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock,
-  createDocumentSnapshotMock
+  createDocumentSnapshotMock,
 } from '@test/mocks';
 
 describe('ProjectsService', () => {
@@ -20,7 +20,7 @@ describe('ProjectsService', () => {
     collection = createAngularFirestoreCollectionMock();
     angularFirestore.collection.mockReturnValue(collection);
     TestBed.configureTestingModule({
-      providers: [{ provide: AngularFirestore, useValue: angularFirestore }]
+      providers: [{ provide: AngularFirestore, useValue: angularFirestore }],
     });
   });
 
@@ -44,29 +44,29 @@ describe('ProjectsService', () => {
           createAction('314PI', {
             name: `Baker's Square`,
             description: 'Makers of overly sweet pies and otherwise crappy food',
-            isActive: true
+            isActive: true,
           }),
           createAction('420HI', {
             name: 'Joe',
             description: 'Some guy named Joe who sells week on my street corner',
-            isActive: false
-          })
+            isActive: false,
+          }),
         ])
       );
-      projects.all().subscribe(d =>
+      projects.all().subscribe((d) =>
         expect(d).toEqual([
           {
             id: '314PI',
             name: `Baker's Square`,
             description: 'Makers of overly sweet pies and otherwise crappy food',
-            isActive: true
+            isActive: true,
           },
           {
             id: '420HI',
             name: 'Joe',
             description: 'Some guy named Joe who sells week on my street corner',
-            isActive: false
-          }
+            isActive: false,
+          },
         ])
       );
     });
@@ -96,14 +96,14 @@ describe('ProjectsService', () => {
       snapshot.data.mockReturnValue({
         name: 'Joe',
         description: 'Some guy named Joe who sells week on my street corner',
-        isActive: false
+        isActive: false,
       });
       const p = await projects.get('199405fkkgi59');
       expect(p).toEqual({
         id: '199405fkkgi59',
         name: 'Joe',
         description: 'Some guy named Joe who sells week on my street corner',
-        isActive: false
+        isActive: false,
       });
     });
   });
@@ -113,13 +113,13 @@ describe('ProjectsService', () => {
       projects.add({
         name: 'Fred Flintstone',
         description: 'Head of a modnern stone-age family',
-        isActive: true
+        isActive: true,
       });
       expect(collection.add).toHaveBeenCalledTimes(1);
       expect(collection.add).toHaveBeenCalledWith({
         name: 'Fred Flintstone',
         description: 'Head of a modnern stone-age family',
-        isActive: true
+        isActive: true,
       });
     });
   });
@@ -136,7 +136,7 @@ describe('ProjectsService', () => {
         id: '49950399KT',
         name: 'Kyle',
         description: 'some kid in South Park',
-        isActive: true
+        isActive: true,
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('49950399KT');
@@ -147,13 +147,13 @@ describe('ProjectsService', () => {
         id: '49950399KT',
         name: 'Kyle',
         description: 'some kid in South Park',
-        isActive: true
+        isActive: true,
       });
       expect(document.set).toHaveBeenCalledTimes(1);
       expect(document.set).toHaveBeenCalledWith({
         name: 'Kyle',
         description: 'some kid in South Park',
-        isActive: true
+        isActive: true,
       });
     });
   });

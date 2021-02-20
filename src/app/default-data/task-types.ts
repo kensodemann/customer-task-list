@@ -3,7 +3,7 @@ export const enum TaskTypes {
   Feature = 'Feature',
   Research = 'Research',
   Review = 'Review',
-  Task = 'Task'
+  Task = 'Task',
 }
 
 export const taskTypes: Array<string> = [
@@ -11,5 +11,5 @@ export const taskTypes: Array<string> = [
   TaskTypes.Feature,
   TaskTypes.Research,
   TaskTypes.Review,
-  TaskTypes.Task
+  TaskTypes.Task,
 ];

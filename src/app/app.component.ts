@@ -10,7 +10,7 @@ import { load as loadProject } from './store/actions/project.actions';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
 })
 export class AppComponent implements OnInit {
   showTabs: boolean;
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.afAuth.authState.subscribe(u => {
+    this.afAuth.authState.subscribe((u) => {
       this.store.dispatch(loginChanged({ email: u && u.email }));
       if (u) {
         this.store.dispatch(loadProject());

@@ -10,7 +10,7 @@ import {
   createAngularFirestoreMock,
   createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock,
-  createDocumentSnapshotMock
+  createDocumentSnapshotMock,
 } from '@test/mocks';
 
 describe('TasksService', () => {
@@ -22,7 +22,7 @@ describe('TasksService', () => {
     collection = createAngularFirestoreCollectionMock();
     angularFirestore.collection.mockReturnValue(collection);
     TestBed.configureTestingModule({
-      providers: [{ provide: AngularFirestore, useValue: angularFirestore }]
+      providers: [{ provide: AngularFirestore, useValue: angularFirestore }],
     });
   });
 
@@ -58,7 +58,7 @@ describe('TasksService', () => {
             status: Statuses.Closed,
             priority: Priorities.Normal,
             projectId: '451BK',
-            projectName: 'Book Burners R Us'
+            projectName: 'Book Burners R Us',
           }),
           createAction('73SC', {
             name: 'Bang the Big',
@@ -68,11 +68,11 @@ describe('TasksService', () => {
             status: Statuses.Open,
             priority: Priorities.Normal,
             projectId: '451BK',
-            projectName: 'Book Burners R Us'
-          })
+            projectName: 'Book Burners R Us',
+          }),
         ])
       );
-      tasks.all().subscribe(d =>
+      tasks.all().subscribe((d) =>
         expect(d).toEqual([
           {
             id: '42DA',
@@ -83,7 +83,7 @@ describe('TasksService', () => {
             status: Statuses.Closed,
             priority: Priorities.Normal,
             projectId: '451BK',
-            projectName: 'Book Burners R Us'
+            projectName: 'Book Burners R Us',
           },
           {
             id: '73SC',
@@ -94,8 +94,8 @@ describe('TasksService', () => {
             status: Statuses.Open,
             priority: Priorities.Normal,
             projectId: '451BK',
-            projectName: 'Book Burners R Us'
-          }
+            projectName: 'Book Burners R Us',
+          },
         ])
       );
     });
@@ -129,7 +129,7 @@ describe('TasksService', () => {
             status: Statuses.Closed,
             priority: Priorities.Normal,
             projectId: '451BK',
-            projectName: 'Book Burners R Us'
+            projectName: 'Book Burners R Us',
           }),
           createAction('73SC', {
             name: 'Bang the Big',
@@ -139,11 +139,11 @@ describe('TasksService', () => {
             status: Statuses.Open,
             priority: Priorities.Normal,
             projectId: '451BK',
-            projectName: 'Book Burners R Us'
-          })
+            projectName: 'Book Burners R Us',
+          }),
         ])
       );
-      tasks.forProject('451BK').subscribe(d =>
+      tasks.forProject('451BK').subscribe((d) =>
         expect(d).toEqual([
           {
             id: '42DA',
@@ -154,7 +154,7 @@ describe('TasksService', () => {
             status: Statuses.Closed,
             priority: Priorities.Normal,
             projectId: '451BK',
-            projectName: 'Book Burners R Us'
+            projectName: 'Book Burners R Us',
           },
           {
             id: '73SC',
@@ -165,8 +165,8 @@ describe('TasksService', () => {
             status: Statuses.Open,
             priority: Priorities.Normal,
             projectId: '451BK',
-            projectName: 'Book Burners R Us'
-          }
+            projectName: 'Book Burners R Us',
+          },
         ])
       );
     });
@@ -208,7 +208,7 @@ describe('TasksService', () => {
         status: Statuses.Open,
         priority: Priorities.Normal,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       });
       const t = await tasks.get('199405fkkgi59');
       expect(t).toEqual({
@@ -220,7 +220,7 @@ describe('TasksService', () => {
         status: Statuses.Open,
         priority: Priorities.Normal,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       });
     });
   });
@@ -235,7 +235,7 @@ describe('TasksService', () => {
         status: Statuses.Open,
         priority: Priorities.Normal,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       });
       expect(collection.add).toHaveBeenCalledTimes(1);
       expect(collection.add).toHaveBeenCalledWith({
@@ -246,7 +246,7 @@ describe('TasksService', () => {
         status: Statuses.Open,
         priority: Priorities.Normal,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       });
     });
   });
@@ -270,7 +270,7 @@ describe('TasksService', () => {
         endDate: '2019-01-17',
         projectId: '73SC',
         projectName: 'Wheels',
-        enteredOn: new firestore.Timestamp(1545765815, 0)
+        enteredOn: new firestore.Timestamp(1545765815, 0),
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('88395AA930FE');
@@ -288,7 +288,7 @@ describe('TasksService', () => {
         endDate: '2019-01-17',
         projectId: '73SC',
         projectName: 'Wheels',
-        enteredOn: new firestore.Timestamp(1545765815, 0)
+        enteredOn: new firestore.Timestamp(1545765815, 0),
       });
       expect(document.set).toHaveBeenCalledTimes(1);
       expect(document.set).toHaveBeenCalledWith({
@@ -301,7 +301,7 @@ describe('TasksService', () => {
         endDate: '2019-01-17',
         projectId: '73SC',
         projectName: 'Wheels',
-        enteredOn: new firestore.Timestamp(1545765815, 0)
+        enteredOn: new firestore.Timestamp(1545765815, 0),
       });
     });
   });
@@ -323,7 +323,7 @@ describe('TasksService', () => {
         enteredOn: new firestore.Timestamp(0, 0),
         priority: Priorities.Normal,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('49950399KT');
@@ -339,7 +339,7 @@ describe('TasksService', () => {
         enteredOn: new firestore.Timestamp(0, 0),
         priority: Priorities.Normal,
         projectId: '451BK',
-        projectName: 'Book Burners R Us'
+        projectName: 'Book Burners R Us',
       });
       expect(document.delete).toHaveBeenCalledTimes(1);
     });

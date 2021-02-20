@@ -15,13 +15,13 @@ export const initialState = adapter.getInitialState({ loading: false });
 
 const projectReducer = createReducer(
   initialState,
-  on(ProjectActions.load, state => adapter.removeAll({ ...state, loading: true, error: undefined })),
+  on(ProjectActions.load, (state) => adapter.removeAll({ ...state, loading: true, error: undefined })),
   on(ProjectActions.loadFailure, (state, { error }) => ({ ...state, error, loading: false })),
 
-  on(ProjectActions.create, state => ({ ...state, loading: true, error: undefined })),
+  on(ProjectActions.create, (state) => ({ ...state, loading: true, error: undefined })),
   on(ProjectActions.createFailure, (state, { error }) => ({ ...state, error, loading: false })),
 
-  on(ProjectActions.update, state => ({ ...state, loading: true, error: undefined })),
+  on(ProjectActions.update, (state) => ({ ...state, loading: true, error: undefined })),
   on(ProjectActions.updateFailure, (state, { error }) => ({ ...state, error, loading: false })),
 
   on(ProjectActions.projectAdded, (state, { project }) => adapter.addOne(project, { ...state, loading: false })),
@@ -41,5 +41,5 @@ export const selectors = {
   selectIds,
   selectEntities,
   selectAll,
-  selectTotal
+  selectTotal,
 };

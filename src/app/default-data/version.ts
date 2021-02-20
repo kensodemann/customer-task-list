@@ -3,5 +3,5 @@
 export const version = {
   version: '2.2.0',
   name: 'great conjunction',
-  date: '2020-01-01'
+  date: '2020-01-01',
 };

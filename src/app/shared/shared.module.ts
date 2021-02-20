@@ -7,12 +7,8 @@ import { NoteListItemComponent } from './note-list-item/note-list-item.component
 import { NotesListComponent } from './notes-list/notes-list.component';
 
 @NgModule({
-  declarations: [
-    NoteListItemComponent,
-    NotesListComponent,
-    TaskListItemComponent
-  ],
+  declarations: [NoteListItemComponent, NotesListComponent, TaskListItemComponent],
   exports: [NoteListItemComponent, NotesListComponent, TaskListItemComponent],
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule],
 })
 export class SharedModule {}

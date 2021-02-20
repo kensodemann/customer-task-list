@@ -24,13 +24,13 @@ describe('ProjectEditorComponent', () => {
       providers: [
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock(createOverlayElementMock())
+          useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
         },
         provideMockStore<{ projects: ProjectState }>({
-          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } }
-        })
+          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+        }),
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -143,7 +143,7 @@ describe('ProjectEditorComponent', () => {
         id: '531LLS',
         name: 'Lillies and Cream',
         description: 'I have no idea what that would be',
-        isActive: false
+        isActive: false,
       };
       fixture.detectChanges();
     });
@@ -175,7 +175,7 @@ describe('ProjectEditorComponent', () => {
         expect(store.dispatch).toHaveBeenCalledTimes(1);
         expect(store.dispatch).toHaveBeenCalledWith(
           update({
-            project: { id: '531LLS', name: editor.name, description: editor.description, isActive: editor.isActive }
+            project: { id: '531LLS', name: editor.name, description: editor.description, isActive: editor.isActive },
           })
         );
       });
@@ -190,7 +190,7 @@ describe('ProjectEditorComponent', () => {
         expect(store.dispatch).toHaveBeenCalledTimes(1);
         expect(store.dispatch).toHaveBeenCalledWith(
           update({
-            project: { id: '531LLS', name: editor.name, description: editor.description, isActive: editor.isActive }
+            project: { id: '531LLS', name: editor.name, description: editor.description, isActive: editor.isActive },
           })
         );
       });

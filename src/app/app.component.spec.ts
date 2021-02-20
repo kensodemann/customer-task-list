@@ -23,10 +23,10 @@ describe('AppComponent', () => {
         { provide: NavController, useFactory: createNavControllerMock },
         {
           provide: ApplicationService,
-          useFactory: createApplicationServiceMock
+          useFactory: createApplicationServiceMock,
         },
-        provideMockStore<State>()
-      ]
+        provideMockStore<State>(),
+      ],
     }).compileComponents();
   }));
 

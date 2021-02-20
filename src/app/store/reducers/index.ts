@@ -11,7 +11,7 @@ export interface State {
 
 export const reducers: ActionReducerMap<State> = {
   auth: authReducer,
-  projects: projectReducer
+  projects: projectReducer,
 };
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];

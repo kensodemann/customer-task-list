@@ -12,8 +12,8 @@ describe('AuthGuardService', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: AngularFireAuth, useFactory: createAngularFireAuthMock },
-        { provide: NavController, useFactory: createNavControllerMock }
-      ]
+        { provide: NavController, useFactory: createNavControllerMock },
+      ],
     });
   });
 

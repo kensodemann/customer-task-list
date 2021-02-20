@@ -26,15 +26,15 @@ describe('NotesListComponent', () => {
       providers: [
         {
           provide: AlertController,
-          useFactory: () => createOverlayControllerMock(alert)
+          useFactory: () => createOverlayControllerMock(alert),
         },
         {
           provide: ModalController,
-          useFactory: () => createOverlayControllerMock(modal)
+          useFactory: () => createOverlayControllerMock(modal),
         },
-        { provide: NotesService, useFactory: createNotesServiceMock }
+        { provide: NotesService, useFactory: createNotesServiceMock },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -63,20 +63,20 @@ describe('NotesListComponent', () => {
         id: '42995849',
         text: 'this is note #1',
         enteredOn: new firestore.Timestamp(14123409350, 0),
-        itemId: '314159PI'
+        itemId: '314159PI',
       },
       {
         id: 'akfkig92034',
         text: 'this is note #2',
         enteredOn: new firestore.Timestamp(14129340059, 0),
-        itemId: '314159PI'
+        itemId: '314159PI',
       },
       {
         id: 'zzdf9249',
         text: 'this is note #3',
         enteredOn: new firestore.Timestamp(14994409350, 0),
-        itemId: '314159PI'
-      }
+        itemId: '314159PI',
+      },
     ];
     notes.allFor.mockReturnValue(of(n));
     fixture.detectChanges();
@@ -101,7 +101,7 @@ describe('NotesListComponent', () => {
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
         component: NoteEditorComponent,
-        componentProps: { itemId: '4273' }
+        componentProps: { itemId: '4273' },
       });
     });
 
@@ -120,7 +120,7 @@ describe('NotesListComponent', () => {
       id: '42DA',
       text: 'First find Deep Thought, then get the answer from it',
       enteredOn: new firestore.Timestamp(14324053, 0),
-      itemId: '451BK'
+      itemId: '451BK',
     };
 
     it('creates an alert', () => {
@@ -173,7 +173,7 @@ describe('NotesListComponent', () => {
         id: '4277785',
         text: 'this is just a test note, nothing more',
         itemId: '314159PI',
-        enteredOn: new firestore.Timestamp(1432430034, 0)
+        enteredOn: new firestore.Timestamp(1432430034, 0),
       });
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
@@ -184,7 +184,7 @@ describe('NotesListComponent', () => {
         id: '4277785',
         text: 'this is just a test note, nothing more',
         itemId: '314159PI',
-        enteredOn: new firestore.Timestamp(1432430034, 0)
+        enteredOn: new firestore.Timestamp(1432430034, 0),
       });
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
@@ -194,9 +194,9 @@ describe('NotesListComponent', () => {
             id: '4277785',
             text: 'this is just a test note, nothing more',
             itemId: '314159PI',
-            enteredOn: new firestore.Timestamp(1432430034, 0)
-          }
-        }
+            enteredOn: new firestore.Timestamp(1432430034, 0),
+          },
+        },
       });
     });
 
@@ -205,7 +205,7 @@ describe('NotesListComponent', () => {
         id: '4277785',
         text: 'this is just a test note, nothing more',
         itemId: '314159PI',
-        enteredOn: new firestore.Timestamp(1432430034, 0)
+        enteredOn: new firestore.Timestamp(1432430034, 0),
       });
       expect(modal.present).toHaveBeenCalledTimes(1);
     });

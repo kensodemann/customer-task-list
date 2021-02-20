@@ -7,6 +7,6 @@ export function createFirestoreDataServiceMock() {
     get: jest.fn(() => Promise.resolve()),
     add: jest.fn(() => Promise.resolve()),
     delete: jest.fn(() => Promise.resolve()),
-    update: jest.fn(() => Promise.resolve())
+    update: jest.fn(() => Promise.resolve()),
   };
 }
