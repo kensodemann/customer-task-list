@@ -1,6 +1,7 @@
+// eslint-disable-next-line no-shadow
 export const enum Priorities {
-  Low = 'Low',
-  Normal = 'Normal',
-  High = 'High',
+  low = 'Low',
+  normal = 'Normal',
+  high = 'High',
 }
-export const priorities: Array<string> = [Priorities.Low, Priorities.Normal, Priorities.High];
+export const priorities: Array<string> = [Priorities.low, Priorities.normal, Priorities.high];

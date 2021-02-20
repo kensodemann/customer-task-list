@@ -1,18 +1,17 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { of } from 'rxjs';
-
-import { ProjectsService } from './projects.service';
 import {
   createAction,
-  createAngularFirestoreMock,
   createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock,
+  createAngularFirestoreMock,
   createDocumentSnapshotMock,
 } from '@test/mocks';
+import { of } from 'rxjs';
+import { ProjectsService } from './projects.service';
 
 describe('ProjectsService', () => {
-  let collection;
+  let collection: any;
   let projects: ProjectsService;
 
   beforeEach(() => {
@@ -73,7 +72,7 @@ describe('ProjectsService', () => {
   });
 
   describe('get', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);
@@ -125,7 +124,7 @@ describe('ProjectsService', () => {
   });
 
   describe('update', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);

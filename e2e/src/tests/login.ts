@@ -5,14 +5,14 @@ import { LoginPage } from '../page-objects/pages/login.po';
 import { MenuPage } from '../page-objects/pages/menu.po';
 import { TasksPage } from '../page-objects/pages/tasks.po';
 
-export function registerLoginTests(
+export const registerLoginTests = (
   about: AboutPage,
   app: AppPage,
   projects: ProjectsPage,
   login: LoginPage,
   menu: MenuPage,
   tasks: TasksPage
-) {
+) => {
   describe('Login', () => {
     beforeEach(() => {
       app.load();
@@ -83,4 +83,4 @@ export function registerLoginTests(
       });
     });
   });
-}
+};

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { DocumentChangeAction } from '@angular/fire/firestore';
-import { Action } from '@ngrx/store';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of, from } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
-
+import { Project } from '@app/models';
 import { ProjectsService } from '@app/services/firestore-data';
 import * as projectActions from '@app/store/actions/project.actions';
-import { Project } from '@app/models';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
+import { from, of } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 
 interface ProjectChangeAction {
   type: string;
@@ -17,8 +16,6 @@ interface ProjectChangeAction {
 
 @Injectable()
 export class ProjectEffects {
-  constructor(private actions$: Actions, private projectsService: ProjectsService) {}
-
   changes$ = createEffect(() =>
     // TODO: We need another kind of "load" method that returns a different observable
     this.actions$.pipe(
@@ -55,6 +52,8 @@ export class ProjectEffects {
       )
     )
   );
+
+  constructor(private actions$: Actions, private projectsService: ProjectsService) {}
 
   private unpackActions(actions: Array<DocumentChangeAction<Project>>): Array<ProjectChangeAction> {
     let mainActions: Array<DocumentChangeAction<Project>>;

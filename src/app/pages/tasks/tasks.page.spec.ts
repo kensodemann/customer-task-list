@@ -1,32 +1,30 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { Priorities, Statuses, TaskTypes } from '@app/default-data';
+import { TaskEditorComponent } from '@app/editors';
+import { Task } from '@app/models/task';
+import { TasksService } from '@app/services/firestore-data';
+import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
+import { SharedModule } from '@app/shared';
+import { logout } from '@app/store/actions/auth.actions';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { firestore } from 'firebase/app';
-import { Subject } from 'rxjs';
-
-import { logout } from '@app/store/actions/auth.actions';
-import { Priorities, Statuses, TaskTypes } from '@app/default-data';
-import { SharedModule } from '@app/shared';
-import { TaskEditorComponent } from '@app/editors';
-import { TasksPage } from './tasks.page';
-import { TasksService } from '@app/services/firestore-data';
-import { Task } from '@app/models/task';
-
-import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
 import {
   createActivatedRouteMock,
   createNavControllerMock,
   createOverlayControllerMock,
   createOverlayElementMock,
+  fakeTimestamp,
 } from '@test/mocks';
+import { Subject } from 'rxjs';
+import { TasksPage } from './tasks.page';
 
 describe('TasksPage', () => {
-  let alert;
+  let alert: any;
   let fixture: ComponentFixture<TasksPage>;
-  let modal;
+  let modal: any;
   let page: TasksPage;
   let taskList: Subject<Array<Task>>;
   let testTasks: Array<Task>;
@@ -35,35 +33,37 @@ describe('TasksPage', () => {
   let onHoldTasks: Array<Task>;
   let closedTasks: Array<Task>;
 
-  beforeEach(async(() => {
-    alert = createOverlayElementMock();
-    modal = createOverlayElementMock();
-    TestBed.configureTestingModule({
-      declarations: [TasksPage],
-      imports: [SharedModule],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
-        {
-          provide: AlertController,
-          useFactory: () => createOverlayControllerMock(alert),
-        },
-        {
-          provide: ModalController,
-          useFactory: () => createOverlayControllerMock(modal),
-        },
-        { provide: NavController, useFactory: createNavControllerMock },
-        { provide: TasksService, useFactory: createTasksServiceMock },
-        provideMockStore(),
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      alert = createOverlayElementMock();
+      modal = createOverlayElementMock();
+      TestBed.configureTestingModule({
+        declarations: [TasksPage],
+        imports: [SharedModule],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
+          {
+            provide: AlertController,
+            useFactory: () => createOverlayControllerMock(alert),
+          },
+          {
+            provide: ModalController,
+            useFactory: () => createOverlayControllerMock(modal),
+          },
+          { provide: NavController, useFactory: createNavControllerMock },
+          { provide: TasksService, useFactory: createTasksServiceMock },
+          provideMockStore(),
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
-    const tasks = TestBed.get(TasksService);
+    const tasks = TestBed.inject(TasksService);
     taskList = new Subject();
-    tasks.all.mockReturnValue(taskList);
-    tasks.forProject.mockReturnValue(taskList);
+    (tasks.all as jest.Mock).mockReturnValue(taskList);
+    (tasks.forProject as jest.Mock).mockReturnValue(taskList);
     initializeTestTasks();
     fixture = TestBed.createComponent(TasksPage);
     page = fixture.componentInstance;
@@ -75,7 +75,7 @@ describe('TasksPage', () => {
   });
 
   it('gets the project id and status from the route', () => {
-    const route = TestBed.get(ActivatedRoute);
+    const route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
     expect(route.snapshot.paramMap.get).toHaveBeenCalledTimes(2);
     expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('projectId');
@@ -83,14 +83,14 @@ describe('TasksPage', () => {
   });
 
   it('it does not show the back button if navigated to normally', () => {
-    const route = TestBed.get(ActivatedRoute);
-    route.snapshot.paramMap.get.mockReturnValue(undefined);
+    const route = TestBed.inject(ActivatedRoute);
+    (route.snapshot.paramMap.get as jest.Mock).mockReturnValue(undefined);
     fixture.detectChanges();
     expect(page.showBackButton).toBeFalsy();
   });
 
   it('it shows the back button if navigated to for a project', () => {
-    const route = TestBed.get(ActivatedRoute);
+    const route = TestBed.inject(ActivatedRoute);
     route.snapshot.paramMap.get = jest.fn((arg) => {
       if (arg === 'projectId') {
         return '1234';
@@ -101,15 +101,15 @@ describe('TasksPage', () => {
   });
 
   it('sets up an observable on all tasks if there is no project', () => {
-    const tasks = TestBed.get(TasksService);
+    const tasks = TestBed.inject(TasksService);
     fixture.detectChanges();
     expect(tasks.all).toHaveBeenCalledTimes(1);
     expect(tasks.forProject).not.toHaveBeenCalled();
   });
 
   it('sets up an observable on the project tasks if there is a cutomer', () => {
-    const route = TestBed.get(ActivatedRoute);
-    const tasks = TestBed.get(TasksService);
+    const route = TestBed.inject(ActivatedRoute);
+    const tasks = TestBed.inject(TasksService);
     route.snapshot.paramMap.get = jest.fn((arg) => {
       if (arg === 'projectId') {
         return '33859940039kkd032';
@@ -129,12 +129,12 @@ describe('TasksPage', () => {
     });
 
     it('returns in process tasks if status of in process specified', () => {
-      const route = TestBed.get(ActivatedRoute);
+      const route = TestBed.inject(ActivatedRoute);
       route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
-          return Statuses.InProcess;
+          return Statuses.inProcess;
         }
       });
       fixture.detectChanges();
@@ -143,12 +143,12 @@ describe('TasksPage', () => {
     });
 
     it('returns empty array if status other than open is specified', () => {
-      const route = TestBed.get(ActivatedRoute);
+      const route = TestBed.inject(ActivatedRoute);
       route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
-          return Statuses.Closed;
+          return Statuses.closed;
         }
       });
       fixture.detectChanges();
@@ -165,12 +165,12 @@ describe('TasksPage', () => {
     });
 
     it('returns open tasks if status of open specified', () => {
-      const route = TestBed.get(ActivatedRoute);
+      const route = TestBed.inject(ActivatedRoute);
       route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
-          return Statuses.Open;
+          return Statuses.open;
         }
       });
       fixture.detectChanges();
@@ -179,12 +179,12 @@ describe('TasksPage', () => {
     });
 
     it('returns empty array if status other than open is specified', () => {
-      const route = TestBed.get(ActivatedRoute);
+      const route = TestBed.inject(ActivatedRoute);
       route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
-          return Statuses.Closed;
+          return Statuses.closed;
         }
       });
       fixture.detectChanges();
@@ -201,12 +201,12 @@ describe('TasksPage', () => {
     });
 
     it('returns On Hold tasks if status of On Hold specified', () => {
-      const route = TestBed.get(ActivatedRoute);
+      const route = TestBed.inject(ActivatedRoute);
       route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
-          return Statuses.OnHold;
+          return Statuses.onHold;
         }
       });
       fixture.detectChanges();
@@ -215,12 +215,12 @@ describe('TasksPage', () => {
     });
 
     it('returns empty array if status other than on hold is specified', () => {
-      const route = TestBed.get(ActivatedRoute);
+      const route = TestBed.inject(ActivatedRoute);
       route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
-          return Statuses.Open;
+          return Statuses.open;
         }
       });
       fixture.detectChanges();
@@ -237,12 +237,12 @@ describe('TasksPage', () => {
     });
 
     it('returns closed tasks if status of closed specified', () => {
-      const route = TestBed.get(ActivatedRoute);
+      const route = TestBed.inject(ActivatedRoute);
       route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
-          return Statuses.Closed;
+          return Statuses.closed;
         }
       });
       fixture.detectChanges();
@@ -251,12 +251,12 @@ describe('TasksPage', () => {
     });
 
     it('returns empty array if status other than closed is specified', () => {
-      const route = TestBed.get(ActivatedRoute);
+      const route = TestBed.inject(ActivatedRoute);
       route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
-          return Statuses.OnHold;
+          return Statuses.onHold;
         }
       });
       fixture.detectChanges();
@@ -274,23 +274,23 @@ describe('TasksPage', () => {
       id: '42DA',
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
-      enteredOn: new firestore.Timestamp(14324053, 0),
-      type: TaskTypes.Feature,
-      status: Statuses.Open,
-      priority: Priorities.Normal,
+      enteredOn: fakeTimestamp(14324053),
+      type: TaskTypes.feature,
+      status: Statuses.open,
+      priority: Priorities.normal,
       projectId: '451BK',
       projectName: 'Book Burners R Us',
     };
 
     it('saves the task', () => {
-      const tasks = TestBed.get(TasksService);
+      const tasks = TestBed.inject(TasksService);
       page.close(task);
       expect(tasks.update).toHaveBeenCalledTimes(1);
     });
 
     it('sets the status to closed', () => {
-      const expected = { ...task, status: Statuses.Closed };
-      const tasks = TestBed.get(TasksService);
+      const expected = { ...task, status: Statuses.closed };
+      const tasks = TestBed.inject(TasksService);
       page.close(task);
       expect(tasks.update).toHaveBeenCalledWith(expected);
     });
@@ -305,16 +305,16 @@ describe('TasksPage', () => {
       id: '42DA',
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
-      enteredOn: new firestore.Timestamp(14324053, 0),
-      type: TaskTypes.Feature,
-      status: Statuses.Closed,
-      priority: Priorities.Normal,
+      enteredOn: fakeTimestamp(14324053),
+      type: TaskTypes.feature,
+      status: Statuses.closed,
+      priority: Priorities.normal,
       projectId: '451BK',
       projectName: 'Book Burners R Us',
     };
 
     it('creates an alert', () => {
-      const alertController = TestBed.get(AlertController);
+      const alertController = TestBed.inject(AlertController);
       page.delete(task);
       expect(alertController.create).toHaveBeenCalledTimes(1);
     });
@@ -325,18 +325,18 @@ describe('TasksPage', () => {
     });
 
     it('does the delete on "Yes"', () => {
-      const alertController = TestBed.get(AlertController);
-      const tasks = TestBed.get(TasksService);
+      const alertController = TestBed.inject(AlertController);
+      const tasks = TestBed.inject(TasksService);
       page.delete(task);
-      const button = alertController.create.mock.calls[0][0].buttons[0];
+      const button = (alertController.create as jest.Mock).mock.calls[0][0].buttons[0];
       button.handler();
       expect(tasks.delete).toHaveBeenCalledTimes(1);
     });
 
     it('does not delete on "No"', () => {
-      const alertController = TestBed.get(AlertController);
+      const alertController = TestBed.inject(AlertController);
       page.delete(task);
-      const button = alertController.create.mock.calls[0][0].buttons[1];
+      const button = (alertController.create as jest.Mock).mock.calls[0][0].buttons[1];
       expect(button.role).toEqual('cancel');
       expect(button.handler).toBeUndefined();
     });
@@ -344,14 +344,14 @@ describe('TasksPage', () => {
 
   describe('add task', () => {
     it('creates a modal', () => {
-      const modalController = TestBed.get(ModalController);
+      const modalController = TestBed.inject(ModalController);
       fixture.detectChanges();
       page.add();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the task editor component', () => {
-      const modalController = TestBed.get(ModalController);
+      const modalController = TestBed.inject(ModalController);
       fixture.detectChanges();
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
@@ -361,8 +361,8 @@ describe('TasksPage', () => {
     });
 
     it('passes the project ID if one is specified in the route', () => {
-      const modalController = TestBed.get(ModalController);
-      const route = TestBed.get(ActivatedRoute);
+      const modalController = TestBed.inject(ModalController);
+      const route = TestBed.inject(ActivatedRoute);
       route.snapshot.paramMap.get = jest.fn((arg) => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
@@ -406,8 +406,8 @@ describe('TasksPage', () => {
       },
     ].forEach((test) => {
       it(`navigates to the task from the ${test.case} task list`, () => {
-        const navController = TestBed.get(NavController);
-        const route = TestBed.get(ActivatedRoute);
+        const navController = TestBed.inject(NavController);
+        const route = TestBed.inject(ActivatedRoute);
         route.snapshot.paramMap.get = jest.fn((arg) => {
           if (arg === 'projectId') {
             return test.projectId;
@@ -421,10 +421,10 @@ describe('TasksPage', () => {
           id: 'S9590FGS',
           name: 'Model It',
           description: 'They need to see it to believe it',
-          enteredOn: new firestore.Timestamp(1440059420, 0),
-          type: TaskTypes.Research,
-          status: Statuses.OnHold,
-          priority: Priorities.Low,
+          enteredOn: fakeTimestamp(1440059420),
+          type: TaskTypes.research,
+          status: Statuses.onHold,
+          priority: Priorities.low,
           projectId: '451BK',
           projectName: 'Book Burners R Us',
         });
@@ -436,7 +436,7 @@ describe('TasksPage', () => {
 
   describe('logout', () => {
     it('dispatches the logout action', () => {
-      const store = TestBed.get(Store);
+      const store = TestBed.inject(Store);
       store.dispatch = jest.fn();
       page.logout();
       expect(store.dispatch).toHaveBeenCalledTimes(1);
@@ -444,16 +444,16 @@ describe('TasksPage', () => {
     });
   });
 
-  function initializeTestTasks() {
+  const initializeTestTasks = () => {
     testTasks = [
       {
         id: '42DA',
         name: 'Find the answer',
         description: 'First find Deep Thought, then get the answer from it',
-        enteredOn: new firestore.Timestamp(14324053, 0),
-        type: TaskTypes.Feature,
-        status: Statuses.Closed,
-        priority: Priorities.Normal,
+        enteredOn: fakeTimestamp(14324053),
+        type: TaskTypes.feature,
+        status: Statuses.closed,
+        priority: Priorities.normal,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -461,10 +461,10 @@ describe('TasksPage', () => {
         id: '399485',
         name: 'Eat some fish',
         description: 'Smartest creatures on Earth like fish',
-        enteredOn: new firestore.Timestamp(1440059420, 0),
-        type: TaskTypes.Task,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(1440059420),
+        type: TaskTypes.task,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -472,10 +472,10 @@ describe('TasksPage', () => {
         id: 'S9590FGS',
         name: 'Model It',
         description: 'They need to see it to believe it',
-        enteredOn: new firestore.Timestamp(1039950234, 0),
-        type: TaskTypes.Research,
-        status: Statuses.OnHold,
-        priority: Priorities.Low,
+        enteredOn: fakeTimestamp(1039950234),
+        type: TaskTypes.research,
+        status: Statuses.onHold,
+        priority: Priorities.low,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -483,10 +483,10 @@ describe('TasksPage', () => {
         id: '39940500987',
         name: 'Respond to Review',
         description: 'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
-        enteredOn: new firestore.Timestamp(9940593, 0),
-        type: TaskTypes.Feature,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(9940593),
+        type: TaskTypes.feature,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '314PI',
         projectName: 'Baker Baker',
       },
@@ -494,10 +494,10 @@ describe('TasksPage', () => {
         id: '119490SDF1945',
         name: 'Create Test Data',
         description: 'Creating test data sucks',
-        enteredOn: new firestore.Timestamp(1536594025, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Closed,
-        priority: Priorities.Low,
+        enteredOn: fakeTimestamp(1536594025),
+        type: TaskTypes.research,
+        status: Statuses.closed,
+        priority: Priorities.low,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -505,10 +505,10 @@ describe('TasksPage', () => {
         id: '399405',
         name: 'Eat some chicken',
         description: 'It is good',
-        enteredOn: new firestore.Timestamp(914324053, 0),
-        type: TaskTypes.Review,
-        status: Statuses.OnHold,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(914324053),
+        type: TaskTypes.review,
+        status: Statuses.onHold,
+        priority: Priorities.high,
         projectId: '314PI',
         projectName: 'Baker Baker',
       },
@@ -516,10 +516,10 @@ describe('TasksPage', () => {
         id: '42DA424242',
         name: 'I am stuck on the answer',
         description: 'First find Deep Thought, then get the answer from it, then puzzle over it',
-        enteredOn: new firestore.Timestamp(1432405945, 0),
-        type: TaskTypes.Review,
-        status: Statuses.OnHold,
-        priority: Priorities.Normal,
+        enteredOn: fakeTimestamp(1432405945),
+        type: TaskTypes.review,
+        status: Statuses.onHold,
+        priority: Priorities.normal,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -527,10 +527,10 @@ describe('TasksPage', () => {
         id: '9999',
         name: 'Die',
         description: 'We all want to go to heaven, but no one wants to die to get there',
-        enteredOn: new firestore.Timestamp(1114324053, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(1114324053),
+        type: TaskTypes.research,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -538,10 +538,10 @@ describe('TasksPage', () => {
         id: '5599tuy838499395',
         name: 'Why is the sky blue?',
         description: 'I try to make it other colors, but it does not work. Find out why.',
-        enteredOn: new firestore.Timestamp(1586884995, 0),
-        type: TaskTypes.Research,
-        status: Statuses.InProcess,
-        priority: Priorities.Low,
+        enteredOn: fakeTimestamp(1586884995),
+        type: TaskTypes.research,
+        status: Statuses.inProcess,
+        priority: Priorities.low,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -549,10 +549,10 @@ describe('TasksPage', () => {
         id: '11111',
         name: 'One',
         description: 'One one one one one',
-        enteredOn: new firestore.Timestamp(1324053, 0),
-        type: TaskTypes.Feature,
-        status: Statuses.Closed,
-        priority: Priorities.Low,
+        enteredOn: fakeTimestamp(1324053),
+        type: TaskTypes.feature,
+        status: Statuses.closed,
+        priority: Priorities.low,
         projectId: '314PI',
         projectName: 'Baker Baker',
       },
@@ -560,10 +560,10 @@ describe('TasksPage', () => {
         id: '985SUCK34IT',
         name: 'The rain is wet',
         description: 'Find out why rain is so damn wet',
-        enteredOn: new firestore.Timestamp(1014324053, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(1014324053),
+        type: TaskTypes.research,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -571,10 +571,10 @@ describe('TasksPage', () => {
         id: '49499503fkkei395',
         name: 'The snow is hot',
         description: 'I got burned by the snow today. I thought it was supposed to be cold.',
-        enteredOn: new firestore.Timestamp(2948588495, 0),
-        type: TaskTypes.Bug,
-        status: Statuses.InProcess,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(2948588495),
+        type: TaskTypes.bug,
+        status: Statuses.inProcess,
+        priority: Priorities.high,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -582,10 +582,10 @@ describe('TasksPage', () => {
         id: '3948SLIP',
         name: 'People === Shit',
         description: 'You know it to be true',
-        enteredOn: new firestore.Timestamp(1351424053, 0),
-        type: TaskTypes.Feature,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(1351424053),
+        type: TaskTypes.feature,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -593,10 +593,10 @@ describe('TasksPage', () => {
         id: '42DA399458',
         name: 'Displute the answer',
         description: 'First find Deep Thought, then get the answer from it, then argue about that shit',
-        enteredOn: new firestore.Timestamp(1432405339, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        priority: Priorities.Low,
+        enteredOn: fakeTimestamp(1432405339),
+        type: TaskTypes.research,
+        status: Statuses.open,
+        priority: Priorities.low,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -604,10 +604,10 @@ describe('TasksPage', () => {
         id: '19945005996',
         name: 'Pull from the dark',
         description: 'Eliminate your enemy',
-        enteredOn: new firestore.Timestamp(948859023, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(948859023),
+        type: TaskTypes.research,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -615,10 +615,10 @@ describe('TasksPage', () => {
         id: '73SC',
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1432430034, 0),
-        type: TaskTypes.Task,
-        status: Statuses.Open,
-        priority: Priorities.Normal,
+        enteredOn: fakeTimestamp(1432430034),
+        type: TaskTypes.task,
+        status: Statuses.open,
+        priority: Priorities.normal,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -629,10 +629,10 @@ describe('TasksPage', () => {
         id: '49499503fkkei395',
         name: 'The snow is hot',
         description: 'I got burned by the snow today. I thought it was supposed to be cold.',
-        enteredOn: new firestore.Timestamp(2948588495, 0),
-        type: TaskTypes.Bug,
-        status: Statuses.InProcess,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(2948588495),
+        type: TaskTypes.bug,
+        status: Statuses.inProcess,
+        priority: Priorities.high,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -640,10 +640,10 @@ describe('TasksPage', () => {
         id: '5599tuy838499395',
         name: 'Why is the sky blue?',
         description: 'I try to make it other colors, but it does not work. Find out why.',
-        enteredOn: new firestore.Timestamp(1586884995, 0),
-        type: TaskTypes.Research,
-        status: Statuses.InProcess,
-        priority: Priorities.Low,
+        enteredOn: fakeTimestamp(1586884995),
+        type: TaskTypes.research,
+        status: Statuses.inProcess,
+        priority: Priorities.low,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -654,10 +654,10 @@ describe('TasksPage', () => {
         id: '39940500987',
         name: 'Respond to Review',
         description: 'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
-        enteredOn: new firestore.Timestamp(9940593, 0),
-        type: TaskTypes.Feature,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(9940593),
+        type: TaskTypes.feature,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '314PI',
         projectName: 'Baker Baker',
       },
@@ -665,10 +665,10 @@ describe('TasksPage', () => {
         id: '19945005996',
         name: 'Pull from the dark',
         description: 'Eliminate your enemy',
-        enteredOn: new firestore.Timestamp(948859023, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(948859023),
+        type: TaskTypes.research,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -676,10 +676,10 @@ describe('TasksPage', () => {
         id: '985SUCK34IT',
         name: 'The rain is wet',
         description: 'Find out why rain is so damn wet',
-        enteredOn: new firestore.Timestamp(1014324053, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(1014324053),
+        type: TaskTypes.research,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -687,10 +687,10 @@ describe('TasksPage', () => {
         id: '9999',
         name: 'Die',
         description: 'We all want to go to heaven, but no one wants to die to get there',
-        enteredOn: new firestore.Timestamp(1114324053, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(1114324053),
+        type: TaskTypes.research,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -698,10 +698,10 @@ describe('TasksPage', () => {
         id: '3948SLIP',
         name: 'People === Shit',
         description: 'You know it to be true',
-        enteredOn: new firestore.Timestamp(1351424053, 0),
-        type: TaskTypes.Feature,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(1351424053),
+        type: TaskTypes.feature,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -709,10 +709,10 @@ describe('TasksPage', () => {
         id: '399485',
         name: 'Eat some fish',
         description: 'Smartest creatures on Earth like fish',
-        enteredOn: new firestore.Timestamp(1440059420, 0),
-        type: TaskTypes.Task,
-        status: Statuses.Open,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(1440059420),
+        type: TaskTypes.task,
+        status: Statuses.open,
+        priority: Priorities.high,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -720,10 +720,10 @@ describe('TasksPage', () => {
         id: '73SC',
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1432430034, 0),
-        type: TaskTypes.Task,
-        status: Statuses.Open,
-        priority: Priorities.Normal,
+        enteredOn: fakeTimestamp(1432430034),
+        type: TaskTypes.task,
+        status: Statuses.open,
+        priority: Priorities.normal,
         projectId: '49950',
         projectName: 'Dolphin Schools',
       },
@@ -731,10 +731,10 @@ describe('TasksPage', () => {
         id: '42DA399458',
         name: 'Displute the answer',
         description: 'First find Deep Thought, then get the answer from it, then argue about that shit',
-        enteredOn: new firestore.Timestamp(1432405339, 0),
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        priority: Priorities.Low,
+        enteredOn: fakeTimestamp(1432405339),
+        type: TaskTypes.research,
+        status: Statuses.open,
+        priority: Priorities.low,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -745,10 +745,10 @@ describe('TasksPage', () => {
         id: '399405',
         name: 'Eat some chicken',
         description: 'It is good',
-        enteredOn: new firestore.Timestamp(914324053, 0),
-        type: TaskTypes.Review,
-        status: Statuses.OnHold,
-        priority: Priorities.High,
+        enteredOn: fakeTimestamp(914324053),
+        type: TaskTypes.review,
+        status: Statuses.onHold,
+        priority: Priorities.high,
         projectId: '314PI',
         projectName: 'Baker Baker',
       },
@@ -756,10 +756,10 @@ describe('TasksPage', () => {
         id: '42DA424242',
         name: 'I am stuck on the answer',
         description: 'First find Deep Thought, then get the answer from it, then puzzle over it',
-        enteredOn: new firestore.Timestamp(1432405945, 0),
-        type: TaskTypes.Review,
-        status: Statuses.OnHold,
-        priority: Priorities.Normal,
+        enteredOn: fakeTimestamp(1432405945),
+        type: TaskTypes.review,
+        status: Statuses.onHold,
+        priority: Priorities.normal,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
@@ -767,14 +767,14 @@ describe('TasksPage', () => {
         id: 'S9590FGS',
         name: 'Model It',
         description: 'They need to see it to believe it',
-        enteredOn: new firestore.Timestamp(1039950234, 0),
-        type: TaskTypes.Research,
-        status: Statuses.OnHold,
-        priority: Priorities.Low,
+        enteredOn: fakeTimestamp(1039950234),
+        type: TaskTypes.research,
+        status: Statuses.onHold,
+        priority: Priorities.low,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       },
     ];
-    closedTasks = testTasks.filter((t) => t.status === Statuses.Closed);
-  }
+    closedTasks = testTasks.filter((t) => t.status === Statuses.closed);
+  };
 });

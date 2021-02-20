@@ -21,6 +21,6 @@ export class TaskListItemComponent {
   }
 
   get showClosed(): boolean {
-    return this.task.status !== Statuses.Closed;
+    return this.task.status !== Statuses.closed;
   }
 }

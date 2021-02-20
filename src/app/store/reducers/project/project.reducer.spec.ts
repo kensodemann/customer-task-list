@@ -1,18 +1,18 @@
-import { Dictionary } from '@ngrx/entity';
-
-import { reducer, initialState } from './project.reducer';
 import { Project } from '@app/models';
 import {
-  ProjectActionTypes,
-  loadFailure,
+  create,
   createFailure,
-  updateFailure,
+  load,
+  loadFailure,
   projectAdded,
-  projectsAdded,
   projectModified,
   projectRemoved,
+  projectsAdded,
+  update,
+  updateFailure,
 } from '@app/store/actions/project.actions';
-import { testProjectIds, testProjects, initializeTestProjects } from '@test/data';
+import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
+import { initialState, reducer } from './project.reducer';
 
 beforeEach(() => {
   initializeTestProjects();
@@ -22,8 +22,9 @@ it('returns the default state', () => {
   expect(reducer(undefined, { type: 'NOOP' })).toEqual(initialState);
 });
 
-describe(ProjectActionTypes.load, () => {
+describe('load', () => {
   it('sets loading true, removes any entities, and undefines any error', () => {
+    const action = load();
     expect(
       reducer(
         {
@@ -32,7 +33,7 @@ describe(ProjectActionTypes.load, () => {
           entities: { ...testProjects },
           error: new Error('the last load failed'),
         },
-        { type: ProjectActionTypes.load }
+        action
       )
     ).toEqual({
       ...initialState,
@@ -42,7 +43,7 @@ describe(ProjectActionTypes.load, () => {
   });
 });
 
-describe(ProjectActionTypes.loadFailure, () => {
+describe('load failure', () => {
   it('sets the error and clears the loading flag', () => {
     const action = loadFailure({ error: new Error('Could not load the data') });
     expect(reducer({ ...initialState, loading: true }, action)).toEqual({
@@ -53,11 +54,10 @@ describe(ProjectActionTypes.loadFailure, () => {
   });
 });
 
-describe(ProjectActionTypes.create, () => {
+describe('create', () => {
   it('sets loading true and undefines any error', () => {
-    expect(
-      reducer({ ...initialState, error: new Error('the last create failed') }, { type: ProjectActionTypes.create })
-    ).toEqual({
+    const action = create(null);
+    expect(reducer({ ...initialState, error: new Error('the last create failed') }, action)).toEqual({
       ...initialState,
       loading: true,
       error: undefined,
@@ -65,7 +65,7 @@ describe(ProjectActionTypes.create, () => {
   });
 });
 
-describe(ProjectActionTypes.createFailure, () => {
+describe('create failure', () => {
   it('sets the error and clears the loading flag', () => {
     const action = createFailure({ error: new Error('Could not create the data') });
     expect(reducer({ ...initialState, loading: true }, action)).toEqual({
@@ -76,11 +76,10 @@ describe(ProjectActionTypes.createFailure, () => {
   });
 });
 
-describe(ProjectActionTypes.update, () => {
+describe('update', () => {
   it('sets loading true and undefines any error', () => {
-    expect(
-      reducer({ ...initialState, error: new Error('the last update failed') }, { type: ProjectActionTypes.update })
-    ).toEqual({
+    const action = update(null);
+    expect(reducer({ ...initialState, error: new Error('the last update failed') }, action)).toEqual({
       ...initialState,
       loading: true,
       error: undefined,
@@ -88,7 +87,7 @@ describe(ProjectActionTypes.update, () => {
   });
 });
 
-describe(ProjectActionTypes.updateFailure, () => {
+describe('update failure', () => {
   it('sets the error and clears the loading flag', () => {
     const action = updateFailure({ error: new Error('Could not update the data') });
     expect(reducer({ ...initialState, loading: true }, action)).toEqual({
@@ -99,7 +98,7 @@ describe(ProjectActionTypes.updateFailure, () => {
   });
 });
 
-describe(ProjectActionTypes.projectAdded, () => {
+describe('project added', () => {
   it('adds the project to an empty state', () => {
     const project: Project = {
       id: '194309fkadsfoi',
@@ -147,7 +146,7 @@ describe(ProjectActionTypes.projectAdded, () => {
   });
 });
 
-describe(ProjectActionTypes.projectsAdded, () => {
+describe('project added', () => {
   it('adds the projects to an empty state', () => {
     const projects: Array<Project> = [
       {
@@ -248,7 +247,7 @@ describe(ProjectActionTypes.projectsAdded, () => {
   });
 });
 
-describe(ProjectActionTypes.projectModified, () => {
+describe('project modified', () => {
   it('modifies the specified project', () => {
     const project: Project = {
       id: 'ri49950399vf',
@@ -268,7 +267,7 @@ describe(ProjectActionTypes.projectModified, () => {
   });
 });
 
-describe(ProjectActionTypes.projectRemoved, () => {
+describe('project removed', () => {
   it('deletes the timer', () => {
     const project: Project = {
       id: 'pproti3993kgi',

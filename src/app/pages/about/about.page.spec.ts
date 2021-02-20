@@ -1,22 +1,23 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { logout } from '@app/store/actions/auth.actions';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-
 import { AboutPage } from './about.page';
-import { logout } from '@app/store/actions/auth.actions';
 
 describe('AboutPage', () => {
   let page: AboutPage;
   let fixture: ComponentFixture<AboutPage>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [AboutPage],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [provideMockStore()],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AboutPage],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: [provideMockStore()],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AboutPage);
@@ -30,7 +31,7 @@ describe('AboutPage', () => {
 
   describe('logout', () => {
     it('dispatches the logout action', () => {
-      const store = TestBed.get(Store);
+      const store = TestBed.inject(Store);
       store.dispatch = jest.fn();
       page.logout();
       expect(store.dispatch).toHaveBeenCalledTimes(1);

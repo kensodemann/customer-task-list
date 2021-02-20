@@ -1,6 +1,6 @@
+import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
 import { ProjectState } from '../reducers/project/project.reducer';
-import { selectAllProjects, selectAllActiveProjects, selectProject } from './project.selectors';
-import { testProjects, testProjectIds, initializeTestProjects } from '@test/data';
+import { selectAllActiveProjects, selectAllProjects, selectProject } from './project.selectors';
 
 describe('project selectors', () => {
   let state: { projects: ProjectState };

@@ -1,7 +1,8 @@
+// eslint-disable-next-line no-shadow
 export const enum Statuses {
-  Open = 'Open',
-  InProcess = 'In Process',
-  OnHold = 'On Hold',
-  Closed = 'Closed',
+  open = 'Open',
+  inProcess = 'In Process',
+  onHold = 'On Hold',
+  closed = 'Closed',
 }
-export const statuses: Array<string> = [Statuses.Open, Statuses.InProcess, Statuses.OnHold, Statuses.Closed];
+export const statuses: Array<string> = [Statuses.open, Statuses.inProcess, Statuses.onHold, Statuses.closed];

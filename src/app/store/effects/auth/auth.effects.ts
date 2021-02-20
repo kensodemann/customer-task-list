@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { from, of } from 'rxjs';
-import { exhaustMap, map, catchError } from 'rxjs/operators';
+import { AuthenticationService } from '@app/services';
 import {
   login,
   loginFailure,
@@ -13,12 +11,12 @@ import {
   resetPasswordFailure,
   resetPasswordSuccess,
 } from '@app/store/actions/auth.actions';
-import { AuthenticationService } from '@app/services';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { from, of } from 'rxjs';
+import { catchError, exhaustMap, map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private authenticationService: AuthenticationService) {}
-
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(login),
@@ -54,4 +52,6 @@ export class AuthEffects {
       )
     )
   );
+
+  constructor(private actions$: Actions, private authenticationService: AuthenticationService) {}
 }

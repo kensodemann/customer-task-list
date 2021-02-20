@@ -1,33 +1,32 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { firestore } from 'firebase/app';
-
-import { NoteEditorComponent } from './note-editor.component';
 import { NotesService } from '@app/services/firestore-data';
-
-import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
 import { createNotesServiceMock } from '@app/services/firestore-data/mocks';
+import { IonicModule, ModalController } from '@ionic/angular';
+import { createOverlayControllerMock, createOverlayElementMock, fakeTimestamp } from '@test/mocks';
+import { NoteEditorComponent } from './note-editor.component';
 
 describe('NoteEditorComponent', () => {
   let editor: NoteEditorComponent;
   let fixture: ComponentFixture<NoteEditorComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [NoteEditorComponent],
-      imports: [FormsModule, IonicModule],
-      providers: [
-        {
-          provide: ModalController,
-          useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
-        },
-        { provide: NotesService, useFactory: createNotesServiceMock },
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [NoteEditorComponent],
+        imports: [FormsModule, IonicModule],
+        providers: [
+          {
+            provide: ModalController,
+            useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
+          },
+          { provide: NotesService, useFactory: createNotesServiceMock },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NoteEditorComponent);
@@ -41,7 +40,7 @@ describe('NoteEditorComponent', () => {
 
   describe('close', () => {
     it('dismisses the modal', () => {
-      const modal = TestBed.get(ModalController);
+      const modal = TestBed.inject(ModalController);
       fixture.detectChanges();
       editor.close();
       expect(modal.dismiss).toHaveBeenCalledTimes(1);
@@ -49,7 +48,7 @@ describe('NoteEditorComponent', () => {
   });
 
   describe('in add mode', () => {
-    let now;
+    let now: any;
     beforeEach(() => {
       now = Date.now;
       Date.now = jest.fn(() => new Date('2018-12-25T14:23:35.000-05:00').getTime());
@@ -65,25 +64,25 @@ describe('NoteEditorComponent', () => {
 
     describe('save', () => {
       it('adds the note', () => {
-        const notes = TestBed.get(NotesService);
+        const notes = TestBed.inject(NotesService);
         editor.text = 'The dude, he does abide';
         editor.save();
         expect(notes.add).toHaveBeenCalledTimes(1);
       });
 
       it('passes the text, enteredOn timestamp, and item ID', () => {
-        const notes = TestBed.get(NotesService);
+        const notes = TestBed.inject(NotesService);
         editor.text = 'The dude, he does abide';
         editor.save();
         expect(notes.add).toHaveBeenCalledWith({
           text: 'The dude, he does abide',
           itemId: '39945akf953',
-          enteredOn: new firestore.Timestamp(1545765815, 0),
+          enteredOn: fakeTimestamp(1545765815),
         });
       });
 
       it('dismisses the modal', () => {
-        const modal = TestBed.get(ModalController);
+        const modal = TestBed.inject(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
@@ -96,7 +95,7 @@ describe('NoteEditorComponent', () => {
         id: '531LLS',
         text: 'I have no idea what that would be',
         itemId: '420STNR',
-        enteredOn: new firestore.Timestamp(1545765815, 0),
+        enteredOn: fakeTimestamp(1545765815),
       };
       fixture.detectChanges();
     });
@@ -115,26 +114,26 @@ describe('NoteEditorComponent', () => {
 
     describe('save', () => {
       it('updates the node', () => {
-        const notes = TestBed.get(NotesService);
+        const notes = TestBed.inject(NotesService);
         editor.text = 'The Dude, he does abide';
         editor.save();
         expect(notes.update).toHaveBeenCalledTimes(1);
       });
 
       it('passes text', () => {
-        const notes = TestBed.get(NotesService);
+        const notes = TestBed.inject(NotesService);
         editor.text = 'The Dude, he does abide';
         editor.save();
         expect(notes.update).toHaveBeenCalledWith({
           id: '531LLS',
           text: 'The Dude, he does abide',
           itemId: '420STNR',
-          enteredOn: new firestore.Timestamp(1545765815, 0),
+          enteredOn: fakeTimestamp(1545765815),
         });
       });
 
       it('dismisses the modal', () => {
-        const modal = TestBed.get(ModalController);
+        const modal = TestBed.inject(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });

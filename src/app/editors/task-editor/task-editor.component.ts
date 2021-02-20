@@ -1,15 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { Subscription, Subject } from 'rxjs';
-import { addDays, addYears, differenceInCalendarDays, format, parseISO } from 'date-fns';
-import { firestore } from 'firebase/app';
-
-import { byName } from '@app/util';
-import { TasksService } from '@app/services/firestore-data';
 import { Priorities, priorities, Statuses, statuses, TaskTypes, taskTypes } from '@app/default-data';
 import { Task } from '@app/models';
-import { Store, select } from '@ngrx/store';
-import { State, selectAllProjects } from '@app/store';
+import { TasksService } from '@app/services/firestore-data';
+import { selectAllProjects, State } from '@app/store';
+import { byName } from '@app/util';
+import { ModalController } from '@ionic/angular';
+import { select, Store } from '@ngrx/store';
+import { addDays, addYears, differenceInCalendarDays, format, parseISO } from 'date-fns';
+import firebase from 'firebase/app';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -18,9 +17,6 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./task-editor.component.scss'],
 })
 export class TaskEditorComponent implements OnInit, OnDestroy {
-  private daysBetween;
-  private destroy$: Subject<boolean> = new Subject();
-
   title: string;
 
   projectId: string;
@@ -45,6 +41,9 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   warningMessage: string;
 
   projectSubscription: Subscription;
+
+  private daysBetween;
+  private destroy$: Subject<boolean> = new Subject();
 
   constructor(private modal: ModalController, private store: Store<State>, private tasks: TasksService) {}
 
@@ -135,9 +134,9 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   }
 
   private defaultTaskProperties() {
-    this.priority = Priorities.Normal;
-    this.status = Statuses.Open;
-    this.taskType = TaskTypes.Feature;
+    this.priority = Priorities.normal;
+    this.status = Statuses.open;
+    this.taskType = TaskTypes.feature;
   }
 
   private taskObject(): Task {
@@ -148,7 +147,7 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       status: this.status,
       type: this.taskType,
       priority: this.priority,
-      enteredOn: (this.task && this.task.enteredOn) || new firestore.Timestamp(this.getSeconds(), 0),
+      enteredOn: (this.task && this.task.enteredOn) || new firebase.firestore.Timestamp(this.getSeconds(), 0),
       projectId: this.projectId,
       projectName: project && project.name,
     };

@@ -1,38 +1,22 @@
 import { createAction, props } from '@ngrx/store';
 import { Project } from '@app/models';
 
-export enum ProjectActionTypes {
-  create = '[Project Editor] add project',
-  createSuccess = '[Projects API] create success',
-  createFailure = '[Projects API] create failure',
+export const create = createAction('[Project Editor] add project', props<{ project: Project }>());
+export const createSuccess = createAction('[Projects API] create success');
+export const createFailure = createAction('[Projects API] create failure', props<{ error: Error }>());
 
-  update = '[Project Editor] update project',
-  updateSuccess = '[Projects API] update success',
-  updateFailure = '[Projects API] update failure',
+export const update = createAction('[Project Editor] update project', props<{ project: Project }>());
+export const updateSuccess = createAction('[Projects API] update success');
+export const updateFailure = createAction('[Projects API] update failure', props<{ error: Error }>());
 
-  load = '[Application] load projects',
-  loadSuccess = '[Projects API] load success',
-  loadFailure = '[Projects API] load failure',
+export const load = createAction('[Application] load projects');
+export const loadSuccess = createAction('[Projects API] load success');
+export const loadFailure = createAction('[Projects API] load failure', props<{ error: Error }>());
 
-  projectAdded = '[Project Load State Change] added',
-  projectsAdded = '[Project Load State Change] added many',
-  projectModified = '[Project Load State Change] modified',
-  projectRemoved = '[Project Load State Change] removed',
-}
-
-export const create = createAction(ProjectActionTypes.create, props<{ project: Project }>());
-export const createSuccess = createAction(ProjectActionTypes.createSuccess);
-export const createFailure = createAction(ProjectActionTypes.createFailure, props<{ error: Error }>());
-
-export const update = createAction(ProjectActionTypes.update, props<{ project: Project }>());
-export const updateSuccess = createAction(ProjectActionTypes.updateSuccess);
-export const updateFailure = createAction(ProjectActionTypes.updateFailure, props<{ error: Error }>());
-
-export const load = createAction(ProjectActionTypes.load);
-export const loadSuccess = createAction(ProjectActionTypes.loadSuccess);
-export const loadFailure = createAction(ProjectActionTypes.loadFailure, props<{ error: Error }>());
-
-export const projectAdded = createAction(ProjectActionTypes.projectAdded, props<{ project: Project }>());
-export const projectsAdded = createAction(ProjectActionTypes.projectsAdded, props<{ projects: Array<Project> }>());
-export const projectModified = createAction(ProjectActionTypes.projectModified, props<{ project: Project }>());
-export const projectRemoved = createAction(ProjectActionTypes.projectRemoved, props<{ project: Project }>());
+export const projectAdded = createAction('[Project Load State Change] added', props<{ project: Project }>());
+export const projectsAdded = createAction(
+  '[Project Load State Change] added many',
+  props<{ projects: Array<Project> }>()
+);
+export const projectModified = createAction('[Project Load State Change] modified', props<{ project: Project }>());
+export const projectRemoved = createAction('[Project Load State Change] removed', props<{ project: Project }>());

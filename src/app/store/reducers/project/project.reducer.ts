@@ -13,7 +13,7 @@ const adapter = createEntityAdapter<Project>();
 
 export const initialState = adapter.getInitialState({ loading: false });
 
-const projectReducer = createReducer(
+export const reducer = createReducer<ProjectState>(
   initialState,
   on(ProjectActions.load, (state) => adapter.removeAll({ ...state, loading: true, error: undefined })),
   on(ProjectActions.loadFailure, (state, { error }) => ({ ...state, error, loading: false })),
@@ -31,10 +31,6 @@ const projectReducer = createReducer(
   ),
   on(ProjectActions.projectRemoved, (state, { project }) => adapter.removeOne(project.id, { ...state, loading: false }))
 );
-
-export function reducer(state: ProjectState | undefined, action: Action) {
-  return projectReducer(state, action);
-}
 
 const { selectIds, selectEntities, selectAll, selectTotal } = adapter.getSelectors();
 export const selectors = {

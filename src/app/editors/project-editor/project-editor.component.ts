@@ -14,9 +14,6 @@ import { update, create } from '@app/store/actions/project.actions';
   styleUrls: ['./project-editor.component.scss'],
 })
 export class ProjectEditorComponent implements OnDestroy, OnInit {
-  private allProjects: Array<Project>;
-  private destroy$: Subject<boolean> = new Subject();
-
   name: string;
   description: string;
   isActive: boolean;
@@ -25,6 +22,9 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
   title: string;
 
   project: Project;
+
+  private allProjects: Array<Project>;
+  private destroy$: Subject<boolean> = new Subject();
 
   constructor(private modal: ModalController, private store: Store<State>) {}
 

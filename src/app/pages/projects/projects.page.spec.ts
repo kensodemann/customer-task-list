@@ -1,58 +1,42 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ProjectEditorComponent } from '@app/editors';
+import { logout } from '@app/store/actions/auth.actions';
+import { ProjectState } from '@app/store/reducers/project/project.reducer';
 import { ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-
-import { ProjectsPage } from './projects.page';
-import { Project } from '@app/models';
-import { logout } from '@app/store/actions/auth.actions';
-
-import { ProjectEditorComponent } from '@app/editors';
+import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
 import { createNavControllerMock, createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
-import { testProjects, testProjectIds, initializeTestProjects } from '@test/data';
-import { ProjectState } from '@app/store/reducers/project/project.reducer';
+import { ProjectsPage } from './projects.page';
 
 describe('ProjectsPage', () => {
-  let list: Array<Project>;
-  let modal;
+  let modal: any;
   let page: ProjectsPage;
   let fixture: ComponentFixture<ProjectsPage>;
 
-  beforeEach(async(() => {
-    initializeTestProjects();
-    modal = createOverlayElementMock();
-    TestBed.configureTestingModule({
-      declarations: [ProjectsPage],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: ModalController,
-          useFactory: () => createOverlayControllerMock(modal),
-        },
-        { provide: NavController, useFactory: createNavControllerMock },
-        provideMockStore<{ projects: ProjectState }>({
-          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
-        }),
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      initializeTestProjects();
+      modal = createOverlayElementMock();
+      TestBed.configureTestingModule({
+        declarations: [ProjectsPage],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          {
+            provide: ModalController,
+            useFactory: () => createOverlayControllerMock(modal),
+          },
+          { provide: NavController, useFactory: createNavControllerMock },
+          provideMockStore<{ projects: ProjectState }>({
+            initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+          }),
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
-    list = [
-      {
-        id: '314PI',
-        name: `Baker's Square`,
-        description: 'Makers of overly sweet pies and otherwise crappy food',
-        isActive: false,
-      },
-      {
-        id: '420HI',
-        name: 'Joe',
-        description: 'Some guy named Joe who sells weed on my street corner',
-        isActive: true,
-      },
-    ];
     fixture = TestBed.createComponent(ProjectsPage);
     page = fixture.componentInstance;
     fixture.detectChanges();
@@ -64,13 +48,13 @@ describe('ProjectsPage', () => {
 
   describe('add project', () => {
     it('creates a modal', () => {
-      const modalController = TestBed.get(ModalController);
+      const modalController = TestBed.inject(ModalController);
       page.add();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the correct component', () => {
-      const modalController = TestBed.get(ModalController);
+      const modalController = TestBed.inject(ModalController);
       page.add();
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
@@ -86,7 +70,7 @@ describe('ProjectsPage', () => {
 
   describe('view project', () => {
     it('navigates to the project', () => {
-      const navController = TestBed.get(NavController);
+      const navController = TestBed.inject(NavController);
       page.view({
         id: '4273',
         name: 'Dominos',
@@ -100,7 +84,7 @@ describe('ProjectsPage', () => {
 
   describe('logout', () => {
     it('dispatches the logout action', () => {
-      const store = TestBed.get(Store);
+      const store = TestBed.inject(Store);
       store.dispatch = jest.fn();
       page.logout();
       expect(store.dispatch).toHaveBeenCalledTimes(1);

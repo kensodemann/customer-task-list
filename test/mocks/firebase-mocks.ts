@@ -1,19 +1,17 @@
 import { EMPTY, of, Subject } from 'rxjs';
 
-export function createAngularFireAuthMock() {
-  return {
-    authState: new Subject(),
-    user: of(null),
-    idToken: of(null),
-    idTokenResult: of(null),
-    auth: {
-      sendPasswordResetEmail: jest.fn(() => Promise.resolve()),
-      signInWithEmailAndPassword: jest.fn(() => Promise.resolve()),
-      signInWithPopup: jest.fn(() => Promise.resolve()),
-      signOut: jest.fn(() => Promise.resolve())
-    }
-  };
-}
+export const createAngularFireAuthMock = () => ({
+  authState: new Subject(),
+  user: of(null),
+  idToken: of(null),
+  idTokenResult: of(null),
+  sendPasswordResetEmail: jest.fn(() => Promise.resolve()),
+  signInWithEmailAndPassword: jest.fn(() => Promise.resolve()),
+  signInWithPopup: jest.fn(() => Promise.resolve()),
+  signOut: jest.fn(() => Promise.resolve()),
+});
+
+export const fakeTimestamp = (seconds: number): any => ({ seconds, nanoseconds: 0 });
 
 class TestDocument<T> {
   private lclData: T;
@@ -30,63 +28,51 @@ class TestDocument<T> {
 export function createAction<T>(id: string, data: T) {
   return {
     payload: {
-      doc: new TestDocument(id, data)
-    }
+      doc: new TestDocument(id, data),
+    },
   };
 }
 
-export function createAngularFirestoreDocumentMock() {
-  return {
-    set: jest.fn(() => Promise.resolve()),
-    update: jest.fn(() => Promise.resolve()),
-    delete: jest.fn(() => Promise.resolve()),
-    valueChanges: jest.fn(() => EMPTY),
-    snapshotChanges: jest.fn(() => EMPTY),
-    collection: jest.fn(),
-    ref: createDocumentReferenceMock()
-  };
-}
+export const createAngularFirestoreDocumentMock = () => ({
+  set: jest.fn(() => Promise.resolve()),
+  update: jest.fn(() => Promise.resolve()),
+  delete: jest.fn(() => Promise.resolve()),
+  valueChanges: jest.fn(() => EMPTY),
+  snapshotChanges: jest.fn(() => EMPTY),
+  collection: jest.fn(),
+  ref: createDocumentReferenceMock(),
+});
 
-export function createAngularFirestoreCollectionMock() {
-  return {
-    doc: jest.fn(() => createAngularFirestoreDocumentMock()),
-    add: jest.fn(() => Promise.resolve(createDocumentReferenceMock())),
-    valueChanges: jest.fn(() => EMPTY),
-    snapshotChanges: jest.fn(() => EMPTY),
-    stateChanges: jest.fn(() => EMPTY),
-    ref: createCollectionReferenceMock([])
-  };
-}
+export const createAngularFirestoreCollectionMock = () => ({
+  doc: jest.fn(() => createAngularFirestoreDocumentMock()),
+  add: jest.fn(() => Promise.resolve(createDocumentReferenceMock())),
+  valueChanges: jest.fn(() => EMPTY),
+  snapshotChanges: jest.fn(() => EMPTY),
+  stateChanges: jest.fn(() => EMPTY),
+  ref: createCollectionReferenceMock([]),
+});
 
-export function createAngularFirestoreMock() {
-  return {
-    collection: jest.fn(() => createAngularFirestoreCollectionMock()),
-    doc: jest.fn(() => createAngularFirestoreDocumentMock())
-  };
-}
+export const createAngularFirestoreMock = () => ({
+  collection: jest.fn(() => createAngularFirestoreCollectionMock()),
+  doc: jest.fn(() => createAngularFirestoreDocumentMock()),
+});
 
-export function createCollectionReferenceMock(docs: Array<any>) {
-  return {
-    where: jest.fn(() => ({
-      get: jest.fn(() =>
-        Promise.resolve({
-          size: docs.length,
-          docs
-        })
-      )
-    }))
-  };
-}
+export const createCollectionReferenceMock = (docs: Array<any>) => ({
+  where: jest.fn(() => ({
+    get: jest.fn(() =>
+      Promise.resolve({
+        size: docs.length,
+        docs,
+      })
+    ),
+  })),
+});
 
-export function createDocumentReferenceMock(doc?: { id: string; data: any }) {
-  return {
-    get: jest.fn(() => Promise.resolve(createDocumentSnapshotMock(doc)))
-  };
-}
+export const createDocumentReferenceMock = (doc?: { id: string; data: any }) => ({
+  get: jest.fn(() => Promise.resolve(createDocumentSnapshotMock(doc))),
+});
 
-export function createDocumentSnapshotMock(doc?: { id: string; data: any }) {
-  return {
-    id: doc ? doc.id : 0,
-    data: jest.fn(() => (doc ? doc.data : {}))
-  };
-}
+export const createDocumentSnapshotMock = (doc?: { id: string; data: any }) => ({
+  id: doc ? doc.id : 0,
+  data: jest.fn(() => (doc ? doc.data : {})),
+});

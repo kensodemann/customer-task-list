@@ -1,38 +1,38 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { provideMockStore } from '@ngrx/store/testing';
-
-import { ProjectEditorComponent } from './project-editor.component';
-import { ProjectState } from '@app/store/reducers/project/project.reducer';
-
-import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
-import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
 import { create, update } from '@app/store/actions/project.actions';
+import { ProjectState } from '@app/store/reducers/project/project.reducer';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
+import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import { ProjectEditorComponent } from './project-editor.component';
 
 describe('ProjectEditorComponent', () => {
   let editor: ProjectEditorComponent;
   let fixture: ComponentFixture<ProjectEditorComponent>;
 
-  beforeEach(async(() => {
-    initializeTestProjects();
-    TestBed.configureTestingModule({
-      declarations: [ProjectEditorComponent],
-      imports: [FormsModule, IonicModule],
-      providers: [
-        {
-          provide: ModalController,
-          useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
-        },
-        provideMockStore<{ projects: ProjectState }>({
-          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
-        }),
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      initializeTestProjects();
+      TestBed.configureTestingModule({
+        declarations: [ProjectEditorComponent],
+        imports: [FormsModule, IonicModule],
+        providers: [
+          {
+            provide: ModalController,
+            useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
+          },
+          provideMockStore<{ projects: ProjectState }>({
+            initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+          }),
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProjectEditorComponent);
@@ -46,7 +46,7 @@ describe('ProjectEditorComponent', () => {
 
   describe('close', () => {
     it('dismisses the modal', () => {
-      const modal = TestBed.get(ModalController);
+      const modal = TestBed.inject(ModalController);
       fixture.detectChanges();
       editor.close();
       expect(modal.dismiss).toHaveBeenCalledTimes(1);
@@ -68,7 +68,7 @@ describe('ProjectEditorComponent', () => {
 
     describe('save', () => {
       it('adds the project', () => {
-        const store = TestBed.get(Store);
+        const store = TestBed.inject(Store);
         store.dispatch = jest.fn();
         editor.name = 'The Dude';
         editor.description = 'He does abide';
@@ -81,7 +81,7 @@ describe('ProjectEditorComponent', () => {
       });
 
       it('allows inactive projects to be created', () => {
-        const store = TestBed.get(Store);
+        const store = TestBed.inject(Store);
         store.dispatch = jest.fn();
         editor.name = 'Lazy Leopard';
         editor.description = 'Cats like to sleep, even the bigger ones.';
@@ -94,7 +94,7 @@ describe('ProjectEditorComponent', () => {
       });
 
       it('dismisses the modal', () => {
-        const modal = TestBed.get(ModalController);
+        const modal = TestBed.inject(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
@@ -166,7 +166,7 @@ describe('ProjectEditorComponent', () => {
 
     describe('save', () => {
       it('updates the project', () => {
-        const store = TestBed.get(Store);
+        const store = TestBed.inject(Store);
         store.dispatch = jest.fn();
         editor.name = 'The Dude';
         editor.description = 'He does abide';
@@ -181,7 +181,7 @@ describe('ProjectEditorComponent', () => {
       });
 
       it('allows projects to be made inactive', () => {
-        const store = TestBed.get(Store);
+        const store = TestBed.inject(Store);
         store.dispatch = jest.fn();
         editor.name = 'Lazy Leopard';
         editor.description = 'Cats like to sleep, even the bigger ones.';
@@ -196,7 +196,7 @@ describe('ProjectEditorComponent', () => {
       });
 
       it('dismisses the modal', () => {
-        const modal = TestBed.get(ModalController);
+        const modal = TestBed.inject(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });

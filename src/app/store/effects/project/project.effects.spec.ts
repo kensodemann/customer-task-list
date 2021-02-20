@@ -1,13 +1,12 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Action } from '@ngrx/store';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable, of } from 'rxjs';
-
-import { ProjectEffects } from './project.effects';
-import { createProjectsServiceMock } from '@app/services/firestore-data/mocks';
-import { ProjectsService } from '@app/services/firestore-data';
-import * as projectActions from '@app/store/actions/project.actions';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Project } from '@app/models';
+import { ProjectsService } from '@app/services/firestore-data';
+import { createProjectsServiceMock } from '@app/services/firestore-data/mocks';
+import * as projectActions from '@app/store/actions/project.actions';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
+import { ProjectEffects } from './project.effects';
 
 let actions$: Observable<any>;
 let effects: ProjectEffects;
@@ -21,7 +20,7 @@ beforeEach(() => {
     ],
   });
 
-  effects = TestBed.get<ProjectEffects>(ProjectEffects);
+  effects = TestBed.inject<ProjectEffects>(ProjectEffects);
 });
 
 it('exists', () => {
@@ -30,7 +29,7 @@ it('exists', () => {
 
 describe('load$', () => {
   it('observes changes to the projects', () => {
-    const projectsService = TestBed.get(ProjectsService);
+    const projectsService = TestBed.inject(ProjectsService);
     actions$ = of(projectActions.load());
     effects.changes$.subscribe(() => {});
     expect(projectsService.observeChanges).toHaveBeenCalledTimes(1);
@@ -38,8 +37,8 @@ describe('load$', () => {
 
   describe('added change', () => {
     it('dispaches and added project action', (done) => {
-      const projectsService = TestBed.get(ProjectsService);
-      projectsService.observeChanges.mockReturnValue(
+      const projectsService = TestBed.inject(ProjectsService);
+      (projectsService.observeChanges as jest.Mock).mockReturnValue(
         of([
           {
             type: 'added',
@@ -74,8 +73,8 @@ describe('load$', () => {
 
   describe('modified change', () => {
     it('dispaches and modified project action', (done) => {
-      const projectsService = TestBed.get(ProjectsService);
-      projectsService.observeChanges.mockReturnValue(
+      const projectsService = TestBed.inject(ProjectsService);
+      (projectsService.observeChanges as jest.Mock).mockReturnValue(
         of([
           {
             type: 'modified',
@@ -110,8 +109,8 @@ describe('load$', () => {
 
   describe('removed change', () => {
     it('dispaches and removed project action', (done) => {
-      const projectsService = TestBed.get(ProjectsService);
-      projectsService.observeChanges.mockReturnValue(
+      const projectsService = TestBed.inject(ProjectsService);
+      (projectsService.observeChanges as jest.Mock).mockReturnValue(
         of([
           {
             type: 'removed',
@@ -146,8 +145,8 @@ describe('load$', () => {
 
   describe('multiple changes', () => {
     it('dispaches the adds as a unit', fakeAsync(() => {
-      const projectsService = TestBed.get(ProjectsService);
-      projectsService.observeChanges.mockReturnValue(
+      const projectsService = TestBed.inject(ProjectsService);
+      (projectsService.observeChanges as jest.Mock).mockReturnValue(
         of([
           {
             type: 'added',
@@ -280,7 +279,7 @@ describe('load$', () => {
   });
 
   it('does nothing for other actions', () => {
-    const projectsService = TestBed.get(ProjectsService);
+    const projectsService = TestBed.inject(ProjectsService);
     actions$ = of(projectActions.update({ project: null }));
     effects.changes$.subscribe(() => {});
     expect(projectsService.observeChanges).not.toHaveBeenCalled();
@@ -299,7 +298,7 @@ describe('create$', () => {
   });
 
   it('calls the service', () => {
-    const service = TestBed.get(ProjectsService);
+    const service = TestBed.inject(ProjectsService);
     actions$ = of(projectActions.create({ project }));
     effects.create$.subscribe(() => {});
     expect(service.add).toHaveBeenCalledTimes(1);
@@ -309,26 +308,27 @@ describe('create$', () => {
   it('dispatches create success', (done) => {
     actions$ = of(projectActions.create({ project }));
     effects.create$.subscribe((action) => {
-      expect(action).toEqual({ type: projectActions.ProjectActionTypes.createSuccess });
+      expect(action).toEqual(projectActions.createSuccess());
       done();
     });
   });
 
   it('dispatches create errors', (done) => {
-    const service = TestBed.get(ProjectsService);
-    service.add.mockRejectedValue(new Error('The create failed'));
+    const service = TestBed.inject(ProjectsService);
+    (service.add as any).mockRejectedValue(new Error('The create failed'));
     actions$ = of(projectActions.create({ project }));
     effects.create$.subscribe((action) => {
-      expect(action).toEqual({
-        type: projectActions.ProjectActionTypes.createFailure,
-        error: new Error('The create failed'),
-      });
+      expect(action).toEqual(
+        projectActions.createFailure({
+          error: new Error('The create failed'),
+        })
+      );
       done();
     });
   });
 
   it('does nothing for other actions', () => {
-    const service = TestBed.get(ProjectsService);
+    const service = TestBed.inject(ProjectsService);
     actions$ = of(projectActions.update({ project }));
     effects.create$.subscribe(() => {});
     expect(service.add).not.toHaveBeenCalled();
@@ -347,7 +347,7 @@ describe('update$', () => {
   });
 
   it('calls the service', () => {
-    const service = TestBed.get(ProjectsService);
+    const service = TestBed.inject(ProjectsService);
     actions$ = of(projectActions.update({ project }));
     effects.update$.subscribe(() => {});
     expect(service.update).toHaveBeenCalledTimes(1);
@@ -357,26 +357,27 @@ describe('update$', () => {
   it('dispatches update success', (done) => {
     actions$ = of(projectActions.update({ project }));
     effects.update$.subscribe((action) => {
-      expect(action).toEqual({ type: projectActions.ProjectActionTypes.updateSuccess });
+      expect(action).toEqual(projectActions.updateSuccess());
       done();
     });
   });
 
   it('dispatches update errors', (done) => {
-    const service = TestBed.get(ProjectsService);
-    service.update.mockRejectedValue(new Error('The update failed'));
+    const service = TestBed.inject(ProjectsService);
+    (service.update as any).mockRejectedValue(new Error('The update failed'));
     actions$ = of(projectActions.update({ project }));
     effects.update$.subscribe((action) => {
-      expect(action).toEqual({
-        type: projectActions.ProjectActionTypes.updateFailure,
-        error: new Error('The update failed'),
-      });
+      expect(action).toEqual(
+        projectActions.updateFailure({
+          error: new Error('The update failed'),
+        })
+      );
       done();
     });
   });
 
   it('does nothing for other actions', () => {
-    const service = TestBed.get(ProjectsService);
+    const service = TestBed.inject(ProjectsService);
     actions$ = of(projectActions.create({ project }));
     effects.update$.subscribe(() => {});
     expect(service.update).not.toHaveBeenCalled();

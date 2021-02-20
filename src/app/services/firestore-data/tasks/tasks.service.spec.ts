@@ -1,20 +1,19 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { of } from 'rxjs';
-import { firestore } from 'firebase/app';
-
 import { Priorities, Statuses, TaskTypes } from '@app/default-data';
-import { TasksService } from './tasks.service';
 import {
   createAction,
-  createAngularFirestoreMock,
   createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock,
+  createAngularFirestoreMock,
   createDocumentSnapshotMock,
+  fakeTimestamp,
 } from '@test/mocks';
+import { of } from 'rxjs';
+import { TasksService } from './tasks.service';
 
 describe('TasksService', () => {
-  let collection;
+  let collection: any;
   let tasks: TasksService;
 
   beforeEach(() => {
@@ -36,7 +35,7 @@ describe('TasksService', () => {
 
   describe('all', () => {
     it('grabs a references to the tasks collection', () => {
-      const angularFirestore = TestBed.get(AngularFirestore);
+      const angularFirestore = TestBed.inject(AngularFirestore);
       tasks.all();
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
       expect(angularFirestore.collection).toHaveBeenCalledWith('tasks');
@@ -53,20 +52,20 @@ describe('TasksService', () => {
           createAction('42DA', {
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
-            enteredOn: new firestore.Timestamp(14324053, 0),
-            type: TaskTypes.Research,
-            status: Statuses.Closed,
-            priority: Priorities.Normal,
+            enteredOn: fakeTimestamp(14324053),
+            type: TaskTypes.research,
+            status: Statuses.closed,
+            priority: Priorities.normal,
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           }),
           createAction('73SC', {
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
-            enteredOn: new firestore.Timestamp(1432430034, 0),
-            type: TaskTypes.Task,
-            status: Statuses.Open,
-            priority: Priorities.Normal,
+            enteredOn: fakeTimestamp(1432430034),
+            type: TaskTypes.task,
+            status: Statuses.open,
+            priority: Priorities.normal,
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           }),
@@ -78,10 +77,10 @@ describe('TasksService', () => {
             id: '42DA',
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
-            enteredOn: new firestore.Timestamp(14324053, 0),
-            type: TaskTypes.Research,
-            status: Statuses.Closed,
-            priority: Priorities.Normal,
+            enteredOn: fakeTimestamp(14324053),
+            type: TaskTypes.research,
+            status: Statuses.closed,
+            priority: Priorities.normal,
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           },
@@ -89,10 +88,10 @@ describe('TasksService', () => {
             id: '73SC',
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
-            enteredOn: new firestore.Timestamp(1432430034, 0),
-            type: TaskTypes.Task,
-            status: Statuses.Open,
-            priority: Priorities.Normal,
+            enteredOn: fakeTimestamp(1432430034),
+            type: TaskTypes.task,
+            status: Statuses.open,
+            priority: Priorities.normal,
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           },
@@ -103,12 +102,12 @@ describe('TasksService', () => {
 
   describe('for project', () => {
     beforeEach(() => {
-      const angularFirestore = TestBed.get(AngularFirestore);
-      angularFirestore.collection.mockClear();
+      const angularFirestore = TestBed.inject(AngularFirestore);
+      (angularFirestore.collection as jest.Mock).mockClear();
     });
 
     it('grabs a references to the tasks collection', () => {
-      const angularFirestore = TestBed.get(AngularFirestore);
+      const angularFirestore = TestBed.inject(AngularFirestore);
       tasks.forProject('451BK');
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
     });
@@ -124,20 +123,20 @@ describe('TasksService', () => {
           createAction('42DA', {
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
-            enteredOn: new firestore.Timestamp(14324053, 0),
-            type: TaskTypes.Research,
-            status: Statuses.Closed,
-            priority: Priorities.Normal,
+            enteredOn: fakeTimestamp(14324053),
+            type: TaskTypes.research,
+            status: Statuses.closed,
+            priority: Priorities.normal,
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           }),
           createAction('73SC', {
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
-            enteredOn: new firestore.Timestamp(1432430303, 0),
-            type: TaskTypes.Task,
-            status: Statuses.Open,
-            priority: Priorities.Normal,
+            enteredOn: fakeTimestamp(1432430303),
+            type: TaskTypes.task,
+            status: Statuses.open,
+            priority: Priorities.normal,
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           }),
@@ -149,10 +148,10 @@ describe('TasksService', () => {
             id: '42DA',
             name: 'Find the answer',
             description: 'First find Deep Thought, then get the answer from it',
-            enteredOn: new firestore.Timestamp(14324053, 0),
-            type: TaskTypes.Research,
-            status: Statuses.Closed,
-            priority: Priorities.Normal,
+            enteredOn: fakeTimestamp(14324053),
+            type: TaskTypes.research,
+            status: Statuses.closed,
+            priority: Priorities.normal,
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           },
@@ -160,10 +159,10 @@ describe('TasksService', () => {
             id: '73SC',
             name: 'Bang the Big',
             description: 'Just like it sounds there captain',
-            enteredOn: new firestore.Timestamp(1432430303, 0),
-            type: TaskTypes.Task,
-            status: Statuses.Open,
-            priority: Priorities.Normal,
+            enteredOn: fakeTimestamp(1432430303),
+            type: TaskTypes.task,
+            status: Statuses.open,
+            priority: Priorities.normal,
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           },
@@ -173,14 +172,14 @@ describe('TasksService', () => {
   });
 
   describe('get', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);
     });
 
     it('grabs a references to the tasks collection', () => {
-      const angularFirestore = TestBed.get(AngularFirestore);
+      const angularFirestore = TestBed.inject(AngularFirestore);
       tasks.get('1994309500349');
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
       expect(angularFirestore.collection).toHaveBeenCalledWith('tasks');
@@ -203,10 +202,10 @@ describe('TasksService', () => {
       snapshot.data.mockReturnValue({
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1424303405, 0),
-        type: TaskTypes.Task,
-        status: Statuses.Open,
-        priority: Priorities.Normal,
+        enteredOn: fakeTimestamp(1424303405),
+        type: TaskTypes.task,
+        status: Statuses.open,
+        priority: Priorities.normal,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       });
@@ -215,10 +214,10 @@ describe('TasksService', () => {
         id: '199405fkkgi59',
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1424303405, 0),
-        type: TaskTypes.Task,
-        status: Statuses.Open,
-        priority: Priorities.Normal,
+        enteredOn: fakeTimestamp(1424303405),
+        type: TaskTypes.task,
+        status: Statuses.open,
+        priority: Priorities.normal,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       });
@@ -230,10 +229,10 @@ describe('TasksService', () => {
       tasks.add({
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1432430034, 0),
-        type: TaskTypes.Task,
-        status: Statuses.Open,
-        priority: Priorities.Normal,
+        enteredOn: fakeTimestamp(1432430034),
+        type: TaskTypes.task,
+        status: Statuses.open,
+        priority: Priorities.normal,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       });
@@ -241,10 +240,10 @@ describe('TasksService', () => {
       expect(collection.add).toHaveBeenCalledWith({
         name: 'Bang the Big',
         description: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1432430034, 0),
-        type: TaskTypes.Task,
-        status: Statuses.Open,
-        priority: Priorities.Normal,
+        enteredOn: fakeTimestamp(1432430034),
+        type: TaskTypes.task,
+        status: Statuses.open,
+        priority: Priorities.normal,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       });
@@ -252,7 +251,7 @@ describe('TasksService', () => {
   });
 
   describe('update', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);
@@ -263,14 +262,14 @@ describe('TasksService', () => {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: Statuses.Open,
-        priority: Priorities.Low,
-        type: TaskTypes.Task,
+        status: Statuses.open,
+        priority: Priorities.low,
+        type: TaskTypes.task,
         beginDate: '2019-01-15',
         endDate: '2019-01-17',
         projectId: '73SC',
         projectName: 'Wheels',
-        enteredOn: new firestore.Timestamp(1545765815, 0),
+        enteredOn: fakeTimestamp(1545765815),
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('88395AA930FE');
@@ -281,33 +280,33 @@ describe('TasksService', () => {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: Statuses.Open,
-        priority: Priorities.Low,
-        type: TaskTypes.Task,
+        status: Statuses.open,
+        priority: Priorities.low,
+        type: TaskTypes.task,
         beginDate: '2019-01-15',
         endDate: '2019-01-17',
         projectId: '73SC',
         projectName: 'Wheels',
-        enteredOn: new firestore.Timestamp(1545765815, 0),
+        enteredOn: fakeTimestamp(1545765815),
       });
       expect(document.set).toHaveBeenCalledTimes(1);
       expect(document.set).toHaveBeenCalledWith({
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: Statuses.Open,
-        priority: Priorities.Low,
-        type: TaskTypes.Task,
+        status: Statuses.open,
+        priority: Priorities.low,
+        type: TaskTypes.task,
         beginDate: '2019-01-15',
         endDate: '2019-01-17',
         projectId: '73SC',
         projectName: 'Wheels',
-        enteredOn: new firestore.Timestamp(1545765815, 0),
+        enteredOn: fakeTimestamp(1545765815),
       });
     });
   });
 
   describe('delete', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);
@@ -318,10 +317,10 @@ describe('TasksService', () => {
         id: '49950399KT',
         name: 'Scrub Pots',
         description: 'Make them extra shiny',
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        enteredOn: new firestore.Timestamp(0, 0),
-        priority: Priorities.Normal,
+        type: TaskTypes.research,
+        status: Statuses.open,
+        enteredOn: fakeTimestamp(0),
+        priority: Priorities.normal,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       });
@@ -334,10 +333,10 @@ describe('TasksService', () => {
         id: '49950399KT',
         name: 'Scrub Pots',
         description: 'Make them extra shiny',
-        type: TaskTypes.Research,
-        status: Statuses.Open,
-        enteredOn: new firestore.Timestamp(0, 0),
-        priority: Priorities.Normal,
+        type: TaskTypes.research,
+        status: Statuses.open,
+        enteredOn: fakeTimestamp(0),
+        priority: Priorities.normal,
         projectId: '451BK',
         projectName: 'Book Burners R Us',
       });

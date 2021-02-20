@@ -1,4 +1,4 @@
-import { firestore } from 'firebase/app';
+import firebase from 'firebase/app';
 
 export interface Task {
   id?: string;
@@ -11,5 +11,5 @@ export interface Task {
   endDate?: string;
   projectId: string;
   projectName: string;
-  enteredOn: firestore.Timestamp;
+  enteredOn: firebase.firestore.Timestamp;
 }

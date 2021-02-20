@@ -1,18 +1,17 @@
-import { inject, TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { inject, TestBed } from '@angular/core/testing';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { of } from 'rxjs';
-
-import { FirestoreDataService } from './firestore-data.service';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import {
   createAction,
-  createAngularFirestoreMock,
+  createAngularFireAuthMock,
   createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock,
-  createAngularFireAuthMock,
+  createAngularFirestoreMock,
   createDocumentSnapshotMock,
 } from '@test/mocks';
+import { of } from 'rxjs';
+import { FirestoreDataService } from './firestore-data.service';
 
 interface DataType {
   id?: string;
@@ -33,7 +32,7 @@ class TestService extends FirestoreDataService<DataType> {
 }
 
 describe('FirestoreDataService', () => {
-  let collection;
+  let collection: any;
   let dataService: FirestoreDataService<DataType>;
 
   beforeEach(() => {
@@ -44,15 +43,15 @@ describe('FirestoreDataService', () => {
         TestService,
       ],
     });
-    const angularFirestore = TestBed.get(AngularFirestore);
+    const angularFirestore = TestBed.inject(AngularFirestore);
     collection = createAngularFirestoreCollectionMock();
-    angularFirestore.collection.mockReturnValue(collection);
+    (angularFirestore.collection as jest.Mock).mockReturnValue(collection);
   });
 
   beforeEach(inject([TestService], (service: TestService) => {
     dataService = service;
-    const afAuth = TestBed.get(AngularFireAuth);
-    afAuth.authState.next();
+    const afAuth = TestBed.inject(AngularFireAuth);
+    (afAuth.authState as any).next();
   }));
 
   it('should be created', () => {
@@ -61,7 +60,7 @@ describe('FirestoreDataService', () => {
 
   describe('observe changes', () => {
     it('grabs a references to the data collection', () => {
-      const angularFirestore = TestBed.get(AngularFirestore);
+      const angularFirestore = TestBed.inject(AngularFirestore);
       dataService.observeChanges();
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
       expect(angularFirestore.collection).toHaveBeenCalledWith('data-collection');
@@ -75,7 +74,7 @@ describe('FirestoreDataService', () => {
 
   describe('all', () => {
     it('grabs a references to the data collection', () => {
-      const angularFirestore = TestBed.get(AngularFirestore);
+      const angularFirestore = TestBed.inject(AngularFirestore);
       dataService.all();
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
       expect(angularFirestore.collection).toHaveBeenCalledWith('data-collection');
@@ -122,7 +121,7 @@ describe('FirestoreDataService', () => {
   });
 
   describe('get', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);
@@ -173,7 +172,7 @@ describe('FirestoreDataService', () => {
   });
 
   describe('delete', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);
@@ -202,7 +201,7 @@ describe('FirestoreDataService', () => {
   });
 
   describe('update', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);

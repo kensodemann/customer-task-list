@@ -1,41 +1,40 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ModalController } from '@ionic/angular';
-import { firestore } from 'firebase/app';
-
+import { Priorities, Statuses, TaskTypes } from '@app/default-data';
 import { TasksService } from '@app/services/firestore-data';
 import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
-import { TaskEditorComponent } from './task-editor.component';
-import { Priorities, Statuses, TaskTypes } from '@app/default-data';
 import { ProjectState } from '@app/store/reducers/project/project.reducer';
-
-import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { provideMockStore } from '@ngrx/store/testing';
-import { testProjectIds, testProjects, initializeTestProjects } from '@test/data';
+import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
+import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import { TaskEditorComponent } from './task-editor.component';
 
 describe('TaskEditorComponent', () => {
   let editor: TaskEditorComponent;
   let fixture: ComponentFixture<TaskEditorComponent>;
 
-  beforeEach(async(() => {
-    initializeTestProjects();
-    TestBed.configureTestingModule({
-      declarations: [TaskEditorComponent],
-      imports: [FormsModule, IonicModule],
-      providers: [
-        {
-          provide: ModalController,
-          useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
-        },
-        { provide: TasksService, useFactory: createTasksServiceMock },
-        provideMockStore<{ projects: ProjectState }>({
-          initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
-        }),
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      initializeTestProjects();
+      TestBed.configureTestingModule({
+        declarations: [TaskEditorComponent],
+        imports: [FormsModule, IonicModule],
+        providers: [
+          {
+            provide: ModalController,
+            useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
+          },
+          { provide: TasksService, useFactory: createTasksServiceMock },
+          provideMockStore<{ projects: ProjectState }>({
+            initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+          }),
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskEditorComponent);
@@ -57,7 +56,7 @@ describe('TaskEditorComponent', () => {
 
   describe('close', () => {
     it('dismisses the modal', () => {
-      const modal = TestBed.get(ModalController);
+      const modal = TestBed.inject(ModalController);
       fixture.detectChanges();
       editor.close();
       expect(modal.dismiss).toHaveBeenCalledTimes(1);
@@ -79,15 +78,15 @@ describe('TaskEditorComponent', () => {
     });
 
     it('defaults the status to Open', () => {
-      expect(editor.status).toEqual(Statuses.Open);
+      expect(editor.status).toEqual(Statuses.open);
     });
 
     it('defaults the type to Follow-up', () => {
-      expect(editor.taskType).toEqual(TaskTypes.Feature);
+      expect(editor.taskType).toEqual(TaskTypes.feature);
     });
 
     it('defaults the priority to Normal', () => {
-      expect(editor.priority).toEqual(Priorities.Normal);
+      expect(editor.priority).toEqual(Priorities.normal);
     });
 
     it('defaults to not scheduling the task', () => {
@@ -166,7 +165,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('adds the task', () => {
-        const tasks = TestBed.get(TasksService);
+        const tasks = TestBed.inject(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.projectId = 'iriit003499340';
@@ -175,7 +174,7 @@ describe('TaskEditorComponent', () => {
       });
 
       it('passes the data', () => {
-        const tasks = TestBed.get(TasksService);
+        const tasks = TestBed.inject(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.projectId = 'iriit003499340';
@@ -183,17 +182,17 @@ describe('TaskEditorComponent', () => {
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
-          status: Statuses.Open,
-          type: TaskTypes.Feature,
-          priority: Priorities.Normal,
+          status: Statuses.open,
+          type: TaskTypes.feature,
+          priority: Priorities.normal,
           projectId: 'iriit003499340',
           projectName: 'Personal Task Timer',
-          enteredOn: new firestore.Timestamp(1545765815, 0),
+          enteredOn: { seconds: 1545765815, nanoseconds: 0 } as any,
         });
       });
 
       it('passes the begin and end dates if they exist', () => {
-        const tasks = TestBed.get(TasksService);
+        const tasks = TestBed.inject(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.projectId = 'iriit003499340';
@@ -203,19 +202,19 @@ describe('TaskEditorComponent', () => {
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
-          status: Statuses.Open,
-          type: TaskTypes.Feature,
-          priority: Priorities.Normal,
+          status: Statuses.open,
+          type: TaskTypes.feature,
+          priority: Priorities.normal,
           projectId: 'iriit003499340',
           projectName: 'Personal Task Timer',
-          enteredOn: new firestore.Timestamp(1545765815, 0),
+          enteredOn: { seconds: 1545765815, nanoseconds: 0 } as any,
           beginDate: '2019-01-03',
           endDate: '2019-01-04',
         });
       });
 
       it('has a blank project name if the project cannot be found', () => {
-        const tasks = TestBed.get(TasksService);
+        const tasks = TestBed.inject(TasksService);
         editor.name = 'The Dude';
         editor.description = 'He does abide';
         editor.projectId = '1139GL';
@@ -223,17 +222,17 @@ describe('TaskEditorComponent', () => {
         expect(tasks.add).toHaveBeenCalledWith({
           name: 'The Dude',
           description: 'He does abide',
-          status: Statuses.Open,
-          type: TaskTypes.Feature,
-          priority: Priorities.Normal,
+          status: Statuses.open,
+          type: TaskTypes.feature,
+          priority: Priorities.normal,
           projectId: '1139GL',
           projectName: undefined,
-          enteredOn: new firestore.Timestamp(1545765815, 0),
+          enteredOn: { seconds: 1545765815, nanoseconds: 0 } as any,
         });
       });
 
       it('dismisses the modal', () => {
-        const modal = TestBed.get(ModalController);
+        const modal = TestBed.inject(ModalController);
         editor.save();
         expect(modal.dismiss).toHaveBeenCalledTimes(1);
       });
@@ -255,12 +254,12 @@ describe('TaskEditorComponent', () => {
           id: '88395AA930FE',
           name: 'Weekly Status Meeting',
           description: 'Weekly status meeting, usually on Thursdays',
-          status: Statuses.Open,
-          priority: Priorities.Low,
-          type: TaskTypes.Task,
+          status: Statuses.open,
+          priority: Priorities.low,
+          type: TaskTypes.task,
           projectId: 'iriit003499340',
           projectName: 'Personal Task Timer',
-          enteredOn: new firestore.Timestamp(1545765815, 0),
+          enteredOn: { seconds: 1545765815, nanoseconds: 0 } as any,
         };
         fixture.detectChanges();
       });
@@ -315,14 +314,14 @@ describe('TaskEditorComponent', () => {
           id: '88395AA930FE',
           name: 'Weekly Status Meeting',
           description: 'Weekly status meeting, usually on Thursdays',
-          status: Statuses.Open,
-          priority: Priorities.Low,
-          type: TaskTypes.Task,
+          status: Statuses.open,
+          priority: Priorities.low,
+          type: TaskTypes.task,
           beginDate: '2019-01-15',
           endDate: '2019-01-18',
           projectId: 'iriit003499340',
           projectName: 'Personal Task Timer',
-          enteredOn: new firestore.Timestamp(1545765815, 0),
+          enteredOn: { seconds: 1545765815, nanoseconds: 0 } as any,
         };
         fixture.detectChanges();
       });
@@ -340,15 +339,15 @@ describe('TaskEditorComponent', () => {
       });
 
       it('initializes the status', () => {
-        expect(editor.status).toEqual(Statuses.Open);
+        expect(editor.status).toEqual(Statuses.open);
       });
 
       it('initializes the task type', () => {
-        expect(editor.taskType).toEqual(TaskTypes.Task);
+        expect(editor.taskType).toEqual(TaskTypes.task);
       });
 
       it('initializes the priority', () => {
-        expect(editor.priority).toEqual(Priorities.Low);
+        expect(editor.priority).toEqual(Priorities.low);
       });
 
       it('initializes the begin date', () => {
@@ -428,7 +427,7 @@ describe('TaskEditorComponent', () => {
 
       describe('save', () => {
         it('updates the task', () => {
-          const tasks = TestBed.get(TasksService);
+          const tasks = TestBed.inject(TasksService);
           editor.name = 'Bi-Weekly Status Meeting';
           editor.description = 'Moving to twice a week';
           editor.save();
@@ -436,7 +435,7 @@ describe('TaskEditorComponent', () => {
         });
 
         it('passes the id, name, description, and isActive status', () => {
-          const tasks = TestBed.get(TasksService);
+          const tasks = TestBed.inject(TasksService);
           editor.name = 'Bi-Weekly Status Meeting';
           editor.description = 'Moving to twice a week';
           editor.save();
@@ -444,19 +443,19 @@ describe('TaskEditorComponent', () => {
             id: '88395AA930FE',
             name: 'Bi-Weekly Status Meeting',
             description: 'Moving to twice a week',
-            status: Statuses.Open,
-            priority: Priorities.Low,
-            type: TaskTypes.Task,
+            status: Statuses.open,
+            priority: Priorities.low,
+            type: TaskTypes.task,
             beginDate: '2019-01-15',
             endDate: '2019-01-18',
             projectId: 'iriit003499340',
             projectName: 'Personal Task Timer',
-            enteredOn: new firestore.Timestamp(1545765815, 0),
+            enteredOn: { seconds: 1545765815, nanoseconds: 0 },
           });
         });
 
         it('dismisses the modal', () => {
-          const modal = TestBed.get(ModalController);
+          const modal = TestBed.inject(ModalController);
           editor.save();
           expect(modal.dismiss).toHaveBeenCalledTimes(1);
         });
@@ -470,14 +469,14 @@ describe('TaskEditorComponent', () => {
         id: '88395AA930FE',
         name: 'Weekly Status Meeting',
         description: 'Weekly status meeting, usually on Thursdays',
-        status: Statuses.Open,
-        priority: Priorities.Low,
-        type: TaskTypes.Task,
+        status: Statuses.open,
+        priority: Priorities.low,
+        type: TaskTypes.task,
         beginDate: '2019-01-15',
         endDate: '2019-01-18',
         projectId: 'aa9300kfii593',
         projectName: 'Math War',
-        enteredOn: new firestore.Timestamp(1545765815, 0),
+        enteredOn: { seconds: 1545765815, nanoseconds: 0 } as any,
       };
       fixture.detectChanges();
     });

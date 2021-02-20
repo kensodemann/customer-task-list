@@ -1,43 +1,44 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { selectAuthEmail, selectAuthError, selectAuthLoading, selectAuthMessage, State } from '@app/store';
+import { login, resetPassword } from '@app/store/actions/auth.actions';
+import { AuthState } from '@app/store/reducers/auth/auth.reducer';
 import { AlertController, IonicModule, LoadingController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-
 import { createNavControllerMock, createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
 import { LoginPage } from './login.page';
-import { login, resetPassword } from '@app/store/actions/auth.actions';
-import { AuthState } from '@app/store/reducers/auth/auth.reducer';
-import { selectAuthLoading, selectAuthEmail, selectAuthError, selectAuthMessage, State } from '@app/store';
 
 describe('LoginPage', () => {
-  let alert;
-  let loading;
+  let alert: any;
+  let loading: any;
   let page: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
 
-  beforeEach(async(() => {
-    alert = createOverlayElementMock();
-    loading = createOverlayElementMock();
-    TestBed.configureTestingModule({
-      imports: [FormsModule, IonicModule],
-      declarations: [LoginPage],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [
-        {
-          provide: AlertController,
-          useFactory: () => createOverlayControllerMock(alert),
-        },
-        {
-          provide: LoadingController,
-          useFactory: () => createOverlayControllerMock(loading),
-        },
-        { provide: NavController, useFactory: createNavControllerMock },
-        provideMockStore<{ auth: AuthState }>({ initialState: { auth: { email: '', loading: false } } }),
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      alert = createOverlayElementMock();
+      loading = createOverlayElementMock();
+      TestBed.configureTestingModule({
+        imports: [FormsModule, IonicModule],
+        declarations: [LoginPage],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        providers: [
+          {
+            provide: AlertController,
+            useFactory: () => createOverlayControllerMock(alert),
+          },
+          {
+            provide: LoadingController,
+            useFactory: () => createOverlayControllerMock(loading),
+          },
+          { provide: NavController, useFactory: createNavControllerMock },
+          provideMockStore<{ auth: AuthState }>({ initialState: { auth: { email: '', loading: false } } }),
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPage);
@@ -56,7 +57,7 @@ describe('LoginPage', () => {
     });
 
     it('dispatches the login action', () => {
-      const store = TestBed.get(Store);
+      const store = TestBed.inject(Store);
       store.dispatch = jest.fn();
       page.login();
       expect(store.dispatch).toHaveBeenCalledTimes(1);
@@ -66,9 +67,9 @@ describe('LoginPage', () => {
 
   describe('on loading changed', () => {
     let store: MockStore<State>;
-    let mockAuthLoadingSelector;
+    let mockAuthLoadingSelector: any;
     beforeEach(() => {
-      store = TestBed.get(Store);
+      store = TestBed.inject(Store) as MockStore<State>;
       mockAuthLoadingSelector = store.overrideSelector(selectAuthLoading, false);
       fixture.detectChanges();
       loading.dismiss.mockClear();
@@ -91,15 +92,15 @@ describe('LoginPage', () => {
 
   describe('on email changed', () => {
     let store: MockStore<State>;
-    let mockAuthEmailSelector;
+    let mockAuthEmailSelector: any;
     beforeEach(() => {
-      store = TestBed.get(Store);
+      store = TestBed.inject(Store) as MockStore<State>;
       mockAuthEmailSelector = store.overrideSelector(selectAuthEmail, undefined);
       fixture.detectChanges();
     });
 
     it('navigates to the app when the email is set', () => {
-      const navController = TestBed.get(NavController);
+      const navController = TestBed.inject(NavController);
       mockAuthEmailSelector.setResult(null);
       store.refreshState();
       fixture.detectChanges();
@@ -114,9 +115,9 @@ describe('LoginPage', () => {
 
   describe('on error changed', () => {
     let store: MockStore<State>;
-    let mockAuthErrorSelector;
+    let mockAuthErrorSelector: any;
     beforeEach(() => {
-      store = TestBed.get(Store);
+      store = TestBed.inject(Store) as MockStore<State>;
       mockAuthErrorSelector = store.overrideSelector(selectAuthError, undefined);
       fixture.detectChanges();
     });
@@ -148,9 +149,9 @@ describe('LoginPage', () => {
 
   describe('on message changed', () => {
     let store: MockStore<State>;
-    let mockAuthMessageSelector;
+    let mockAuthMessageSelector: any;
     beforeEach(() => {
-      store = TestBed.get(Store);
+      store = TestBed.inject(Store) as MockStore<State>;
       mockAuthMessageSelector = store.overrideSelector(selectAuthMessage, undefined);
       fixture.detectChanges();
     });
@@ -169,17 +170,17 @@ describe('LoginPage', () => {
 
   describe('password reset', () => {
     it('creates an alert', () => {
-      const alertController = TestBed.get(AlertController);
+      const alertController = TestBed.inject(AlertController);
       page.handlePasswordReset();
       expect(alertController.create).toHaveBeenCalledTimes(1);
     });
 
     describe('the alert', () => {
-      let params;
+      let params: any;
       beforeEach(async () => {
-        const alertController = TestBed.get(AlertController);
+        const alertController = TestBed.inject(AlertController);
         await page.handlePasswordReset();
-        params = alertController.create.mock.calls[0][0];
+        params = (alertController.create as any).mock.calls[0][0];
       });
 
       it('asks for the user e-mail', () => {
@@ -216,7 +217,7 @@ describe('LoginPage', () => {
     describe('on alert dismiss', () => {
       let store: MockStore<State>;
       beforeEach(() => {
-        store = TestBed.get(Store);
+        store = TestBed.inject(Store) as MockStore<State>;
         store.dispatch = jest.fn();
       });
 

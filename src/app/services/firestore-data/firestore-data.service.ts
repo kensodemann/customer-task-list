@@ -1,5 +1,4 @@
 import { AngularFirestoreCollection, DocumentChangeAction, DocumentReference } from '@angular/fire/firestore';
-
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -32,7 +31,7 @@ export abstract class FirestoreDataService<T extends { id?: string }> {
   }
 
   update(item: T): Promise<void> {
-    const data = { ...(item as object) } as T;
+    const data = { ...(item as Record<string, unknown>) } as T;
     delete data.id;
     return this.collection.doc(item.id).set(data);
   }
@@ -41,7 +40,7 @@ export abstract class FirestoreDataService<T extends { id?: string }> {
     return actions.map((a) => {
       const data = a.payload.doc.data();
       const id = a.payload.doc.id;
-      return { id, ...(data as object) } as T;
+      return { id, ...(data as Record<string, unknown>) } as T;
     });
   }
 

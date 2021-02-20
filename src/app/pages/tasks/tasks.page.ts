@@ -19,15 +19,15 @@ import { Task } from '@app/models';
 export class TasksPage implements OnDestroy, OnInit {
   @ViewChild(IonList, { static: true }) list: IonList;
 
-  private projectId;
-  private status;
-  private taskSubscription: Subscription;
-
   openTasks: Array<Task>;
   inProcessTasks: Array<Task>;
   closedTasks: Array<Task>;
   onHoldTasks: Array<Task>;
   showBackButton: boolean;
+
+  private projectId: string;
+  private status: string;
+  private taskSubscription: Subscription;
 
   constructor(
     private alert: AlertController,
@@ -68,7 +68,7 @@ export class TasksPage implements OnDestroy, OnInit {
   }
 
   close(task: Task) {
-    const closedTask = { ...task, status: Statuses.Closed };
+    const closedTask = { ...task, status: Statuses.closed };
     this.tasks.update(closedTask);
   }
 
@@ -102,10 +102,10 @@ export class TasksPage implements OnDestroy, OnInit {
     if (this.list) {
       this.list.closeSlidingItems();
     }
-    this.openTasks = this.tasksWithStatus(t, Statuses.Open).sort((t1, t2) => this.taskSort(t1, t2));
-    this.inProcessTasks = this.tasksWithStatus(t, Statuses.InProcess).sort((t1, t2) => this.taskSort(t1, t2));
-    this.onHoldTasks = this.tasksWithStatus(t, Statuses.OnHold).sort((t1, t2) => this.taskSort(t1, t2));
-    this.closedTasks = this.tasksWithStatus(t, Statuses.Closed);
+    this.openTasks = this.tasksWithStatus(t, Statuses.open).sort((t1, t2) => this.taskSort(t1, t2));
+    this.inProcessTasks = this.tasksWithStatus(t, Statuses.inProcess).sort((t1, t2) => this.taskSort(t1, t2));
+    this.onHoldTasks = this.tasksWithStatus(t, Statuses.onHold).sort((t1, t2) => this.taskSort(t1, t2));
+    this.closedTasks = this.tasksWithStatus(t, Statuses.closed);
   }
 
   private tasksWithStatus(allTasks: Array<Task>, status: string): Array<Task> {
@@ -140,11 +140,11 @@ export class TasksPage implements OnDestroy, OnInit {
 
   private priorityRank(task: Task): number {
     switch (task.priority) {
-      case Priorities.High:
+      case Priorities.high:
         return 0;
-      case Priorities.Normal:
+      case Priorities.normal:
         return 1;
-      case Priorities.Low:
+      case Priorities.low:
         return 2;
       default:
         return 3;

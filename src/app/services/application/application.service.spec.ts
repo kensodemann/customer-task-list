@@ -1,17 +1,16 @@
 import { inject, TestBed } from '@angular/core/testing';
+import { SwUpdate } from '@angular/service-worker';
 import { AlertController, Platform } from '@ionic/angular';
-
-import { ApplicationService } from './application.service';
 import {
   createOverlayControllerMock,
   createOverlayElementMock,
   createPlatformMock,
   createSwUpdateMock,
 } from '@test/mocks';
-import { SwUpdate } from '@angular/service-worker';
+import { ApplicationService } from './application.service';
 
 describe('ApplicationService', () => {
-  let alert;
+  let alert: any;
   let application: ApplicationService;
   beforeEach(() => {
     alert = createOverlayElementMock();
@@ -38,15 +37,15 @@ describe('ApplicationService', () => {
   describe('registered for updates', () => {
     beforeEach(() => {
       alert.onDidDismiss.mockResolvedValue({ role: 'cancel' });
-      const service: ApplicationService = TestBed.get(ApplicationService);
+      const service: ApplicationService = TestBed.inject(ApplicationService);
       service.registerForUpdates();
     });
 
     it('asks the user if they would like an update', () => {
-      const update = TestBed.get(SwUpdate);
-      const alertController = TestBed.get(AlertController);
+      const update = TestBed.inject(SwUpdate);
+      const alertController = TestBed.inject(AlertController);
       expect(alertController.create).not.toHaveBeenCalled();
-      update.available.next();
+      (update.available as any).next();
       expect(alertController.create).toHaveBeenCalledTimes(1);
     });
   });
@@ -59,7 +58,7 @@ describe('ApplicationService', () => {
       { plt: 'iphone', expected: true },
     ].forEach((test) => {
       it(`is ${test.expected} for "${test.plt}"`, () => {
-        const platform = TestBed.get(Platform);
+        const platform = TestBed.inject(Platform);
         platform.is = jest.fn((arg) => arg === test.plt);
         expect(application.showTabs).toEqual(test.expected);
       });

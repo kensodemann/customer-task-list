@@ -13,7 +13,7 @@ export const initialState: AuthState = {
   loading: false,
 };
 
-const authReducer = createReducer(
+export const reducer = createReducer<AuthState>(
   initialState,
   on(AuthActions.loginChanged, (state, { email }) => ({ ...state, email })),
   on(AuthActions.login, (state) => ({ ...state, loading: true, message: undefined, error: undefined })),
@@ -29,7 +29,3 @@ const authReducer = createReducer(
   })),
   on(AuthActions.resetPasswordFailure, (state, { error }) => ({ ...state, error }))
 );
-
-export function reducer(state: AuthState | undefined, action: Action) {
-  return authReducer(state, action);
-}

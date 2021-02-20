@@ -1,19 +1,20 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { firestore } from 'firebase';
-
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeTimestamp } from '@test/mocks';
 import { NoteListItemComponent } from './note-list-item.component';
 
 describe('NoteListItemComponent', () => {
   let component: NoteListItemComponent;
   let fixture: ComponentFixture<NoteListItemComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [NoteListItemComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [NoteListItemComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NoteListItemComponent);
@@ -21,7 +22,7 @@ describe('NoteListItemComponent', () => {
     component.note = {
       id: '42DA',
       text: 'First find Deep Thought, then get the answer from it',
-      enteredOn: new firestore.Timestamp(14324053, 0),
+      enteredOn: fakeTimestamp(14324053),
       itemId: '451BK',
     };
     fixture.detectChanges();

@@ -1,20 +1,18 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { firestore } from 'firebase/app';
-import { of } from 'rxjs';
-
-import { NotesService } from './notes.service';
-
 import {
   createAction,
+  createAngularFirestoreCollectionMock,
   createAngularFirestoreDocumentMock,
   createAngularFirestoreMock,
-  createAngularFirestoreCollectionMock,
   createDocumentSnapshotMock,
+  fakeTimestamp,
 } from '@test/mocks';
+import { of } from 'rxjs';
+import { NotesService } from './notes.service';
 
 describe('NotesService', () => {
-  let collection;
+  let collection: any;
   let notes: NotesService;
 
   beforeEach(() => {
@@ -36,12 +34,12 @@ describe('NotesService', () => {
 
   describe('all for (project or task)', () => {
     beforeEach(() => {
-      const angularFirestore = TestBed.get(AngularFirestore);
-      angularFirestore.collection.mockClear();
+      const angularFirestore = TestBed.inject(AngularFirestore);
+      (angularFirestore.collection as jest.Mock).mockClear();
     });
 
     it('grabs a references to the tasks collection', () => {
-      const angularFirestore = TestBed.get(AngularFirestore);
+      const angularFirestore = TestBed.inject(AngularFirestore);
       notes.allFor('451BK');
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
     });
@@ -56,12 +54,12 @@ describe('NotesService', () => {
         of([
           createAction('42DA', {
             text: 'First find Deep Thought, then get the answer from it',
-            enteredOn: new firestore.Timestamp(14324053, 0),
+            enteredOn: fakeTimestamp(14324053),
             itemId: '451BK',
           }),
           createAction('73SC', {
             text: 'Just like it sounds there captain',
-            enteredOn: new firestore.Timestamp(1432430034, 0),
+            enteredOn: fakeTimestamp(1432430034),
             itemId: '451BK',
           }),
         ])
@@ -71,13 +69,13 @@ describe('NotesService', () => {
           {
             id: '42DA',
             text: 'First find Deep Thought, then get the answer from it',
-            enteredOn: new firestore.Timestamp(14324053, 0),
+            enteredOn: fakeTimestamp(14324053),
             itemId: '451BK',
           },
           {
             id: '73SC',
             text: 'Just like it sounds there captain',
-            enteredOn: new firestore.Timestamp(1432430034, 0),
+            enteredOn: fakeTimestamp(1432430034),
             itemId: '451BK',
           },
         ])
@@ -86,7 +84,7 @@ describe('NotesService', () => {
   });
 
   describe('get', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);
@@ -108,14 +106,14 @@ describe('NotesService', () => {
       document.ref.get.mockResolvedValue(snapshot);
       snapshot.data.mockReturnValue({
         text: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1432430053, 0),
+        enteredOn: fakeTimestamp(1432430053),
         itemId: '451BK',
       });
       const n = await notes.get('199405fkkgi59');
       expect(n).toEqual({
         id: '199405fkkgi59',
         text: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1432430053, 0),
+        enteredOn: fakeTimestamp(1432430053),
         itemId: '451BK',
       });
     });
@@ -125,20 +123,20 @@ describe('NotesService', () => {
     it('adds the item to the collection', () => {
       notes.add({
         text: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1432434053, 0),
+        enteredOn: fakeTimestamp(1432434053),
         itemId: '451BK',
       });
       expect(collection.add).toHaveBeenCalledTimes(1);
       expect(collection.add).toHaveBeenCalledWith({
         text: 'Just like it sounds there captain',
-        enteredOn: new firestore.Timestamp(1432434053, 0),
+        enteredOn: fakeTimestamp(1432434053),
         itemId: '451BK',
       });
     });
   });
 
   describe('update', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);
@@ -149,7 +147,7 @@ describe('NotesService', () => {
         id: '88395AA930FE',
         text: 'Weekly status meeting, usually on Thursdays',
         itemId: '73SC',
-        enteredOn: new firestore.Timestamp(1545765815, 0),
+        enteredOn: fakeTimestamp(1545765815),
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
       expect(collection.doc).toHaveBeenCalledWith('88395AA930FE');
@@ -160,19 +158,19 @@ describe('NotesService', () => {
         id: '88395AA930FE',
         text: 'Weekly status meeting, usually on Thursdays',
         itemId: '73SC',
-        enteredOn: new firestore.Timestamp(1545765815, 0),
+        enteredOn: fakeTimestamp(1545765815),
       });
       expect(document.set).toHaveBeenCalledTimes(1);
       expect(document.set).toHaveBeenCalledWith({
         text: 'Weekly status meeting, usually on Thursdays',
         itemId: '73SC',
-        enteredOn: new firestore.Timestamp(1545765815, 0),
+        enteredOn: fakeTimestamp(1545765815),
       });
     });
   });
 
   describe('delete', () => {
-    let document;
+    let document: any;
     beforeEach(() => {
       document = createAngularFirestoreDocumentMock();
       collection.doc.mockReturnValue(document);
@@ -182,7 +180,7 @@ describe('NotesService', () => {
       notes.delete({
         id: '49950399KT',
         text: 'Make them extra shiny',
-        enteredOn: new firestore.Timestamp(0, 0),
+        enteredOn: fakeTimestamp(0),
         itemId: '451BK',
       });
       expect(collection.doc).toHaveBeenCalledTimes(1);
@@ -193,7 +191,7 @@ describe('NotesService', () => {
       notes.delete({
         id: '49950399KT',
         text: 'Make them extra shiny',
-        enteredOn: new firestore.Timestamp(0, 0),
+        enteredOn: fakeTimestamp(0),
         itemId: '451BK',
       });
       expect(document.delete).toHaveBeenCalledTimes(1);

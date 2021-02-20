@@ -1,42 +1,46 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { firestore } from 'firebase/app';
+import { Priorities, Statuses, TaskTypes } from '@app/default-data';
+import { TaskEditorComponent } from '@app/editors';
+import { Task } from '@app/models';
+import { TasksService } from '@app/services/firestore-data';
+import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
+import { logout } from '@app/store/actions/auth.actions';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-
-import { logout } from '@app/store/actions/auth.actions';
-import { Priorities, Statuses, TaskTypes } from '@app/default-data';
-import { TaskEditorComponent } from '@app/editors';
+import {
+  createActivatedRouteMock,
+  createOverlayControllerMock,
+  createOverlayElementMock,
+  fakeTimestamp,
+} from '@test/mocks';
 import { TaskPage } from './task.page';
-import { TasksService } from '@app/services/firestore-data';
-import { Task } from '@app/models';
-
-import { createActivatedRouteMock, createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
-import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
 
 describe('TaskPage', () => {
   let page: TaskPage;
   let fixture: ComponentFixture<TaskPage>;
-  let modal;
+  let modal: any;
 
-  beforeEach(async(() => {
-    modal = createOverlayElementMock();
-    TestBed.configureTestingModule({
-      declarations: [TaskPage],
-      providers: [
-        { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
-        {
-          provide: ModalController,
-          useFactory: () => createOverlayControllerMock(modal),
-        },
-        { provide: TasksService, useFactory: createTasksServiceMock },
-        provideMockStore(),
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      modal = createOverlayElementMock();
+      TestBed.configureTestingModule({
+        declarations: [TaskPage],
+        providers: [
+          { provide: ActivatedRoute, useFactory: createActivatedRouteMock },
+          {
+            provide: ModalController,
+            useFactory: () => createOverlayControllerMock(modal),
+          },
+          { provide: TasksService, useFactory: createTasksServiceMock },
+          provideMockStore(),
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskPage);
@@ -49,33 +53,33 @@ describe('TaskPage', () => {
   });
 
   it('gets the ID from the route', () => {
-    const route = TestBed.get(ActivatedRoute);
+    const route = TestBed.inject(ActivatedRoute);
     fixture.detectChanges();
     expect(route.snapshot.paramMap.get).toHaveBeenCalledTimes(1);
     expect(route.snapshot.paramMap.get).toHaveBeenCalledWith('taskId');
   });
 
   it('get the task for the id', () => {
-    const route = TestBed.get(ActivatedRoute);
-    const tasks = TestBed.get(TasksService);
-    route.snapshot.paramMap.get.mockReturnValue('314159PI');
+    const route = TestBed.inject(ActivatedRoute);
+    const tasks = TestBed.inject(TasksService);
+    (route.snapshot.paramMap.get as jest.Mock).mockReturnValue('314159PI');
     fixture.detectChanges();
     expect(tasks.get).toHaveBeenCalledTimes(1);
     expect(tasks.get).toHaveBeenCalledWith('314159PI');
   });
 
   it('assigns the project', async () => {
-    const route = TestBed.get(ActivatedRoute);
-    const tasks = TestBed.get(TasksService);
-    route.snapshot.paramMap.get.mockReturnValue('314159PI');
-    tasks.get.mockResolvedValue({
+    const route = TestBed.inject(ActivatedRoute);
+    const tasks = TestBed.inject(TasksService);
+    (route.snapshot.paramMap.get as jest.Mock).mockReturnValue('314159PI');
+    (tasks.get as jest.Mock).mockResolvedValue({
       id: '314159PI',
       name: 'Bang the Big',
       description: 'Just like it sounds there captain',
-      enteredOn: new firestore.Timestamp(1432430034, 0),
-      type: TaskTypes.Task,
-      status: Statuses.Open,
-      priority: Priorities.Normal,
+      enteredOn: fakeTimestamp(1432430034),
+      type: TaskTypes.task,
+      status: Statuses.open,
+      priority: Priorities.normal,
       projectId: '451BK',
       projectName: 'Book Burners R Us',
     });
@@ -84,10 +88,10 @@ describe('TaskPage', () => {
       id: '314159PI',
       name: 'Bang the Big',
       description: 'Just like it sounds there captain',
-      enteredOn: new firestore.Timestamp(1432430034, 0),
-      type: TaskTypes.Task,
-      status: Statuses.Open,
-      priority: Priorities.Normal,
+      enteredOn: fakeTimestamp(1432430034),
+      type: TaskTypes.task,
+      status: Statuses.open,
+      priority: Priorities.normal,
       projectId: '451BK',
       projectName: 'Book Burners R Us',
     });
@@ -98,35 +102,35 @@ describe('TaskPage', () => {
       id: '314159PI',
       name: 'Find the answer',
       description: 'First find Deep Thought, then get the answer from it',
-      enteredOn: new firestore.Timestamp(14324053, 0),
-      type: TaskTypes.Feature,
-      status: Statuses.Closed,
-      priority: Priorities.Normal,
+      enteredOn: fakeTimestamp(14324053),
+      type: TaskTypes.feature,
+      status: Statuses.closed,
+      priority: Priorities.normal,
       projectId: '451BK',
       projectName: 'Book Burners R Us',
     };
 
     beforeEach(() => {
-      const route = TestBed.get(ActivatedRoute);
-      const tasks = TestBed.get(TasksService);
-      route.snapshot.paramMap.get.mockReturnValue('314159PI');
-      tasks.get.mockResolvedValue(task);
+      const route = TestBed.inject(ActivatedRoute);
+      const tasks = TestBed.inject(TasksService);
+      (route.snapshot.paramMap.get as jest.Mock).mockReturnValue('314159PI');
+      (tasks.get as jest.Mock).mockResolvedValue(task);
       fixture.detectChanges();
     });
 
     it('creates a modal', () => {
-      const modalController = TestBed.get(ModalController);
+      const modalController = TestBed.inject(ModalController);
       page.edit();
       expect(modalController.create).toHaveBeenCalledTimes(1);
     });
 
     it('uses the task editor component and passes the current task', () => {
-      const modalController = TestBed.get(ModalController);
+      const modalController = TestBed.inject(ModalController);
       page.edit();
       expect(modalController.create).toHaveBeenCalledWith({
         backdropDismiss: false,
         component: TaskEditorComponent,
-        componentProps: { task: task },
+        componentProps: { task },
       });
     });
 
@@ -138,7 +142,7 @@ describe('TaskPage', () => {
 
   describe('logout', () => {
     it('dispatches the logout action', () => {
-      const store = TestBed.get(Store);
+      const store = TestBed.inject(Store);
       store.dispatch = jest.fn();
       page.logout();
       expect(store.dispatch).toHaveBeenCalledTimes(1);

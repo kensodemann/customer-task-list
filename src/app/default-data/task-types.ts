@@ -1,15 +1,16 @@
-export const enum TaskTypes {
-  Bug = 'Bug',
-  Feature = 'Feature',
-  Research = 'Research',
-  Review = 'Review',
-  Task = 'Task',
+// eslint-disable-next-line no-shadow
+export enum TaskTypes {
+  bug = 'Bug',
+  feature = 'Feature',
+  research = 'Research',
+  review = 'Review',
+  task = 'Task',
 }
 
 export const taskTypes: Array<string> = [
-  TaskTypes.Bug,
-  TaskTypes.Feature,
-  TaskTypes.Research,
-  TaskTypes.Review,
-  TaskTypes.Task,
+  TaskTypes.bug,
+  TaskTypes.feature,
+  TaskTypes.research,
+  TaskTypes.review,
+  TaskTypes.task,
 ];

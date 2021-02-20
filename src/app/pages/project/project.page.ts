@@ -18,11 +18,11 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./project.page.scss'],
 })
 export class ProjectPage implements OnDestroy, OnInit {
-  private destroy$: Subject<boolean> = new Subject<boolean>();
-  private projectTasks: Array<Task>;
-
   project: Project;
   statuses: Array<string>;
+
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+  private projectTasks: Array<Task>;
 
   constructor(
     private modal: ModalController,

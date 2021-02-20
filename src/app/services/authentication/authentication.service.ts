@@ -8,14 +8,14 @@ export class AuthenticationService {
   constructor(private afAuth: AngularFireAuth) {}
 
   login(email: string, password: string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password);
+    return this.afAuth.signInWithEmailAndPassword(email, password);
   }
 
   logout() {
-    return this.afAuth.auth.signOut();
+    return this.afAuth.signOut();
   }
 
   sendPasswordResetEmail(email: string): Promise<void> {
-    return this.afAuth.auth.sendPasswordResetEmail(email);
+    return this.afAuth.sendPasswordResetEmail(email);
   }
 }

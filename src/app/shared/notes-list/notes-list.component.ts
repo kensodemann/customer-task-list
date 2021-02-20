@@ -12,11 +12,11 @@ import { NoteEditorComponent } from '@app/editors';
   styleUrls: ['./notes-list.component.css'],
 })
 export class NotesListComponent implements OnDestroy, OnInit {
-  private subscriptions: Array<Subscription> = [];
-
   @ViewChild(IonList, { static: true }) notesList: IonList;
   @Input() itemId: string;
   allNotes: Array<Note>;
+
+  private subscriptions: Array<Subscription> = [];
 
   constructor(private alert: AlertController, private modal: ModalController, private notes: NotesService) {}
 
@@ -59,7 +59,7 @@ export class NotesListComponent implements OnDestroy, OnInit {
     const m = await this.modal.create({
       backdropDismiss: false,
       component: NoteEditorComponent,
-      componentProps: { note: note },
+      componentProps: { note },
     });
     m.present();
   }

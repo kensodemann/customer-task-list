@@ -1,16 +1,14 @@
+import { NoteEditor } from '../page-objects/editors/note-editor.po';
+import { ProjectEditor } from '../page-objects/editors/project-editor.po';
 import { ProjectPage } from '../page-objects/pages/project.po';
 import { ProjectsPage } from '../page-objects/pages/projects.po';
-import { ProjectEditor } from '../page-objects/editors/project-editor.po';
-import { NoteEditor } from '../page-objects/editors/note-editor.po';
 
-import { browser } from 'protractor';
-
-export function registerProjectTests(
+export const registerProjectTests = (
   project: ProjectPage,
   projects: ProjectsPage,
   projectEditor: ProjectEditor,
   noteEditor: NoteEditor
-) {
+) => {
   describe('Projects', () => {
     beforeEach(() => {
       projects.load();
@@ -132,4 +130,4 @@ export function registerProjectTests(
       });
     });
   });
-}
+};
