@@ -27,16 +27,16 @@ function runTasks(oldVersion, inc) {
                 if (stdout !== '') {
                   throw new Error('Unclean working tree. Commit or stash changes first.');
                 }
-              }
+              },
             },
             {
               title: 'Checking Current Branch',
               task: async () => {
                 const { stdout } = await execa('git', ['symbolic-ref', '--short', 'HEAD']);
-                if (stdout !== 'master') {
-                  throw new Error('Not on `master` branch.');
+                if (stdout !== 'main') {
+                  throw new Error('Not on `main` branch.');
                 }
-              }
+              },
             },
             {
               title: 'Checking Remote History',
@@ -45,29 +45,29 @@ function runTasks(oldVersion, inc) {
                 if (stdout !== '0') {
                   throw new Error('Remote history differ. Please pull changes.');
                 }
-              }
-            }
+              },
+            },
           ],
           { concurrent: true }
         );
-      }
+      },
     },
     {
       title: 'Cleaning',
       task: () =>
         new Promise((resolve, reject) => {
-          rimraf('node_modules', err => {
+          rimraf('node_modules', (err) => {
             if (err) {
               reject(err);
             } else {
               resolve();
             }
           });
-        })
+        }),
     },
     {
       title: 'Installing',
-      task: () => execa('npm', ['install'], { cwd: rootDir })
+      task: () => execa('npm', ['install'], { cwd: rootDir }),
     },
     {
       title: 'Testing',
@@ -76,60 +76,60 @@ function runTasks(oldVersion, inc) {
           [
             {
               title: 'Test Build',
-              task: () => execa('npm', ['run', 'build'], { cwd: rootDir })
+              task: () => execa('npm', ['run', 'build'], { cwd: rootDir }),
             },
             {
               title: 'Unit Tests',
-              task: () => execa('npm', ['run', 'test:ci'], { cwd: rootDir })
+              task: () => execa('npm', ['run', 'test:ci'], { cwd: rootDir }),
             },
             {
               title: 'Lint',
-              task: () => execa('npm', ['run', 'lint'], { cwd: rootDir })
-            }
+              task: () => execa('npm', ['run', 'lint'], { cwd: rootDir }),
+            },
           ],
           { concurrent: true }
-        )
+        ),
     },
     {
       title: 'Bumping',
-      task: () => execa('npm', ['run', 'bump', inc], { cwd: rootDir })
+      task: () => execa('npm', ['run', 'bump', inc], { cwd: rootDir }),
     },
     {
       title: 'Generating Changelog',
-      task: () => execa('npm', ['run', 'changelog'], { cwd: rootDir })
+      task: () => execa('npm', ['run', 'changelog'], { cwd: rootDir }),
     },
     {
       title: 'Updating package-lock.json via install',
-      task: () => execa('npm', ['install'], { cwd: rootDir })
+      task: () => execa('npm', ['install'], { cwd: rootDir }),
     },
     {
       title: 'Committing',
-      task: () => execa('git', ['commit', `-am chore(release): release ${newVersion}`], { cwd: rootDir })
+      task: () => execa('git', ['commit', `-am chore(release): release ${newVersion}`], { cwd: rootDir }),
     },
     {
       title: 'Tagging',
-      task: () => execa('git', ['tag', `v${newVersion}`], { cwd: rootDir })
+      task: () => execa('git', ['tag', `v${newVersion}`], { cwd: rootDir }),
     },
     {
       title: 'Pushing to Github',
-      task: () => execa('git', ['push', '--follow-tags'], { cwd: rootDir })
+      task: () => execa('git', ['push', '--follow-tags'], { cwd: rootDir }),
     },
     {
       title: 'Production Build',
-      task: () => execa('npm', ['run', 'build:web'], { cwd: rootDir })
+      task: () => execa('npm', ['run', 'build:web'], { cwd: rootDir }),
     },
     {
       title: 'Switch to Production',
-      task: () => execa('firebase', ['use', 'production'], { cwd: rootDir })
+      task: () => execa('firebase', ['use', 'production'], { cwd: rootDir }),
     },
     {
       title: 'Deploying',
-      task: () => execa('firebase', ['deploy'], { cwd: rootDir })
+      task: () => execa('firebase', ['deploy'], { cwd: rootDir }),
     },
     {
       title: 'Reset to Development',
-      task: () => execa('firebase', ['use', 'development'], { cwd: rootDir })
-    }
+      task: () => execa('firebase', ['use', 'development'], { cwd: rootDir }),
+    },
   ]);
 
   return tasks.run();
@@ -149,30 +149,30 @@ function releaseUI() {
       name: 'inc',
       message: 'Select semver increment',
       pageSize: SEMVER_INCREMENTS.length,
-      choices: SEMVER_INCREMENTS.map(inc => ({
+      choices: SEMVER_INCREMENTS.map((inc) => ({
         name: `${inc}   ${prettyVersionDiff(oldVersion, inc)}`,
-        value: inc
-      }))
+        value: inc,
+      })),
     },
     {
       type: 'confirm',
       name: 'confirm',
-      message: answers => {
+      message: (answers) => {
         return `Are you sure you want to bump the version from ${chalk.cyan(oldVersion)} to ${chalk.cyan(
           semver.inc(oldVersion, answers.inc)
         )}?`;
-      }
-    }
+      },
+    },
   ];
 
   return inquirer
     .prompt(prompts)
-    .then(answers => {
+    .then((answers) => {
       if (answers.confirm) {
         runTasks(oldVersion, answers.inc);
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('\n', chalk.red(err), '\n');
       process.exit(0);
     });
