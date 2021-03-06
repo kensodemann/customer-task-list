@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 import { Project } from '@app/models';
 import {
   create,
