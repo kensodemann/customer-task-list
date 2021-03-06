@@ -8,13 +8,18 @@ describe('AuthenticationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: AngularFireAuth, useFactory: createAngularFireAuthMock }],
+      providers: [
+        { provide: AngularFireAuth, useFactory: createAngularFireAuthMock },
+      ],
     });
   });
 
-  beforeEach(inject([AuthenticationService], (service: AuthenticationService) => {
-    authenticationService = service;
-  }));
+  beforeEach(inject(
+    [AuthenticationService],
+    (service: AuthenticationService) => {
+      authenticationService = service;
+    },
+  ));
 
   it('should be created', () => {
     expect(authenticationService).toBeTruthy();
@@ -24,13 +29,18 @@ describe('AuthenticationService', () => {
     it('calls the signin with email and password', () => {
       const angularFireAuth = TestBed.inject(AngularFireAuth);
       authenticationService.login('test@test.com', 'testpassword');
-      expect(angularFireAuth.signInWithEmailAndPassword).toHaveBeenCalledTimes(1);
+      expect(angularFireAuth.signInWithEmailAndPassword).toHaveBeenCalledTimes(
+        1,
+      );
     });
 
     it('passes the email and password', () => {
       const angularFireAuth = TestBed.inject(AngularFireAuth);
       authenticationService.login('test@test.com', 'testpassword');
-      expect(angularFireAuth.signInWithEmailAndPassword).toHaveBeenCalledWith('test@test.com', 'testpassword');
+      expect(angularFireAuth.signInWithEmailAndPassword).toHaveBeenCalledWith(
+        'test@test.com',
+        'testpassword',
+      );
     });
   });
 
@@ -52,7 +62,9 @@ describe('AuthenticationService', () => {
     it('passes the email', () => {
       const angularFireAuth = TestBed.inject(AngularFireAuth);
       authenticationService.sendPasswordResetEmail('test@testme.org');
-      expect(angularFireAuth.sendPasswordResetEmail).toHaveBeenCalledWith('test@testme.org');
+      expect(angularFireAuth.sendPasswordResetEmail).toHaveBeenCalledWith(
+        'test@testme.org',
+      );
     });
   });
 });

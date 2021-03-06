@@ -11,7 +11,11 @@ import { ProjectState } from '@app/store/reducers/project/project.reducer';
 import { ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
+import {
+  initializeTestProjects,
+  testProjectIds,
+  testProjects,
+} from '@test/data';
 import {
   createActivatedRouteMock,
   createNavControllerMock,
@@ -43,12 +47,18 @@ describe('ProjectPage', () => {
           { provide: NavController, useFactory: createNavControllerMock },
           { provide: TasksService, useFactory: createTasksServiceMock },
           provideMockStore<{ projects: ProjectState }>({
-            initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+            initialState: {
+              projects: {
+                loading: false,
+                ids: testProjectIds,
+                entities: testProjects,
+              },
+            },
           }),
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {
@@ -199,7 +209,8 @@ describe('ProjectPage', () => {
       {
         id: '39940500987',
         name: 'Respond to Review',
-        description: 'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
+        description:
+          'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
         enteredOn: fakeTimestamp(9940593),
         type: TaskTypes.feature,
         status: Statuses.open,
@@ -232,7 +243,8 @@ describe('ProjectPage', () => {
       {
         id: '42DA424242',
         name: 'I am stuck on the answer',
-        description: 'First find Deep Thought, then get the answer from it, then puzzle over it',
+        description:
+          'First find Deep Thought, then get the answer from it, then puzzle over it',
         enteredOn: fakeTimestamp(1432405339),
         type: TaskTypes.review,
         status: Statuses.onHold,
@@ -243,7 +255,8 @@ describe('ProjectPage', () => {
       {
         id: '9999',
         name: 'Die',
-        description: 'We all want to go to heaven, but no one wants to die to get there',
+        description:
+          'We all want to go to heaven, but no one wants to die to get there',
         enteredOn: fakeTimestamp(114324053),
         type: TaskTypes.research,
         status: Statuses.open,

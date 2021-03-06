@@ -1,12 +1,25 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Priorities, priorities, Statuses, statuses, TaskTypes, taskTypes } from '@app/default-data';
+import {
+  Priorities,
+  priorities,
+  Statuses,
+  statuses,
+  TaskTypes,
+  taskTypes,
+} from '@app/default-data';
 import { Task } from '@app/models';
 import { TasksService } from '@app/services/firestore-data';
 import { selectAllProjects, State } from '@app/store';
 import { byName } from '@app/util';
 import { ModalController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
-import { addDays, addYears, differenceInCalendarDays, format, parseISO } from 'date-fns';
+import {
+  addDays,
+  addYears,
+  differenceInCalendarDays,
+  format,
+  parseISO,
+} from 'date-fns';
 import firebase from 'firebase/app';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -45,7 +58,11 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   private daysBetween;
   private destroy$: Subject<boolean> = new Subject();
 
-  constructor(private modal: ModalController, private store: Store<State>, private tasks: TasksService) {}
+  constructor(
+    private modal: ModalController,
+    private store: Store<State>,
+    private tasks: TasksService,
+  ) {}
 
   ngOnInit() {
     this.priorities = [...priorities];
@@ -61,12 +78,16 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
       this.defaultTaskProperties();
     }
 
-    this.store.pipe(select(selectAllProjects), takeUntil(this.destroy$)).subscribe((projects) => {
-      this.activeProjects = projects
-        .filter((c) => c.isActive || (this.task && this.task.projectId === c.id))
-        .map((c) => ({ id: c.id, name: c.name }))
-        .sort(byName);
-    });
+    this.store
+      .pipe(select(selectAllProjects), takeUntil(this.destroy$))
+      .subscribe(projects => {
+        this.activeProjects = projects
+          .filter(
+            c => c.isActive || (this.task && this.task.projectId === c.id),
+          )
+          .map(c => ({ id: c.id, name: c.name }))
+          .sort(byName);
+      });
   }
 
   ngOnDestroy() {
@@ -96,11 +117,17 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   }
 
   beginDateChanged() {
-    this.endDate = format(addDays(parseISO(this.beginDate), this.daysBetween), 'yyyy-MM-dd');
+    this.endDate = format(
+      addDays(parseISO(this.beginDate), this.daysBetween),
+      'yyyy-MM-dd',
+    );
   }
 
   endDateChanged() {
-    this.daysBetween = differenceInCalendarDays(parseISO(this.endDate), parseISO(this.beginDate));
+    this.daysBetween = differenceInCalendarDays(
+      parseISO(this.endDate),
+      parseISO(this.beginDate),
+    );
   }
 
   private copyTaskProperties() {
@@ -114,7 +141,12 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
     this.beginDate = this.task.beginDate;
     this.endDate = this.task.endDate;
     this.daysBetween =
-      this.beginDate && this.endDate ? differenceInCalendarDays(parseISO(this.endDate), parseISO(this.beginDate)) : 0;
+      this.beginDate && this.endDate
+        ? differenceInCalendarDays(
+            parseISO(this.endDate),
+            parseISO(this.beginDate),
+          )
+        : 0;
   }
 
   private clearDates() {
@@ -125,7 +157,10 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   private initializeDates() {
     this.beginDate = (this.task && this.task.beginDate) || this.today();
     this.endDate = (this.task && this.task.endDate) || this.today();
-    this.daysBetween = differenceInCalendarDays(parseISO(this.endDate), parseISO(this.beginDate));
+    this.daysBetween = differenceInCalendarDays(
+      parseISO(this.endDate),
+      parseISO(this.beginDate),
+    );
   }
 
   private today(): string {
@@ -140,14 +175,16 @@ export class TaskEditorComponent implements OnInit, OnDestroy {
   }
 
   private taskObject(): Task {
-    const project = this.activeProjects.find((c) => c.id === this.projectId);
+    const project = this.activeProjects.find(c => c.id === this.projectId);
     const task: Task = {
       name: this.name,
       description: this.description,
       status: this.status,
       type: this.taskType,
       priority: this.priority,
-      enteredOn: (this.task && this.task.enteredOn) || new firebase.firestore.Timestamp(this.getSeconds(), 0),
+      enteredOn:
+        (this.task && this.task.enteredOn) ||
+        new firebase.firestore.Timestamp(this.getSeconds(), 0),
       projectId: this.projectId,
       projectName: project && project.name,
     };

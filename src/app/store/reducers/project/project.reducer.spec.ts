@@ -11,7 +11,11 @@ import {
   update,
   updateFailure,
 } from '@app/store/actions/project.actions';
-import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
+import {
+  initializeTestProjects,
+  testProjectIds,
+  testProjects,
+} from '@test/data';
 import { initialState, reducer } from './project.reducer';
 
 beforeEach(() => {
@@ -33,8 +37,8 @@ describe('load', () => {
           entities: { ...testProjects },
           error: new Error('the last load failed'),
         },
-        action
-      )
+        action,
+      ),
     ).toEqual({
       ...initialState,
       loading: true,
@@ -57,7 +61,12 @@ describe('load failure', () => {
 describe('create', () => {
   it('sets loading true and undefines any error', () => {
     const action = create(null);
-    expect(reducer({ ...initialState, error: new Error('the last create failed') }, action)).toEqual({
+    expect(
+      reducer(
+        { ...initialState, error: new Error('the last create failed') },
+        action,
+      ),
+    ).toEqual({
       ...initialState,
       loading: true,
       error: undefined,
@@ -67,7 +76,9 @@ describe('create', () => {
 
 describe('create failure', () => {
   it('sets the error and clears the loading flag', () => {
-    const action = createFailure({ error: new Error('Could not create the data') });
+    const action = createFailure({
+      error: new Error('Could not create the data'),
+    });
     expect(reducer({ ...initialState, loading: true }, action)).toEqual({
       ...initialState,
       loading: false,
@@ -79,7 +90,12 @@ describe('create failure', () => {
 describe('update', () => {
   it('sets loading true and undefines any error', () => {
     const action = update(null);
-    expect(reducer({ ...initialState, error: new Error('the last update failed') }, action)).toEqual({
+    expect(
+      reducer(
+        { ...initialState, error: new Error('the last update failed') },
+        action,
+      ),
+    ).toEqual({
       ...initialState,
       loading: true,
       error: undefined,
@@ -89,7 +105,9 @@ describe('update', () => {
 
 describe('update failure', () => {
   it('sets the error and clears the loading flag', () => {
-    const action = updateFailure({ error: new Error('Could not update the data') });
+    const action = updateFailure({
+      error: new Error('Could not update the data'),
+    });
     expect(reducer({ ...initialState, loading: true }, action)).toEqual({
       ...initialState,
       loading: false,
@@ -129,7 +147,17 @@ describe('project added', () => {
       isActive: true,
     };
     const action = projectAdded({ project });
-    expect(reducer({ ...initialState, loading: true, ids: testProjectIds, entities: testProjects }, action)).toEqual({
+    expect(
+      reducer(
+        {
+          ...initialState,
+          loading: true,
+          ids: testProjectIds,
+          entities: testProjects,
+        },
+        action,
+      ),
+    ).toEqual({
       ...initialState,
       loading: false,
       ids: [...testProjectIds, '194309fkadsfoi'],
@@ -180,13 +208,13 @@ describe('project added', () => {
           description: 'I am a newly added project',
           isActive: true,
         },
-        fiiagoie92: {
+        'fiiagoie92': {
           id: 'fiiagoie92',
           name: 'Newbie Too',
           description: 'I am another newly added project',
           isActive: true,
         },
-        figof003f3: {
+        'figof003f3': {
           id: 'figof003f3',
           name: 'the day',
           description: 'It is all ok',
@@ -218,7 +246,17 @@ describe('project added', () => {
       },
     ];
     const action = projectsAdded({ projects });
-    expect(reducer({ ...initialState, loading: true, ids: testProjectIds, entities: testProjects }, action)).toEqual({
+    expect(
+      reducer(
+        {
+          ...initialState,
+          loading: true,
+          ids: testProjectIds,
+          entities: testProjects,
+        },
+        action,
+      ),
+    ).toEqual({
       ...initialState,
       loading: false,
       ids: [...testProjectIds, '194309fkadsfoi', 'fiiagoie92', 'figof003f3'],
@@ -230,13 +268,13 @@ describe('project added', () => {
           description: 'I am a newly added project',
           isActive: true,
         },
-        fiiagoie92: {
+        'fiiagoie92': {
           id: 'fiiagoie92',
           name: 'Newbie Too',
           description: 'I am another newly added project',
           isActive: true,
         },
-        figof003f3: {
+        'figof003f3': {
           id: 'figof003f3',
           name: 'the day',
           description: 'It is all ok',
@@ -258,7 +296,17 @@ describe('project modified', () => {
     const expected = { ...testProjects };
     expected.ri49950399vf = project;
     const action = projectModified({ project });
-    expect(reducer({ ...initialState, loading: true, ids: testProjectIds, entities: testProjects }, action)).toEqual({
+    expect(
+      reducer(
+        {
+          ...initialState,
+          loading: true,
+          ids: testProjectIds,
+          entities: testProjects,
+        },
+        action,
+      ),
+    ).toEqual({
       ...initialState,
       loading: false,
       ids: testProjectIds,
@@ -278,7 +326,17 @@ describe('project removed', () => {
     const expected = { ...testProjects };
     delete expected.pproti3993kgi;
     const action = projectRemoved({ project });
-    expect(reducer({ ...initialState, loading: true, ids: testProjectIds, entities: testProjects }, action)).toEqual({
+    expect(
+      reducer(
+        {
+          ...initialState,
+          loading: true,
+          ids: testProjectIds,
+          entities: testProjects,
+        },
+        action,
+      ),
+    ).toEqual({
       ...initialState,
       loading: false,
       ids: [

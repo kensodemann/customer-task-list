@@ -62,9 +62,9 @@ describe('NotesService', () => {
             enteredOn: fakeTimestamp(1432430034),
             itemId: '451BK',
           }),
-        ])
+        ]),
       );
-      notes.allFor('451BK').subscribe((d) =>
+      notes.allFor('451BK').subscribe(d =>
         expect(d).toEqual([
           {
             id: '42DA',
@@ -78,7 +78,7 @@ describe('NotesService', () => {
             enteredOn: fakeTimestamp(1432430034),
             itemId: '451BK',
           },
-        ])
+        ]),
       );
     });
   });

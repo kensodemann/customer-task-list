@@ -19,12 +19,16 @@ export class ProjectsPage implements OnInit {
   allProjects: Array<Project>;
   projects$: Observable<Array<Project>>;
 
-  constructor(private modal: ModalController, private navController: NavController, private store: Store<State>) {}
+  constructor(
+    private modal: ModalController,
+    private navController: NavController,
+    private store: Store<State>,
+  ) {}
 
   ngOnInit() {
     this.projects$ = this.store.pipe(
       select(selectAllProjects),
-      map((p) => p.sort(byName))
+      map(p => p.sort(byName)),
     );
   }
 

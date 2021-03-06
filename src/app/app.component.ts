@@ -19,11 +19,11 @@ export class AppComponent implements OnInit {
     private afAuth: AngularFireAuth,
     private navController: NavController,
     private store: Store<State>,
-    public application: ApplicationService
+    public application: ApplicationService,
   ) {}
 
   ngOnInit() {
-    this.afAuth.authState.subscribe((u) => {
+    this.afAuth.authState.subscribe(u => {
       this.store.dispatch(loginChanged({ email: u && u.email }));
       if (u) {
         this.store.dispatch(loadProject());

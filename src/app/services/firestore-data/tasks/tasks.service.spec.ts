@@ -69,9 +69,9 @@ describe('TasksService', () => {
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           }),
-        ])
+        ]),
       );
-      tasks.all().subscribe((d) =>
+      tasks.all().subscribe(d =>
         expect(d).toEqual([
           {
             id: '42DA',
@@ -95,7 +95,7 @@ describe('TasksService', () => {
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           },
-        ])
+        ]),
       );
     });
   });
@@ -140,9 +140,9 @@ describe('TasksService', () => {
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           }),
-        ])
+        ]),
       );
-      tasks.forProject('451BK').subscribe((d) =>
+      tasks.forProject('451BK').subscribe(d =>
         expect(d).toEqual([
           {
             id: '42DA',
@@ -166,7 +166,7 @@ describe('TasksService', () => {
             projectId: '451BK',
             projectName: 'Book Burners R Us',
           },
-        ])
+        ]),
       );
     });
   });

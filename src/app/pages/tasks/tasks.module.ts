@@ -16,7 +16,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [IonicModule, CommonModule, EditorsModule, FormsModule, RouterModule.forChild(routes), SharedModule],
+  imports: [
+    IonicModule,
+    CommonModule,
+    EditorsModule,
+    FormsModule,
+    RouterModule.forChild(routes),
+    SharedModule,
+  ],
   declarations: [TasksPage],
 })
 export class TasksPageModule {}

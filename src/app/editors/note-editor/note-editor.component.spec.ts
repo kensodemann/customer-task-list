@@ -4,7 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { NotesService } from '@app/services/firestore-data';
 import { createNotesServiceMock } from '@app/services/firestore-data/mocks';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { createOverlayControllerMock, createOverlayElementMock, fakeTimestamp } from '@test/mocks';
+import {
+  createOverlayControllerMock,
+  createOverlayElementMock,
+  fakeTimestamp,
+} from '@test/mocks';
 import { NoteEditorComponent } from './note-editor.component';
 
 describe('NoteEditorComponent', () => {
@@ -19,13 +23,14 @@ describe('NoteEditorComponent', () => {
         providers: [
           {
             provide: ModalController,
-            useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
+            useFactory: () =>
+              createOverlayControllerMock(createOverlayElementMock()),
           },
           { provide: NotesService, useFactory: createNotesServiceMock },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {
@@ -51,7 +56,9 @@ describe('NoteEditorComponent', () => {
     let now: any;
     beforeEach(() => {
       now = Date.now;
-      Date.now = jest.fn(() => new Date('2018-12-25T14:23:35.000-05:00').getTime());
+      Date.now = jest.fn(() =>
+        new Date('2018-12-25T14:23:35.000-05:00').getTime(),
+      );
       editor.itemId = '39945akf953';
       fixture.detectChanges();
     });

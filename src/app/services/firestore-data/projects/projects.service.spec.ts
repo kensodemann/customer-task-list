@@ -42,31 +42,35 @@ describe('ProjectsService', () => {
         of([
           createAction('314PI', {
             name: `Baker's Square`,
-            description: 'Makers of overly sweet pies and otherwise crappy food',
+            description:
+              'Makers of overly sweet pies and otherwise crappy food',
             isActive: true,
           }),
           createAction('420HI', {
             name: 'Joe',
-            description: 'Some guy named Joe who sells week on my street corner',
+            description:
+              'Some guy named Joe who sells week on my street corner',
             isActive: false,
           }),
-        ])
+        ]),
       );
-      projects.all().subscribe((d) =>
+      projects.all().subscribe(d =>
         expect(d).toEqual([
           {
             id: '314PI',
             name: `Baker's Square`,
-            description: 'Makers of overly sweet pies and otherwise crappy food',
+            description:
+              'Makers of overly sweet pies and otherwise crappy food',
             isActive: true,
           },
           {
             id: '420HI',
             name: 'Joe',
-            description: 'Some guy named Joe who sells week on my street corner',
+            description:
+              'Some guy named Joe who sells week on my street corner',
             isActive: false,
           },
-        ])
+        ]),
       );
     });
   });

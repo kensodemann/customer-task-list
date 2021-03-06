@@ -17,7 +17,7 @@ describe('TabsPage', () => {
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: [{ provide: ApplicationService, useValue: application }],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {

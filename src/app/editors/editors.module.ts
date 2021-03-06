@@ -9,7 +9,15 @@ import { NoteEditorComponent } from './note-editor/note-editor.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule],
-  declarations: [ProjectEditorComponent, NoteEditorComponent, TaskEditorComponent],
-  entryComponents: [ProjectEditorComponent, NoteEditorComponent, TaskEditorComponent],
+  declarations: [
+    ProjectEditorComponent,
+    NoteEditorComponent,
+    TaskEditorComponent,
+  ],
+  entryComponents: [
+    ProjectEditorComponent,
+    NoteEditorComponent,
+    TaskEditorComponent,
+  ],
 })
 export class EditorsModule {}

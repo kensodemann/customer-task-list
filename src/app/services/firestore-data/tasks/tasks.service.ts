@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/firestore';
 
 import { Task } from '@app/models';
 import { Observable } from 'rxjs';
@@ -17,7 +20,7 @@ export class TasksService extends FirestoreDataService<Task> {
 
   forProject(id: string): Observable<Array<Task>> {
     return this.firestore
-      .collection('tasks', (ref) => ref.where('projectId', '==', id))
+      .collection('tasks', ref => ref.where('projectId', '==', id))
       .snapshotChanges()
       .pipe(map(this.actionsToData));
   }

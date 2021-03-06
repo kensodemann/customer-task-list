@@ -24,19 +24,26 @@
     </ion-fab-button>
   </ion-fab>
 
-  <div id="name-section" class="section"><span class="label">Name:</span> {{ project?.name }}</div>
+  <div id="name-section" class="section">
+    <span class="label">Name:</span> {{ project?.name }}
+  </div>
 
   <div id="description-section" class="section">
     <div class="label">Description:</div>
     <div>{{ project?.description }}</div>
   </div>
 
-  <div id="is-active-section" class="section"><span class="label">Is Active:</span> {{ project?.isActive }}</div>
+  <div id="is-active-section" class="section">
+    <span class="label">Is Active:</span> {{ project?.isActive }}
+  </div>
 
   <div class="section">
     <ion-list id="tasks-list" lines="none">
       <ion-list-header> <ion-label>Tasks:</ion-label> </ion-list-header>
-      <ion-item class="clickable" (click)="navController.navigateForward(['tabs', 'projects', project.id, 'tasks'])">
+      <ion-item
+        class="clickable"
+        (click)="navController.navigateForward(['tabs', 'projects', project.id, 'tasks'])"
+      >
         <ion-label>All ({{ taskCount() }})</ion-label>
       </ion-item>
       <ion-item

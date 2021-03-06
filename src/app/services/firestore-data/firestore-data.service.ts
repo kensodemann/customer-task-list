@@ -1,4 +1,8 @@
-import { AngularFirestoreCollection, DocumentChangeAction, DocumentReference } from '@angular/fire/firestore';
+import {
+  AngularFirestoreCollection,
+  DocumentChangeAction,
+  DocumentReference,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -37,7 +41,7 @@ export abstract class FirestoreDataService<T extends { id?: string }> {
   }
 
   protected actionsToData(actions: Array<DocumentChangeAction<T>>): Array<T> {
-    return actions.map((a) => {
+    return actions.map(a => {
       const data = a.payload.doc.data();
       const id = a.payload.doc.id;
       return { id, ...(data as Record<string, unknown>) } as T;

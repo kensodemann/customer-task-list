@@ -22,59 +22,66 @@ export class ProjectEffects {
       ofType(projectActions.load),
       mergeMap(() =>
         this.projectsService.observeChanges().pipe(
-          mergeMap((actions) => this.unpackActions(actions)),
-          map((action) => this.projectAction(action))
-        )
-      )
-    )
+          mergeMap(actions => this.unpackActions(actions)),
+          map(action => this.projectAction(action)),
+        ),
+      ),
+    ),
   );
 
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(projectActions.create),
-      mergeMap((action) =>
+      mergeMap(action =>
         from(this.projectsService.add(action.project)).pipe(
           map(() => projectActions.createSuccess()),
-          catchError((error) => of(projectActions.createFailure({ error })))
-        )
-      )
-    )
+          catchError(error => of(projectActions.createFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(projectActions.update),
-      mergeMap((action) =>
+      mergeMap(action =>
         from(this.projectsService.update(action.project)).pipe(
           map(() => projectActions.updateSuccess()),
-          catchError((error) => of(projectActions.updateFailure({ error })))
-        )
-      )
-    )
+          catchError(error => of(projectActions.updateFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
-  constructor(private actions$: Actions, private projectsService: ProjectsService) {}
+  constructor(
+    private actions$: Actions,
+    private projectsService: ProjectsService,
+  ) {}
 
-  private unpackActions(actions: Array<DocumentChangeAction<Project>>): Array<ProjectChangeAction> {
+  private unpackActions(
+    actions: Array<DocumentChangeAction<Project>>,
+  ): Array<ProjectChangeAction> {
     let mainActions: Array<DocumentChangeAction<Project>>;
     let groupedActions: Array<DocumentChangeAction<Project>>;
     if (actions.length > 1) {
-      groupedActions = actions.filter((a) => a.type === 'added');
-      mainActions = actions.filter((a) => a.type !== 'added');
+      groupedActions = actions.filter(a => a.type === 'added');
+      mainActions = actions.filter(a => a.type !== 'added');
     } else {
       groupedActions = [];
       mainActions = actions;
     }
 
-    const changeActions: Array<ProjectChangeAction> = mainActions.map((action) => ({
-      type: action.type,
-      project: this.docActionToProject(action),
-    }));
+    const changeActions: Array<ProjectChangeAction> = mainActions.map(
+      action => ({
+        type: action.type,
+        project: this.docActionToProject(action),
+      }),
+    );
 
     if (groupedActions.length) {
       changeActions.push({
         type: 'added many',
-        projects: groupedActions.map((action) => this.docActionToProject(action)),
+        projects: groupedActions.map(action => this.docActionToProject(action)),
       });
     }
 

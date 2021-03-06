@@ -19,12 +19,17 @@ it('returns the default state', () => {
 describe('login changed', () => {
   it('sets the email in the state', () => {
     const action = loginChanged({ email: 'test@testy.com' });
-    expect(reducer(undefined, action)).toEqual({ email: 'test@testy.com', loading: false });
+    expect(reducer(undefined, action)).toEqual({
+      email: 'test@testy.com',
+      loading: false,
+    });
   });
 
   it('clears the email in the state', () => {
     const action = loginChanged({ email: undefined });
-    expect(reducer({ email: 'test@testy.com', loading: false }, action)).toEqual({
+    expect(
+      reducer({ email: 'test@testy.com', loading: false }, action),
+    ).toEqual({
       email: undefined,
       loading: false,
     });
@@ -36,9 +41,14 @@ describe('login', () => {
     const action = login({ email: 'test@testy.com', password: 'mysecret' });
     expect(
       reducer(
-        { email: '', loading: false, message: 'this is random information', error: new Error('Invalid Password') },
-        action
-      )
+        {
+          email: '',
+          loading: false,
+          message: 'this is random information',
+          error: new Error('Invalid Password'),
+        },
+        action,
+      ),
     ).toEqual({
       email: '',
       loading: true,
@@ -51,7 +61,12 @@ describe('login', () => {
 describe('login success', () => {
   it('clears the loading flag', () => {
     const action = loginSuccess();
-    expect(reducer({ email: '', loading: true, message: undefined, error: undefined }, action)).toEqual({
+    expect(
+      reducer(
+        { email: '', loading: true, message: undefined, error: undefined },
+        action,
+      ),
+    ).toEqual({
       email: '',
       loading: false,
       message: undefined,
@@ -62,8 +77,12 @@ describe('login success', () => {
 
 describe('login failure', () => {
   it('clears the loading flag and sets the error', () => {
-    const action = loginFailure({ error: new Error('There was a failure, it was a mess') });
-    expect(reducer({ email: '', loading: true, error: undefined }, action)).toEqual({
+    const action = loginFailure({
+      error: new Error('There was a failure, it was a mess'),
+    });
+    expect(
+      reducer({ email: '', loading: true, error: undefined }, action),
+    ).toEqual({
       email: '',
       loading: false,
       message: undefined,
@@ -83,8 +102,8 @@ describe('logout', () => {
           message: 'this is useless information',
           error: new Error('How can you fail to logout?'),
         },
-        action
-      )
+        action,
+      ),
     ).toEqual({
       email: '',
       loading: true,
@@ -97,7 +116,12 @@ describe('logout', () => {
 describe('logout success', () => {
   it('clears the loading flag', () => {
     const action = logoutSuccess();
-    expect(reducer({ email: '', loading: true, message: undefined, error: undefined }, action)).toEqual({
+    expect(
+      reducer(
+        { email: '', loading: true, message: undefined, error: undefined },
+        action,
+      ),
+    ).toEqual({
       email: '',
       loading: false,
       message: undefined,
@@ -108,8 +132,15 @@ describe('logout success', () => {
 
 describe('logout failure', () => {
   it('clears the loading flag and sets the error', () => {
-    const action = logoutFailure({ error: new Error('There was a failure, it was a mess') });
-    expect(reducer({ email: '', loading: true, message: undefined, error: undefined }, action)).toEqual({
+    const action = logoutFailure({
+      error: new Error('There was a failure, it was a mess'),
+    });
+    expect(
+      reducer(
+        { email: '', loading: true, message: undefined, error: undefined },
+        action,
+      ),
+    ).toEqual({
       email: '',
       loading: false,
       message: undefined,
@@ -129,8 +160,8 @@ describe('reset password', () => {
           message: 'this is useless information',
           error: new Error('How can you fail to logout?'),
         },
-        action
-      )
+        action,
+      ),
     ).toEqual({
       email: '',
       loading: false,
@@ -143,10 +174,16 @@ describe('reset password', () => {
 describe('reset password success', () => {
   it('sets the message string', () => {
     const action = resetPasswordSuccess({ email: 'test@testtea.com' });
-    expect(reducer({ email: '', loading: false, message: undefined, error: undefined }, action)).toEqual({
+    expect(
+      reducer(
+        { email: '', loading: false, message: undefined, error: undefined },
+        action,
+      ),
+    ).toEqual({
       email: '',
       loading: false,
-      message: 'An e-mail has been sent to test@testtea.com with password reset instructions.',
+      message:
+        'An e-mail has been sent to test@testtea.com with password reset instructions.',
       error: undefined,
     });
   });
@@ -154,8 +191,15 @@ describe('reset password success', () => {
 
 describe('reset password failure', () => {
   it('sets the error', () => {
-    const action = resetPasswordFailure({ error: new Error('There was a failure, it was a mess') });
-    expect(reducer({ email: '', loading: false, message: undefined, error: undefined }, action)).toEqual({
+    const action = resetPasswordFailure({
+      error: new Error('There was a failure, it was a mess'),
+    });
+    expect(
+      reducer(
+        { email: '', loading: false, message: undefined, error: undefined },
+        action,
+      ),
+    ).toEqual({
       email: '',
       loading: false,
       message: undefined,

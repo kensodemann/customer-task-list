@@ -7,8 +7,15 @@ import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
 import { ProjectState } from '@app/store/reducers/project/project.reducer';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
-import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import {
+  initializeTestProjects,
+  testProjectIds,
+  testProjects,
+} from '@test/data';
+import {
+  createOverlayControllerMock,
+  createOverlayElementMock,
+} from '@test/mocks';
 import { TaskEditorComponent } from './task-editor.component';
 
 describe('TaskEditorComponent', () => {
@@ -24,16 +31,23 @@ describe('TaskEditorComponent', () => {
         providers: [
           {
             provide: ModalController,
-            useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
+            useFactory: () =>
+              createOverlayControllerMock(createOverlayElementMock()),
           },
           { provide: TasksService, useFactory: createTasksServiceMock },
           provideMockStore<{ projects: ProjectState }>({
-            initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+            initialState: {
+              projects: {
+                loading: false,
+                ids: testProjectIds,
+                entities: testProjects,
+              },
+            },
           }),
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {
@@ -48,7 +62,9 @@ describe('TaskEditorComponent', () => {
 
   it('calculates a max due date', () => {
     const now = Date.now;
-    Date.now = jest.fn(() => new Date('2018-12-25T14:23:35.000-05:00').getTime());
+    Date.now = jest.fn(() =>
+      new Date('2018-12-25T14:23:35.000-05:00').getTime(),
+    );
     fixture.detectChanges();
     expect(editor.maxDate).toEqual('2021-12-25');
     Date.now = now;
@@ -67,7 +83,9 @@ describe('TaskEditorComponent', () => {
     let now;
     beforeEach(() => {
       now = Date.now;
-      Date.now = jest.fn(() => new Date('2018-12-25T14:23:35.000-05:00').getTime());
+      Date.now = jest.fn(() =>
+        new Date('2018-12-25T14:23:35.000-05:00').getTime(),
+      );
       fixture.detectChanges();
     });
 
@@ -161,7 +179,9 @@ describe('TaskEditorComponent', () => {
 
     describe('save', () => {
       beforeEach(() => {
-        Date.now = jest.fn(() => new Date('2018-12-25T14:23:35.000-05:00').getTime());
+        Date.now = jest.fn(() =>
+          new Date('2018-12-25T14:23:35.000-05:00').getTime(),
+        );
       });
 
       it('adds the task', () => {
@@ -243,7 +263,9 @@ describe('TaskEditorComponent', () => {
     let now;
     beforeEach(() => {
       now = Date.now;
-      Date.now = jest.fn(() => new Date('2019-03-13T12:05:45.000-05:00').getTime());
+      Date.now = jest.fn(() =>
+        new Date('2019-03-13T12:05:45.000-05:00').getTime(),
+      );
     });
 
     afterEach(() => (Date.now = now));
@@ -335,7 +357,9 @@ describe('TaskEditorComponent', () => {
       });
 
       it('initializes the description', () => {
-        expect(editor.description).toEqual('Weekly status meeting, usually on Thursdays');
+        expect(editor.description).toEqual(
+          'Weekly status meeting, usually on Thursdays',
+        );
       });
 
       it('initializes the status', () => {

@@ -6,8 +6,16 @@ import { ProjectState } from '@app/store/reducers/project/project.reducer';
 import { ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
-import { createNavControllerMock, createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import {
+  initializeTestProjects,
+  testProjectIds,
+  testProjects,
+} from '@test/data';
+import {
+  createNavControllerMock,
+  createOverlayControllerMock,
+  createOverlayElementMock,
+} from '@test/mocks';
 import { ProjectsPage } from './projects.page';
 
 describe('ProjectsPage', () => {
@@ -29,11 +37,17 @@ describe('ProjectsPage', () => {
           },
           { provide: NavController, useFactory: createNavControllerMock },
           provideMockStore<{ projects: ProjectState }>({
-            initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+            initialState: {
+              projects: {
+                loading: false,
+                ids: testProjectIds,
+                entities: testProjects,
+              },
+            },
           }),
         ],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {
@@ -78,7 +92,11 @@ describe('ProjectsPage', () => {
         isActive: true,
       });
       expect(navController.navigateForward).toHaveBeenCalledTimes(1);
-      expect(navController.navigateForward).toHaveBeenCalledWith(['tabs', 'projects', '4273']);
+      expect(navController.navigateForward).toHaveBeenCalledWith([
+        'tabs',
+        'projects',
+        '4273',
+      ]);
     });
   });
 

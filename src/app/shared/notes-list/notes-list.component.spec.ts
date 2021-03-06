@@ -5,7 +5,11 @@ import { Note } from '@app/models';
 import { NotesService } from '@app/services/firestore-data';
 import { createNotesServiceMock } from '@app/services/firestore-data/mocks';
 import { AlertController, ModalController } from '@ionic/angular';
-import { createOverlayControllerMock, createOverlayElementMock, fakeTimestamp } from '@test/mocks';
+import {
+  createOverlayControllerMock,
+  createOverlayElementMock,
+  fakeTimestamp,
+} from '@test/mocks';
 import { of } from 'rxjs';
 import { NotesListComponent } from './notes-list.component';
 
@@ -34,7 +38,7 @@ describe('NotesListComponent', () => {
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {
@@ -138,7 +142,8 @@ describe('NotesListComponent', () => {
       const notes = TestBed.inject(NotesService);
       component.notesList = { closeSlidingItems: jest.fn() } as any;
       component.delete(note);
-      const button = (alertController.create as jest.Mock).mock.calls[0][0].buttons[0];
+      const button = (alertController.create as jest.Mock).mock.calls[0][0]
+        .buttons[0];
       button.handler();
       expect(notes.delete).toHaveBeenCalledTimes(1);
     });
@@ -147,7 +152,8 @@ describe('NotesListComponent', () => {
       const alertController = TestBed.inject(AlertController);
       component.notesList = { closeSlidingItems: jest.fn() } as any;
       component.delete(note);
-      const button = (alertController.create as jest.Mock).mock.calls[0][0].buttons[0];
+      const button = (alertController.create as jest.Mock).mock.calls[0][0]
+        .buttons[0];
       button.handler();
       expect(component.notesList.closeSlidingItems).toHaveBeenCalledTimes(1);
     });
@@ -155,7 +161,8 @@ describe('NotesListComponent', () => {
     it('does not delete on "No"', () => {
       const alertController = TestBed.inject(AlertController);
       component.delete(note);
-      const button = (alertController.create as jest.Mock).mock.calls[0][0].buttons[1];
+      const button = (alertController.create as jest.Mock).mock.calls[0][0]
+        .buttons[1];
       expect(button.role).toEqual('cancel');
       expect(button.handler).toBeUndefined();
     });

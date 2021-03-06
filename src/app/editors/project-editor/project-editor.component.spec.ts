@@ -6,8 +6,15 @@ import { ProjectState } from '@app/store/reducers/project/project.reducer';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
-import { createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import {
+  initializeTestProjects,
+  testProjectIds,
+  testProjects,
+} from '@test/data';
+import {
+  createOverlayControllerMock,
+  createOverlayElementMock,
+} from '@test/mocks';
 import { ProjectEditorComponent } from './project-editor.component';
 
 describe('ProjectEditorComponent', () => {
@@ -23,15 +30,22 @@ describe('ProjectEditorComponent', () => {
         providers: [
           {
             provide: ModalController,
-            useFactory: () => createOverlayControllerMock(createOverlayElementMock()),
+            useFactory: () =>
+              createOverlayControllerMock(createOverlayElementMock()),
           },
           provideMockStore<{ projects: ProjectState }>({
-            initialState: { projects: { loading: false, ids: testProjectIds, entities: testProjects } },
+            initialState: {
+              projects: {
+                loading: false,
+                ids: testProjectIds,
+                entities: testProjects,
+              },
+            },
           }),
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {
@@ -76,7 +90,13 @@ describe('ProjectEditorComponent', () => {
         editor.save();
         expect(store.dispatch).toHaveBeenCalledTimes(1);
         expect(store.dispatch).toHaveBeenCalledWith(
-          create({ project: { name: editor.name, description: editor.description, isActive: editor.isActive } })
+          create({
+            project: {
+              name: editor.name,
+              description: editor.description,
+              isActive: editor.isActive,
+            },
+          }),
         );
       });
 
@@ -89,7 +109,13 @@ describe('ProjectEditorComponent', () => {
         editor.save();
         expect(store.dispatch).toHaveBeenCalledTimes(1);
         expect(store.dispatch).toHaveBeenCalledWith(
-          create({ project: { name: editor.name, description: editor.description, isActive: editor.isActive } })
+          create({
+            project: {
+              name: editor.name,
+              description: editor.description,
+              isActive: editor.isActive,
+            },
+          }),
         );
       });
 
@@ -104,25 +130,33 @@ describe('ProjectEditorComponent', () => {
       it('sets a warning message if a project by the same name exists', () => {
         editor.name = testProjects[testProjectIds[2]].name;
         editor.checkName();
-        expect(editor.warningMessage).toEqual('a project with this name already exists');
+        expect(editor.warningMessage).toEqual(
+          'a project with this name already exists',
+        );
       });
 
       it('does the check case-insensitive', () => {
         editor.name = testProjects[testProjectIds[2]].name.toUpperCase();
         editor.checkName();
-        expect(editor.warningMessage).toEqual('a project with this name already exists');
+        expect(editor.warningMessage).toEqual(
+          'a project with this name already exists',
+        );
       });
 
       it('ignores starting white-space', () => {
         editor.name = '   ' + testProjects[testProjectIds[2]].name;
         editor.checkName();
-        expect(editor.warningMessage).toEqual('a project with this name already exists');
+        expect(editor.warningMessage).toEqual(
+          'a project with this name already exists',
+        );
       });
 
       it('ignores ending white-space', () => {
         editor.name = '   ' + testProjects[testProjectIds[2]].name + '   ';
         editor.checkName();
-        expect(editor.warningMessage).toEqual('a project with this name already exists');
+        expect(editor.warningMessage).toEqual(
+          'a project with this name already exists',
+        );
       });
 
       it('clears the error message if no matching project', () => {
@@ -175,8 +209,13 @@ describe('ProjectEditorComponent', () => {
         expect(store.dispatch).toHaveBeenCalledTimes(1);
         expect(store.dispatch).toHaveBeenCalledWith(
           update({
-            project: { id: '531LLS', name: editor.name, description: editor.description, isActive: editor.isActive },
-          })
+            project: {
+              id: '531LLS',
+              name: editor.name,
+              description: editor.description,
+              isActive: editor.isActive,
+            },
+          }),
         );
       });
 
@@ -190,8 +229,13 @@ describe('ProjectEditorComponent', () => {
         expect(store.dispatch).toHaveBeenCalledTimes(1);
         expect(store.dispatch).toHaveBeenCalledWith(
           update({
-            project: { id: '531LLS', name: editor.name, description: editor.description, isActive: editor.isActive },
-          })
+            project: {
+              id: '531LLS',
+              name: editor.name,
+              description: editor.description,
+              isActive: editor.isActive,
+            },
+          }),
         );
       });
 
@@ -206,7 +250,9 @@ describe('ProjectEditorComponent', () => {
       it('sets a warning message if a project by the same name exists', () => {
         editor.name = testProjects[testProjectIds[2]].name;
         editor.checkName();
-        expect(editor.warningMessage).toEqual('a project with this name already exists');
+        expect(editor.warningMessage).toEqual(
+          'a project with this name already exists',
+        );
       });
 
       it('ignore the project with the same ID', () => {
@@ -219,19 +265,25 @@ describe('ProjectEditorComponent', () => {
       it('does the check case-insensitive', () => {
         editor.name = testProjects[testProjectIds[2]].name.toUpperCase();
         editor.checkName();
-        expect(editor.warningMessage).toEqual('a project with this name already exists');
+        expect(editor.warningMessage).toEqual(
+          'a project with this name already exists',
+        );
       });
 
       it('ignores starting white-space', () => {
         editor.name = '   ' + testProjects[testProjectIds[2]].name;
         editor.checkName();
-        expect(editor.warningMessage).toEqual('a project with this name already exists');
+        expect(editor.warningMessage).toEqual(
+          'a project with this name already exists',
+        );
       });
 
       it('ignores ending white-space', () => {
         editor.name = testProjects[testProjectIds[2]].name + '  ';
         editor.checkName();
-        expect(editor.warningMessage).toEqual('a project with this name already exists');
+        expect(editor.warningMessage).toEqual(
+          'a project with this name already exists',
+        );
       });
 
       it('clears the error message if no matching project', () => {

@@ -6,7 +6,11 @@ import { SwUpdate } from '@angular/service-worker';
   providedIn: 'root',
 })
 export class ApplicationService {
-  constructor(private alert: AlertController, private platform: Platform, private update: SwUpdate) {}
+  constructor(
+    private alert: AlertController,
+    private platform: Platform,
+    private update: SwUpdate,
+  ) {}
 
   get showTabs(): boolean {
     return !(this.platform.is('tablet') || this.platform.is('desktop'));

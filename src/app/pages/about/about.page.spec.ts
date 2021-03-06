@@ -16,7 +16,7 @@ describe('AboutPage', () => {
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: [provideMockStore()],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {

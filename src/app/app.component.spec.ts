@@ -4,7 +4,10 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { createAngularFireAuthMock, createNavControllerMock } from '@test/mocks';
+import {
+  createAngularFireAuthMock,
+  createNavControllerMock,
+} from '@test/mocks';
 import { AppComponent } from './app.component';
 import { createApplicationServiceMock } from './services/application/application.mock';
 import { ApplicationService } from './services/application/application.service';
@@ -28,7 +31,7 @@ describe('AppComponent', () => {
           provideMockStore<State>(),
         ],
       }).compileComponents();
-    })
+    }),
   );
 
   it('should create the app', () => {
@@ -58,15 +61,23 @@ describe('AppComponent', () => {
       it('does not navigate', () => {
         const angularFireAuth = TestBed.inject(AngularFireAuth);
         const navController = TestBed.inject(NavController);
-        (angularFireAuth.authState as any).next({ id: 42, email: 'test@testty.com' });
+        (angularFireAuth.authState as any).next({
+          id: 42,
+          email: 'test@testty.com',
+        });
         expect(navController.navigateRoot).not.toHaveBeenCalled();
       });
 
       it('dispatches the user change and load', () => {
         const angularFireAuth = TestBed.inject(AngularFireAuth);
-        (angularFireAuth.authState as any).next({ id: 42, email: 'test@testty.com' });
+        (angularFireAuth.authState as any).next({
+          id: 42,
+          email: 'test@testty.com',
+        });
         expect(store.dispatch).toHaveBeenCalledTimes(2);
-        expect(store.dispatch).toHaveBeenCalledWith(loginChanged({ email: 'test@testty.com' }));
+        expect(store.dispatch).toHaveBeenCalledWith(
+          loginChanged({ email: 'test@testty.com' }),
+        );
         expect(store.dispatch).toHaveBeenCalledWith(loadProjects());
       });
     });
@@ -84,7 +95,9 @@ describe('AppComponent', () => {
         const angularFireAuth = TestBed.inject(AngularFireAuth);
         (angularFireAuth.authState as any).next(null);
         expect(store.dispatch).toHaveBeenCalledTimes(1);
-        expect(store.dispatch).toHaveBeenCalledWith(loginChanged({ email: null }));
+        expect(store.dispatch).toHaveBeenCalledWith(
+          loginChanged({ email: null }),
+        );
       });
     });
   });

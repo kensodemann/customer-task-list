@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/firestore';
 import {
   createAction,
   createAngularFireAuthMock,
@@ -63,7 +66,9 @@ describe('FirestoreDataService', () => {
       const angularFirestore = TestBed.inject(AngularFirestore);
       dataService.observeChanges();
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
-      expect(angularFirestore.collection).toHaveBeenCalledWith('data-collection');
+      expect(angularFirestore.collection).toHaveBeenCalledWith(
+        'data-collection',
+      );
     });
 
     it('looks for state changes', () => {
@@ -77,7 +82,9 @@ describe('FirestoreDataService', () => {
       const angularFirestore = TestBed.inject(AngularFirestore);
       dataService.all();
       expect(angularFirestore.collection).toHaveBeenCalledTimes(1);
-      expect(angularFirestore.collection).toHaveBeenCalledWith('data-collection');
+      expect(angularFirestore.collection).toHaveBeenCalledWith(
+        'data-collection',
+      );
     });
 
     it('looks for snapshot changes', () => {
@@ -85,33 +92,37 @@ describe('FirestoreDataService', () => {
       expect(collection.snapshotChanges).toHaveBeenCalledTimes(1);
     });
 
-    it('maps the changes', (done) => {
+    it('maps the changes', done => {
       collection.snapshotChanges.mockReturnValue(
         of([
           createAction('314PI', {
             name: `Baker's Square`,
-            description: 'Makers of overly sweet pies and otherwise crappy food',
+            description:
+              'Makers of overly sweet pies and otherwise crappy food',
             isActive: true,
           }),
           createAction('420HI', {
             name: 'Joe',
-            description: 'Some guy named Joe who sells week on my street corner',
+            description:
+              'Some guy named Joe who sells week on my street corner',
             isActive: false,
           }),
-        ])
+        ]),
       );
-      dataService.all().subscribe((d) => {
+      dataService.all().subscribe(d => {
         expect(d).toEqual([
           {
             id: '314PI',
             name: `Baker's Square`,
-            description: 'Makers of overly sweet pies and otherwise crappy food',
+            description:
+              'Makers of overly sweet pies and otherwise crappy food',
             isActive: true,
           },
           {
             id: '420HI',
             name: 'Joe',
-            description: 'Some guy named Joe who sells week on my street corner',
+            description:
+              'Some guy named Joe who sells week on my street corner',
             isActive: false,
           },
         ]);

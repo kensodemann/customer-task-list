@@ -18,14 +18,20 @@ export class NotesListComponent implements OnDestroy, OnInit {
 
   private subscriptions: Array<Subscription> = [];
 
-  constructor(private alert: AlertController, private modal: ModalController, private notes: NotesService) {}
+  constructor(
+    private alert: AlertController,
+    private modal: ModalController,
+    private notes: NotesService,
+  ) {}
 
   ngOnInit() {
-    this.subscriptions.push(this.notes.allFor(this.itemId).subscribe((n) => (this.allNotes = n)));
+    this.subscriptions.push(
+      this.notes.allFor(this.itemId).subscribe(n => (this.allNotes = n)),
+    );
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((s) => s.unsubscribe());
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   async add() {

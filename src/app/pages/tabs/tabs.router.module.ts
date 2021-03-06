@@ -15,12 +15,14 @@ const routes: Routes = [
           {
             path: '',
             canActivate: [AuthGuardService],
-            loadChildren: () => import('../tasks/tasks.module').then((m) => m.TasksPageModule),
+            loadChildren: () =>
+              import('../tasks/tasks.module').then(m => m.TasksPageModule),
           },
           {
             path: ':taskId',
             canActivate: [AuthGuardService],
-            loadChildren: () => import('../task/task.module').then((m) => m.TaskPageModule),
+            loadChildren: () =>
+              import('../task/task.module').then(m => m.TaskPageModule),
           },
         ],
       },
@@ -30,12 +32,18 @@ const routes: Routes = [
           {
             path: '',
             canActivate: [AuthGuardService],
-            loadChildren: () => import('../projects/projects.module').then((m) => m.ProjectsPageModule),
+            loadChildren: () =>
+              import('../projects/projects.module').then(
+                m => m.ProjectsPageModule,
+              ),
           },
           {
             path: ':projectId',
             canActivate: [AuthGuardService],
-            loadChildren: () => import('../project/project.module').then((m) => m.ProjectPageModule),
+            loadChildren: () =>
+              import('../project/project.module').then(
+                m => m.ProjectPageModule,
+              ),
           },
         ],
       },
@@ -44,7 +52,8 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: () => import('../about/about.module').then((m) => m.AboutPageModule),
+            loadChildren: () =>
+              import('../about/about.module').then(m => m.AboutPageModule),
           },
         ],
       },

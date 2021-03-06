@@ -8,7 +8,11 @@ import { TasksService } from '@app/services/firestore-data';
 import { createTasksServiceMock } from '@app/services/firestore-data/mocks';
 import { SharedModule } from '@app/shared';
 import { logout } from '@app/store/actions/auth.actions';
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import {
@@ -56,7 +60,7 @@ describe('TasksPage', () => {
           provideMockStore(),
         ],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {
@@ -91,7 +95,7 @@ describe('TasksPage', () => {
 
   it('it shows the back button if navigated to for a project', () => {
     const route = TestBed.inject(ActivatedRoute);
-    route.snapshot.paramMap.get = jest.fn((arg) => {
+    route.snapshot.paramMap.get = jest.fn(arg => {
       if (arg === 'projectId') {
         return '1234';
       }
@@ -110,7 +114,7 @@ describe('TasksPage', () => {
   it('sets up an observable on the project tasks if there is a cutomer', () => {
     const route = TestBed.inject(ActivatedRoute);
     const tasks = TestBed.inject(TasksService);
-    route.snapshot.paramMap.get = jest.fn((arg) => {
+    route.snapshot.paramMap.get = jest.fn(arg => {
       if (arg === 'projectId') {
         return '33859940039kkd032';
       }
@@ -130,7 +134,7 @@ describe('TasksPage', () => {
 
     it('returns in process tasks if status of in process specified', () => {
       const route = TestBed.inject(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn((arg) => {
+      route.snapshot.paramMap.get = jest.fn(arg => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -144,7 +148,7 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than open is specified', () => {
       const route = TestBed.inject(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn((arg) => {
+      route.snapshot.paramMap.get = jest.fn(arg => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -166,7 +170,7 @@ describe('TasksPage', () => {
 
     it('returns open tasks if status of open specified', () => {
       const route = TestBed.inject(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn((arg) => {
+      route.snapshot.paramMap.get = jest.fn(arg => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -180,7 +184,7 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than open is specified', () => {
       const route = TestBed.inject(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn((arg) => {
+      route.snapshot.paramMap.get = jest.fn(arg => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -202,7 +206,7 @@ describe('TasksPage', () => {
 
     it('returns On Hold tasks if status of On Hold specified', () => {
       const route = TestBed.inject(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn((arg) => {
+      route.snapshot.paramMap.get = jest.fn(arg => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -216,7 +220,7 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than on hold is specified', () => {
       const route = TestBed.inject(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn((arg) => {
+      route.snapshot.paramMap.get = jest.fn(arg => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -238,7 +242,7 @@ describe('TasksPage', () => {
 
     it('returns closed tasks if status of closed specified', () => {
       const route = TestBed.inject(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn((arg) => {
+      route.snapshot.paramMap.get = jest.fn(arg => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -252,7 +256,7 @@ describe('TasksPage', () => {
 
     it('returns empty array if status other than closed is specified', () => {
       const route = TestBed.inject(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn((arg) => {
+      route.snapshot.paramMap.get = jest.fn(arg => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         } else if (arg === 'status') {
@@ -328,7 +332,8 @@ describe('TasksPage', () => {
       const alertController = TestBed.inject(AlertController);
       const tasks = TestBed.inject(TasksService);
       page.delete(task);
-      const button = (alertController.create as jest.Mock).mock.calls[0][0].buttons[0];
+      const button = (alertController.create as jest.Mock).mock.calls[0][0]
+        .buttons[0];
       button.handler();
       expect(tasks.delete).toHaveBeenCalledTimes(1);
     });
@@ -336,7 +341,8 @@ describe('TasksPage', () => {
     it('does not delete on "No"', () => {
       const alertController = TestBed.inject(AlertController);
       page.delete(task);
-      const button = (alertController.create as jest.Mock).mock.calls[0][0].buttons[1];
+      const button = (alertController.create as jest.Mock).mock.calls[0][0]
+        .buttons[1];
       expect(button.role).toEqual('cancel');
       expect(button.handler).toBeUndefined();
     });
@@ -363,7 +369,7 @@ describe('TasksPage', () => {
     it('passes the project ID if one is specified in the route', () => {
       const modalController = TestBed.inject(ModalController);
       const route = TestBed.inject(ActivatedRoute);
-      route.snapshot.paramMap.get = jest.fn((arg) => {
+      route.snapshot.paramMap.get = jest.fn(arg => {
         if (arg === 'projectId') {
           return '33859940039kkd032';
         }
@@ -402,13 +408,21 @@ describe('TasksPage', () => {
         case: 'project status',
         projectId: '451BK',
         status: 'On Hold',
-        path: ['tabs', 'projects', '451BK', 'tasks', 'On Hold', 'task', 'S9590FGS'],
+        path: [
+          'tabs',
+          'projects',
+          '451BK',
+          'tasks',
+          'On Hold',
+          'task',
+          'S9590FGS',
+        ],
       },
-    ].forEach((test) => {
+    ].forEach(test => {
       it(`navigates to the task from the ${test.case} task list`, () => {
         const navController = TestBed.inject(NavController);
         const route = TestBed.inject(ActivatedRoute);
-        route.snapshot.paramMap.get = jest.fn((arg) => {
+        route.snapshot.paramMap.get = jest.fn(arg => {
           if (arg === 'projectId') {
             return test.projectId;
           }
@@ -482,7 +496,8 @@ describe('TasksPage', () => {
       {
         id: '39940500987',
         name: 'Respond to Review',
-        description: 'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
+        description:
+          'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
         enteredOn: fakeTimestamp(9940593),
         type: TaskTypes.feature,
         status: Statuses.open,
@@ -515,7 +530,8 @@ describe('TasksPage', () => {
       {
         id: '42DA424242',
         name: 'I am stuck on the answer',
-        description: 'First find Deep Thought, then get the answer from it, then puzzle over it',
+        description:
+          'First find Deep Thought, then get the answer from it, then puzzle over it',
         enteredOn: fakeTimestamp(1432405945),
         type: TaskTypes.review,
         status: Statuses.onHold,
@@ -526,7 +542,8 @@ describe('TasksPage', () => {
       {
         id: '9999',
         name: 'Die',
-        description: 'We all want to go to heaven, but no one wants to die to get there',
+        description:
+          'We all want to go to heaven, but no one wants to die to get there',
         enteredOn: fakeTimestamp(1114324053),
         type: TaskTypes.research,
         status: Statuses.open,
@@ -537,7 +554,8 @@ describe('TasksPage', () => {
       {
         id: '5599tuy838499395',
         name: 'Why is the sky blue?',
-        description: 'I try to make it other colors, but it does not work. Find out why.',
+        description:
+          'I try to make it other colors, but it does not work. Find out why.',
         enteredOn: fakeTimestamp(1586884995),
         type: TaskTypes.research,
         status: Statuses.inProcess,
@@ -570,7 +588,8 @@ describe('TasksPage', () => {
       {
         id: '49499503fkkei395',
         name: 'The snow is hot',
-        description: 'I got burned by the snow today. I thought it was supposed to be cold.',
+        description:
+          'I got burned by the snow today. I thought it was supposed to be cold.',
         enteredOn: fakeTimestamp(2948588495),
         type: TaskTypes.bug,
         status: Statuses.inProcess,
@@ -592,7 +611,8 @@ describe('TasksPage', () => {
       {
         id: '42DA399458',
         name: 'Displute the answer',
-        description: 'First find Deep Thought, then get the answer from it, then argue about that shit',
+        description:
+          'First find Deep Thought, then get the answer from it, then argue about that shit',
         enteredOn: fakeTimestamp(1432405339),
         type: TaskTypes.research,
         status: Statuses.open,
@@ -628,7 +648,8 @@ describe('TasksPage', () => {
       {
         id: '49499503fkkei395',
         name: 'The snow is hot',
-        description: 'I got burned by the snow today. I thought it was supposed to be cold.',
+        description:
+          'I got burned by the snow today. I thought it was supposed to be cold.',
         enteredOn: fakeTimestamp(2948588495),
         type: TaskTypes.bug,
         status: Statuses.inProcess,
@@ -639,7 +660,8 @@ describe('TasksPage', () => {
       {
         id: '5599tuy838499395',
         name: 'Why is the sky blue?',
-        description: 'I try to make it other colors, but it does not work. Find out why.',
+        description:
+          'I try to make it other colors, but it does not work. Find out why.',
         enteredOn: fakeTimestamp(1586884995),
         type: TaskTypes.research,
         status: Statuses.inProcess,
@@ -653,7 +675,8 @@ describe('TasksPage', () => {
       {
         id: '39940500987',
         name: 'Respond to Review',
-        description: 'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
+        description:
+          'We reviewed their code. It sucked. Find a nice way to tell them how much they suck',
         enteredOn: fakeTimestamp(9940593),
         type: TaskTypes.feature,
         status: Statuses.open,
@@ -686,7 +709,8 @@ describe('TasksPage', () => {
       {
         id: '9999',
         name: 'Die',
-        description: 'We all want to go to heaven, but no one wants to die to get there',
+        description:
+          'We all want to go to heaven, but no one wants to die to get there',
         enteredOn: fakeTimestamp(1114324053),
         type: TaskTypes.research,
         status: Statuses.open,
@@ -730,7 +754,8 @@ describe('TasksPage', () => {
       {
         id: '42DA399458',
         name: 'Displute the answer',
-        description: 'First find Deep Thought, then get the answer from it, then argue about that shit',
+        description:
+          'First find Deep Thought, then get the answer from it, then argue about that shit',
         enteredOn: fakeTimestamp(1432405339),
         type: TaskTypes.research,
         status: Statuses.open,
@@ -755,7 +780,8 @@ describe('TasksPage', () => {
       {
         id: '42DA424242',
         name: 'I am stuck on the answer',
-        description: 'First find Deep Thought, then get the answer from it, then puzzle over it',
+        description:
+          'First find Deep Thought, then get the answer from it, then puzzle over it',
         enteredOn: fakeTimestamp(1432405945),
         type: TaskTypes.review,
         status: Statuses.onHold,
@@ -775,6 +801,6 @@ describe('TasksPage', () => {
         projectName: 'Book Burners R Us',
       },
     ];
-    closedTasks = testTasks.filter((t) => t.status === Statuses.closed);
+    closedTasks = testTasks.filter(t => t.status === Statuses.closed);
   };
 });

@@ -13,7 +13,7 @@ describe('TaskListItemComponent', () => {
         declarations: [TaskListItemComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {

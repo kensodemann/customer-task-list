@@ -56,10 +56,10 @@ describe('ApplicationService', () => {
       { plt: 'desktop', expected: false },
       { plt: 'phablet', expected: true },
       { plt: 'iphone', expected: true },
-    ].forEach((test) => {
+    ].forEach(test => {
       it(`is ${test.expected} for "${test.plt}"`, () => {
         const platform = TestBed.inject(Platform);
-        platform.is = jest.fn((arg) => arg === test.plt);
+        platform.is = jest.fn(arg => arg === test.plt);
         expect(application.showTabs).toEqual(test.expected);
       });
     });

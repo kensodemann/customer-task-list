@@ -20,13 +20,15 @@ export class AuthEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(login),
-      exhaustMap((action) =>
-        from(this.authenticationService.login(action.email, action.password)).pipe(
+      exhaustMap(action =>
+        from(
+          this.authenticationService.login(action.email, action.password),
+        ).pipe(
           map(() => loginSuccess()),
-          catchError((error) => of(loginFailure({ error })))
-        )
-      )
-    )
+          catchError(error => of(loginFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   logout$ = createEffect(() =>
@@ -35,23 +37,28 @@ export class AuthEffects {
       exhaustMap(() =>
         from(this.authenticationService.logout()).pipe(
           map(() => logoutSuccess()),
-          catchError((error) => of(logoutFailure({ error })))
-        )
-      )
-    )
+          catchError(error => of(logoutFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
   resetPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(resetPassword),
-      exhaustMap((action) =>
-        from(this.authenticationService.sendPasswordResetEmail(action.email)).pipe(
+      exhaustMap(action =>
+        from(
+          this.authenticationService.sendPasswordResetEmail(action.email),
+        ).pipe(
           map(() => resetPasswordSuccess({ email: action.email })),
-          catchError((error) => of(resetPasswordFailure({ error })))
-        )
-      )
-    )
+          catchError(error => of(resetPasswordFailure({ error }))),
+        ),
+      ),
+    ),
   );
 
-  constructor(private actions$: Actions, private authenticationService: AuthenticationService) {}
+  constructor(
+    private actions$: Actions,
+    private authenticationService: AuthenticationService,
+  ) {}
 }

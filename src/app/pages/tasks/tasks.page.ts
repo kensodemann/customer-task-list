@@ -1,6 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, IonList, ModalController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  IonList,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
@@ -35,7 +40,7 @@ export class TasksPage implements OnDestroy, OnInit {
     private navController: NavController,
     private route: ActivatedRoute,
     private store: Store<State>,
-    private tasks: TasksService
+    private tasks: TasksService,
   ) {}
 
   ngOnInit() {
@@ -43,9 +48,13 @@ export class TasksPage implements OnDestroy, OnInit {
     this.showBackButton = !!this.projectId;
     this.status = this.route.snapshot.paramMap.get('status');
     if (this.projectId) {
-      this.taskSubscription = this.tasks.forProject(this.projectId).subscribe((t) => this.unpackTasks(t));
+      this.taskSubscription = this.tasks
+        .forProject(this.projectId)
+        .subscribe(t => this.unpackTasks(t));
     } else {
-      this.taskSubscription = this.tasks.all().subscribe((t) => this.unpackTasks(t));
+      this.taskSubscription = this.tasks
+        .all()
+        .subscribe(t => this.unpackTasks(t));
     }
   }
 
@@ -86,9 +95,24 @@ export class TasksPage implements OnDestroy, OnInit {
 
   view(task: Task) {
     if (this.projectId && this.status) {
-      this.navController.navigateForward(['tabs', 'projects', this.projectId, 'tasks', this.status, 'task', task.id]);
+      this.navController.navigateForward([
+        'tabs',
+        'projects',
+        this.projectId,
+        'tasks',
+        this.status,
+        'task',
+        task.id,
+      ]);
     } else if (this.projectId) {
-      this.navController.navigateForward(['tabs', 'projects', this.projectId, 'tasks', 'task', task.id]);
+      this.navController.navigateForward([
+        'tabs',
+        'projects',
+        this.projectId,
+        'tasks',
+        'task',
+        task.id,
+      ]);
     } else {
       this.navController.navigateForward(['tabs', 'tasks', task.id]);
     }
@@ -102,9 +126,16 @@ export class TasksPage implements OnDestroy, OnInit {
     if (this.list) {
       this.list.closeSlidingItems();
     }
-    this.openTasks = this.tasksWithStatus(t, Statuses.open).sort((t1, t2) => this.taskSort(t1, t2));
-    this.inProcessTasks = this.tasksWithStatus(t, Statuses.inProcess).sort((t1, t2) => this.taskSort(t1, t2));
-    this.onHoldTasks = this.tasksWithStatus(t, Statuses.onHold).sort((t1, t2) => this.taskSort(t1, t2));
+    this.openTasks = this.tasksWithStatus(t, Statuses.open).sort((t1, t2) =>
+      this.taskSort(t1, t2),
+    );
+    this.inProcessTasks = this.tasksWithStatus(
+      t,
+      Statuses.inProcess,
+    ).sort((t1, t2) => this.taskSort(t1, t2));
+    this.onHoldTasks = this.tasksWithStatus(t, Statuses.onHold).sort((t1, t2) =>
+      this.taskSort(t1, t2),
+    );
     this.closedTasks = this.tasksWithStatus(t, Statuses.closed);
   }
 
@@ -113,7 +144,7 @@ export class TasksPage implements OnDestroy, OnInit {
       return [];
     }
 
-    return (allTasks && allTasks.filter((t) => t.status === status)) || [];
+    return (allTasks && allTasks.filter(t => t.status === status)) || [];
   }
 
   private taskSort(t1: Task, t2: Task) {

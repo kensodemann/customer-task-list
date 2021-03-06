@@ -5,4 +5,9 @@ export const enum Statuses {
   onHold = 'On Hold',
   closed = 'Closed',
 }
-export const statuses: Array<string> = [Statuses.open, Statuses.inProcess, Statuses.onHold, Statuses.closed];
+export const statuses: Array<string> = [
+  Statuses.open,
+  Statuses.inProcess,
+  Statuses.onHold,
+  Statuses.closed,
+];

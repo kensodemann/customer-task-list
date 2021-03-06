@@ -1,10 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AlertController, LoadingController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  LoadingController,
+  NavController,
+} from '@ionic/angular';
 import { Store, select } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { selectAuthEmail, selectAuthError, selectAuthLoading, selectAuthMessage, State } from '@app/store';
+import {
+  selectAuthEmail,
+  selectAuthError,
+  selectAuthLoading,
+  selectAuthMessage,
+  State,
+} from '@app/store';
 import { login, resetPassword } from '@app/store/actions/auth.actions';
 
 @Component({
@@ -25,23 +35,33 @@ export class LoginPage implements OnInit, OnDestroy {
     private alert: AlertController,
     private loadingController: LoadingController,
     private navController: NavController,
-    private store: Store<State>
+    private store: Store<State>,
   ) {}
 
   async ngOnInit() {
-    this.loading = await this.loadingController.create({ message: 'Verifying...' });
-    this.store.pipe(select(selectAuthLoading), takeUntil(this.destroy$)).subscribe((l) => {
-      this.showLoading(l);
+    this.loading = await this.loadingController.create({
+      message: 'Verifying...',
     });
-    this.store.pipe(select(selectAuthError), takeUntil(this.destroy$)).subscribe((e) => {
-      this.setErrorMessage(e);
-    });
-    this.store.pipe(select(selectAuthMessage), takeUntil(this.destroy$)).subscribe((msg) => {
-      this.infoMessage = msg;
-    });
-    this.store.pipe(select(selectAuthEmail), takeUntil(this.destroy$)).subscribe((e) => {
-      this.goToApp(!!e);
-    });
+    this.store
+      .pipe(select(selectAuthLoading), takeUntil(this.destroy$))
+      .subscribe(l => {
+        this.showLoading(l);
+      });
+    this.store
+      .pipe(select(selectAuthError), takeUntil(this.destroy$))
+      .subscribe(e => {
+        this.setErrorMessage(e);
+      });
+    this.store
+      .pipe(select(selectAuthMessage), takeUntil(this.destroy$))
+      .subscribe(msg => {
+        this.infoMessage = msg;
+      });
+    this.store
+      .pipe(select(selectAuthEmail), takeUntil(this.destroy$))
+      .subscribe(e => {
+        this.goToApp(!!e);
+      });
   }
 
   ngOnDestroy() {
@@ -85,8 +105,15 @@ export class LoginPage implements OnInit, OnDestroy {
     });
     await a.present();
     const response = await a.onDidDismiss();
-    if (response && response.data && response.data.values.emailAddress && response.role === 'send') {
-      this.store.dispatch(resetPassword({ email: response.data.values.emailAddress }));
+    if (
+      response &&
+      response.data &&
+      response.data.values.emailAddress &&
+      response.role === 'send'
+    ) {
+      this.store.dispatch(
+        resetPassword({ email: response.data.values.emailAddress }),
+      );
     }
   }
 

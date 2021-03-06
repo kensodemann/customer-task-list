@@ -13,7 +13,7 @@ describe('NoteListItemComponent', () => {
         declarations: [NoteListItemComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe('NoteListItemComponent', () => {
       expect(component.noteText.length).toEqual(160);
       expect(component.noteText).toEqual(
         'Lorem ipsum dolor sit amet, ut utroque probatus dignissim mei, ' +
-          'et est oblique alienum antiopam, has ut partiendo dissentiunt.Eu has quando graeco aperiam, vi...'
+          'et est oblique alienum antiopam, has ut partiendo dissentiunt.Eu has quando graeco aperiam, vi...',
       );
     });
   });

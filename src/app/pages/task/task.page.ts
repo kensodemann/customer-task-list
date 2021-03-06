@@ -21,7 +21,7 @@ export class TaskPage implements OnInit {
     private modal: ModalController,
     private route: ActivatedRoute,
     private store: Store<State>,
-    private tasks: TasksService
+    private tasks: TasksService,
   ) {}
 
   async ngOnInit() {

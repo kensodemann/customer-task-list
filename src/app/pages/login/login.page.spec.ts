@@ -1,13 +1,28 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { selectAuthEmail, selectAuthError, selectAuthLoading, selectAuthMessage, State } from '@app/store';
+import {
+  selectAuthEmail,
+  selectAuthError,
+  selectAuthLoading,
+  selectAuthMessage,
+  State,
+} from '@app/store';
 import { login, resetPassword } from '@app/store/actions/auth.actions';
 import { AuthState } from '@app/store/reducers/auth/auth.reducer';
-import { AlertController, IonicModule, LoadingController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  IonicModule,
+  LoadingController,
+  NavController,
+} from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { createNavControllerMock, createOverlayControllerMock, createOverlayElementMock } from '@test/mocks';
+import {
+  createNavControllerMock,
+  createOverlayControllerMock,
+  createOverlayElementMock,
+} from '@test/mocks';
 import { LoginPage } from './login.page';
 
 describe('LoginPage', () => {
@@ -34,10 +49,12 @@ describe('LoginPage', () => {
             useFactory: () => createOverlayControllerMock(loading),
           },
           { provide: NavController, useFactory: createNavControllerMock },
-          provideMockStore<{ auth: AuthState }>({ initialState: { auth: { email: '', loading: false } } }),
+          provideMockStore<{ auth: AuthState }>({
+            initialState: { auth: { email: '', loading: false } },
+          }),
         ],
       }).compileComponents();
-    })
+    }),
   );
 
   beforeEach(() => {
@@ -61,7 +78,9 @@ describe('LoginPage', () => {
       store.dispatch = jest.fn();
       page.login();
       expect(store.dispatch).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledWith(login({ email: 'test@mctesty.com', password: 'something secret' }));
+      expect(store.dispatch).toHaveBeenCalledWith(
+        login({ email: 'test@mctesty.com', password: 'something secret' }),
+      );
     });
   });
 
@@ -70,7 +89,10 @@ describe('LoginPage', () => {
     let mockAuthLoadingSelector: any;
     beforeEach(() => {
       store = TestBed.inject(Store) as MockStore<State>;
-      mockAuthLoadingSelector = store.overrideSelector(selectAuthLoading, false);
+      mockAuthLoadingSelector = store.overrideSelector(
+        selectAuthLoading,
+        false,
+      );
       fixture.detectChanges();
       loading.dismiss.mockClear();
     });
@@ -95,7 +117,10 @@ describe('LoginPage', () => {
     let mockAuthEmailSelector: any;
     beforeEach(() => {
       store = TestBed.inject(Store) as MockStore<State>;
-      mockAuthEmailSelector = store.overrideSelector(selectAuthEmail, undefined);
+      mockAuthEmailSelector = store.overrideSelector(
+        selectAuthEmail,
+        undefined,
+      );
       fixture.detectChanges();
     });
 
@@ -118,7 +143,10 @@ describe('LoginPage', () => {
     let mockAuthErrorSelector: any;
     beforeEach(() => {
       store = TestBed.inject(Store) as MockStore<State>;
-      mockAuthErrorSelector = store.overrideSelector(selectAuthError, undefined);
+      mockAuthErrorSelector = store.overrideSelector(
+        selectAuthError,
+        undefined,
+      );
       fixture.detectChanges();
     });
 
@@ -152,7 +180,10 @@ describe('LoginPage', () => {
     let mockAuthMessageSelector: any;
     beforeEach(() => {
       store = TestBed.inject(Store) as MockStore<State>;
-      mockAuthMessageSelector = store.overrideSelector(selectAuthMessage, undefined);
+      mockAuthMessageSelector = store.overrideSelector(
+        selectAuthMessage,
+        undefined,
+      );
       fixture.detectChanges();
     });
 
@@ -189,7 +220,9 @@ describe('LoginPage', () => {
       });
 
       it('describes the process', () => {
-        expect(params.message).toContain('link that will allow you to reset your password');
+        expect(params.message).toContain(
+          'link that will allow you to reset your password',
+        );
       });
 
       it('has an input for the e-mail address', () => {
@@ -228,7 +261,9 @@ describe('LoginPage', () => {
         });
         await page.handlePasswordReset();
         expect(store.dispatch).toHaveBeenCalledTimes(1);
-        expect(store.dispatch).toHaveBeenCalledWith(resetPassword({ email: 'test@testy.com' }));
+        expect(store.dispatch).toHaveBeenCalledWith(
+          resetPassword({ email: 'test@testy.com' }),
+        );
       });
 
       it('does not dispatch the reset action if no email address is entered', async () => {

@@ -4,4 +4,8 @@ export const enum Priorities {
   normal = 'Normal',
   high = 'High',
 }
-export const priorities: Array<string> = [Priorities.low, Priorities.normal, Priorities.high];
+export const priorities: Array<string> = [
+  Priorities.low,
+  Priorities.normal,
+  Priorities.high,
+];

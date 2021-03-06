@@ -46,7 +46,11 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
   checkName() {
     const name = this.name && this.name.toLowerCase().trim();
     const id = this.project && this.project.id;
-    const dup = this.allProjects && this.allProjects.find((x) => x.id !== id && x.name.toLowerCase().trim() === name);
+    const dup =
+      this.allProjects &&
+      this.allProjects.find(
+        x => x.id !== id && x.name.toLowerCase().trim() === name,
+      );
     this.warningMessage = dup ? 'a project with this name already exists' : '';
   }
 
@@ -74,7 +78,9 @@ export class ProjectEditorComponent implements OnDestroy, OnInit {
   }
 
   private getProjects() {
-    this.store.pipe(select(selectAllProjects), takeUntil(this.destroy$)).subscribe((c) => (this.allProjects = c));
+    this.store
+      .pipe(select(selectAllProjects), takeUntil(this.destroy$))
+      .subscribe(c => (this.allProjects = c));
   }
 
   private initializeProperties() {

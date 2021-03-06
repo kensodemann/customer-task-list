@@ -1,13 +1,23 @@
-import { initializeTestProjects, testProjectIds, testProjects } from '@test/data';
+import {
+  initializeTestProjects,
+  testProjectIds,
+  testProjects,
+} from '@test/data';
 import { ProjectState } from '../reducers/project/project.reducer';
-import { selectAllActiveProjects, selectAllProjects, selectProject } from './project.selectors';
+import {
+  selectAllActiveProjects,
+  selectAllProjects,
+  selectProject,
+} from './project.selectors';
 
 describe('project selectors', () => {
   let state: { projects: ProjectState };
 
   beforeEach(() => {
     initializeTestProjects();
-    state = { projects: { loading: false, ids: testProjectIds, entities: testProjects } };
+    state = {
+      projects: { loading: false, ids: testProjectIds, entities: testProjects },
+    };
   });
 
   describe('select all projects', () => {

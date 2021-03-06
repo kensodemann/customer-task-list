@@ -29,7 +29,7 @@ export class ProjectPage implements OnDestroy, OnInit {
     public navController: NavController,
     private route: ActivatedRoute,
     private store: Store<State>,
-    private tasks: TasksService
+    private tasks: TasksService,
   ) {}
 
   async ngOnInit() {
@@ -38,8 +38,10 @@ export class ProjectPage implements OnDestroy, OnInit {
     this.tasks
       .forProject(id)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((t) => (this.projectTasks = t));
-    this.store.pipe(select(selectProject, { id }), takeUntil(this.destroy$)).subscribe((p) => (this.project = p));
+      .subscribe(t => (this.projectTasks = t));
+    this.store
+      .pipe(select(selectProject, { id }), takeUntil(this.destroy$))
+      .subscribe(p => (this.project = p));
   }
 
   ngOnDestroy() {
@@ -57,7 +59,9 @@ export class ProjectPage implements OnDestroy, OnInit {
   }
 
   taskCount(status?: string): number {
-    return this.projectTasks ? this.projectTasks.filter((t) => !status || t.status === status).length : 0;
+    return this.projectTasks
+      ? this.projectTasks.filter(t => !status || t.status === status).length
+      : 0;
   }
 
   logout() {
